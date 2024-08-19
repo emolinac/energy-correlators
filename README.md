@@ -1,1 +1,1 @@
-# energy-correlator
+# energy-correlations
