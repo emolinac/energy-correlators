@@ -31,8 +31,8 @@ void macro_makeclasses()
     chain3->Add((input_folder+"Zjet_Data_2018_MU_04062024.root").c_str());
     chain3->Add((input_folder+"Zjet_Data_2018_MD_04062024.root").c_str());
     
-    chain1->MakeClass("TMCJets");
-    chain2->MakeClass("TZJets");
+    chain1->MakeClass("TZJetsMC");
+    chain2->MakeClass("TZJetsMCReco");
     chain3->MakeClass("TZJetsData");
 }
 
