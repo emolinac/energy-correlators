@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_e2c()
+void macro_print_norme2c()
 {
     // Open ROOT file with ntuple
     TFile* f = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -33,6 +33,10 @@ void macro_print_e2c()
     ntuple_mcreco->Draw("X_L>>h_mcreco",e2c_cut,"goff");
     ntuple_mc->Draw("X_L>>h_mc",e2c_mc_cut,"goff");
 
+    h_data->Scale(1./h_data->Integral());
+    h_mcreco->Scale(1./h_mcreco->Integral());
+    h_mc->Scale(1./h_mc->Integral());
+
     set_histogram_style(h_data   , kViolet+2 , std_line_width, std_marker_style, std_marker_size);
     set_histogram_style(h_mcreco , kCyan     , std_line_width, std_marker_style, std_marker_size);
     set_histogram_style(h_mc     , kGreen+2  , std_line_width, std_marker_style, std_marker_size);
@@ -42,7 +46,9 @@ void macro_print_e2c()
     s->Add(h_mcreco);
     s->Add(h_mc);
     s->Draw("NOSTACK");
-    s->SetTitle(";X_{L};E2C");
+    s->SetTitle(";X_{L};Norm. E2C");
+
+    s->SetMaximum(1);
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -53,5 +59,5 @@ void macro_print_e2c()
     l->AddEntry(h_mcreco,"MCReco","lpf");
     l->Draw("SAME");
 
-    c->Print("../plots/E2C.pdf");
+    c->Print("../plots/normE2C.pdf");
 }
