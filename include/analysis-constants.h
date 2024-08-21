@@ -26,10 +26,10 @@ const double phi_mass      = 1.019455;
 const double mass_res      = 0.008; // Mass resolution parameter (see src-resolution)
 
 // Define binning
-const int Nbin_X_L    = 100;
+const int Nbin_X_L    = 25;
 const int Nbin_jet_pt = 3;
 
-const double X_L_min    = 0.005;
+const double X_L_min    = 0.001;
 const double X_L_max    = 10.;
 const double jet_pt_min = 20; 
 const double jet_pt_max = 100;
