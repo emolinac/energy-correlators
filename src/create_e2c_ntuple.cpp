@@ -234,6 +234,8 @@ int main()
         
     }
 
+    std::cout<<"MCReco Ntuple done."<<std::endl;
+
     float vars_mc[Nvars_mc];
     // Fill the MC TNtuple
     for(int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
