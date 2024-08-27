@@ -9,6 +9,7 @@
 #include "TNtuple.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
+#include "TVector3.h"
 #include "analysis-constants.h"
 #include "analysis-functions.h"
 #include "analysis-functions.cpp"
@@ -19,23 +20,31 @@ int main()
 {
     // Create output file
     TFile* fout = new TFile((output_folder+namef_ntuple_e2c).c_str(),"RECREATE");
-    gROOT->cd();
+    //gROOT->cd();
 
     // Declare the TTrees to be used to build the ntuples
-    TZJetsData* datatree     = new TZJetsData();
-    TZJetsMCReco* mcrecotree = new TZJetsMCReco();
-    TZJetsMCReco* mctree     = new TZJetsMCReco();
-    
+    TZJetsData*   datatree       = new TZJetsData();
+    TZJetsMCReco* mcrecotree     = new TZJetsMCReco();
+    TZJetsMCReco* mctree         = new TZJetsMCReco();
+    TZJetsMC*     originalmctree = new TZJetsMC();
+
+    gROOT->cd();
+
     // Create Ntuples
     TNtuple* ntuple_data   = new TNtuple(name_ntuple_data.c_str()  ,"",ntuple_data_vars); 
     TNtuple* ntuple_mcreco = new TNtuple(name_ntuple_mcreco.c_str(),"",ntuple_mcreco_vars);
-    TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"",ntuple_mc_vars); 
+    TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"",ntuple_mc_vars);
+    TNtuple* ntuple_unfold = new TNtuple(name_ntuple_unfold.c_str()    ,"",ntuple_unfold_vars);
 
     // Create necessary 4vectors
     TLorentzVector Jet_4vector;
     TLorentzVector Z0data_4vector;
     TLorentzVector mumdata_4vector;
     TLorentzVector mupdata_4vector;
+    TVector3 htrue1_vector;
+    TVector3 hreco1_vector;
+    TVector3 htrue2_vector;
+    TVector3 hreco2_vector;
 
     // Define array carrying the variables
     float vars[Nvars_data];
@@ -299,10 +308,73 @@ int main()
 
     std::cout<<"MC Ntuple done."<<std::endl;
 
+    // Fill the Unfold TNtuple
+    std::cout<<"Note: To unfold I am using a weight based on total momentum"<<std::endl;
+    float vars_unfold[Nvars_unfold];
+    for(int evt = 0 ; evt < /*originalmctree->fChain->GetEntries()*/10000 ; evt++)
+    {
+        // Access entry of tree
+        originalmctree->GetEntry(evt);
+
+        // Loop over hadron 1
+        for(int h1_index = 0 ; h1_index < 50 ; h1_index++)
+        {
+            // Skip un-id'ed particles
+            if(originalmctree->MCJet_Dtr_ID[h1_index]==-999||originalmctree->MCJet_Dtr_ID[h1_index]==0) continue;
+
+            // Skip non-hadronic particles
+            if((originalmctree->MCJet_Dtr_ID[h1_index]<99&&originalmctree->MCJet_Dtr_ID[h1_index]>-99)) continue;
+
+            // Loop over hadron 2
+            for(int h2_index = 0 ; h2_index < 50 ; h2_index++)
+            {
+                // Skip un-id'ed particles
+                if(originalmctree->MCJet_Dtr_ID[h2_index]==-999||originalmctree->MCJet_Dtr_ID[h2_index]==0) continue;
+
+                // Skip non-hadronic particles
+                if((originalmctree->MCJet_Dtr_ID[h2_index]<99&&originalmctree->MCJet_Dtr_ID[h2_index]>-99)) continue;
+
+                htrue1_vector.SetXYZ(originalmctree->MCJet_Dtr_PX[h1_index],originalmctree->MCJet_Dtr_PY[h1_index],originalmctree->MCJet_Dtr_PZ[h1_index]);
+                htrue2_vector.SetXYZ(originalmctree->MCJet_Dtr_PX[h2_index],originalmctree->MCJet_Dtr_PY[h2_index],originalmctree->MCJet_Dtr_PZ[h2_index]);
+                hreco1_vector.SetXYZ(originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index],originalmctree->MCJet_Dtr_mcrecomatch_py[h1_index],originalmctree->MCJet_Dtr_mcrecomatch_pz[h1_index]);
+                hreco2_vector.SetXYZ(originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index],originalmctree->MCJet_Dtr_mcrecomatch_py[h2_index],originalmctree->MCJet_Dtr_mcrecomatch_pz[h2_index]);
+
+                // If all good, fille Ntuple
+                vars_unfold[0]  = weight(htrue1_vector.Mag()/1000., htrue2_vector.Mag()/1000., originalmctree->MCJet_P/1000.);
+                vars_unfold[1]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0||
+                                   originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)? 
+                                   0 : weight(hreco1_vector.Mag()/1000., hreco1_vector.Mag()/1000., originalmctree->MCJet_P/1000.); // FIX: ENERGY OF THE RECO JET
+                vars_unfold[2]  = X_L(htrue1_vector.Eta(), htrue2_vector.Eta(), htrue1_vector.Phi(), htrue2_vector.Phi());
+                vars_unfold[3]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0||
+                                   originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)? 
+                                   0 : X_L(hreco1_vector.Eta(), hreco2_vector.Eta(), hreco1_vector.Phi(), hreco2_vector.Phi());
+                vars_unfold[4]  = htrue1_vector.Eta();
+                vars_unfold[5]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Eta();
+                vars_unfold[6]  = htrue2_vector.Eta();
+                vars_unfold[7]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)?0:hreco2_vector.Eta();
+                vars_unfold[8]  = htrue1_vector.Phi();
+                vars_unfold[9]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Phi();
+                vars_unfold[10] = htrue2_vector.Phi();
+                vars_unfold[11] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)?0:hreco2_vector.Phi();
+                vars_unfold[12] = htrue1_vector.Mag()/1000.;
+                vars_unfold[13] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Mag()/1000.;
+                vars_unfold[14] = htrue2_vector.Mag()/1000.;
+                vars_unfold[15] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)?0:hreco2_vector.Mag()/1000.;
+                
+                // Fill the TNtuple
+                ntuple_unfold->Fill(vars_unfold);
+            }
+        }
+        
+    }
+
+    std::cout<<"Unfold Ntuple done."<<std::endl;
+
     fout->cd();
     ntuple_data->Write();
     ntuple_mcreco->Write();
     ntuple_mc->Write();
+    ntuple_unfold->Write();
     fout->Close();
 
     return 0;
