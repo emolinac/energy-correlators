@@ -41,9 +41,7 @@ int main()
     TLorentzVector Z0data_4vector;
     TLorentzVector mumdata_4vector;
     TLorentzVector mupdata_4vector;
-    TVector3 htrue1_vector;
     TVector3 hreco1_vector;
-    TVector3 htrue2_vector;
     TVector3 hreco2_vector;
 
     // Define array carrying the variables
@@ -311,7 +309,7 @@ int main()
     // Fill the Unfold TNtuple
     std::cout<<"Note: To unfold I am using a weight based on total momentum"<<std::endl;
     float vars_unfold[Nvars_unfold];
-    for(int evt = 0 ; evt < /*originalmctree->fChain->GetEntries()*/10000 ; evt++)
+    for(int evt = 0 ; evt < /*originalmctree->fChain->GetEntries()*/100000 ; evt++)
     {
         // Access entry of tree
         originalmctree->GetEntry(evt);
@@ -319,46 +317,38 @@ int main()
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < 50 ; h1_index++)
         {
-            // Skip un-id'ed particles
-            if(originalmctree->MCJet_Dtr_ID[h1_index]==-999||originalmctree->MCJet_Dtr_ID[h1_index]==0) continue;
-
-            // Skip non-hadronic particles
-            if((originalmctree->MCJet_Dtr_ID[h1_index]<99&&originalmctree->MCJet_Dtr_ID[h1_index]>-99)) continue;
+            // Skip particles out of acceptance
+            if(originalmctree->MCJet_Dtr_ETA[h1_index]<eta_min||originalmctree->MCJet_Dtr_ETA[h1_index]>eta_max) continue;
 
             // Loop over hadron 2
             for(int h2_index = 0 ; h2_index < 50 ; h2_index++)
             {
-                // Skip un-id'ed particles
-                if(originalmctree->MCJet_Dtr_ID[h2_index]==-999||originalmctree->MCJet_Dtr_ID[h2_index]==0) continue;
+                // Skip particles out of acceptance
+                if(originalmctree->MCJet_Dtr_ETA[h2_index]<eta_min||originalmctree->MCJet_Dtr_ETA[h2_index]>eta_max) continue;
 
-                // Skip non-hadronic particles
-                if((originalmctree->MCJet_Dtr_ID[h2_index]<99&&originalmctree->MCJet_Dtr_ID[h2_index]>-99)) continue;
-
-                htrue1_vector.SetXYZ(originalmctree->MCJet_Dtr_PX[h1_index],originalmctree->MCJet_Dtr_PY[h1_index],originalmctree->MCJet_Dtr_PZ[h1_index]);
-                htrue2_vector.SetXYZ(originalmctree->MCJet_Dtr_PX[h2_index],originalmctree->MCJet_Dtr_PY[h2_index],originalmctree->MCJet_Dtr_PZ[h2_index]);
                 hreco1_vector.SetXYZ(originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index],originalmctree->MCJet_Dtr_mcrecomatch_py[h1_index],originalmctree->MCJet_Dtr_mcrecomatch_pz[h1_index]);
                 hreco2_vector.SetXYZ(originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index],originalmctree->MCJet_Dtr_mcrecomatch_py[h2_index],originalmctree->MCJet_Dtr_mcrecomatch_pz[h2_index]);
 
                 // If all good, fille Ntuple
-                vars_unfold[0]  = weight(htrue1_vector.Mag()/1000., htrue2_vector.Mag()/1000., originalmctree->MCJet_P/1000.);
+                vars_unfold[0]  = weight(originalmctree->MCJet_Dtr_P[h1_index]/1000., originalmctree->MCJet_Dtr_P[h2_index]/1000., originalmctree->MCJet_P/1000.);
                 vars_unfold[1]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0||
                                    originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)? 
                                    0 : weight(hreco1_vector.Mag()/1000., hreco1_vector.Mag()/1000., originalmctree->MCJet_P/1000.); // FIX: ENERGY OF THE RECO JET
-                vars_unfold[2]  = X_L(htrue1_vector.Eta(), htrue2_vector.Eta(), htrue1_vector.Phi(), htrue2_vector.Phi());
+                vars_unfold[2]  = X_L(originalmctree->MCJet_Dtr_ETA[h1_index], originalmctree->MCJet_Dtr_ETA[h2_index], originalmctree->MCJet_Dtr_PHI[h1_index], originalmctree->MCJet_Dtr_PHI[h2_index]);
                 vars_unfold[3]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0||
                                    originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)? 
                                    0 : X_L(hreco1_vector.Eta(), hreco2_vector.Eta(), hreco1_vector.Phi(), hreco2_vector.Phi());
-                vars_unfold[4]  = htrue1_vector.Eta();
-                vars_unfold[5]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Eta();
-                vars_unfold[6]  = htrue2_vector.Eta();
-                vars_unfold[7]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)?0:hreco2_vector.Eta();
-                vars_unfold[8]  = htrue1_vector.Phi();
-                vars_unfold[9]  = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Phi();
-                vars_unfold[10] = htrue2_vector.Phi();
-                vars_unfold[11] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)?0:hreco2_vector.Phi();
-                vars_unfold[12] = htrue1_vector.Mag()/1000.;
-                vars_unfold[13] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Mag()/1000.;
-                vars_unfold[14] = htrue2_vector.Mag()/1000.;
+                vars_unfold[4]  = originalmctree->MCJet_Dtr_ETA[h1_index];
+                vars_unfold[5]  = originalmctree->MCJet_Dtr_ETA[h2_index];
+                vars_unfold[6]  = originalmctree->MCJet_Dtr_PHI[h1_index];
+                vars_unfold[7]  = originalmctree->MCJet_Dtr_PHI[h2_index];
+                vars_unfold[8]  = originalmctree->MCJet_Dtr_P[h1_index]/1000.;
+                vars_unfold[9]  = originalmctree->MCJet_Dtr_P[h2_index]/1000.;
+                vars_unfold[10] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Eta();
+                vars_unfold[11] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)?0:hreco2_vector.Eta();
+                vars_unfold[12] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Phi();
+                vars_unfold[13] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)?0:hreco2_vector.Phi();
+                vars_unfold[14] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h1_index]==0)?0:hreco1_vector.Mag()/1000.;
                 vars_unfold[15] = (originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==-999||originalmctree->MCJet_Dtr_mcrecomatch_px[h2_index]==0)?0:hreco2_vector.Mag()/1000.;
                 
                 // Fill the TNtuple

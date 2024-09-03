@@ -33,6 +33,8 @@ const double X_L_min    = 0.005;
 const double X_L_max    = 4.;
 const double jet_pt_min = 20; 
 const double jet_pt_max = 100;
+const double eta_min    = 2.5;
+const double eta_max    = 4.;
 
 // Binning
 const double jet_pt_limits[] = {jet_pt_min, 25.644, 35.532, jet_pt_max};

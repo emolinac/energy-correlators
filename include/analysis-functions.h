@@ -14,8 +14,11 @@ double X_L(double h1_eta, double h2_eta, double h1_phi, double h2_phi)
     if(h1_phi*h2_phi>0) delta_phi = h1_phi - h2_phi;
     else
     {
-        if(TMath::Abs(h1_phi - h2_phi)>TMath::Pi()) delta_phi = 2*TMath::Pi() - TMath::Abs(h1_phi - h2_phi);
-        else delta_phi = h1_phi - h2_phi;
+        // This is the case in which both particles are in different sides of the plane
+        double h1h2_angle = TMath::Abs(h1_phi) + TMath::Abs(h2_phi);
+
+        if(h1h2_angle>TMath::Pi()) delta_phi = 2*TMath::Pi() - h1h2_angle;
+        else delta_phi = h1h2_angle;
     }
     
     return sqrt(delta_eta*delta_eta + delta_phi*delta_phi);
