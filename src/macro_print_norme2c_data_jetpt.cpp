@@ -35,9 +35,9 @@ void macro_print_norme2c_data_jetpt()
     h_2->Scale(1./h_2->Integral());
     h_3->Scale(1./h_3->Integral());
 
-    set_histogram_style(h_1 , kViolet+2 , std_line_width, std_marker_style, std_marker_size);
-    set_histogram_style(h_2 , kCyan     , std_line_width, std_marker_style, std_marker_size);
-    set_histogram_style(h_3 , kGreen+2  , std_line_width, std_marker_style, std_marker_size);
+    set_histogram_style(h_1 , corr_marker_color_jet_pt[0] , std_line_width, corr_marker_style_jet_pt[0], std_marker_size);
+    set_histogram_style(h_2 , corr_marker_color_jet_pt[1] , std_line_width, corr_marker_style_jet_pt[1], std_marker_size);
+    set_histogram_style(h_3 , corr_marker_color_jet_pt[2] , std_line_width, corr_marker_style_jet_pt[2], std_marker_size);
 
     THStack* s = new THStack();
     s->Add(h_1);
@@ -52,9 +52,9 @@ void macro_print_norme2c_data_jetpt()
     gPad->SetLogy(1);
 
     TLegend* l = new TLegend();
-    l->AddEntry(h_1,"20<Jet p_{T}<30 GeV","lpf");
-    l->AddEntry(h_2,"30<Jet p_{T}<50 GeV","lpf");
-    l->AddEntry(h_3,"50<Jet p_{T}<100 GeV","lpf");
+    l->AddEntry(h_1,Form("%.1f<Jet p_{T}<%.1f GeV",jet_pt_binning[0],jet_pt_binning[1]),"lpf");
+    l->AddEntry(h_2,Form("%.1f<Jet p_{T}<%.1f GeV",jet_pt_binning[1],jet_pt_binning[2]),"lpf");
+    l->AddEntry(h_3,Form("%.1f<Jet p_{T}<%.1f GeV",jet_pt_binning[2],jet_pt_binning[3]),"lpf");
     l->Draw("SAME");
 
     c->Print("../plots/normE2C_data_jetpt.pdf");

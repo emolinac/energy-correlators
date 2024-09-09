@@ -37,11 +37,18 @@ const double eta_min    = 2.5;
 const double eta_max    = 4.;
 
 // Binning
-const double jet_pt_limits[] = {jet_pt_min, 25.644, 35.532, jet_pt_max};
+//const double jet_pt_binning[] = {jet_pt_min, 30., 50., jet_pt_max};
+const double jet_pt_binning[] = {jet_pt_min, 26.868, 38.404, jet_pt_max};
 
 // Visual constants
 const double std_marker_size  = 1.3;
 const int    std_marker_style = 8;
 const int    std_line_width   = 3;
+
+const double std_marker_style_jet_pt[Nbin_jet_pt]   = {24,26,32};
+const double corr_marker_style_jet_pt[Nbin_jet_pt]  = {20,22,23};
+
+const double std_marker_color_jet_pt[Nbin_jet_pt]  = {879,433,418};
+const double corr_marker_color_jet_pt[Nbin_jet_pt] = {880,432,416};
 
 #endif
