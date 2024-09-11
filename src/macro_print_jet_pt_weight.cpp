@@ -19,9 +19,9 @@ void macro_print_jet_pt_weight()
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
-    ntuple->Draw("weight:jet_pt>>h",e2c_cut,"colz");
+    ntuple->Draw("weight:jet_pt>>h",data_cut,"colz");
     
-    h->SetTitle(";Jet P_{T};X_{L}");
+    h->SetTitle(";Jet P_{T};Weight");
 
     c->Print("../plots/jetpt_weight.pdf");
 }

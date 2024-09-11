@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_purity_xl()
+void macro_print_purity_rl()
 {
     // Open the necessary files
     TFile* fdata   = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -16,13 +16,13 @@ void macro_print_purity_xl()
     TNtuple* ntuple_purity = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_X_L+1];
-    determine_log10binning(Nbin_X_L, X_L_min, X_L_max, binning);
+    double binning[Nbin_R_L+1];
+    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_X_L,binning);
-    TH1F* hall    = new TH1F("hall"   ,"",Nbin_X_L,binning);
-    TH1F* hpurity = new TH1F("hpurity","",Nbin_X_L,binning);
+    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_R_L,binning);
+    TH1F* hall    = new TH1F("hall"   ,"",Nbin_R_L,binning);
+    TH1F* hpurity = new TH1F("hpurity","",Nbin_R_L,binning);
     hsig->Sumw2();
     hall->Sumw2();
     hpurity->Sumw2();
@@ -31,8 +31,8 @@ void macro_print_purity_xl()
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hsig_data = new TH1F("hsig_data","",Nbin_X_L,binning);
-    TH1F* hall_data = new TH1F("hall_data","",Nbin_X_L,binning);
+    TH1F* hsig_data = new TH1F("hsig_data","",Nbin_R_L,binning);
+    TH1F* hall_data = new TH1F("hall_data","",Nbin_R_L,binning);
     hsig_data->Sumw2();
     hall_data->Sumw2();
 
@@ -40,10 +40,10 @@ void macro_print_purity_xl()
     set_histogram_style(hall_data, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Project into the histograms
-    ntuple_purity->Project("hsig","X_L",e2c_signal_cut);
-    ntuple_purity->Project("hall","X_L",e2c_cut);
-    ntuple_data->Project("hsig_data","X_L",e2c_cut);
-    ntuple_data->Project("hall_data","X_L",e2c_cut);
+    ntuple_purity->Project("hsig","R_L",e2c_signal_cut);
+    ntuple_purity->Project("hall","R_L",e2c_cut);
+    ntuple_data->Project("hsig_data","R_L",e2c_cut);
+    ntuple_data->Project("hall_data","R_L",e2c_cut);
 
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();

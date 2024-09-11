@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_norme2c()
+void macro_print_norme2c_rl()
 {
     // Open ROOT file with ntuple
     TFile* f = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -16,12 +16,12 @@ void macro_print_norme2c()
     TNtuple* ntuple_mc     = (TNtuple*) f->Get((name_ntuple_mc).c_str());
 
     // Determine binning
-    double binning[Nbin_X_L+1];
-    determine_log10binning(Nbin_X_L, X_L_min, X_L_max, binning);
+    double binning[Nbin_R_L+1];
+    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
-    TH1F* h_data   = new TH1F("h_data"  ,"",Nbin_X_L, binning);
-    TH1F* h_mcreco = new TH1F("h_mcreco","",Nbin_X_L, binning);
-    TH1F* h_mc     = new TH1F("h_mc"    ,"",Nbin_X_L, binning);
+    TH1F* h_data   = new TH1F("h_data"  ,"",Nbin_R_L, binning);
+    TH1F* h_mcreco = new TH1F("h_mcreco","",Nbin_R_L, binning);
+    TH1F* h_mc     = new TH1F("h_mc"    ,"",Nbin_R_L, binning);
     h_data->Sumw2();
     h_mcreco->Sumw2();
     h_mc->Sumw2();
@@ -29,9 +29,9 @@ void macro_print_norme2c()
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
-    ntuple_data->Draw("X_L>>h_data",e2c_cut,"goff");
-    ntuple_mcreco->Draw("X_L>>h_mcreco",e2c_cut,"goff");
-    ntuple_mc->Draw("X_L>>h_mc",e2c_mc_cut,"goff");
+    ntuple_data->Draw("R_L>>h_data",e2c_cut,"goff");
+    ntuple_mcreco->Draw("R_L>>h_mcreco",e2c_cut,"goff");
+    ntuple_mc->Draw("R_L>>h_mc",e2c_mc_cut,"goff");
 
     h_data->Scale(1./h_data->Integral());
     h_mcreco->Scale(1./h_mcreco->Integral());
@@ -46,7 +46,7 @@ void macro_print_norme2c()
     s->Add(h_mcreco);
     s->Add(h_mc);
     s->Draw("NOSTACK");
-    s->SetTitle(";X_{L};Norm. E2C");
+    s->SetTitle(";R_{L};Norm. E2C");
 
     s->SetMaximum(1);
 
@@ -59,5 +59,5 @@ void macro_print_norme2c()
     l->AddEntry(h_mcreco,"MCReco","lpf");
     l->Draw("SAME");
 
-    c->Print("../plots/normE2C.pdf");
+    c->Print("../plots/normE2C_RL.pdf");
 }

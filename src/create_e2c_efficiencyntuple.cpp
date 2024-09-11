@@ -113,7 +113,7 @@ int main()
 
                 // If all good, fill Ntuple
                 vars[0]  = weight(mcrecotree->Jet_Dtr_E[h1_index]/1000., mcrecotree->Jet_Dtr_E[h2_index]/1000., mcrecotree->Jet_PE/1000.);
-                vars[1]  = X_L(mcrecotree->Jet_Dtr_ETA[h1_index], mcrecotree->Jet_Dtr_ETA[h2_index], mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_Dtr_PHI[h2_index]);
+                vars[1]  = R_L(mcrecotree->Jet_Dtr_ETA[h1_index], mcrecotree->Jet_Dtr_ETA[h2_index], mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_Dtr_PHI[h2_index]);
                 vars[2]  = mcrecotree->Jet_Dtr_ID[h1_index];
                 vars[3]  = mcrecotree->Jet_Dtr_ID[h2_index];
                 vars[4]  = mcrecotree->Jet_Dtr_ETA[h1_index];

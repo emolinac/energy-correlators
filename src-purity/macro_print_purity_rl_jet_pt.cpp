@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_purity_xl_jet_pt()
+void macro_print_purity_rl_jet_pt()
 {
     // Open the necessary files
     TFile* fdata   = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -16,8 +16,8 @@ void macro_print_purity_xl_jet_pt()
     TNtuple* ntuple_purity = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_X_L+1];
-    determine_log10binning(Nbin_X_L, X_L_min, X_L_max, binning);
+    double binning[Nbin_R_L+1];
+    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
     // Define the necessary histograms to calculate purity
     TH1F* hsig[Nbin_jet_pt];
@@ -26,9 +26,9 @@ void macro_print_purity_xl_jet_pt()
 
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_X_L,binning);
-        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_X_L,binning);
-        hpurity[jet_pt_bin] = new TH1F(Form("hpurity[%i]",jet_pt_bin),"",Nbin_X_L,binning);
+        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_R_L,binning);
+        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_R_L,binning);
+        hpurity[jet_pt_bin] = new TH1F(Form("hpurity[%i]",jet_pt_bin),"",Nbin_R_L,binning);
 
         hsig[jet_pt_bin]->Sumw2();
         hall[jet_pt_bin]->Sumw2();
@@ -44,8 +44,8 @@ void macro_print_purity_xl_jet_pt()
 
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig_data[jet_pt_bin] = new TH1F(Form("hsig_data[%i]",jet_pt_bin),"",Nbin_X_L,binning);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_X_L,binning);
+        hsig_data[jet_pt_bin] = new TH1F(Form("hsig_data[%i]",jet_pt_bin),"",Nbin_R_L,binning);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,binning);
 
         hsig_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();
@@ -57,10 +57,10 @@ void macro_print_purity_xl_jet_pt()
     // Project into the histograms
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        ntuple_purity->Project(Form("hsig[%i]",jet_pt_bin),"X_L",e2c_jetpt_signal_cut[jet_pt_bin]);
-        ntuple_purity->Project(Form("hall[%i]",jet_pt_bin),"X_L",e2c_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hsig_data[%i]",jet_pt_bin),"X_L",e2c_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"X_L",e2c_jetpt_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hsig[%i]",jet_pt_bin),"R_L",e2c_jetpt_signal_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hall[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hsig_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
     }
     
     TCanvas* c = new TCanvas("c","",800,600);

@@ -26,13 +26,13 @@ const double phi_mass      = 1.019455;
 const double mass_res      = 0.008; // Mass resolution parameter (see src-resolution)
 
 // Define binning
-const int Nbin_X_L    = 25;
-const int Nbin_jet_pt = 3;
+const int Nbin_R_L    = 25;
+const int Nbin_jet_pt = 5;
 
-const double X_L_min    = 0.005;
-const double X_L_max    = 4.;
+const double R_L_min    = 0.008;
+const double R_L_max    = 2.;
 const double jet_pt_min = 20; 
-const double jet_pt_max = 100;
+const double jet_pt_max = 150;
 const double eta_min    = 2.5;
 const double eta_max    = 4.;
 
@@ -45,10 +45,10 @@ const double std_marker_size  = 1.3;
 const int    std_marker_style = 8;
 const int    std_line_width   = 3;
 
-const double std_marker_style_jet_pt[Nbin_jet_pt]   = {24,26,32};
-const double corr_marker_style_jet_pt[Nbin_jet_pt]  = {20,22,23};
+const int std_marker_style_jet_pt[]  = {24,25,26,32,27};
+const int corr_marker_style_jet_pt[] = {20,21,22,23,33};
 
-const double std_marker_color_jet_pt[Nbin_jet_pt]  = {879,433,418};
-const double corr_marker_color_jet_pt[Nbin_jet_pt] = {880,432,416};
+const int std_marker_color_jet_pt[]  = {879,433,417,632,802}; // darker
+const int corr_marker_color_jet_pt[] = {880,432,416,633,797}; // lighter
 
 #endif
