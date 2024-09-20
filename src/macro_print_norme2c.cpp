@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_norme2c_rl()
+void macro_print_norme2c()
 {
     // Open ROOT file with ntuple
     TFile* f = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -29,8 +29,8 @@ void macro_print_norme2c_rl()
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
-    ntuple_data->Draw("R_L>>h_data",e2c_cut,"goff");
-    ntuple_mcreco->Draw("R_L>>h_mcreco",e2c_cut,"goff");
+    ntuple_data->Draw("R_L>>h_data",e2c_data_cut,"goff");
+    ntuple_mcreco->Draw("R_L>>h_mcreco",e2c_data_cut,"goff");
     ntuple_mc->Draw("R_L>>h_mc",e2c_mc_cut,"goff");
 
     h_data->Scale(1./h_data->Integral());
@@ -59,5 +59,5 @@ void macro_print_norme2c_rl()
     l->AddEntry(h_mcreco,"MCReco","lpf");
     l->Draw("SAME");
 
-    c->Print("../plots/normE2C_RL.pdf");
+    c->Print("../plots/norme2c_rl.pdf");
 }

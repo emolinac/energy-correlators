@@ -25,6 +25,10 @@ const double pi_mass       = 0.134977;
 const double phi_mass      = 1.019455;
 const double mass_res      = 0.008; // Mass resolution parameter (see src-resolution)
 
+// Define matching parameter
+const double R_match_max = 0.02;
+const double R_match_min = 0.;
+
 // Define binning
 const int Nbin_R_L    = 25;
 const int Nbin_jet_pt = 5;
@@ -38,7 +42,8 @@ const double eta_max    = 4.;
 
 // Binning
 //const double jet_pt_binning[] = {jet_pt_min, 30., 50., jet_pt_max};
-const double jet_pt_binning[] = {jet_pt_min, 26.868, 38.404, jet_pt_max};
+//const double jet_pt_binning[] = {jet_pt_min, 26.868, 38.404, jet_pt_max};
+const double jet_pt_binning[] = {jet_pt_min, 25.9735, 33.1105, 43.0815, 59.6175, jet_pt_max};
 
 // Visual constants
 const double std_marker_size  = 1.3;

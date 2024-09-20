@@ -16,7 +16,7 @@ void macro_determine_binning()
     TH1F* h_jet_pt = new TH1F("h_jet_pt","",10000,jet_pt_min,jet_pt_max);
 
     // Put the data into the histos and get the cumulative distributions
-    ntuple->Project("h_jet_pt","jet_pt",e2c_cut);
+    ntuple->Project("h_jet_pt","jet_pt",pair_data_cut);
 
     TH1F* h_jet_pt_cumul = (TH1F*) h_jet_pt->GetCumulative();
 

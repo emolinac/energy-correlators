@@ -22,11 +22,11 @@ void macro_print_rl_weight()
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
-    ntuple->Draw("weight:R_L>>h",data_cut,"colz");
+    ntuple->Draw("weight:R_L>>h",pair_data_cut,"colz");
     
     h->SetTitle(";R_{L};Weight");
 
     gPad->SetLogx(1);
 
-    c->Print("../plots/RL_weight.pdf");
+    c->Print("../plots/rl_weight.pdf");
 }

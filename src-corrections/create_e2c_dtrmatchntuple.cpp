@@ -18,15 +18,15 @@
 int main()
 {
     // Create output file
-    TFile* fout = new TFile((output_folder+namef_ntuple_e2c_purity).c_str(),"RECREATE");
+    TFile* fout = new TFile((output_folder+namef_ntuple_e2c_dtrmatch).c_str(),"RECREATE");
     
     // Declare the TTrees to be used to build the ntuples
     TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
     // Create Ntuples
-    TNtuple* ntuple = new TNtuple(name_ntuple_purity.c_str(),"Purity Ntuple",ntuple_purity_vars); 
+    TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_reco2mcdtrmatch.c_str(),"Reco jet&dtr matched 2 MC",ntuple_dtrmatch_vars); 
     
-    ntuple->SetAutoSave(0);
+    ntuple_jet_match->SetAutoSave(0);
     
     // Create necessary 4vectors
     TLorentzVector* Jet_4vector = new TLorentzVector();
@@ -35,13 +35,16 @@ int main()
     TLorentzVector* mup_4vector = new TLorentzVector();
 
     // Define array carrying the variables
-    float vars[Nvars_purity];
-    // Fill the MCReco TNtuple
+    float vars[Nvars_dtrmatch];
+
+    // Fill the matched jets Ntuple
     for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
     {
-
         // Access entry of tree
         mcrecotree->GetEntry(evt);
+
+        // -999 means there is not matched jet
+        if(mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
 
         // Set Jet-associated 4 vectors
         Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,
@@ -65,8 +68,6 @@ int main()
                                 mcrecotree->mup_PE/1000.);
 
         // Loop over hadron 1
-        int signal_h1 = 0;
-        int signal_h2 = 0;
         for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
         {
             // Skip un-id'ed particles
@@ -75,19 +76,18 @@ int main()
             // Skip non-hadronic particles
             if(mcrecotree->Jet_Dtr_IsMeson[h1_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
-            // Determine if h1 has a matched truth particle
-            if(mcrecotree->Jet_Dtr_TRUE_ID[h1_index]!=-999) 
+            // Find the smallest R between a reco dtr and a dtr of the matched truth-level jet
+            double h1_y     = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]); 
+            double cutoff_1 = 10E10; // lol
+            int matched_h1_entry = 0;
+            for(int entry = 0 ; entry < mcrecotree->Jet_mcjet_nmcdtrs ; entry++)
             {
-                // Determine if the matched truth particle is within the matched jet
-                for(int entry = 0 ; entry < mcrecotree->Jet_MatchedNDtr ; entry++)
-                {
-                    // -999 happens when there is no matched MC jet
-                    if(mcrecotree->Jet_mcjet_dtrID[entry]==-999) {signal_h1 = 0; break;}
+                double candidate1_y  = rapidity(mcrecotree->Jet_mcjet_dtrE[entry],mcrecotree->Jet_mcjet_dtrPZ[entry]);
+                double R_L_candidate = R_L(h1_y, candidate1_y, mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_mcjet_dtrPHI[entry]);
 
-                    // It is enough to just match a quantity like the momentum
-                    if(mcrecotree->Jet_mcjet_dtrPX[h1_index]==mcrecotree->Jet_mcjet_dtrPX[entry]) {signal_h1 = 1; break;}
-                }
+                if(R_L_candidate < cutoff_1) {cutoff_1 = R_L_candidate; matched_h1_entry = entry;}
             }
+
             // Loop over hadron 2
             for(int h2_index = 0 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
             {
@@ -97,22 +97,18 @@ int main()
                 // Skip non-hadronic particles
                 if(mcrecotree->Jet_Dtr_IsMeson[h2_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
-                // Determine if h2 has a matched truth particle
-                if(mcrecotree->Jet_Dtr_TRUE_ID[h2_index]!=-999) 
+                // Find the smallest R between a reco dtr and a dtr of the matched truth-level jet
+                double h2_y     = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]); 
+                double cutoff_2 = 10E10; // lol
+                double candidate2_y = 0;
+                int matched_h2_entry = 0;
+                for(int entry = 0 ; entry < mcrecotree->Jet_mcjet_nmcdtrs ; entry++)
                 {
-                    // Determine if the matched truth particle is within the matched jet
-                    for(int entry = 0 ; entry < mcrecotree->Jet_MatchedNDtr ; entry++)
-                    {
-                        // -999 happens when there is no matched MC jet
-                        if(mcrecotree->Jet_mcjet_dtrID[entry]==-999) {signal_h2 = 0; break;}
+                    double candidate2_y  = rapidity(mcrecotree->Jet_mcjet_dtrE[entry],mcrecotree->Jet_mcjet_dtrPZ[entry]);
+                    double R_L_candidate = R_L(h2_y, candidate2_y, mcrecotree->Jet_Dtr_PHI[h2_index], mcrecotree->Jet_mcjet_dtrPHI[entry]);
 
-                        // It is enough to just match a quantity like the momentum
-                        if(mcrecotree->Jet_mcjet_dtrPX[h2_index]==mcrecotree->Jet_mcjet_dtrPX[entry]) {signal_h2 = 1; break;}
-                    }
+                    if(R_L_candidate < cutoff_2) {cutoff_2 = R_L_candidate; matched_h2_entry = entry;}
                 }
-
-                double h1_y = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]); 
-                double h2_y = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]);
 
                 // If all good, fill Ntuple
                 vars[0]  = weight(mcrecotree->Jet_Dtr_E[h1_index]/1000., mcrecotree->Jet_Dtr_E[h2_index]/1000., mcrecotree->Jet_PE/1000.);
@@ -159,21 +155,24 @@ int main()
                 vars[41] = mcrecotree->mup_PE/1000.;
                 vars[42] = mup_4vector->M();//mcrecotree->mup_M;
                 vars[43] = mcrecotree->mup_TRACK_PCHI2;
-                vars[44] = signal_h1;
-                vars[45] = signal_h2;
+                vars[44] = -999;
+                vars[45] = -999;
+                vars[46] = mcrecotree->Jet_PE/1000.;
+                vars[47] = mcrecotree->Jet_mcjet_PE/1000.;
+                vars[48] = mcrecotree->Jet_mcjet_nmcdtrs;
+                vars[49] = R_L(h1_y, rapidity(mcrecotree->Jet_mcjet_dtrE[matched_h1_entry],mcrecotree->Jet_mcjet_dtrPZ[matched_h1_entry]),
+                               mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_mcjet_dtrPHI[matched_h1_entry]);
+                vars[50] = R_L(h2_y, rapidity(mcrecotree->Jet_mcjet_dtrE[matched_h2_entry],mcrecotree->Jet_mcjet_dtrPZ[matched_h2_entry]),
+                               mcrecotree->Jet_Dtr_PHI[h2_index], mcrecotree->Jet_mcjet_dtrPHI[matched_h2_entry]);
 
                 // Fill the TNtuple
-                ntuple->Fill(vars);
+                ntuple_jet_match->Fill(vars);
             }
-
-            // Reset signal variable
-            signal_h1 = 0;
-            signal_h2 = 0;
         }        
     }
 
     fout->cd();
-    ntuple->Write();
+    ntuple_jet_match->Write();
     fout->Close();
 
     return 0;

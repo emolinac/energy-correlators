@@ -25,12 +25,10 @@ int main()
     TZJetsMCReco* mcrecotree = new TZJetsMCReco();
     TZJetsMC*     mctree     = new TZJetsMC();
 
-    //gROOT->cd();
-
     // Create Ntuples
-    TNtuple* ntuple_data       = new TNtuple(name_ntuple_data.c_str()      ,"Data"                        ,ntuple_data_vars      ); 
-    TNtuple* ntuple_mcreco     = new TNtuple(name_ntuple_mcreco.c_str()    ,"Reco Sim"                    ,ntuple_mcreco_vars    );
-    TNtuple* ntuple_mc         = new TNtuple(name_ntuple_mc.c_str()        ,"MC Sim"                      ,ntuple_mc_vars        );
+    TNtuple* ntuple_data   = new TNtuple(name_ntuple_data.c_str()   ,"Data"     ,ntuple_data_vars   ); 
+    TNtuple* ntuple_mcreco = new TNtuple(name_ntuple_mcreco.c_str() ,"Reco Sim" ,ntuple_mcreco_vars );
+    TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()     ,"MC Sim"   ,ntuple_mc_vars     );
     
     ntuple_data->SetAutoSave(0);
     ntuple_mcreco->SetAutoSave(0);

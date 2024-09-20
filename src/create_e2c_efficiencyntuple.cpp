@@ -18,13 +18,13 @@
 int main()
 {
     // Create output file
-    TFile* fout = new TFile((output_folder+namef_ntuple_e2c_purity).c_str(),"RECREATE");
+    TFile* fout = new TFile((output_folder+namef_ntuple_e2c_dtrmatch).c_str(),"RECREATE");
     
     // Declare the TTrees to be used to build the ntuples
     TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
     // Create Ntuples
-    TNtuple* ntuple = new TNtuple(name_ntuple_purity.c_str(),"Purity Ntuple",ntuple_purity_vars); 
+    TNtuple* ntuple = new TNtuple(name_ntuple_reco2mcdtrmatch.c_str(),"Purity Ntuple",ntuple_dtrmatch_vars); 
     
     ntuple->SetAutoSave(0);
     
@@ -35,7 +35,7 @@ int main()
     TLorentzVector* mup_4vector = new TLorentzVector();
 
     // Define array carrying the variables
-    float vars[Nvars_purity];
+    float vars[Nvars_dtrmatch];
     // Fill the MCReco TNtuple
     for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
     {

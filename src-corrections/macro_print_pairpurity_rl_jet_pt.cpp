@@ -5,15 +5,15 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_purity_rl_jet_pt()
+void macro_print_pairpurity_rl_jet_pt()
 {
     // Open the necessary files
     TFile* fdata   = new TFile((output_folder+namef_ntuple_e2c).c_str());
-    TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
+    TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_dtrmatch).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_data   = (TNtuple*) fdata->Get((name_ntuple_data).c_str());
-    TNtuple* ntuple_purity = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
+    TNtuple* ntuple_purity = (TNtuple*) fpurity->Get((name_ntuple_reco2mcdtrmatch).c_str());
 
     // Determine log binnning
     double binning[Nbin_R_L+1];
@@ -57,10 +57,10 @@ void macro_print_purity_rl_jet_pt()
     // Project into the histograms
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        ntuple_purity->Project(Form("hsig[%i]",jet_pt_bin),"R_L",e2c_jetpt_signal_cut[jet_pt_bin]);
-        ntuple_purity->Project(Form("hall[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hsig_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hall[%i]",jet_pt_bin),"R_L",pair_data_jetpt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hsig_data[%i]",jet_pt_bin),"R_L",pair_data_jetpt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L",pair_data_jetpt_cut[jet_pt_bin]);
     }
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -82,10 +82,10 @@ void macro_print_purity_rl_jet_pt()
     }
 
     s->Draw("NOSTACK");
-    s->SetTitle(";X_{L};E2C");
+    s->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};N_{pair}",R_match_max));
     l->Draw("SAME");
 
-    c->Print("../plots/purity_xl_signalvsall_jetpt.pdf");
+    c->Print(Form("../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.2f.pdf",R_match_max));
     gPad->SetLogy(0);
 
     // PURITY PLOTS
@@ -104,10 +104,10 @@ void macro_print_purity_rl_jet_pt()
     
     
     s_purity->Draw("NOSTACK");
-    s_purity->SetTitle(";X_{L};Purity(%)");
+    s_purity->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};Pair Purity(\%)",R_match_max));
     l_purity->Draw("SAME");
 
-    c->Print("../plots/purity_xl_jetpt.pdf");
+    c->Print(Form("../plots/purity/npair_purity_rl_jetpt_deltarleq%.2f.pdf",R_match_max));
 
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -126,11 +126,11 @@ void macro_print_purity_rl_jet_pt()
     }
     
     s_data->Draw("NOSTACK");
-    s_data->SetTitle(";X_{L};E2C");
+    s_data->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};N_{pair}",R_match_max));
     l_data->Draw("SAME");
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
 
-    c->Print("../plots/purity_xl_data_jetpt.pdf");
+    c->Print(Form("../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.2f.pdf",R_match_max));
 }
