@@ -34,6 +34,10 @@ int main()
     TLorentzVector* mum_4vector = new TLorentzVector();
     TLorentzVector* mup_4vector = new TLorentzVector();
 
+    // Create necessary 3vectors
+    TVector3* delta_momentum_a = new TVector3();
+    TVector3* delta_momentum_b = new TVector3();
+
     // Define array carrying the variables
     float vars[Nvars_dtrmatch];
 
@@ -67,6 +71,22 @@ int main()
                                 mcrecotree->mup_PZ/1000., 
                                 mcrecotree->mup_PE/1000.);
 
+        // NOTATION : An entry of value -999 is an invalid entry
+        //            An entry of value -1000 is an entry that has to be recalculated
+
+        // Get the locations of the matching particles
+        double mcmatch_locations[(const int)mcrecotree->Jet_NDtr];
+        for(int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++)
+        {
+            // Skip un-id'ed particles
+            if(mcrecotree->Jet_Dtr_ID[h_index]==-999||mcrecotree->Jet_Dtr_ID[h_index]==0) continue;
+
+            // Skip non-hadronic particles
+            if(mcrecotree->Jet_Dtr_IsMeson[h_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h_index]!=1) continue;
+
+            
+        }
+
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
         {
@@ -75,18 +95,6 @@ int main()
 
             // Skip non-hadronic particles
             if(mcrecotree->Jet_Dtr_IsMeson[h1_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
-
-            // Find the smallest R between a reco dtr and a dtr of the matched truth-level jet
-            double h1_y     = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]); 
-            double cutoff_1 = 10E10; // lol
-            int matched_h1_entry = 0;
-            for(int entry = 0 ; entry < mcrecotree->Jet_mcjet_nmcdtrs ; entry++)
-            {
-                double candidate1_y  = rapidity(mcrecotree->Jet_mcjet_dtrE[entry],mcrecotree->Jet_mcjet_dtrPZ[entry]);
-                double R_L_candidate = R_L(h1_y, candidate1_y, mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_mcjet_dtrPHI[entry]);
-
-                if(R_L_candidate < cutoff_1) {cutoff_1 = R_L_candidate; matched_h1_entry = entry;}
-            }
 
             // Loop over hadron 2
             for(int h2_index = 0 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
@@ -97,18 +105,8 @@ int main()
                 // Skip non-hadronic particles
                 if(mcrecotree->Jet_Dtr_IsMeson[h2_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
-                // Find the smallest R between a reco dtr and a dtr of the matched truth-level jet
-                double h2_y     = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]); 
-                double cutoff_2 = 10E10; // lol
-                double candidate2_y = 0;
-                int matched_h2_entry = 0;
-                for(int entry = 0 ; entry < mcrecotree->Jet_mcjet_nmcdtrs ; entry++)
-                {
-                    double candidate2_y  = rapidity(mcrecotree->Jet_mcjet_dtrE[entry],mcrecotree->Jet_mcjet_dtrPZ[entry]);
-                    double R_L_candidate = R_L(h2_y, candidate2_y, mcrecotree->Jet_Dtr_PHI[h2_index], mcrecotree->Jet_mcjet_dtrPHI[entry]);
-
-                    if(R_L_candidate < cutoff_2) {cutoff_2 = R_L_candidate; matched_h2_entry = entry;}
-                }
+                double h1_y = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]);                
+                double h2_y = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]);
 
                 // If all good, fill Ntuple
                 vars[0]  = weight(mcrecotree->Jet_Dtr_E[h1_index]/1000., mcrecotree->Jet_Dtr_E[h2_index]/1000., mcrecotree->Jet_PE/1000.);
@@ -155,15 +153,23 @@ int main()
                 vars[41] = mcrecotree->mup_PE/1000.;
                 vars[42] = mup_4vector->M();//mcrecotree->mup_M;
                 vars[43] = mcrecotree->mup_TRACK_PCHI2;
-                vars[44] = -999;
-                vars[45] = -999;
-                vars[46] = mcrecotree->Jet_PE/1000.;
-                vars[47] = mcrecotree->Jet_mcjet_PE/1000.;
-                vars[48] = mcrecotree->Jet_mcjet_nmcdtrs;
-                vars[49] = R_L(h1_y, rapidity(mcrecotree->Jet_mcjet_dtrE[matched_h1_entry],mcrecotree->Jet_mcjet_dtrPZ[matched_h1_entry]),
-                               mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_mcjet_dtrPHI[matched_h1_entry]);
-                vars[50] = R_L(h2_y, rapidity(mcrecotree->Jet_mcjet_dtrE[matched_h2_entry],mcrecotree->Jet_mcjet_dtrPZ[matched_h2_entry]),
-                               mcrecotree->Jet_Dtr_PHI[h2_index], mcrecotree->Jet_mcjet_dtrPHI[matched_h2_entry]);
+                vars[44] = mcrecotree->Jet_PE/1000.;
+                vars[45] = mcrecotree->Jet_mcjet_PE/1000.;
+                vars[46] = mcrecotree->Jet_mcjet_nmcdtrs;
+
+                double matchedmc_y1   = rapidity(mcrecotree->Jet_Dtr_TRUE_E[h1_index],mcrecotree->Jet_Dtr_TRUE_PZ[h1_index]);
+                double matchedmc_y2   = rapidity(mcrecotree->Jet_Dtr_TRUE_E[h2_index],mcrecotree->Jet_Dtr_TRUE_PZ[h2_index]);
+                double matchedmc_phi1 = mcrecotree->Jet_Dtr_TRUE_PHI[h1_index];
+                double matchedmc_phi2 = mcrecotree->Jet_Dtr_TRUE_PHI[h2_index];
+
+                vars[47] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : R_L(h1_y, matchedmc_y1, mcrecotree->Jet_Dtr_PHI[h1_index], matchedmc_phi1);
+                vars[48] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : R_L(h2_y, matchedmc_y2, mcrecotree->Jet_Dtr_PHI[h2_index], matchedmc_phi2);
+                vars[49] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : matchedmc_y1;
+                vars[50] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : matchedmc_y2;
+                vars[51] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : matchedmc_phi1;
+                vars[52] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : matchedmc_phi2;
+                vars[53] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999||mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? 
+                            -999 : R_L(matchedmc_y1,matchedmc_y2,matchedmc_phi1,matchedmc_phi2);
 
                 // Fill the TNtuple
                 ntuple_jet_match->Fill(vars);

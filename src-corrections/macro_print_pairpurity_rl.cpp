@@ -54,7 +54,7 @@ void macro_print_pairpurity_rl()
     s->Add(hall);
     s->Draw("NOSTACK");
 
-    s->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};N_{pair}",R_match_max));
+    s->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -64,7 +64,7 @@ void macro_print_pairpurity_rl()
     l->AddEntry(hall,"MCReco All"   ,"lpf");
     l->Draw("SAME");
 
-    c->Print(Form("../plots/purity/npair_rl_signalvsall_deltarleq%.2f.pdf",R_match_max));
+    c->Print(Form("../plots/purity/npair_rl_signalvsall_deltarleq%.3f.pdf",R_match_max));
     gPad->SetLogy(0);
 
     // PURITY PLOTS
@@ -75,9 +75,9 @@ void macro_print_pairpurity_rl()
     set_histogram_style(hpurity, kViolet, std_line_width, std_marker_style, std_marker_size);
     
     hpurity->Draw();
-    hpurity->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};Pair Purity(\%)",R_match_max));
+    hpurity->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};Pair Purity(\%)",R_match_max));
 
-    c->Print(Form("../plots/purity/npair_purity_rl_deltarleq%.2f.pdf",R_match_max));
+    c->Print(Form("../plots/purity/npair_purity_rl_deltarleq%.3f.pdf",R_match_max));
 
     // DATA PLOTS
     hpurity->Scale(1./100.);
@@ -88,7 +88,7 @@ void macro_print_pairpurity_rl()
     s_data->Add(hall_data);
     s_data->Draw("NOSTACK");
 
-    s_data->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};N_{pair}",R_match_max));
+    s_data->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -98,5 +98,5 @@ void macro_print_pairpurity_rl()
     l_data->AddEntry(hall_data,"Data All"      ,"lpf");
     l_data->Draw("SAME");
 
-    c->Print(Form("../plots/purity/npair_wpurity_rl_data_deltarleq%.2f.pdf",R_match_max));
+    c->Print(Form("../plots/purity/npair_wpurity_rl_data_deltarleq%.3f.pdf",R_match_max));
 }

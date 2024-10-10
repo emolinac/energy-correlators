@@ -26,15 +26,16 @@ const double phi_mass      = 1.019455;
 const double mass_res      = 0.008; // Mass resolution parameter (see src-resolution)
 
 // Define matching parameter
-const double R_match_max = 0.02;
-const double R_match_min = 0.;
+const double R_match_max = 0.0386;
+const double R_match_min = 0.; // THIS VALUE CANT BE MOVED!
 
 // Define binning
-const int Nbin_R_L    = 25;
+const double R_L_res  = 0.02;
+const int Nbin_R_L    = 15;
 const int Nbin_jet_pt = 5;
 
-const double R_L_min    = 0.008;
-const double R_L_max    = 2.;
+const double R_L_min    = 0.0099;
+const double R_L_max    = 1.2;
 const double jet_pt_min = 20; 
 const double jet_pt_max = 150;
 const double eta_min    = 2.5;

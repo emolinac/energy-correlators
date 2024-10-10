@@ -160,7 +160,7 @@ int main()
                 // Fill the TNtuple
                 ntuple->Fill(vars);
             }
-
+ 
             // Reset signal variable
             signal_h1 = 0;
             signal_h2 = 0;

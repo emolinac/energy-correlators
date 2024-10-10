@@ -82,10 +82,10 @@ void macro_print_pairpurity_rl_jet_pt()
     }
 
     s->Draw("NOSTACK");
-    s->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};N_{pair}",R_match_max));
+    s->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
     l->Draw("SAME");
 
-    c->Print(Form("../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.2f.pdf",R_match_max));
+    c->Print(Form("../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.3f.pdf",R_match_max));
     gPad->SetLogy(0);
 
     // PURITY PLOTS
@@ -104,10 +104,10 @@ void macro_print_pairpurity_rl_jet_pt()
     
     
     s_purity->Draw("NOSTACK");
-    s_purity->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};Pair Purity(\%)",R_match_max));
+    s_purity->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};Pair Purity(\%)",R_match_max));
     l_purity->Draw("SAME");
 
-    c->Print(Form("../plots/purity/npair_purity_rl_jetpt_deltarleq%.2f.pdf",R_match_max));
+    c->Print(Form("../plots/purity/npair_purity_rl_jetpt_deltarleq%.3f.pdf",R_match_max));
 
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -126,11 +126,11 @@ void macro_print_pairpurity_rl_jet_pt()
     }
     
     s_data->Draw("NOSTACK");
-    s_data->SetTitle(Form("#Delta R_{dtr match}<%.2f;R_{L};N_{pair}",R_match_max));
+    s_data->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
     l_data->Draw("SAME");
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
 
-    c->Print(Form("../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.2f.pdf",R_match_max));
+    c->Print(Form("../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.3f.pdf",R_match_max));
 }

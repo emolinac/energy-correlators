@@ -19,6 +19,9 @@ void macro_print_norme2c()
     double binning[Nbin_R_L+1];
     determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
+    //TH1F* h_data   = new TH1F("h_data"  ,"",50,R_L_min,R_L_max);
+    //TH1F* h_mcreco = new TH1F("h_mcreco","",50,R_L_min,R_L_max);
+    //TH1F* h_mc     = new TH1F("h_mc"    ,"",50,R_L_min,R_L_max);
     TH1F* h_data   = new TH1F("h_data"  ,"",Nbin_R_L, binning);
     TH1F* h_mcreco = new TH1F("h_mcreco","",Nbin_R_L, binning);
     TH1F* h_mc     = new TH1F("h_mc"    ,"",Nbin_R_L, binning);

@@ -48,5 +48,8 @@ void macro_determine_binning()
     // Close file
     f->Close();
 
+    std::cout<<"Given a range of angular distance from "<<R_L_min<<" to "<<R_L_max<<std::endl;
+    std::cout<<"Given an angular resolution of "<<R_L_res<<" we would need "<<(R_L_max-R_L_min)/R_L_res<<std::endl;
+
     return 0;
 }
