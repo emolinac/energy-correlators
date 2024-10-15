@@ -18,13 +18,13 @@
 int main()
 {
     // Create output file
-    TFile* fout = new TFile((output_folder+namef_ntuple_e2c_dtrmatch).c_str(),"RECREATE");
+    TFile* fout = new TFile((output_folder+namef_ntuple_e2c_purity).c_str(),"RECREATE");
     
     // Declare the TTrees to be used to build the ntuples
     TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
     // Create Ntuples
-    TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_reco2mcdtrmatch.c_str(),"Reco jet&dtr matched 2 MC",ntuple_dtrmatch_vars); 
+    TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_purity.c_str(),"Reco jet&dtr matched 2 MC",ntuple_purity_vars); 
     
     ntuple_jet_match->SetAutoSave(0);
     
@@ -39,7 +39,7 @@ int main()
     TVector3* delta_momentum_b = new TVector3();
 
     // Define array carrying the variables
-    float vars[Nvars_dtrmatch];
+    float vars[Nvars_purity];
 
     // Fill the matched jets Ntuple
     for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
@@ -71,22 +71,6 @@ int main()
                                 mcrecotree->mup_PZ/1000., 
                                 mcrecotree->mup_PE/1000.);
 
-        // NOTATION : An entry of value -999 is an invalid entry
-        //            An entry of value -1000 is an entry that has to be recalculated
-
-        // Get the locations of the matching particles
-        double mcmatch_locations[(const int)mcrecotree->Jet_NDtr];
-        for(int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++)
-        {
-            // Skip un-id'ed particles
-            if(mcrecotree->Jet_Dtr_ID[h_index]==-999||mcrecotree->Jet_Dtr_ID[h_index]==0) continue;
-
-            // Skip non-hadronic particles
-            if(mcrecotree->Jet_Dtr_IsMeson[h_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h_index]!=1) continue;
-
-            
-        }
-
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
         {
@@ -111,8 +95,8 @@ int main()
                 // If all good, fill Ntuple
                 vars[0]  = weight(mcrecotree->Jet_Dtr_E[h1_index]/1000., mcrecotree->Jet_Dtr_E[h2_index]/1000., mcrecotree->Jet_PE/1000.);
                 vars[1]  = R_L(h1_y, h2_y, mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_Dtr_PHI[h2_index]);
-                vars[2]  = mcrecotree->Jet_Dtr_ID[h1_index];
-                vars[3]  = mcrecotree->Jet_Dtr_ID[h2_index];
+                vars[2]  = mcrecotree->Jet_Dtr_ThreeCharge[h1_index];
+                vars[3]  = mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
                 vars[4]  = mcrecotree->Jet_Dtr_ETA[h1_index];
                 vars[5]  = mcrecotree->Jet_Dtr_ETA[h2_index];
                 vars[6]  = h1_y;
@@ -134,8 +118,8 @@ int main()
                 vars[22] = mcrecotree->Jet_PT/1000.;
                 vars[23] = Jet_4vector->Eta();
                 vars[24] = Jet_4vector->Phi();
-                vars[25] = Z0_4vector->Phi();
-                vars[26] = mum_4vector->Phi();
+                vars[25] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
+                vars[26] = delta_phi(Jet_4vector->Phi(),mum_4vector->Phi());
                 vars[27] = mum_4vector->Pt();
                 vars[28] = mum_4vector->Eta();
                 vars[29] = mcrecotree->mum_PX/1000.;
@@ -144,7 +128,7 @@ int main()
                 vars[32] = mcrecotree->mum_PE/1000.;
                 vars[33] = mum_4vector->M();//mcrecotree->mum_M;
                 vars[34] = mcrecotree->mum_TRACK_PCHI2;
-                vars[35] = mup_4vector->Phi();
+                vars[35] = delta_phi(Jet_4vector->Phi(),mup_4vector->Phi());
                 vars[36] = mup_4vector->Pt();
                 vars[37] = mup_4vector->Eta();
                 vars[38] = mcrecotree->mup_PX/1000.;

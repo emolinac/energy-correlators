@@ -26,7 +26,7 @@ const double phi_mass      = 1.019455;
 const double mass_res      = 0.008; // Mass resolution parameter (see src-resolution)
 
 // Define matching parameter
-const double R_match_max = 0.0386;
+const double R_match_max = 0.009;
 const double R_match_min = 0.; // THIS VALUE CANT BE MOVED!
 
 // Define binning

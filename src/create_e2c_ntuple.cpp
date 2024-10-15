@@ -55,19 +55,19 @@ int main()
                                datatree->Jet_PE/1000.);
 
         Z0_4vector->SetPxPyPzE(datatree->Z0_PX/1000., 
-                                  datatree->Z0_PY/1000., 
-                                  datatree->Z0_PZ/1000., 
-                                  datatree->Z0_PE/1000.);
+                               datatree->Z0_PY/1000., 
+                               datatree->Z0_PZ/1000., 
+                               datatree->Z0_PE/1000.);
                 
         mum_4vector->SetPxPyPzE(datatree->mum_PX/1000., 
-                                   datatree->mum_PY/1000., 
-                                   datatree->mum_PZ/1000., 
-                                   datatree->mum_PE/1000.);
+                                datatree->mum_PY/1000., 
+                                datatree->mum_PZ/1000., 
+                                datatree->mum_PE/1000.);
 
         mup_4vector->SetPxPyPzE(datatree->mup_PX/1000., 
-                                   datatree->mup_PY/1000., 
-                                   datatree->mup_PZ/1000., 
-                                   datatree->mup_PE/1000.);
+                                datatree->mup_PY/1000., 
+                                datatree->mup_PZ/1000., 
+                                datatree->mup_PE/1000.);
 
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < datatree->Jet_NDtr ; h1_index++)
@@ -93,8 +93,8 @@ int main()
                 // If all good, fille Ntuple
                 vars[0]  = weight(datatree->Jet_Dtr_E[h1_index]/1000., datatree->Jet_Dtr_E[h2_index]/1000., datatree->Jet_PE/1000.);
                 vars[1]  = R_L(h1_y, h2_y, datatree->Jet_Dtr_PHI[h1_index], datatree->Jet_Dtr_PHI[h2_index]);
-                vars[2]  = datatree->Jet_Dtr_ID[h1_index];
-                vars[3]  = datatree->Jet_Dtr_ID[h2_index];
+                vars[2]  = datatree->Jet_Dtr_ThreeCharge[h1_index];
+                vars[3]  = datatree->Jet_Dtr_ThreeCharge[h2_index];
                 vars[4]  = datatree->Jet_Dtr_ETA[h1_index];
                 vars[5]  = datatree->Jet_Dtr_ETA[h2_index];
                 vars[6]  = h1_y;
@@ -116,8 +116,8 @@ int main()
                 vars[22] = datatree->Jet_PT/1000.;
                 vars[23] = Jet_4vector->Eta();
                 vars[24] = Jet_4vector->Phi();
-                vars[25] = Z0_4vector->Phi();
-                vars[26] = mum_4vector->Phi();
+                vars[25] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
+                vars[26] = delta_phi(Jet_4vector->Phi(),mum_4vector->Phi());
                 vars[27] = mum_4vector->Pt();
                 vars[28] = mum_4vector->Eta();
                 vars[29] = datatree->mum_PX/1000.;
@@ -126,7 +126,7 @@ int main()
                 vars[32] = datatree->mum_PE/1000.;
                 vars[33] = mum_4vector->M();//datatree->mum_M;
                 vars[34] = datatree->mum_TRACK_PCHI2;
-                vars[35] = mup_4vector->Phi();
+                vars[35] = delta_phi(Jet_4vector->Phi(),mup_4vector->Phi());
                 vars[36] = mup_4vector->Pt();
                 vars[37] = mup_4vector->Eta();
                 vars[38] = datatree->mup_PX/1000.;
@@ -196,8 +196,8 @@ int main()
                 // If all good, fille Ntuple
                 vars[0]  = weight(mcrecotree->Jet_Dtr_E[h1_index]/1000., mcrecotree->Jet_Dtr_E[h2_index]/1000., mcrecotree->Jet_PE/1000.);
                 vars[1]  = R_L(h1_y, h2_y, mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_Dtr_PHI[h2_index]);
-                vars[2]  = mcrecotree->Jet_Dtr_ID[h1_index];
-                vars[3]  = mcrecotree->Jet_Dtr_ID[h2_index];
+                vars[2]  = mcrecotree->Jet_Dtr_ThreeCharge[h1_index];
+                vars[3]  = mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
                 vars[4]  = mcrecotree->Jet_Dtr_ETA[h1_index];
                 vars[5]  = mcrecotree->Jet_Dtr_ETA[h2_index];
                 vars[6]  = h1_y;
@@ -219,8 +219,8 @@ int main()
                 vars[22] = mcrecotree->Jet_PT/1000.;
                 vars[23] = Jet_4vector->Eta();
                 vars[24] = Jet_4vector->Phi();
-                vars[25] = Z0_4vector->Phi();
-                vars[26] = mum_4vector->Phi();
+                vars[25] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
+                vars[26] = delta_phi(Jet_4vector->Phi(),mum_4vector->Phi());
                 vars[27] = mum_4vector->Pt();
                 vars[28] = mum_4vector->Eta();
                 vars[29] = mcrecotree->mum_PX/1000.;
@@ -229,7 +229,7 @@ int main()
                 vars[32] = mcrecotree->mum_PE/1000.;
                 vars[33] = mum_4vector->M();//mcrecotree->mum_M;
                 vars[34] = mcrecotree->mum_TRACK_PCHI2;
-                vars[35] = mup_4vector->Phi();
+                vars[35] = delta_phi(Jet_4vector->Phi(),mup_4vector->Phi());
                 vars[36] = mup_4vector->Pt();
                 vars[37] = mup_4vector->Eta();
                 vars[38] = mcrecotree->mup_PX/1000.;
@@ -270,8 +270,8 @@ int main()
 
                 vars_mc[0]  = weight(mctree->MCJet_Dtr_E[h1_index]/1000.,mctree->MCJet_Dtr_E[h2_index]/1000.,mctree->MCJet_PE/1000.);
                 vars_mc[1]  = R_L(h1_y, h2_y, mctree->MCJet_Dtr_PHI[h1_index], mctree->MCJet_Dtr_PHI[h2_index]);
-                vars_mc[2]  = mctree->MCJet_Dtr_ID[h1_index];
-                vars_mc[3]  = mctree->MCJet_Dtr_ID[h2_index];
+                vars_mc[2]  = mctree->MCJet_Dtr_ThreeCharge[h1_index];
+                vars_mc[3]  = mctree->MCJet_Dtr_ThreeCharge[h2_index];
                 vars_mc[4]  = mctree->MCJet_Dtr_ETA[h1_index];
                 vars_mc[5]  = mctree->MCJet_Dtr_ETA[h2_index];
                 vars_mc[6]  = h1_y;
@@ -301,8 +301,8 @@ int main()
                 // Muon branches
                 Z0_4vector->SetPxPyPzE(mum_px+mup_px, mum_py+mup_py, mum_pz+mup_pz, mum_e+mup_e);
 
-                vars_mc[19] = Z0_4vector->Phi();
-                vars_mc[20] = mctree->MCJet_truth_mum_PHI;
+                vars_mc[19] = delta_phi(mctree->MCJet_PHI,Z0_4vector->Phi());
+                vars_mc[20] = delta_phi(mctree->MCJet_PHI,mctree->MCJet_truth_mum_PHI);
                 vars_mc[21] = mctree->MCJet_truth_mum_PT/1000.;
                 vars_mc[22] = mctree->MCJet_truth_mum_ETA;
                 vars_mc[23] = mum_px;
@@ -310,7 +310,7 @@ int main()
                 vars_mc[25] = mum_pz;
                 vars_mc[26] = mum_e;
                 vars_mc[27] = mctree->MCJet_truth_mum_M/1000.;
-                vars_mc[28] = mctree->MCJet_truth_mup_PHI;
+                vars_mc[28] = delta_phi(mctree->MCJet_PHI,mctree->MCJet_truth_mup_PHI);;
                 vars_mc[29] = mctree->MCJet_truth_mup_PT/1000.;
                 vars_mc[30] = mctree->MCJet_truth_mup_ETA;
                 vars_mc[31] = mup_px;

@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_norme2c_data_jetpt()
+void macro_print_norme2c_data_jetpt(bool include_neutrals = 0)
 {
     // Open ROOT file with ntuple
     TFile* f = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -26,7 +26,8 @@ void macro_print_norme2c_data_jetpt()
         h[jet_pt_bin] = new TH1F(Form("h[%i]",jet_pt_bin),"",Nbin_R_L, binning);
         h[jet_pt_bin]->Sumw2();
 
-        ntuple->Draw(Form("R_L>>h[%i]",jet_pt_bin),e2c_jetpt_cut[jet_pt_bin],"goff");
+        if(include_neutrals) ntuple->Draw(Form("R_L>>h[%i]",jet_pt_bin),e2c_jetpt_cut[jet_pt_bin],"goff");
+        else ntuple->Draw(Form("R_L>>h[%i]",jet_pt_bin),e2c_jetpt_noneutrals_cut[jet_pt_bin],"goff");
 
         h[jet_pt_bin]->Scale(1./h[jet_pt_bin]->Integral());
         set_histogram_style(h[jet_pt_bin] , corr_marker_color_jet_pt[jet_pt_bin] , std_line_width, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size);
@@ -47,5 +48,6 @@ void macro_print_norme2c_data_jetpt()
 
     l->Draw("SAME");
 
-    c->Print("../plots/norme2c_rl_data_jetpt.pdf");
+    if(include_neutrals) c->Print("../plots/norme2c_rl_data_jetpt.pdf");
+    else c->Print("../plots/norme2c_noneutrals_rl_data_jetpt.pdf");
 }
