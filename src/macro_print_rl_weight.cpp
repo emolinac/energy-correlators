@@ -17,16 +17,16 @@ void macro_print_rl_weight()
     double binning[Nbin_R_L+1];
     determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
-    TH2F* h = new TH2F("h","",Nbin_R_L, binning, 100, 0, .1);
+    TH2F* h = new TH2F("h","",Nbin_R_L,R_L_min,R_L_max, 100, 0, .1);
     
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
-    ntuple->Draw("weight:R_L>>h",pair_data_cut,"colz");
+    ntuple->Draw("weight:R_L>>h",pair_data_noneutrals_cut,"colz");
     
     h->SetTitle(";R_{L};Weight");
 
     gPad->SetLogx(1);
 
-    c->Print("../plots/rl_weight.pdf");
+    c->Print("../plots/phase_space_rl_weight.pdf");
 }

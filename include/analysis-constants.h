@@ -31,7 +31,8 @@ const double R_match_min = 0.; // THIS VALUE CANT BE MOVED!
 
 // Define binning
 const double R_L_res  = 0.02;
-const int Nbin_R_L    = 15;
+//const int Nbin_R_L    = 15;
+const int Nbin_R_L    = 50;
 const int Nbin_jet_pt = 5;
 
 const double R_L_min    = 0.0099;
@@ -47,7 +48,7 @@ const double eta_max    = 4.;
 const double jet_pt_binning[] = {jet_pt_min, 25.9735, 33.1105, 43.0815, 59.6175, jet_pt_max};
 
 // Visual constants
-const double std_marker_size  = 1.3;
+const double std_marker_size  = 1.0;
 const int    std_marker_style = 8;
 const int    std_line_width   = 3;
 

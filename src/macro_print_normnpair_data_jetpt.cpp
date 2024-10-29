@@ -23,7 +23,7 @@ void macro_print_normnpair_data_jetpt(bool include_neutrals = 0)
     
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        h[jet_pt_bin] = new TH1F(Form("h[%i]",jet_pt_bin),"",Nbin_R_L, binning);
+        h[jet_pt_bin] = new TH1F(Form("h[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
         h[jet_pt_bin]->Sumw2();
 
         if(include_neutrals) ntuple->Draw(Form("R_L>>h[%i]",jet_pt_bin),pair_data_jetpt_cut[jet_pt_bin],"goff");
@@ -49,5 +49,5 @@ void macro_print_normnpair_data_jetpt(bool include_neutrals = 0)
     l->Draw("SAME");
 
     if(include_neutrals) c->Print("../plots/normnpair_rl_data_jetpt.pdf");
-    else c->Print("../plots/normnpair_noneutrals_rl_data_jetpt.pdf");
+    else c->Print("../plots/normnpair_rl_data_jetpt_noneutrals.pdf");
 }

@@ -2,11 +2,12 @@
 #include "../include/directories.h"
 #include "../include/names.h"
 #include "../include/utils-algorithms.h"
+#include "../include/utils-visual.h"
 #include "../include/TZJetsUnfold.h"
 #include "../include/TZJetsUnfold.C"
 
 
-void macro_print_responsematrix()
+void macro_print_unfold_rl()
 {
     TZJetsUnfold* tree = new TZJetsUnfold();
 
@@ -19,6 +20,7 @@ void macro_print_responsematrix()
     TH1F* hmeas = new TH1F("hmeas","",Nbin_R_L,R_L_min,R_L_max);
     TH1F* htrue = new TH1F("htrue","",Nbin_R_L,R_L_min,R_L_max);
     TH2F* hresp = new TH2F("hresp","",Nbin_R_L,R_L_min,R_L_max,Nbin_R_L,R_L_min,R_L_max);
+    hmeas->Sumw2();
 
     // Create response matrix object
     RooUnfoldResponse response(hmeas, htrue, hresp);
@@ -54,11 +56,34 @@ void macro_print_responsematrix()
 
         bool total_req = (jet_cuts&&chi2ndf_cut&&p_cut&&pt_cut&&pnnghost_cut&&phi_zjet_cut&&phi_mumjet_cut&&phi_mupjet_cut&&mu_pt_cut&&mu_eta_cut&&mum_mup_mass_cut&&mu_trackprob_cut&&h1_noneutrals_cut&&h2_noneutrals_cut);
 
-        if(total_req&&tree->R_L_truth!=-999) response.Fill(tree->R_L, tree->R_L_truth);
+        //if(total_req) hmeas->Fill(tree->R_L);
+
+        if(total_req&&tree->R_L_truth!=-999) {response.Fill(tree->R_L, tree->R_L_truth); htrue->Fill(tree->R_L_truth);hmeas->Fill(tree->R_L);}
         else if(total_req&&tree->R_L_truth==-999) response.Fake(tree->R_L);
     }
 
     // Draw response matrix
     TH2F* hresponse = (TH2F*) response.HresponseNoOverflow();
-    hresponse->Draw("colz");
+    RooUnfoldBayes unfold_bayes(&response, hmeas, 4);
+    auto* hreco_bayes = unfold_bayes.Hunfold();
+
+    set_histogram_style(hmeas      , kViolet+2, std_line_width, std_marker_style, std_marker_size);
+    set_histogram_style(hreco_bayes, kRed+2, std_line_width, std_marker_style, std_marker_size);
+
+
+    //THStack* s = new THStack();
+    //s->Add(hreco_bayes);
+    //s->Add(hmeas);
+    //s->Draw("NOSTACK");
+
+    //gPad->SetLogx(1);
+    //gPad->SetLogy(1);
+
+    TLegend* l = new TLegend();
+    l->AddEntry(hreco_bayes,"Unfolded","lpf");
+    l->AddEntry(htrue      ,"True"    ,"lpf");
+    l->Draw("SAME");
+
+    TRatioPlot* rp = new TRatioPlot(htrue, hreco_bayes);
+    rp->Draw();
 }

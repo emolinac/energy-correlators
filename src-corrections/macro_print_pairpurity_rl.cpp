@@ -20,9 +20,9 @@ void macro_print_pairpurity_rl(bool include_neutrals = 0)
     determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_R_L,binning);
-    TH1F* hall    = new TH1F("hall"   ,"",Nbin_R_L,binning);
-    TH1F* hpurity = new TH1F("hpurity","",Nbin_R_L,binning);
+    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hall    = new TH1F("hall"   ,"",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hpurity = new TH1F("hpurity","",Nbin_R_L,R_L_min,R_L_max);
     hsig->Sumw2();
     hall->Sumw2();
     hpurity->Sumw2();
@@ -31,8 +31,8 @@ void macro_print_pairpurity_rl(bool include_neutrals = 0)
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hsig_data = new TH1F("hsig_data","",Nbin_R_L,binning);
-    TH1F* hall_data = new TH1F("hall_data","",Nbin_R_L,binning);
+    TH1F* hsig_data = new TH1F("hsig_data","",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hall_data = new TH1F("hall_data","",Nbin_R_L,R_L_min,R_L_max);
     hsig_data->Sumw2();
     hall_data->Sumw2();
 
@@ -63,8 +63,9 @@ void macro_print_pairpurity_rl(bool include_neutrals = 0)
     s->Add(hsig);
     s->Add(hall);
     s->Draw("NOSTACK");
+    s->GetXaxis()->SetRangeUser(R_L_min,1);
 
-    s->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
+    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -74,8 +75,8 @@ void macro_print_pairpurity_rl(bool include_neutrals = 0)
     l->AddEntry(hall,"MCReco All"   ,"lpf");
     l->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/purity/npair_rl_signalvsall_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/purity/npair_noneutrals_rl_signalvsall_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/purity/npair_rl_signalvsall_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/purity/npair_rl_signalvsall_deltarleq%.3f_noneutrals.pdf",R_L_res));
     gPad->SetLogy(0);
 
     // PURITY PLOTS
@@ -84,10 +85,11 @@ void macro_print_pairpurity_rl(bool include_neutrals = 0)
     set_histogram_style(hpurity, kViolet, std_line_width, std_marker_style, std_marker_size);
     
     hpurity->Draw();
-    hpurity->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};Pair Purity",R_match_max));
+    hpurity->GetXaxis()->SetRangeUser(R_L_min,1);
+    hpurity->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair Purity",R_L_res));
 
-    if(include_neutrals) c->Print(Form("../plots/purity/npair_purity_rl_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/purity/npair_noneutrals_purity_rl_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/purity/npair_purity_rl_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/purity/npair_purity_rl_deltarleq%.3f_noneutrals.pdf",R_L_res));
 
     // DATA PLOTS
     hsig_data->Multiply(hpurity);
@@ -96,8 +98,9 @@ void macro_print_pairpurity_rl(bool include_neutrals = 0)
     s_data->Add(hsig_data);
     s_data->Add(hall_data);
     s_data->Draw("NOSTACK");
+    s_data->GetXaxis()->SetRangeUser(R_L_min,1);
 
-    s_data->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -107,6 +110,6 @@ void macro_print_pairpurity_rl(bool include_neutrals = 0)
     l_data->AddEntry(hall_data,"Data All"      ,"lpf");
     l_data->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/purity/npair_wpurity_rl_data_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/purity/npair_wpurity_noneutrals_rl_data_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/purity/npair_wpurity_rl_data_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/purity/npair_wpurity_rl_data_deltarleq%.3f_noneutrals.pdf",R_L_res));
 }

@@ -21,9 +21,9 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig        = new TH1F("hsig"       ,"",Nbin_R_L,binning);
-    TH1F* hall        = new TH1F("hall"       ,"",Nbin_R_L,binning);
-    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_R_L,binning);
+    TH1F* hsig        = new TH1F("hsig"       ,"",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hall        = new TH1F("hall"       ,"",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_R_L,R_L_min,R_L_max);
     hsig->Sumw2();
     hall->Sumw2();
     
@@ -31,8 +31,8 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hcorr_data = new TH1F("hcorr_data","",Nbin_R_L,binning);
-    TH1F* hall_data  = new TH1F("hall_data" ,"",Nbin_R_L,binning);
+    TH1F* hcorr_data = new TH1F("hcorr_data","",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hall_data  = new TH1F("hall_data" ,"",Nbin_R_L,R_L_min,R_L_max);
     hcorr_data->Sumw2();
     hall_data->Sumw2();
 
@@ -63,8 +63,9 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     s->Add(hsig);
     s->Add(hall);
     s->Draw("NOSTACK");
+    s->GetXaxis()->SetRangeUser(R_L_min,1);
 
-    s->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
+    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -74,8 +75,8 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     l->AddEntry(hall,"MC"  ,"lpf");
     l->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_rl_recovsmc_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/efficiency/npair_noneutrals_rl_recovsmc_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_rl_recovsmc_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/efficiency/npair_rl_recovsmc_deltarleq%.3f_noneutrals.pdf",R_L_res));
     gPad->SetLogy(0);
 
     // efficiency PLOTS
@@ -86,10 +87,11 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     set_histogram_style(hefficiency, kViolet, std_line_width, std_marker_style, std_marker_size);
     
     hefficiency->Draw();
-    hefficiency->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};Pair efficiency",R_match_max));
+    hefficiency->GetXaxis()->SetRangeUser(R_L_min,1);
+    hefficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",R_L_res));
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_efficiency_rl_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/efficiency/npair_noneutrals_efficiency_rl_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_efficiency_rl_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/efficiency/npair_efficiency_rl_deltarleq%.3f_noneutrals.pdf",R_L_res));
 
     // DATA PLOTS
     //hefficiency->Scale(1./100.);
@@ -99,8 +101,9 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     s_data->Add(hcorr_data);
     s_data->Add(hall_data);
     s_data->Draw("NOSTACK");
+    s_data->GetXaxis()->SetRangeUser(R_L_min,1);
 
-    s_data->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -110,6 +113,6 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     l_data->AddEntry(hall_data,"Data All"           ,"lpf");
     l_data->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/efficiency/npair_noneutrals_wefficiency_rl_data_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_deltarleq%.3f_noneutrals.pdf",R_L_res));
 }

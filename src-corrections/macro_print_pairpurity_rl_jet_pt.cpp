@@ -26,9 +26,9 @@ void macro_print_pairpurity_rl_jet_pt(bool include_neutrals = 0)
 
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_R_L,binning);
-        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_R_L,binning);
-        hpurity[jet_pt_bin] = new TH1F(Form("hpurity[%i]",jet_pt_bin),"",Nbin_R_L,binning);
+        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
+        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
+        hpurity[jet_pt_bin] = new TH1F(Form("hpurity[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
 
         hsig[jet_pt_bin]->Sumw2();
         hall[jet_pt_bin]->Sumw2();
@@ -44,8 +44,8 @@ void macro_print_pairpurity_rl_jet_pt(bool include_neutrals = 0)
 
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig_data[jet_pt_bin] = new TH1F(Form("hsig_data[%i]",jet_pt_bin),"",Nbin_R_L,binning);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,binning);
+        hsig_data[jet_pt_bin] = new TH1F(Form("hsig_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
 
         hsig_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();
@@ -92,11 +92,12 @@ void macro_print_pairpurity_rl_jet_pt(bool include_neutrals = 0)
     }
 
     s->Draw("NOSTACK");
-    s->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
+    s->GetXaxis()->SetRangeUser(R_L_min,1);
+    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
     l->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/purity/npair_noneutrals_rl_signalvsall_jetpt_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.3f_noneutrals.pdf",R_L_res));
     gPad->SetLogy(0);
 
     // PURITY PLOTS
@@ -114,11 +115,12 @@ void macro_print_pairpurity_rl_jet_pt(bool include_neutrals = 0)
     
     
     s_purity->Draw("NOSTACK");
-    s_purity->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};Pair Purity",R_match_max));
+    s_purity->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_purity->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair Purity",R_L_res));
     l_purity->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/purity/npair_purity_rl_jetpt_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/purity/npair_purity_noneutrals_rl_jetpt_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/purity/npair_purity_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/purity/npair_purity_rl_jetpt_deltarleq%.3f_noneutrals.pdf",R_L_res));
 
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -136,12 +138,13 @@ void macro_print_pairpurity_rl_jet_pt(bool include_neutrals = 0)
     }
     
     s_data->Draw("NOSTACK");
-    s_data->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
+    s_data->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
     l_data->Draw("SAME");
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
 
-    if(include_neutrals) c->Print(Form("../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/purity/npair_wpurity_noneutrals_rl_data_jetpt_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.3f_noneutrals.pdf",R_L_res));
 }

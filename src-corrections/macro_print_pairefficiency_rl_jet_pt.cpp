@@ -27,9 +27,9 @@ void macro_print_pairefficiency_rl_jet_pt(bool include_neutrals = 0)
 
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_R_L,binning);
-        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_R_L,binning);
-        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_R_L,binning);
+        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
+        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
+        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
 
         hsig[jet_pt_bin]->Sumw2();
         hall[jet_pt_bin]->Sumw2();
@@ -45,8 +45,8 @@ void macro_print_pairefficiency_rl_jet_pt(bool include_neutrals = 0)
 
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_R_L,binning);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,binning);
+        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
 
         hcorr_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();
@@ -93,11 +93,12 @@ void macro_print_pairefficiency_rl_jet_pt(bool include_neutrals = 0)
     }
 
     s->Draw("NOSTACK");
-    s->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
+    s->GetXaxis()->SetRangeUser(R_L_min,1);
+    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
     l->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/efficiency/npair_noneutrals_rl_recovsmc_jetpt_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/efficiency/npair_rl_recovsmc_jetpt_deltarleq%.3f_noneutrals.pdf",R_L_res));
     gPad->SetLogy(0);
 
     // efficiency PLOTS
@@ -115,11 +116,12 @@ void macro_print_pairefficiency_rl_jet_pt(bool include_neutrals = 0)
     
     
     s_efficiency->Draw("NOSTACK");
-    s_efficiency->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};Pair efficiency",R_match_max));
+    s_efficiency->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_efficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",R_L_res));
     l_efficiency->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/efficiency/npair_noneutrals_efficiency_rl_jetpt_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/efficiency/npair_efficiency_rl_jetpt_deltarleq%.3f_noneutrals.pdf",R_L_res));
 
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -137,12 +139,13 @@ void macro_print_pairefficiency_rl_jet_pt(bool include_neutrals = 0)
     }
     
     s_data->Draw("NOSTACK");
-    s_data->SetTitle(Form("#Delta R_{dtr match}<%.3f;R_{L};N_{pair}",R_match_max));
+    s_data->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
     l_data->Draw("SAME");
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",R_match_max));
-    else c->Print(Form("../plots/efficiency/npair_noneutrals_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",R_match_max));
+    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
+    else c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_jetpt_deltarleq%.3f_noneutrals.pdf",R_L_res));
 }

@@ -104,160 +104,160 @@ h1_charge!=0&&h2_charge!=0",jet_pt_min,jet_pt_max);
 // Cuts as function of jet pt
 TCut e2c_mc_jetpt_cut[] = 
 {Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[0],jet_pt_binning[1]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[1],jet_pt_binning[2]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[2],jet_pt_binning[3]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[3],jet_pt_binning[4]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[4],jet_pt_binning[5])};
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[2],jet_pt_binning[3]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[3],jet_pt_binning[4]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120)",jet_pt_binning[4],jet_pt_binning[5])};
 
 TCut e2c_mc_jetpt_noneutrals_cut[] = 
 {Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[0],jet_pt_binning[1]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[1],jet_pt_binning[2]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[2],jet_pt_binning[3]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[3],jet_pt_binning[4]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[4],jet_pt_binning[5])};
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[2],jet_pt_binning[3]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[3],jet_pt_binning[4]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[4],jet_pt_binning[5])};
 
 TCut e2c_jetpt_cut[] = 
 {Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[0],jet_pt_binning[1]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[1],jet_pt_binning[2]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[2],jet_pt_binning[3]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[3],jet_pt_binning[4]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[4],jet_pt_binning[5])};
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[2],jet_pt_binning[3]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[3],jet_pt_binning[4]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_binning[4],jet_pt_binning[5])};
 
 TCut e2c_jetpt_noneutrals_cut[] = 
 {Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[0],jet_pt_binning[1]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[1],jet_pt_binning[2]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[2],jet_pt_binning[3]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[3],jet_pt_binning[4]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)",jet_pt_binning[4],jet_pt_binning[5])};
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[2],jet_pt_binning[3]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[3],jet_pt_binning[4]),
+ Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0)",jet_pt_binning[4],jet_pt_binning[5])};
 
 TCut pair_data_jetpt_cut[] = 
 {Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[0],jet_pt_binning[1]),
-       Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[1],jet_pt_binning[2]),
-       Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[2],jet_pt_binning[3]),
-       Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[3],jet_pt_binning[4]),
-       Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[4],jet_pt_binning[5])};
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[2],jet_pt_binning[3]),
+ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[3],jet_pt_binning[4]),
+ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",jet_pt_binning[4],jet_pt_binning[5])};
 
 TCut pair_data_jetpt_noneutrals_cut[] = 
 {Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0",jet_pt_binning[0],jet_pt_binning[1]),
-       Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0",jet_pt_binning[1],jet_pt_binning[2]),
-       Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0",jet_pt_binning[2],jet_pt_binning[3]),
-       Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0",jet_pt_binning[3],jet_pt_binning[4]),
-       Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0",jet_pt_binning[4],jet_pt_binning[5])};
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0",jet_pt_binning[2],jet_pt_binning[3]),
+ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0",jet_pt_binning[3],jet_pt_binning[4]),
+ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+ h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+ mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+ h1_charge!=0&&h2_charge!=0",jet_pt_binning[4],jet_pt_binning[5])};
 
 TCut pair_mc_jetpt_cut[] = 
 {Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
@@ -319,33 +319,33 @@ sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_p
 h1_charge!=0&&h2_charge!=0",jet_pt_binning[4],jet_pt_binning[5])};
 
 // _______________________________ Purity Analysis Cuts _______________________________ //
-TCut e2c_signal_cut = 
-Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-      h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-      mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-      sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_min,jet_pt_max);
+//TCut e2c_signal_cut = 
+//Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+//      h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+//      mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+//      sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)",jet_pt_min,jet_pt_max);
 
-TCut e2c_signal_noneutrals_cut = 
-Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-      h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-      mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-      sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-      h1_charge!=0&&h2_charge!=0)",jet_pt_min,jet_pt_max);
+//TCut e2c_signal_noneutrals_cut = 
+//Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+//      h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
+//      mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
+//      sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
+//      h1_charge!=0&&h2_charge!=0)",jet_pt_min,jet_pt_max);
 
 TCut pair_signal_cut = 
-Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001",
-      R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_min,jet_pt_max);
+      R_L_res,jet_pt_min,jet_pt_max);
 
 TCut pair_signal_noneutrals_cut = 
-Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
       h1_charge!=0&&h2_charge!=0",
-      R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_min,jet_pt_max);
+      R_L_res,jet_pt_min,jet_pt_max);
 
 TCut pair_all_cut = 
 Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
@@ -360,122 +360,63 @@ Form("jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h
       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
       h1_charge!=0&&h2_charge!=0",jet_pt_min,jet_pt_max);
 
-TCut e2c_jetpt_signal_cut[] = 
-{Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)"
-       ,jet_pt_binning[0],jet_pt_binning[1]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)"
-       ,jet_pt_binning[1],jet_pt_binning[2]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)"
-       ,jet_pt_binning[2],jet_pt_binning[3]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)"
-       ,jet_pt_binning[3],jet_pt_binning[4]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001)"
-       ,jet_pt_binning[4],jet_pt_binning[5])};
-
-TCut e2c_jetpt_signal_noneutrals_cut[] = 
-{Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)"
-       ,jet_pt_binning[0],jet_pt_binning[1]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)"
-       ,jet_pt_binning[1],jet_pt_binning[2]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)"
-       ,jet_pt_binning[2],jet_pt_binning[3]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)"
-       ,jet_pt_binning[3],jet_pt_binning[4]),
-       Form("weight*(jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
-       h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
-       mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
-       sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
-       h1_charge!=0&&h2_charge!=0)"
-       ,jet_pt_binning[4],jet_pt_binning[5])};
-
 TCut pair_jetpt_signal_cut[] = 
-{Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+{Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[0],jet_pt_binning[1]),
-       Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+       ,R_L_res,jet_pt_binning[0],jet_pt_binning[1]),
+       Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[1],jet_pt_binning[2]),
-       Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+       ,R_L_res,jet_pt_binning[1],jet_pt_binning[2]),
+       Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[2],jet_pt_binning[3]),
-       Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+       ,R_L_res,jet_pt_binning[2],jet_pt_binning[3]),
+       Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[3],jet_pt_binning[4]),
-       Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+       ,R_L_res,jet_pt_binning[3],jet_pt_binning[4]),
+       Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[4],jet_pt_binning[5])};
+       ,R_L_res,jet_pt_binning[4],jet_pt_binning[5])};
 
 TCut pair_jetpt_signal_noneutrals_cut[] = 
-{Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+{Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
        h1_charge!=0&&h2_charge!=0"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[0],jet_pt_binning[1]),
-       Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+       ,R_L_res,jet_pt_binning[0],jet_pt_binning[1]),
+       Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
        h1_charge!=0&&h2_charge!=0"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[1],jet_pt_binning[2]),
-       Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+       ,R_L_res,jet_pt_binning[1],jet_pt_binning[2]),
+       Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
        h1_charge!=0&&h2_charge!=0"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[2],jet_pt_binning[3]),
-       Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+       ,R_L_res,jet_pt_binning[2],jet_pt_binning[3]),
+       Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
        h1_charge!=0&&h2_charge!=0"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[3],jet_pt_binning[4]),
-       Form("(deltaR_h1>%f&&deltaR_h1<%f)&&(deltaR_h2>%f&&deltaR_h2<%f)&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
+       ,R_L_res,jet_pt_binning[3],jet_pt_binning[4]),
+       Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_eta>2.5&&jet_eta<4.&&jet_pt>%f&&jet_pt<%f&&h1_chi2/h1_ndf<3&&h2_chi2/h2_ndf<3&&h1_p>4&&h1_p<1000&&h2_p>4&&h2_p<1000&&h1_pt>0.250&&h2_pt>0.250&&\
        h1_probnnghost<0.5&&h2_probnnghost<0.5&&TMath::Abs(deltaphi_z_jet)>7*TMath::Pi()/8.&&TMath::Abs(deltaphi_mum_jet)>0.4&&TMath::Abs(deltaphi_mup_jet)>0.4&&\
        mum_pt>20.&&mup_pt>20.&&mum_eta>2&&mum_eta<4.5&&mup_eta>2&&mup_eta<4.5&&sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))>60&&\
        sqrt(mum_m*mum_m + mup_m*mup_m + 2*(mum_pe*mup_pe - mum_px*mup_px - mum_py*mup_py - mum_pz*mup_pz))<120&&mum_probchi2>0.001&&mup_probchi2>0.001&&\
        h1_charge!=0&&h2_charge!=0"
-       ,R_match_min,R_match_max,R_match_min,R_match_max,jet_pt_binning[4],jet_pt_binning[5])};
+       ,R_L_res,jet_pt_binning[4],jet_pt_binning[5])};
 
 #endif

@@ -5,6 +5,7 @@
 std::string namef_ntuple_e2c            = "ntuple_e2c.root";
 std::string namef_ntuple_e2c_purity     = "ntuple_e2c_purity.root";
 std::string namef_ntuple_e2c_efficiency = "ntuple_e2c_efficiency.root";
+std::string namef_ntuple_jetptpurity    = "ntuple_jetpurity.root";
 
 // Name of the ntuples
 std::string name_ntuple_unfold          = "ntuple_unfold";
@@ -13,6 +14,7 @@ std::string name_ntuple_mcjetmatch      = "ntuple_mcjetmatch";
 std::string name_ntuple_mcreco          = "ntuple_mcreco";
 std::string name_ntuple_mc              = "ntuple_mc";
 std::string name_ntuple_purity          = "ntuple_purity";
+std::string name_ntuple_jetpurity       = "ntuple_jetpurity";
 std::string name_ntuple_efficiency_mc   = "ntuple_efficiency_mc";
 std::string name_ntuple_efficiency_reco = "ntuple_efficiency_reco";
 
