@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_norme2c_ratio(bool include_neutrals = 0)
+void macro_print_norme2c_ratio()
 {
     // Open ROOT file with ntuple
     TFile* f = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -27,16 +27,8 @@ void macro_print_norme2c_ratio(bool include_neutrals = 0)
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
 
-    if(include_neutrals)
-    {
-        ntuple_data->Draw("R_L>>h_data",e2c_data_cut,"goff");
-        ntuple_mc->Draw("R_L>>h_mc",e2c_mc_cut,"goff");
-    }
-    else
-    {
-        ntuple_data->Draw("R_L>>h_data",e2c_data_noneutrals_cut,"goff");
-        ntuple_mc->Draw("R_L>>h_mc",e2c_mc_noneutrals_cut,"goff");
-    }
+    ntuple_data->Draw("R_L>>h_data",e2c_cut,"goff");
+    ntuple_mc->Draw("R_L>>h_mc",e2c_cut,"goff");
     
     h_data->Scale(1./h_data->Integral());
     h_mc->Scale(1./h_mc->Integral());
@@ -53,6 +45,5 @@ void macro_print_norme2c_ratio(bool include_neutrals = 0)
     rp->GetLowerPad()->SetLogx(1);
     rp->GetLowerPad()->SetLogy(1);
     
-    if(include_neutrals) c->Print("../plots/rationorme2c_rl.pdf");
-    else c->Print("../plots/rationorme2c_rl_noneutrals.pdf");
+    c->Print("../plots/rationorme2c_rl.pdf");
 }

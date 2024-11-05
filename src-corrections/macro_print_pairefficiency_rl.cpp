@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_pairefficiency_rl(bool include_neutrals = 0)
+void macro_print_pairefficiency_rl()
 {
     // Open the necessary files
     TFile* fdata   = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -40,21 +40,11 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     set_histogram_style(hall_data, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Project into the histograms
-    if(include_neutrals)
-    {
-        ntuple_efficiency_reco->Project("hsig","R_L",pair_signal_cut);
-        ntuple_efficiency_mc->Project("hall","R_L",pair_mc_cut);
-        ntuple_data->Project("hcorr_data","R_L",pair_data_cut);
-        ntuple_data->Project("hall_data","R_L",pair_data_cut);
-    }
-    else
-    {
-        ntuple_efficiency_reco->Project("hsig","R_L",pair_signal_noneutrals_cut);
-        ntuple_efficiency_mc->Project("hall","R_L",pair_mc_noneutrals_cut);
-        ntuple_data->Project("hcorr_data","R_L",pair_data_noneutrals_cut);
-        ntuple_data->Project("hall_data","R_L",pair_data_noneutrals_cut);
-    }
-
+    ntuple_efficiency_reco->Project("hsig","R_L",pair_signal_cut);
+    ntuple_efficiency_mc->Project("hall","R_L",pair_cut);
+    ntuple_data->Project("hcorr_data","R_L",pair_cut);
+    ntuple_data->Project("hall_data","R_L",pair_cut);
+    
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
 
@@ -75,26 +65,21 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     l->AddEntry(hall,"MC"  ,"lpf");
     l->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_rl_recovsmc_deltarleq%.3f.pdf",R_L_res));
-    else c->Print(Form("../plots/efficiency/npair_rl_recovsmc_deltarleq%.3f_noneutrals.pdf",R_L_res));
+    c->Print(Form("../plots/efficiency/npair_rl_recovsmc_deltarleq%.3f.pdf",R_L_res));
+    
     gPad->SetLogy(0);
 
     // efficiency PLOTS
     hefficiency->Divide(hsig,hall,1,1,"B");
-    //hefficiency->Scale(100.);
-    //hefficiency->GetYaxis()->SetRangeUser(0,100);
-    
     set_histogram_style(hefficiency, kViolet, std_line_width, std_marker_style, std_marker_size);
     
     hefficiency->Draw();
     hefficiency->GetXaxis()->SetRangeUser(R_L_min,1);
     hefficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",R_L_res));
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_efficiency_rl_deltarleq%.3f.pdf",R_L_res));
-    else c->Print(Form("../plots/efficiency/npair_efficiency_rl_deltarleq%.3f_noneutrals.pdf",R_L_res));
-
+    c->Print(Form("../plots/efficiency/npair_efficiency_rl_deltarleq%.3f.pdf",R_L_res));
+    
     // DATA PLOTS
-    //hefficiency->Scale(1./100.);
     hcorr_data->Divide(hefficiency);
 
     THStack* s_data = new THStack();
@@ -113,6 +98,5 @@ void macro_print_pairefficiency_rl(bool include_neutrals = 0)
     l_data->AddEntry(hall_data,"Data All"           ,"lpf");
     l_data->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_deltarleq%.3f.pdf",R_L_res));
-    else c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_deltarleq%.3f_noneutrals.pdf",R_L_res));
+    c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_deltarleq%.3f.pdf",R_L_res));
 }

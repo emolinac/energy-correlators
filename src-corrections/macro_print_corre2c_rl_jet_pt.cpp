@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_corre2c_rl_jet_pt(bool include_neutrals = 0)
+void macro_print_corre2c_rl_jet_pt()
 {
     // Open the necessary files
     TFile* fdata       = new TFile((output_folder+namef_ntuple_e2c).c_str());
@@ -64,24 +64,12 @@ void macro_print_corre2c_rl_jet_pt(bool include_neutrals = 0)
     // Project into the histograms
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        if(include_neutrals)
-        {
-            ntuple_efficiency_reco->Project(Form("hsig_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
-            ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_mc_jetpt_cut[jet_pt_bin]);
-            ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
-            ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_data_jetpt_cut[jet_pt_bin]);
-            ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
-            ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", e2c_jetpt_cut[jet_pt_bin]);
-        }
-        else
-        {
-            ntuple_efficiency_reco->Project(Form("hsig_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_noneutrals_cut[jet_pt_bin]);
-            ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_mc_jetpt_noneutrals_cut[jet_pt_bin]);
-            ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_noneutrals_cut[jet_pt_bin]);
-            ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_data_jetpt_noneutrals_cut[jet_pt_bin]);
-            ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_noneutrals_cut[jet_pt_bin]);
-            ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_noneutrals_cut[jet_pt_bin]);
-        }
+        ntuple_efficiency_reco->Project(Form("hsig_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
+        ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", e2c_jetpt_cut[jet_pt_bin]);
     }
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -119,6 +107,5 @@ void macro_print_corre2c_rl_jet_pt(bool include_neutrals = 0)
     s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};E2C",R_L_res));
     l_data->Draw("SAME");
 
-    if(include_neutrals) c->Print(Form("../plots/corr_e2c_jetpt_deltarleq%.3f.pdf",R_L_res));
-    else c->Print(Form("../plots/corr_e2c_jetpt_deltarleq%.3f_noneutrals.pdf",R_L_res));
+    c->Print(Form("../plots/corr_e2c_jetpt_deltarleq%.3f.pdf",R_L_res));
 }

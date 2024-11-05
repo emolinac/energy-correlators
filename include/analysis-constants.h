@@ -33,19 +33,19 @@ const double R_match_min = 0.; // THIS VALUE CANT BE MOVED!
 const double R_L_res  = 0.02;
 //const int Nbin_R_L    = 15;
 const int Nbin_R_L    = 50;
-const int Nbin_jet_pt = 5;
+const int Nbin_jet_pt = 3;
 
 const double R_L_min    = 0.0099;
 const double R_L_max    = 1.2;
-const double jet_pt_min = 20; 
+const double jet_pt_min_nom = 20; 
 const double jet_pt_max = 150;
 const double eta_min    = 2.5;
 const double eta_max    = 4.;
 
 // Binning
-//const double jet_pt_binning[] = {jet_pt_min, 30., 50., jet_pt_max};
-//const double jet_pt_binning[] = {jet_pt_min, 26.868, 38.404, jet_pt_max};
-const double jet_pt_binning[] = {jet_pt_min, 25.9735, 33.1105, 43.0815, 59.6175, jet_pt_max};
+const double jet_pt_binning[] = {jet_pt_min_nom, 30., 50., jet_pt_max};
+//const double jet_pt_binning[] = {jet_pt_min_nom, 26.868, 38.404, jet_pt_max};
+//const double jet_pt_binning[] = {jet_pt_min_nom, 25.9735, 33.1105, 43.0815, 59.6175, jet_pt_max};
 
 // Visual constants
 const double std_marker_size  = 1.0;

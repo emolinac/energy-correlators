@@ -11,6 +11,7 @@
 #include "TLorentzVector.h"
 #include "TVector3.h"
 #include "analysis-constants.h"
+#include "analysis-cuts.h"
 #include "analysis-functions.h"
 #include "directories.h"
 #include "names.h"
@@ -34,10 +35,6 @@ int main()
     TLorentzVector* mum_4vector = new TLorentzVector();
     TLorentzVector* mup_4vector = new TLorentzVector();
 
-    // Create necessary 3vectors
-    TVector3* delta_momentum_a = new TVector3();
-    TVector3* delta_momentum_b = new TVector3();
-
     // Define array carrying the variables
     float vars[Nvars_purity];
 
@@ -47,47 +44,82 @@ int main()
         // Access entry of tree
         mcrecotree->GetEntry(evt);
 
+        // Apply PV cut
+        if(mcrecotree->nPV!=1) continue;
+
+        // Apply trigger cut
+        if(mcrecotree->mum_L0MuonEWDecision_TOS!=1||mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS!=1||mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
+        if(mcrecotree->mup_L0MuonEWDecision_TOS!=1||mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS!=1||mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
+
         // -999 means there is not matched jet
         if(mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
 
-        // Set Jet-associated 4 vectors
+        // Set Jet-associated 4 vectors and apply cuts
         Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,
                                 mcrecotree->Jet_PY/1000., 
                                 mcrecotree->Jet_PZ/1000., 
                                 mcrecotree->Jet_PE/1000.);
 
-        Z0_4vector->SetPxPyPzE(mcrecotree->Z0_PX/1000., 
-                               mcrecotree->Z0_PY/1000., 
-                               mcrecotree->Z0_PZ/1000., 
-                               mcrecotree->Z0_PE/1000.);
-                
+        if(Jet_4vector->Eta()<jet_eta_min||Jet_4vector->Eta()>jet_eta_max) continue;
+        if(Jet_4vector->Pt()<jet_pt_min) continue;
+
         mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000., 
                                 mcrecotree->mum_PY/1000., 
                                 mcrecotree->mum_PZ/1000., 
                                 mcrecotree->mum_PE/1000.);
+
+        if(Jet_4vector->DeltaR(*mum_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
+        if(mum_4vector->Pt()<muon_pt_min) continue;
+        if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
+        if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
 
         mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000., 
                                 mcrecotree->mup_PY/1000., 
                                 mcrecotree->mup_PZ/1000., 
                                 mcrecotree->mup_PE/1000.);
 
+        if(Jet_4vector->DeltaR(*mup_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
+        if(mup_4vector->Pt()<muon_pt_min) continue;
+        if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
+        if(mcrecotree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
+
+        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(), 
+                               mup_4vector->Py()+mum_4vector->Py(), 
+                               mup_4vector->Pz()+mum_4vector->Pz(), 
+                               mup_4vector->E() +mum_4vector->E());
+
+        if(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector))<deltaphi_z_jet_min) continue;
+        if(Z0_4vector->M()<muonmuon_mass_min||Z0_4vector->M()>muonmuon_mass_max) continue;
+
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
         {
-            // Skip un-id'ed particles
-            if(mcrecotree->Jet_Dtr_ID[h1_index]==-999||mcrecotree->Jet_Dtr_ID[h1_index]==0) continue;
-
             // Skip non-hadronic particles
             if(mcrecotree->Jet_Dtr_IsMeson[h1_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
-            // Loop over hadron 2
-            for(int h2_index = 0 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
-            {
-                // Skip un-id'ed particles
-                if(mcrecotree->Jet_Dtr_ID[h2_index]==-999||mcrecotree->Jet_Dtr_ID[h2_index]==0) continue;
+            // Skip neutrals
+            if(mcrecotree->Jet_Dtr_ThreeCharge[h1_index]==0) continue;
 
+            // Apply cuts
+            if(mcrecotree->Jet_Dtr_P[h1_index]/1000.<track_p_min||mcrecotree->Jet_Dtr_P[h1_index]/1000.>track_p_max) continue;
+            if(mcrecotree->Jet_Dtr_PT[h1_index]/1000.<track_pt_min) continue;
+            if(mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index]>track_chi2ndf_max) continue;
+            if(mcrecotree->Jet_Dtr_ProbNNghost[h1_index]>track_probnnghost_max) continue;
+
+            // Loop over hadron 2
+            for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
+            {
                 // Skip non-hadronic particles
                 if(mcrecotree->Jet_Dtr_IsMeson[h2_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+
+                // Skip neutrals
+                if(mcrecotree->Jet_Dtr_ThreeCharge[h2_index]==0) continue;
+
+                // Apply cuts
+                if(mcrecotree->Jet_Dtr_P[h2_index]/1000.<track_p_min||mcrecotree->Jet_Dtr_P[h2_index]/1000.>track_p_max) continue;
+                if(mcrecotree->Jet_Dtr_PT[h2_index]/1000.<track_pt_min) continue;
+                if(mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index]>track_chi2ndf_max) continue;
+                if(mcrecotree->Jet_Dtr_ProbNNghost[h2_index]>track_probnnghost_max) continue;
 
                 double h1_y = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]);                
                 double h2_y = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]);
@@ -95,64 +127,42 @@ int main()
                 // If all good, fill Ntuple
                 vars[0]  = weight(mcrecotree->Jet_Dtr_E[h1_index]/1000., mcrecotree->Jet_Dtr_E[h2_index]/1000., mcrecotree->Jet_PE/1000.);
                 vars[1]  = R_L(h1_y, h2_y, mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_Dtr_PHI[h2_index]);
-                vars[2]  = mcrecotree->Jet_Dtr_ThreeCharge[h1_index];
-                vars[3]  = mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
-                vars[4]  = mcrecotree->Jet_Dtr_ETA[h1_index];
-                vars[5]  = mcrecotree->Jet_Dtr_ETA[h2_index];
-                vars[6]  = h1_y;
-                vars[7]  = h2_y;
-                vars[8]  = mcrecotree->Jet_Dtr_PHI[h1_index];
-                vars[9]  = mcrecotree->Jet_Dtr_PHI[h2_index];
-                vars[10] = mcrecotree->Jet_Dtr_TrackChi2[h1_index];
-                vars[11] = mcrecotree->Jet_Dtr_TrackChi2[h2_index];
-                vars[12] = mcrecotree->Jet_Dtr_TrackNDF[h1_index];
-                vars[13] = mcrecotree->Jet_Dtr_TrackNDF[h2_index]; 
-                vars[14] = mcrecotree->Jet_Dtr_ProbNNghost[h1_index];
-                vars[15] = mcrecotree->Jet_Dtr_ProbNNghost[h2_index];
-                vars[16] = mcrecotree->Jet_Dtr_P[h1_index]/1000.;
-                vars[17] = mcrecotree->Jet_Dtr_P[h2_index]/1000.;
-                vars[18] = mcrecotree->Jet_Dtr_PT[h1_index]/1000.;
-                vars[19] = mcrecotree->Jet_Dtr_PT[h2_index]/1000.;
-                vars[20] = mcrecotree->Jet_Dtr_PZ[h1_index]/1000.;
-                vars[21] = mcrecotree->Jet_Dtr_PZ[h2_index]/1000.;
-                vars[22] = mcrecotree->Jet_PT/1000.;
-                vars[23] = Jet_4vector->Eta();
-                vars[24] = Jet_4vector->Phi();
-                vars[25] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
-                vars[26] = delta_phi(Jet_4vector->Phi(),mum_4vector->Phi());
-                vars[27] = mum_4vector->Pt();
-                vars[28] = mum_4vector->Eta();
-                vars[29] = mcrecotree->mum_PX/1000.;
-                vars[30] = mcrecotree->mum_PY/1000.;
-                vars[31] = mcrecotree->mum_PZ/1000.;
-                vars[32] = mcrecotree->mum_PE/1000.;
-                vars[33] = mum_4vector->M();//mcrecotree->mum_M;
-                vars[34] = mcrecotree->mum_TRACK_PCHI2;
-                vars[35] = delta_phi(Jet_4vector->Phi(),mup_4vector->Phi());
-                vars[36] = mup_4vector->Pt();
-                vars[37] = mup_4vector->Eta();
-                vars[38] = mcrecotree->mup_PX/1000.;
-                vars[39] = mcrecotree->mup_PY/1000.;
-                vars[40] = mcrecotree->mup_PZ/1000.;
-                vars[41] = mcrecotree->mup_PE/1000.;
-                vars[42] = mup_4vector->M();//mcrecotree->mup_M;
-                vars[43] = mcrecotree->mup_TRACK_PCHI2;
-                vars[44] = mcrecotree->Jet_PE/1000.;
-                vars[45] = mcrecotree->Jet_mcjet_PE/1000.;
-                vars[46] = mcrecotree->Jet_mcjet_nmcdtrs;
+                vars[2]  = mcrecotree->Jet_Dtr_ETA[h1_index];
+                vars[3]  = mcrecotree->Jet_Dtr_ETA[h2_index];
+                vars[4]  = h1_y;
+                vars[5]  = h2_y;
+                vars[6]  = mcrecotree->Jet_Dtr_PHI[h1_index];
+                vars[7]  = mcrecotree->Jet_Dtr_PHI[h2_index];
+                vars[8]  = mcrecotree->Jet_Dtr_P[h1_index]/1000.;
+                vars[9]  = mcrecotree->Jet_Dtr_P[h2_index]/1000.;
+                vars[10] = mcrecotree->Jet_Dtr_PT[h1_index]/1000.;
+                vars[11] = mcrecotree->Jet_Dtr_PT[h2_index]/1000.;
+                vars[12] = mcrecotree->Jet_PT/1000.;
+                vars[13] = Jet_4vector->Eta();
+                vars[14] = Jet_4vector->DeltaPhi(*Z0_4vector);//Jet_4vector->Phi();
+                vars[15] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
+                vars[16] = Jet_4vector->DeltaR(*mum_4vector, 1);
+                vars[17] = mum_4vector->Pt();
+                vars[18] = mum_4vector->Eta();
+                vars[19] = Jet_4vector->DeltaR(*mup_4vector, 1);
+                vars[20] = mup_4vector->Pt();
+                vars[21] = mup_4vector->Eta();
+                vars[22] = mcrecotree->Jet_PE/1000.;
+                vars[23] = mcrecotree->Jet_mcjet_PE/1000.;
+                vars[24] = mcrecotree->Jet_mcjet_nmcdtrs;
 
                 double matchedmc_y1   = rapidity(mcrecotree->Jet_Dtr_TRUE_E[h1_index],mcrecotree->Jet_Dtr_TRUE_PZ[h1_index]);
                 double matchedmc_y2   = rapidity(mcrecotree->Jet_Dtr_TRUE_E[h2_index],mcrecotree->Jet_Dtr_TRUE_PZ[h2_index]);
                 double matchedmc_phi1 = mcrecotree->Jet_Dtr_TRUE_PHI[h1_index];
                 double matchedmc_phi2 = mcrecotree->Jet_Dtr_TRUE_PHI[h2_index];
 
-                vars[47] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : R_L(h1_y, matchedmc_y1, mcrecotree->Jet_Dtr_PHI[h1_index], matchedmc_phi1);
-                vars[48] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : R_L(h2_y, matchedmc_y2, mcrecotree->Jet_Dtr_PHI[h2_index], matchedmc_phi2);
-                vars[49] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : matchedmc_y1;
-                vars[50] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : matchedmc_y2;
-                vars[51] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : matchedmc_phi1;
-                vars[52] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : matchedmc_phi2;
-                vars[53] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999||mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? 
+                vars[25] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : R_L(h1_y, matchedmc_y1, mcrecotree->Jet_Dtr_PHI[h1_index], matchedmc_phi1);
+                vars[26] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : R_L(h2_y, matchedmc_y2, mcrecotree->Jet_Dtr_PHI[h2_index], matchedmc_phi2);
+                vars[27] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : matchedmc_y1;
+                vars[28] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : matchedmc_y2;
+                vars[29] = (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? -999 : matchedmc_phi1;
+                vars[30] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999) ? -999 : matchedmc_phi2;
+                vars[31] = (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]==-999||mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]==-999) ? 
                             -999 : R_L(matchedmc_y1,matchedmc_y2,matchedmc_phi1,matchedmc_phi2);
 
                 // Fill the TNtuple

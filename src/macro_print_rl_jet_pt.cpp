@@ -22,7 +22,7 @@ void macro_print_rl_jet_pt()
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
-    ntuple->Draw("jet_pt:R_L>>h",pair_data_noneutrals_cut,"colz");
+    ntuple->Draw("jet_pt:R_L>>h",pair_cut,"colz");
     
     h->SetTitle(";R_{L};Jet P_{T}(GeV)");
 
