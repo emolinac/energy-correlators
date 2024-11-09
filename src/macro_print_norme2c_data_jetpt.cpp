@@ -40,10 +40,10 @@ void macro_print_norme2c_data_jetpt()
     c->Draw();
     s->Draw("NOSTACK");
     s->SetTitle(";R_{L};Norm. E2C");
-    s->SetMaximum(1);
+    //s->SetMaximum(1);
 
     gPad->SetLogx(1);
-    gPad->SetLogy(1);
+    //gPad->SetLogy(1);
 
     l->Draw("SAME");
 

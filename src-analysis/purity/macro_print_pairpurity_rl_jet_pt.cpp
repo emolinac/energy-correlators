@@ -105,6 +105,7 @@ void macro_print_pairpurity_rl_jet_pt()
     
     s_purity->Draw("NOSTACK");
     s_purity->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_purity->SetMaximum(1.);
     s_purity->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair Purity",R_L_res));
     l_purity->Draw("SAME");
 

@@ -40,7 +40,7 @@ void macro_print_pairefficiency_rl()
     set_histogram_style(hall_data, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Project into the histograms
-    ntuple_efficiency_reco->Project("hsig","R_L",pair_signal_cut);
+    ntuple_efficiency_reco->Project("hsig","R_L",pair_cut);
     ntuple_efficiency_mc->Project("hall","R_L",pair_cut);
     ntuple_data->Project("hcorr_data","R_L",pair_cut);
     ntuple_data->Project("hall_data","R_L",pair_cut);

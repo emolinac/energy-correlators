@@ -76,6 +76,7 @@ void macro_print_pairpurity_rl()
     
     hpurity->Draw();
     hpurity->GetXaxis()->SetRangeUser(R_L_min,1);
+    hpurity->GetYaxis()->SetRangeUser(0,1);
     hpurity->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair Purity",R_L_res));
 
     c->Print(Form("../plots/purity/npair_purity_rl_deltarleq%.3f.pdf",R_L_res));

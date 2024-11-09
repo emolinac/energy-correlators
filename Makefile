@@ -1,7 +1,7 @@
 BIN   := ./bin
 INC   := ./include
 SRC   := ./src
-SRC_C := ./src-corrections
+SRC_C := ./src-analysis
 
 CXX    := g++ -std=c++11
 CFLAGS := -Wall -g -O3
@@ -11,13 +11,16 @@ ROOTLDFLAGS := $(shell root-config --ldflags)
 ROOTINCDIR  := $(shell root-config --incdir)
 ROOTLIBS    := $(shell root-config --libs) -lEG
 
-all: ${BIN}/create_e2c_ntuple ${BIN}/create_e2c_purityntuple ${BIN}/create_e2c_efficiencyntuple
+all: ${BIN}/create_e2c_ntuple ${BIN}/create_e2c_purityntuple ${BIN}/create_e2c_efficiencyntuple ${BIN}/create_e2c_singlepurityntuple
 
 ${BIN}/create_e2c_ntuple: ${SRC}/create_e2c_ntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_ntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_ntuple
 
 ${BIN}/create_e2c_purityntuple: ${SRC_C}/create_e2c_purityntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC_C}/create_e2c_purityntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_purityntuple
+
+${BIN}/create_e2c_singlepurityntuple: ${SRC_C}/create_e2c_singlepurityntuple.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC_C}/create_e2c_singlepurityntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_singlepurityntuple
 
 ${BIN}/create_e2c_efficiencyntuple: ${SRC_C}/create_e2c_efficiencyntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC_C}/create_e2c_efficiencyntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_efficiencyntuple

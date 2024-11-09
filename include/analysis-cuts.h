@@ -36,8 +36,8 @@ const double track_probnnghost_max = 0.5;
 
 // _______________________________ Nominal Analysis Cuts _______________________________ //
 
-TCut e2c_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min,jet_pt_max);
-TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min,jet_pt_max);
+TCut e2c_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 
 // Cuts as function of jet pt
 TCut e2c_jetpt_cut[] = 
@@ -55,7 +55,14 @@ TCut pair_jetpt_cut[] =
  Form("jet_pt>%f&&jet_pt<%f",jet_pt_binning[4],jet_pt_binning[5])*/};
 
 // _______________________________ Purity Analysis Cuts _______________________________ //
-TCut pair_signal_cut = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_min,jet_pt_max);
+TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_min_nom,jet_pt_max);
+TCut pair_pairbg_cut   = Form("(h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
+TCut pair_singlebg_cut = Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
+TCut single_signal_cut = Form("h2truth_phi!=-999&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max); // This was designed for single particle tuples
+
+TCut e2c_signal_cut   = Form("weight*(TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f)",R_L_res,jet_pt_min_nom,jet_pt_max);
+TCut e2c_pairbg_cut   = Form("weight*((h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut e2c_singlebg_cut = Form("weight*(((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 
 TCut pair_jetpt_signal_cut[] = 
 {

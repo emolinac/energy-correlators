@@ -174,6 +174,8 @@ int main()
         }        
     }
 
+    std::cout<<"MCReco done!"<<std::endl;
+
     for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
     {
         // Access entry of tree
@@ -198,8 +200,8 @@ int main()
 
         if(Jet_4vector->DeltaR(*mum_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
         if(mum_4vector->Pt()<muon_pt_min) continue;
-        if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()<muon_eta_max) continue;
-        
+        if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
+
         mup_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mup_PX/1000., 
                                 mcrecotree->Jet_mcjet_mup_PY/1000., 
                                 mcrecotree->Jet_mcjet_mup_PZ/1000., 
@@ -207,8 +209,8 @@ int main()
 
         if(Jet_4vector->DeltaR(*mup_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
         if(mup_4vector->Pt()<muon_pt_min) continue;
-        if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()<muon_eta_max) continue;
-        
+        if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
+
         Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(), 
                                mup_4vector->Py()+mum_4vector->Py(), 
                                mup_4vector->Pz()+mum_4vector->Pz(), 
@@ -272,6 +274,8 @@ int main()
             }   
         }
     }
+    
+    std::cout<<"MC done!"<<std::endl;
 
     fout->cd();
     ntuple_reco->Write();

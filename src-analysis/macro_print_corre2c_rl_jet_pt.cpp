@@ -59,17 +59,14 @@ void macro_print_corre2c_rl_jet_pt()
 
         set_histogram_style(hcorr_data[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size);
         set_histogram_style(hall_data[jet_pt_bin], std_marker_color_jet_pt[jet_pt_bin] , std_line_width, std_marker_style_jet_pt[jet_pt_bin], std_marker_size);
-    }
-
-    // Project into the histograms
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
-    {
+    
         ntuple_efficiency_reco->Project(Form("hsig_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
         ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
         ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
         ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
         ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
         ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", e2c_jetpt_cut[jet_pt_bin]);
+
     }
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -94,17 +91,18 @@ void macro_print_corre2c_rl_jet_pt()
     {
         hcorr_data[jet_pt_bin]->Divide(hefficiency[jet_pt_bin]);
         hcorr_data[jet_pt_bin]->Multiply(hpurity[jet_pt_bin]);
+        hcorr_data[jet_pt_bin]->Scale(1./hcorr_data[jet_pt_bin]->Integral());      
 
         s_data->Add(hcorr_data[jet_pt_bin]);
-        s_data->Add(hall_data[jet_pt_bin]);
+        //s_data->Add(hall_data[jet_pt_bin]);
 
-        l_data->AddEntry(hcorr_data[jet_pt_bin],Form("Corr. Data : %.1f<Jet P_{T}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lpf");
-        l_data->AddEntry(hall_data[jet_pt_bin],Form("Data : %.1f<Jet P_{T}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1])      ,"lpf");
+        l_data->AddEntry(hcorr_data[jet_pt_bin],Form("%.1f<Jet P_{T}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lpf");
+        //l_data->AddEntry(hall_data[jet_pt_bin],Form("Data : %.1f<Jet P_{T}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1])      ,"lpf");
     }
     
     s_data->Draw("NOSTACK");
     s_data->GetXaxis()->SetRangeUser(R_L_min,1);
-    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};E2C",R_L_res));
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Corr. Norm. E2C",R_L_res));
     l_data->Draw("SAME");
 
     c->Print(Form("../plots/corr_e2c_jetpt_deltarleq%.3f.pdf",R_L_res));
