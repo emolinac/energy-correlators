@@ -1,9 +1,9 @@
-#include "../include/analysis-constants.h"
-#include "../include/analysis-cuts.h"
-#include "../include/directories.h"
-#include "../include/names.h"
-#include "../include/utils-algorithms.h"
-#include "../include/utils-visual.h"
+#include "../../include/analysis-constants.h"
+#include "../../include/analysis-cuts.h"
+#include "../../include/directories.h"
+#include "../../include/names.h"
+#include "../../include/utils-algorithms.h"
+#include "../../include/utils-visual.h"
 
 void macro_print_pairpurity_rl_jet_pt()
 {
@@ -66,6 +66,12 @@ void macro_print_pairpurity_rl_jet_pt()
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
 
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
+
     // MCRECO PLOTS
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -86,7 +92,9 @@ void macro_print_pairpurity_rl_jet_pt()
     s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
     l->Draw("SAME");
 
-    c->Print(Form("../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.3f.pdf",R_L_res));
     
     gPad->SetLogy(0);
 
@@ -109,7 +117,9 @@ void macro_print_pairpurity_rl_jet_pt()
     s_purity->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair Purity",R_L_res));
     l_purity->Draw("SAME");
 
-    c->Print(Form("../plots/purity/npair_purity_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/purity/npair_purity_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
     
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -134,5 +144,7 @@ void macro_print_pairpurity_rl_jet_pt()
     gPad->SetLogx(1);
     gPad->SetLogy(1);
 
-    c->Print(Form("../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
 }

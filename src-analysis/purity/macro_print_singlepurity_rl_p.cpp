@@ -1,9 +1,9 @@
-#include "../include/analysis-constants.h"
-#include "../include/analysis-cuts.h"
-#include "../include/directories.h"
-#include "../include/names.h"
-#include "../include/utils-algorithms.h"
-#include "../include/utils-visual.h"
+#include "../../include/analysis-constants.h"
+#include "../../include/analysis-cuts.h"
+#include "../../include/directories.h"
+#include "../../include/names.h"
+#include "../../include/utils-algorithms.h"
+#include "../../include/utils-visual.h"
 
 void macro_print_singlepurity_rl_p(bool include_neutrals = 0)
 {

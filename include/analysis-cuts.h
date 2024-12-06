@@ -43,16 +43,12 @@ TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 TCut e2c_jetpt_cut[] = 
 {Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
  Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
- Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])
- /*Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[3],jet_pt_binning[4]),
- Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[4],jet_pt_binning[5])*/};
+ Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])};
 
 TCut pair_jetpt_cut[] = 
 {Form("jet_pt>%f&&jet_pt<%f",jet_pt_binning[0],jet_pt_binning[1]),
  Form("jet_pt>%f&&jet_pt<%f",jet_pt_binning[1],jet_pt_binning[2]),
- Form("jet_pt>%f&&jet_pt<%f",jet_pt_binning[2],jet_pt_binning[3])/*,
- Form("jet_pt>%f&&jet_pt<%f",jet_pt_binning[3],jet_pt_binning[4]),
- Form("jet_pt>%f&&jet_pt<%f",jet_pt_binning[4],jet_pt_binning[5])*/};
+ Form("jet_pt>%f&&jet_pt<%f",jet_pt_binning[2],jet_pt_binning[3])};
 
 // _______________________________ Purity Analysis Cuts _______________________________ //
 TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_min_nom,jet_pt_max);
@@ -68,10 +64,21 @@ TCut pair_jetpt_signal_cut[] =
 {
 Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[0],jet_pt_binning[1]),
 Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[1],jet_pt_binning[2]),
-Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[2],jet_pt_binning[3])/*,
-Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[3],jet_pt_binning[4]),
-Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[4],jet_pt_binning[5])*/
+Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[2],jet_pt_binning[3])
 };
 
+TCut pair_jetpt_pairbg_cut[] = 
+{
+Form("(h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f",jet_pt_binning[0],jet_pt_binning[1]),
+Form("(h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f",jet_pt_binning[1],jet_pt_binning[2]),
+Form("(h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f",jet_pt_binning[2],jet_pt_binning[3])
+};
+
+TCut pair_jetpt_singlebg_cut[] = 
+{
+Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f",jet_pt_binning[0],jet_pt_binning[1]),
+Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f",jet_pt_binning[1],jet_pt_binning[2]),
+Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f",jet_pt_binning[2],jet_pt_binning[3])
+};
 
 #endif

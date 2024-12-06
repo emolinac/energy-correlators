@@ -1,9 +1,9 @@
-#include "../include/analysis-constants.h"
-#include "../include/analysis-cuts.h"
-#include "../include/directories.h"
-#include "../include/names.h"
-#include "../include/utils-algorithms.h"
-#include "../include/utils-visual.h"
+#include "../../include/analysis-constants.h"
+#include "../../include/analysis-cuts.h"
+#include "../../include/directories.h"
+#include "../../include/names.h"
+#include "../../include/utils-algorithms.h"
+#include "../../include/utils-visual.h"
 
 void macro_print_singlepurity_rl()
 {
@@ -40,5 +40,5 @@ void macro_print_singlepurity_rl()
     hpurity->GetXaxis()->SetRangeUser(eta_min,eta_max);
     hpurity->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};single Purity",R_L_res));
 
-    //c->Print(Form("../plots/purity/nsingle_purity_eta_deltarleq%.3f.pdf",R_L_res));
+    //c->Print(Form("../../plots/purity/nsingle_purity_eta_deltarleq%.3f.pdf",R_L_res));
 }

@@ -29,6 +29,12 @@ void macro_print_norme2c()
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
+
 
     ntuple_data->Draw("R_L>>h_data",e2c_cut,"goff");
     ntuple_mcreco->Draw("R_L>>h_mcreco",e2c_cut,"goff");
@@ -59,6 +65,8 @@ void macro_print_norme2c()
     l->AddEntry(h_mc    ,"MC"    ,"lpf");
     l->AddEntry(h_mcreco,"MCReco","lpf");
     l->Draw("SAME");
+
+    tex->DrawLatexNDC(0.2,0.2,"LHCb Internal");
 
     c->Print("../plots/norme2c_rl.pdf");
 }

@@ -1,11 +1,11 @@
-#include "../include/analysis-constants.h"
-#include "../include/analysis-cuts.h"
-#include "../include/directories.h"
-#include "../include/names.h"
-#include "../include/utils-algorithms.h"
-#include "../include/utils-visual.h"
+#include "../../include/analysis-constants.h"
+#include "../../include/analysis-cuts.h"
+#include "../../include/directories.h"
+#include "../../include/names.h"
+#include "../../include/utils-algorithms.h"
+#include "../../include/utils-visual.h"
 
-void macro_print_matching_fraction()
+void macro_print_matching_fraction_e2c()
 {
     // Open the necessary files
     TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
@@ -28,10 +28,10 @@ void macro_print_matching_fraction()
     hhalfunmatched->Sumw2();
     
     // Project into the histograms
-    ntuple_dtrmatch->Project("hall"          ,"R_L",pair_cut+"jet_pt<30&&jet_pt>20");
-    ntuple_dtrmatch->Project("hmatched"      ,"R_L",pair_signal_cut+"jet_pt<30&&jet_pt>20");
-    ntuple_dtrmatch->Project("hunmatched"    ,"R_L",pair_pairbg_cut+"jet_pt<30&&jet_pt>20");
-    ntuple_dtrmatch->Project("hhalfunmatched","R_L",pair_singlebg_cut+"jet_pt<30&&jet_pt>20");
+    ntuple_dtrmatch->Project("hall"          ,"R_L",e2c_cut);
+    ntuple_dtrmatch->Project("hmatched"      ,"R_L",e2c_signal_cut);
+    ntuple_dtrmatch->Project("hunmatched"    ,"R_L",e2c_pairbg_cut);
+    ntuple_dtrmatch->Project("hhalfunmatched","R_L",e2c_singlebg_cut);
 
     TH1F* hratio_matched       = new TH1F("hratio_matched"  ,"",Nbin_R_L,R_L_min,R_L_max);
     TH1F* hratio_unmatched     = new TH1F("hratio_unmatched","",Nbin_R_L,R_L_min,R_L_max);
@@ -49,6 +49,11 @@ void macro_print_matching_fraction()
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
 
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
     
     // MCRECO PLOTS
     THStack* s = new THStack();
@@ -63,18 +68,13 @@ void macro_print_matching_fraction()
     s->SetMaximum(1);
 
     TLegend* l = new TLegend();
-    l->AddEntry(hratio_matched      ,"\% N_{pair} Matched && #Delta R<0.02"  ,"lpf");
-    l->AddEntry(hratio_halfunmatched,"\% N_{pair} One unmatched","lpf");
-    l->AddEntry(hratio_unmatched    ,"\% N_{pair} Both unmatched","lpf");
+    l->AddEntry(hratio_matched      ,"\% E2C Matched && #Delta R<0.02"  ,"lpf");
+    l->AddEntry(hratio_halfunmatched,"\% E2C One unmatched","lpf");
+    l->AddEntry(hratio_unmatched    ,"\% E2C Both unmatched","lpf");
     l->Draw("SAME");
 
-    for(int bin = 1 ; bin <= hratio_matched->GetNbinsX() ; bin++)
-    {
-        double sum = hratio_matched->GetBinContent(bin)+hratio_halfunmatched->GetBinContent(bin)+hratio_unmatched->GetBinContent(bin);
-        
-        std::cout<<sum<<std::endl;
-    }
-//
-//    c->Print(Form("../plots/purity/matched_unmatched_e2c_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/purity/matched_unmatched_e2c_deltarleq%.3f.pdf",R_L_res));
     
 }

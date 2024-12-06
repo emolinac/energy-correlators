@@ -1,9 +1,9 @@
-#include "../include/analysis-constants.h"
-#include "../include/analysis-cuts.h"
-#include "../include/directories.h"
-#include "../include/names.h"
-#include "../include/utils-algorithms.h"
-#include "../include/utils-visual.h"
+#include "../../include/analysis-constants.h"
+#include "../../include/analysis-cuts.h"
+#include "../../include/directories.h"
+#include "../../include/names.h"
+#include "../../include/utils-algorithms.h"
+#include "../../include/utils-visual.h"
 
 void macro_print_pairpurity_rl()
 {
@@ -48,6 +48,12 @@ void macro_print_pairpurity_rl()
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
 
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
+
     // MCRECO PLOTS
     THStack* s = new THStack();
     s->Add(hsig);
@@ -65,7 +71,9 @@ void macro_print_pairpurity_rl()
     l->AddEntry(hall,"MCReco All"   ,"lpf");
     l->Draw("SAME");
 
-    c->Print(Form("../plots/purity/npair_rl_signalvsall_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/purity/npair_rl_signalvsall_deltarleq%.3f.pdf",R_L_res));
     
     gPad->SetLogy(0);
 
@@ -79,7 +87,9 @@ void macro_print_pairpurity_rl()
     hpurity->GetYaxis()->SetRangeUser(0,1);
     hpurity->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair Purity",R_L_res));
 
-    c->Print(Form("../plots/purity/npair_purity_rl_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/purity/npair_purity_rl_deltarleq%.3f.pdf",R_L_res));
     
     // DATA PLOTS
     hsig_data->Multiply(hpurity);
@@ -100,5 +110,7 @@ void macro_print_pairpurity_rl()
     l_data->AddEntry(hall_data,"Data All"      ,"lpf");
     l_data->Draw("SAME");
 
-    c->Print(Form("../plots/purity/npair_wpurity_rl_data_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+    
+    c->Print(Form("../../plots/purity/npair_wpurity_rl_data_deltarleq%.3f.pdf",R_L_res));
 }

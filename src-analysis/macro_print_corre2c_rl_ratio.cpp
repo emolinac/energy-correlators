@@ -56,6 +56,12 @@ void macro_print_corre2c_rl_ratio()
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
 
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
+
     set_histogram_style(hcorr_data, kViolet, std_line_width, std_marker_style, std_marker_size);
     set_histogram_style(h_mc      , kCyan  , std_line_width, std_marker_style, std_marker_size);
 
@@ -93,6 +99,8 @@ void macro_print_corre2c_rl_ratio()
     l_data->AddEntry(h_mc      ,"MC"        ,"lpf");
     l_data->Draw("SAME");
     c->Update();
+
+    tex->DrawLatexNDC(0.2,0.2,"LHCb Internal");
 
     c->Print(Form("../plots/ratio_corr_e2c_deltarleq%.3f.pdf",R_L_res));
 }

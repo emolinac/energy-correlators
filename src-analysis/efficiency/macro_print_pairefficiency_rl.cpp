@@ -1,9 +1,9 @@
-#include "../include/analysis-constants.h"
-#include "../include/analysis-cuts.h"
-#include "../include/directories.h"
-#include "../include/names.h"
-#include "../include/utils-algorithms.h"
-#include "../include/utils-visual.h"
+#include "../../include/analysis-constants.h"
+#include "../../include/analysis-cuts.h"
+#include "../../include/directories.h"
+#include "../../include/names.h"
+#include "../../include/utils-algorithms.h"
+#include "../../include/utils-visual.h"
 
 void macro_print_pairefficiency_rl()
 {
@@ -40,10 +40,16 @@ void macro_print_pairefficiency_rl()
     set_histogram_style(hall_data, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Project into the histograms
-    ntuple_efficiency_reco->Project("hsig","R_L",pair_cut);
-    ntuple_efficiency_mc->Project("hall","R_L",pair_cut);
-    ntuple_data->Project("hcorr_data","R_L",pair_cut);
-    ntuple_data->Project("hall_data","R_L",pair_cut);
+    ntuple_efficiency_reco->Project("hsig","R_L",pair_signal_cut+"(h1_pt<7&&h2_pt<7)");
+    ntuple_efficiency_mc->Project("hall","R_L",pair_cut+"(h1_pt<7&&h2_pt<7)");
+    ntuple_data->Project("hcorr_data","R_L",pair_cut+"(h1_pt<7&&h2_pt<7)");
+    ntuple_data->Project("hall_data","R_L",pair_cut+"(h1_pt<7&&h2_pt<7)");
+    
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
@@ -65,7 +71,9 @@ void macro_print_pairefficiency_rl()
     l->AddEntry(hall,"MC"  ,"lpf");
     l->Draw("SAME");
 
-    c->Print(Form("../plots/efficiency/npair_rl_recovsmc_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/efficiency/npair_rl_recovsmc_deltarleq%.3f.pdf",R_L_res));
     
     gPad->SetLogy(0);
 
@@ -75,9 +83,12 @@ void macro_print_pairefficiency_rl()
     
     hefficiency->Draw();
     hefficiency->GetXaxis()->SetRangeUser(R_L_min,1);
+    hefficiency->GetYaxis()->SetRangeUser(0,0.6);
     hefficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",R_L_res));
 
-    c->Print(Form("../plots/efficiency/npair_efficiency_rl_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/efficiency/npair_efficiency_rl_deltarleq%.3f.pdf",R_L_res));
     
     // DATA PLOTS
     hcorr_data->Divide(hefficiency);
@@ -98,5 +109,7 @@ void macro_print_pairefficiency_rl()
     l_data->AddEntry(hall_data,"Data All"           ,"lpf");
     l_data->Draw("SAME");
 
-    c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+    
+    c->Print(Form("../../plots/efficiency/npair_wefficiency_rl_data_deltarleq%.3f.pdf",R_L_res));
 }

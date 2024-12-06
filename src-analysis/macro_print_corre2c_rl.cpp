@@ -51,9 +51,18 @@ void macro_print_corre2c_rl()
     ntuple_purity->Project("hall_pur","R_L",pair_cut);
     ntuple_data->Project("hcorr_data","R_L",e2c_cut);
     ntuple_data->Project("hall_data","R_L",e2c_cut);
+
+    hcorr_data->Scale(1./hcorr_data->Integral());
+    hall_data->Scale(1./hall_data->Integral());
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
+
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
 
     // Corrections
     hefficiency->Divide(hsig_eff,hall_eff,1,1,"B");
@@ -77,6 +86,8 @@ void macro_print_corre2c_rl()
     l_data->AddEntry(hcorr_data,"Corr. Data","lpf");
     l_data->AddEntry(hall_data ,"Data"          ,"lpf");
     l_data->Draw("SAME");
+
+    tex->DrawLatexNDC(0.2,0.2,"LHCb Internal");
 
     c->Print(Form("../plots/corr_e2c_deltarleq%.3f.pdf",R_L_res));
 }

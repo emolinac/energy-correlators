@@ -1,9 +1,9 @@
-#include "../include/analysis-constants.h"
-#include "../include/analysis-cuts.h"
-#include "../include/directories.h"
-#include "../include/names.h"
-#include "../include/utils-algorithms.h"
-#include "../include/utils-visual.h"
+#include "../../include/analysis-constants.h"
+#include "../../include/analysis-cuts.h"
+#include "../../include/directories.h"
+#include "../../include/names.h"
+#include "../../include/utils-algorithms.h"
+#include "../../include/utils-visual.h"
 
 void macro_print_pairefficiency_rl_jet_pt()
 {
@@ -58,15 +58,21 @@ void macro_print_pairefficiency_rl_jet_pt()
     // Project into the histograms
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        ntuple_efficiency_reco->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
-        ntuple_efficiency_mc->Project(Form("hall[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
+        ntuple_efficiency_reco->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
+        ntuple_efficiency_mc->Project(Form("hall[%i]",jet_pt_bin),"R_L"  ,pair_jetpt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
+        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L"     ,pair_jetpt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L"      ,pair_jetpt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
     }
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
 
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
+    
     // MCRECO PLOTS
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -87,7 +93,9 @@ void macro_print_pairefficiency_rl_jet_pt()
     s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
     l->Draw("SAME");
 
-    c->Print(Form("../plots/efficiency/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/efficiency/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",R_L_res));
     gPad->SetLogy(0);
 
     // efficiency PLOTS
@@ -106,10 +114,13 @@ void macro_print_pairefficiency_rl_jet_pt()
     
     s_efficiency->Draw("NOSTACK");
     s_efficiency->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_efficiency->SetMaximum(0.6);
     s_efficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",R_L_res));
     l_efficiency->Draw("SAME");
 
-    c->Print(Form("../plots/efficiency/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/efficiency/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
     
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -134,5 +145,7 @@ void macro_print_pairefficiency_rl_jet_pt()
     gPad->SetLogx(1);
     gPad->SetLogy(1);
 
-    c->Print(Form("../plots/efficiency/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
+    tex->DrawLatexNDC(0.3,0.3,"simulations");
+
+    c->Print(Form("../../plots/efficiency/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
 }

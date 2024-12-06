@@ -41,11 +41,28 @@ void macro_print_rl_resolution()
     // Draw
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
 
     hres->Draw();
     hres->SetTitle(";#Delta R_{L}(truth-reco);");
 
     gPad->SetLogy(1);
 
+    TLine* line1 = new TLine();
+    TLine* line2 = new TLine();
+    line1->SetLineColorAlpha(3,0.4);
+    line1->SetLineStyle(9);
+    line2->SetLineColorAlpha(3,0.4);
+    line2->SetLineStyle(9);
+
+    line1->DrawLine(-.02,0,-.02,hres->GetMaximum());
+    line2->DrawLine(.02,0,.02,hres->GetMaximum());
+
+    //tex->DrawLatexNDC(0.3,0.3,"simulations");
+    
     c->Print("../plots/RL_resolution.pdf");
 }

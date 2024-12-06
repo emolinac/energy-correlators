@@ -19,7 +19,7 @@ void macro_print_norme2c_data_jetpt()
 
     TH1F* h[Nbin_jet_pt];
     THStack* s = new THStack();
-    TLegend* l = new TLegend();
+    TLegend* l = new TLegend(.6,.2,.9,.4);
     
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
@@ -38,6 +38,13 @@ void macro_print_norme2c_data_jetpt()
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);
     c->Draw();
+
+    TLatex* tex = new TLatex();
+    tex->SetTextColorAlpha(16,0.3);
+    tex->SetTextSize(0.1991525);
+    tex->SetTextAngle(26.15998);
+    tex->SetLineWidth(2);
+
     s->Draw("NOSTACK");
     s->SetTitle(";R_{L};Norm. E2C");
     //s->SetMaximum(1);
@@ -46,6 +53,8 @@ void macro_print_norme2c_data_jetpt()
     //gPad->SetLogy(1);
 
     l->Draw("SAME");
+
+    tex->DrawLatexNDC(0.2,0.2,"LHCb Internal");
 
     c->Print("../plots/norme2c_rl_data_jetpt.pdf");
 }
