@@ -54,8 +54,10 @@ int main()
         if(datatree->nPV!=1) continue;
 
         // Apply trigger cut
-        if(datatree->mum_L0MuonEWDecision_TOS!=1||datatree->mum_Hlt1SingleMuonHighPTDecision_TOS!=1||datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
-        if(datatree->mup_L0MuonEWDecision_TOS!=1||datatree->mup_Hlt1SingleMuonHighPTDecision_TOS!=1||datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
+        bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS==1&&datatree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+        bool mup_trigger = (datatree->mup_L0MuonEWDecision_TOS==1&&datatree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+
+        if(!mum_trigger&&!mup_trigger) continue;
 
         // Set Jet-associated 4 vectors and apply cuts
         Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,
@@ -64,14 +66,14 @@ int main()
                                 datatree->Jet_PE/1000.);
 
         if(Jet_4vector->Eta()<jet_eta_min||Jet_4vector->Eta()>jet_eta_max) continue;
-        if(Jet_4vector->Pt()<jet_pt_min) continue;
+        if(Jet_4vector->Pt()<jet_pt_min_nom) continue;
 
         mum_4vector->SetPxPyPzE(datatree->mum_PX/1000., 
                                 datatree->mum_PY/1000., 
                                 datatree->mum_PZ/1000., 
                                 datatree->mum_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mum_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
         if(mum_4vector->Pt()<muon_pt_min) continue;
         if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
         if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -81,7 +83,7 @@ int main()
                                 datatree->mup_PZ/1000., 
                                 datatree->mup_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mup_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
         if(mup_4vector->Pt()<muon_pt_min) continue;
         if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
         if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -169,8 +171,10 @@ int main()
         if(mcrecotree->nPV!=1) continue;
 
         // Apply trigger cut
-        if(mcrecotree->mum_L0MuonEWDecision_TOS!=1||mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS!=1||mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
-        if(mcrecotree->mup_L0MuonEWDecision_TOS!=1||mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS!=1||mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
+        bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS==1&&mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+        bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS==1&&mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+
+        if(!mum_trigger&&!mup_trigger) continue;
 
         // Set Jet-associated 4 vectors and apply cuts
         Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,
@@ -179,14 +183,14 @@ int main()
                                 mcrecotree->Jet_PE/1000.);
 
         if(Jet_4vector->Eta()<jet_eta_min||Jet_4vector->Eta()>jet_eta_max) continue;
-        if(Jet_4vector->Pt()<jet_pt_min) continue;
+        if(Jet_4vector->Pt()<jet_pt_min_nom) continue;
 
         mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000., 
                                 mcrecotree->mum_PY/1000., 
                                 mcrecotree->mum_PZ/1000., 
                                 mcrecotree->mum_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mum_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
         if(mum_4vector->Pt()<muon_pt_min) continue;
         if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
         if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -196,7 +200,7 @@ int main()
                                 mcrecotree->mup_PZ/1000., 
                                 mcrecotree->mup_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mup_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
         if(mup_4vector->Pt()<muon_pt_min) continue;
         if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
         if(mcrecotree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -292,14 +296,14 @@ int main()
                                 mctree->MCJet_PE/1000.);
 
         if(Jet_4vector->Eta()<jet_eta_min||Jet_4vector->Eta()>jet_eta_max) continue;
-        if(Jet_4vector->Pt()<jet_pt_min) continue;
+        if(Jet_4vector->Pt()<jet_pt_min_nom) continue;
 
         mum_4vector->SetPxPyPzE(mctree->MCJet_truth_mum_PX/1000., 
                                 mctree->MCJet_truth_mum_PY/1000., 
                                 mctree->MCJet_truth_mum_PZ/1000., 
                                 mctree->MCJet_truth_mum_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mum_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
         if(mum_4vector->Pt()<muon_pt_min) continue;
         if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
         
@@ -308,7 +312,7 @@ int main()
                                 mctree->MCJet_truth_mup_PZ/1000., 
                                 mctree->MCJet_truth_mup_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mup_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
         if(mup_4vector->Pt()<muon_pt_min) continue;
         if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
         

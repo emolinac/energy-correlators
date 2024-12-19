@@ -34,6 +34,8 @@ const double R_L_res  = 0.02;
 const int Nbin_R_L    = 15;
 const int Nbin_jet_pt = 3;
 
+const int ndim_corr = 50;
+
 const double R_L_min        = 0.0099;
 const double R_L_max        = 0.49;
 const double jet_pt_min_nom = 20; 
@@ -54,5 +56,13 @@ const int corr_marker_style_jet_pt[] = {20,21,22,23,33};
 
 const int std_marker_color_jet_pt[]  = {879,433,417,632,802}; // darker
 const int corr_marker_color_jet_pt[] = {880,432,416,633,797}; // lighter
+
+// SL binning
+const double sl_p_binning[]   = {4., 10., 16., 22., 28., 40., 52., 76., 100., 150., 250., 500., 1000.};
+const double ic_p_binning[]   = {4, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 250, 300, 500, 1000};
+const double sl_eta_binning[] = {2.,2.25,2.5,2.75,3.,3.25,3.5,3.75,4.,4.25,4.5};
+const int sl_eta_nbins = 10;
+const int sl_p_nbins   = 12;
+const int ic_p_nbins   = 18;
 
 #endif
