@@ -49,5 +49,7 @@ void macro_print_singleefficiency_eta_momentum()
     hefficiency->SetTitle(";p(GeV);#eta");
 
     gPad->SetLogx(1);
+
+    hefficiency->Smooth();
     //c->Print("../../plots/efficiency/singlehadron_efficiency_eta_momentum.pdf");
 }

@@ -21,9 +21,6 @@ void macro_print_singlepurity_eta_momentum()
     hall->Sumw2();
     hpurity->Sumw2();
 
-    set_histogram_style(hsig, kViolet, std_line_width, std_marker_style, std_marker_size);
-    set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
-
     // Project into the histograms
     ntuple_dtrmatch->Project("hsig","h_eta:h_p",single_signal_cut);
     ntuple_dtrmatch->Project("hall","h_eta:h_p",pair_cut         );
@@ -41,6 +38,9 @@ void macro_print_singlepurity_eta_momentum()
     hpurity->SetTitle(";p (GeV);#eta");
 
     gPad->SetLogx(1);
+
+    hpurity->Smooth();
+
 
     //c->Print("../../plots/purity/singlehadron_purity_eta_momentum.pdf");
 }

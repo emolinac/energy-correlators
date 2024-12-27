@@ -17,7 +17,7 @@ const double jet_pt_min  = 15;
 
 // Topological cuts
 const double deltaphi_z_jet_min  = 7*TMath::Pi()/8.;
-const double deltar_muon_jet_min = 0.5;
+const double jet_radius = 0.5;
 
 // Z boson cuts
 const double muon_pt_min  = 20.;
@@ -54,7 +54,7 @@ TCut pair_jetpt_cut[] =
 TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_min_nom,jet_pt_max);
 TCut pair_pairbg_cut   = Form("(h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 TCut pair_singlebg_cut = Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
-TCut single_signal_cut = Form("htruth_phi!=-999&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max); // This was designed for single particle tuples
+TCut single_signal_cut = Form("key_match==1&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max); // This was designed for single particle tuples
 
 TCut e2c_signal_cut   = Form("weight*(TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f)",R_L_res,jet_pt_min_nom,jet_pt_max);
 TCut e2c_pairbg_cut   = Form("weight*((h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
@@ -88,5 +88,53 @@ Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&
 Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f",jet_pt_binning[1],jet_pt_binning[2]),
 Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f",jet_pt_binning[2],jet_pt_binning[3])
 };
+
+// FUNCTIONS TO APPLY CUTS
+bool apply_jet_cuts(double jet_eta, double jet_pt)
+{
+    if(jet_eta<jet_eta_min||jet_eta>jet_eta_max) return false;
+    if(jet_pt<jet_pt_min_nom) return false;
+
+    return true;    
+}
+
+bool apply_muon_cuts(double deltaR_mu_jet, double mu_pt, double mu_eta)
+{
+    if(deltaR_mu_jet<jet_radius) return false; 
+    if(mu_pt<muon_pt_min) return false;
+    if(mu_eta<muon_eta_min||mu_eta>muon_eta_max) return false;
+
+    return true;
+}
+
+bool apply_zboson_cuts(double deltaphi_zboson_jet, double zboson_mass)
+{
+    if(deltaphi_zboson_jet<deltaphi_z_jet_min) return false;
+    if(zboson_mass<muonmuon_mass_min||zboson_mass>muonmuon_mass_max) return false;
+
+    return true;
+}
+
+bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double deltaR_h_jet)
+{
+    if(charge==0) return false;
+    if(p<track_p_min||p>track_p_max) return false;
+    if(pt<track_pt_min) return false;
+    if(chi2ndf>track_chi2ndf_max) return false;
+    if(probnnghost>track_probnnghost_max) return false;
+    if(deltaR_h_jet>jet_radius) return false;
+
+    return true;
+}
+
+bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double deltaR_h_jet)
+{
+    if(charge==0) return false;
+    if(p<track_p_min||p>track_p_max) return false;
+    if(pt<track_pt_min) return false;
+    if(deltaR_h_jet>jet_radius) return false;
+
+    return true;
+}
 
 #endif

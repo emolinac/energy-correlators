@@ -8,5 +8,5 @@ cd ./bin
 echo "Purity Ntuple ready!"
 ./create_e2c_efficiencyntuple
 echo "Efficiency Ntuple ready!"
-./create_e2c_corrntuple
-echo "Corr. Data Ntuple ready!"
+# ./create_e2c_corrntuple
+# echo "Corr. Data Ntuple ready!"

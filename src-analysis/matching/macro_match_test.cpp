@@ -60,7 +60,7 @@ void macro_match_test()
                                 tree_nomatchedjetdtrs->mum_PZ/1000., 
                                 tree_nomatchedjetdtrs->mum_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<jet_radius) continue; 
         if(mum_4vector->Pt()<muon_pt_min) continue;
         if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
         if(tree_nomatchedjetdtrs->mum_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -70,7 +70,7 @@ void macro_match_test()
                                 tree_nomatchedjetdtrs->mup_PZ/1000., 
                                 tree_nomatchedjetdtrs->mup_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<jet_radius) continue; 
         if(mup_4vector->Pt()<muon_pt_min) continue;
         if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
         if(tree_nomatchedjetdtrs->mup_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -134,7 +134,7 @@ void macro_match_test()
                                 tree_nomatchedjetdtrs->mum_PZ/1000., 
                                 tree_nomatchedjetdtrs->mum_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<jet_radius) continue; 
         if(mum_4vector->Pt()<muon_pt_min) continue;
         if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
         if(tree_nomatchedjetdtrs->mum_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -144,7 +144,7 @@ void macro_match_test()
                                 tree_nomatchedjetdtrs->mup_PZ/1000., 
                                 tree_nomatchedjetdtrs->mup_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<jet_radius) continue; 
         if(mup_4vector->Pt()<muon_pt_min) continue;
         if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
         if(tree_nomatchedjetdtrs->mup_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -215,7 +215,7 @@ void macro_match_test()
                                 tree_matchedjetdtrs->mum_PZ/1000., 
                                 tree_matchedjetdtrs->mum_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<jet_radius) continue; 
         if(mum_4vector->Pt()<muon_pt_min) continue;
         if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
         if(tree_matchedjetdtrs->mum_TRACK_PCHI2<muon_trackprob_min) continue;
@@ -225,7 +225,7 @@ void macro_match_test()
                                 tree_matchedjetdtrs->mup_PZ/1000., 
                                 tree_matchedjetdtrs->mup_PE/1000.);
 
-        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
+        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<jet_radius) continue; 
         if(mup_4vector->Pt()<muon_pt_min) continue;
         if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
         if(tree_matchedjetdtrs->mup_TRACK_PCHI2<muon_trackprob_min) continue;

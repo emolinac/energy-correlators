@@ -36,34 +36,41 @@ int main()
     ntuple_data->SetAutoSave(0);
 
     // Calculate corrections
-    TH2F* hsigp   = new TH2F("hsigp"  ,"",ndim_corr,-TMath::Pi(),TMath::Pi(),ndim_corr,eta_min,eta_max);
-    TH2F* hallp   = new TH2F("hallp"  ,"",ndim_corr,-TMath::Pi(),TMath::Pi(),ndim_corr,eta_min,eta_max);
-    TH2F* hpurity = new TH2F("hpurity","",ndim_corr,-TMath::Pi(),TMath::Pi(),ndim_corr,eta_min,eta_max);
+    TH2F* hsigp   = new TH2F("hsigp"  ,"",ic_p_nbins,ic_p_binning,12,2,4.5);
+    TH2F* hallp   = new TH2F("hallp"  ,"",ic_p_nbins,ic_p_binning,12,2,4.5);
+    TH2F* hpurity = new TH2F("hpurity","",ic_p_nbins,ic_p_binning,12,2,4.5);
     hsigp->Sumw2();
     hallp->Sumw2();
     hpurity->Sumw2();
 
-    TH2F* hsigeff     = new TH2F("hsigeff"    ,"",ndim_corr,-TMath::Pi(),TMath::Pi(),ndim_corr,eta_min,eta_max);
-    TH2F* halleff     = new TH2F("halleff"    ,"",ndim_corr,-TMath::Pi(),TMath::Pi(),ndim_corr,eta_min,eta_max);
-    TH2F* hefficiency = new TH2F("hefficiency","",ndim_corr,-TMath::Pi(),TMath::Pi(),ndim_corr,eta_min,eta_max);
+    TH2F* hsigeff     = new TH2F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,12,2,4.5);
+    TH2F* halleff     = new TH2F("halleff"    ,"",ic_p_nbins,ic_p_binning,12,2,4.5);
+    TH2F* hefficiency = new TH2F("hefficiency","",ic_p_nbins,ic_p_binning,12,2,4.5);
     hsigeff->Sumw2();
     halleff->Sumw2();
     hefficiency->Sumw2();
 
-    ntuple_purity->Project("hsigp","h_eta:h_phi",single_signal_cut);
-    ntuple_purity->Project("hallp","h_eta:h_phi",pair_cut         );
+    ntuple_purity->Project("hsigp","h_eta:h_p",single_signal_cut);
+    ntuple_purity->Project("hallp","h_eta:h_p",pair_cut         );
     hpurity->Divide(hsigp,hallp,1,1,"B");
 
-    ntuple_efficiency_reco->Project("hsigeff","h_eta:h_phi",single_signal_cut);
-    ntuple_efficiency_mc->Project("halleff","h_eta:h_phi",pair_cut         );
+    ntuple_efficiency_reco->Project("hsigeff","h_eta:h_p",single_signal_cut);
+    ntuple_efficiency_mc->Project("halleff","h_eta:h_p",pair_cut         );
     hefficiency->Divide(hsigeff,halleff,1,1,"B");
 
     // Create necessary 4vectors
-    TLorentzVector* Jet_4vector = new TLorentzVector();
-    TLorentzVector* Z0_4vector  = new TLorentzVector();
-    TLorentzVector* mum_4vector = new TLorentzVector();
-    TLorentzVector* mup_4vector = new TLorentzVector();
+    TLorentzVector* Jet_4vector   = new TLorentzVector();
+    TLorentzVector* Z0_4vector    = new TLorentzVector();
+    TLorentzVector* mum_4vector   = new TLorentzVector();
+    TLorentzVector* mup_4vector   = new TLorentzVector();
+    TLorentzVector* h1_4vector    = new TLorentzVector();
+    TLorentzVector* h2_4vector    = new TLorentzVector();
 
+    int eventNum;
+    unsigned long long last_eventNum = 0;
+    int events = 0;
+    bool maxjetpT_found = false;
+    
     // Define array carrying the variables
     float vars[Nvars_corrdata];
 
@@ -72,6 +79,23 @@ int main()
     {
         // Access entry of tree
         datatree->GetEntry(evt);
+
+        if(evt%10000==0)
+      {
+        double percentage = 100.*evt/datatree->fChain->GetEntries();
+        std::cout<<percentage<<"\% jets processed."<<std::endl;
+      }
+        // Access entry of tree
+        datatree->GetEntry(evt);
+
+        if (evt != 0)
+        {
+          if (datatree->eventNumber != last_eventNum) maxjetpT_found = false;
+          if (last_eventNum == datatree->eventNumber) continue;
+        }
+
+        last_eventNum = datatree->eventNumber;
+        if (maxjetpT_found) continue;
 
         // Apply PV cut
         if(datatree->nPV!=1) continue;
@@ -83,56 +107,33 @@ int main()
         if(!mum_trigger&&!mup_trigger) continue;
 
         // Set Jet-associated 4 vectors and apply cuts
-        Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,
-                                datatree->Jet_PY/1000., 
-                                datatree->Jet_PZ/1000., 
-                                datatree->Jet_PE/1000.);
+        Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,datatree->Jet_PY/1000.,datatree->Jet_PZ/1000.,datatree->Jet_PE/1000.);
+        if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+        
+        mum_4vector->SetPxPyPzE(datatree->mum_PX/1000.,datatree->mum_PY/1000.,datatree->mum_PZ/1000.,datatree->mum_PE/1000.);
+        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+        //if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
 
-        if(Jet_4vector->Eta()<jet_eta_min||Jet_4vector->Eta()>jet_eta_max) continue;
-        if(Jet_4vector->Pt()<jet_pt_min_nom) continue;
+        mup_4vector->SetPxPyPzE(datatree->mup_PX/1000.,datatree->mup_PY/1000.,datatree->mup_PZ/1000.,datatree->mup_PE/1000.);
+        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+        //if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
 
-        mum_4vector->SetPxPyPzE(datatree->mum_PX/1000., 
-                                datatree->mum_PY/1000., 
-                                datatree->mum_PZ/1000., 
-                                datatree->mum_PE/1000.);
-
-        if(Jet_4vector->DeltaR(*mum_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
-        if(mum_4vector->Pt()<muon_pt_min) continue;
-        if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
-        if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
-
-        mup_4vector->SetPxPyPzE(datatree->mup_PX/1000., 
-                                datatree->mup_PY/1000., 
-                                datatree->mup_PZ/1000., 
-                                datatree->mup_PE/1000.);
-
-        if(Jet_4vector->DeltaR(*mup_4vector, 0/*use pseudorapidity*/)<deltar_muon_jet_min) continue; 
-        if(mup_4vector->Pt()<muon_pt_min) continue;
-        if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
-        if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
-
-        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(), 
-                               mup_4vector->Py()+mum_4vector->Py(), 
-                               mup_4vector->Pz()+mum_4vector->Pz(), 
-                               mup_4vector->E() +mum_4vector->E());
-
-        if(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector))<deltaphi_z_jet_min) continue;
-        if(Z0_4vector->M()<muonmuon_mass_min||Z0_4vector->M()>muonmuon_mass_max) continue;
-
+        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
+        if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+        
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < datatree->Jet_NDtr ; h1_index++)
         {
             // Skip non-hadronic particles
             if(datatree->Jet_Dtr_IsMeson[h1_index]!=1&&datatree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
-            // Skip neutrals
-            if(datatree->Jet_Dtr_ThreeCharge[h1_index]==0) continue;
-
-            // Apply cuts
-            if(datatree->Jet_Dtr_P[h1_index]/1000.<track_p_min||datatree->Jet_Dtr_P[h1_index]/1000.>track_p_max) continue;
-            if(datatree->Jet_Dtr_PT[h1_index]/1000.<track_pt_min) continue;
-            if(datatree->Jet_Dtr_TrackChi2[h1_index]/datatree->Jet_Dtr_TrackNDF[h1_index]>track_chi2ndf_max) continue;
-            if(datatree->Jet_Dtr_ProbNNghost[h1_index]>track_probnnghost_max) continue;
+            h1_4vector->SetPxPyPzE(datatree->Jet_Dtr_PX[h1_index]/1000.,datatree->Jet_Dtr_PY[h1_index]/1000.,datatree->Jet_Dtr_PZ[h1_index]/1000.,datatree->Jet_Dtr_E[h1_index]/1000.);
+            if(!apply_chargedtrack_cuts(datatree->Jet_Dtr_ThreeCharge[h1_index],
+                                        datatree->Jet_Dtr_P[h1_index]/1000.,
+                                        datatree->Jet_Dtr_PT[h1_index]/1000.,
+                                        datatree->Jet_Dtr_TrackChi2[h1_index]/datatree->Jet_Dtr_TrackNDF[h1_index],
+                                        datatree->Jet_Dtr_ProbNNghost[h1_index],
+                                        Jet_4vector->DeltaR(*h1_4vector))) continue;
 
             // Loop over hadron 2
             for(int h2_index = h1_index+1 ; h2_index < datatree->Jet_NDtr ; h2_index++)
@@ -140,30 +141,30 @@ int main()
                 // Skip non-hadronic particles
                 if(datatree->Jet_Dtr_IsMeson[h2_index]!=1&&datatree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
-                // Skip neutrals
-                if(datatree->Jet_Dtr_ThreeCharge[h2_index]==0) continue;
+                h2_4vector->SetPxPyPzE(datatree->Jet_Dtr_PX[h2_index]/1000.,datatree->Jet_Dtr_PY[h2_index]/1000.,datatree->Jet_Dtr_PZ[h2_index]/1000.,datatree->Jet_Dtr_E[h2_index]/1000.);
+                if(!apply_chargedtrack_cuts(datatree->Jet_Dtr_ThreeCharge[h2_index],
+                                            datatree->Jet_Dtr_P[h2_index]/1000.,
+                                            datatree->Jet_Dtr_PT[h2_index]/1000.,
+                                            datatree->Jet_Dtr_TrackChi2[h2_index]/datatree->Jet_Dtr_TrackNDF[h2_index],
+                                            datatree->Jet_Dtr_ProbNNghost[h2_index],
+                                            Jet_4vector->DeltaR(*h2_4vector))) continue;
 
-                // Apply cuts
-                if(datatree->Jet_Dtr_P[h2_index]/1000.<track_p_min||datatree->Jet_Dtr_P[h2_index]/1000.>track_p_max) continue;
-                if(datatree->Jet_Dtr_PT[h2_index]/1000.<track_pt_min) continue;
-                if(datatree->Jet_Dtr_TrackChi2[h2_index]/datatree->Jet_Dtr_TrackNDF[h2_index]>track_chi2ndf_max) continue;
-                if(datatree->Jet_Dtr_ProbNNghost[h2_index]>track_probnnghost_max) continue;
 
-                double purity_correction = (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_PHI[h1_index],datatree->Jet_Dtr_ETA[h1_index])))*
-                                           (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_PHI[h2_index],datatree->Jet_Dtr_ETA[h2_index])));
+                double purity_correction = (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
+                                           (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index])));
 
-                double purity_error = (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_PHI[h1_index],datatree->Jet_Dtr_ETA[h1_index])))*
-                                      (hpurity->GetBinError(hpurity->FindBin(datatree->Jet_Dtr_PHI[h2_index],datatree->Jet_Dtr_ETA[h2_index]))) +
-                                      (hpurity->GetBinError(hpurity->FindBin(datatree->Jet_Dtr_PHI[h1_index],datatree->Jet_Dtr_ETA[h1_index])))*
-                                      (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_PHI[h2_index],datatree->Jet_Dtr_ETA[h2_index])));
+                double purity_error = (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
+                                      (hpurity->GetBinError(hpurity->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index]))) +
+                                      (hpurity->GetBinError(hpurity->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
+                                      (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index])));
 
-                double efficiency_correction = (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_PHI[h1_index],datatree->Jet_Dtr_ETA[h1_index])))*
-                                               (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_PHI[h2_index],datatree->Jet_Dtr_ETA[h2_index])));
+                double efficiency_correction = (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
+                                               (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index])));
 
-                double efficiency_error = (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_PHI[h1_index],datatree->Jet_Dtr_ETA[h1_index])))*
-                                          (hefficiency->GetBinError(hefficiency->FindBin(datatree->Jet_Dtr_PHI[h2_index],datatree->Jet_Dtr_ETA[h2_index]))) +
-                                          (hefficiency->GetBinError(hefficiency->FindBin(datatree->Jet_Dtr_PHI[h1_index],datatree->Jet_Dtr_ETA[h1_index])))*
-                                          (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_PHI[h2_index],datatree->Jet_Dtr_ETA[h2_index])));
+                double efficiency_error = (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
+                                          (hefficiency->GetBinError(hefficiency->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index]))) +
+                                          (hefficiency->GetBinError(hefficiency->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
+                                          (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index])));
 
                 vars[0 ] = weight(datatree->Jet_Dtr_E[h1_index], datatree->Jet_Dtr_E[h2_index], datatree->Jet_PE);
                 vars[1 ] = efficiency_correction;
