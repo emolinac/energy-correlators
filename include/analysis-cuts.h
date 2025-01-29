@@ -60,13 +60,13 @@ TCut e2c_signal_cut   = Form("weight*(TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&j
 TCut e2c_pairbg_cut   = Form("weight*((h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 TCut e2c_singlebg_cut = Form("weight*(((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 
-TCut purity_corr_singletrack         = Form("purity*(purity_relerror<0.4&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut efficiency_corr_singletrack     = Form("(1./efficiency)*(efficiency_relerror<0.4&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut full_corr_singletrack           = Form("purity*(1./efficiency)*(efficiency_relerror<0.4&&purity_relerror<0.4&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut purity_corr_singletrack         = Form("purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut efficiency_corr_singletrack     = Form("(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut full_corr_singletrack           = Form("purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
-TCut e2c_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<0.4&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut e2c_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<0.4&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut e2c_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<0.4&&purity_relerror<0.4&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut e2c_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut e2c_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut e2c_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
 TCut pair_jetpt_signal_cut[] = 
 {

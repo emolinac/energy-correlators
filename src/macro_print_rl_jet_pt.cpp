@@ -17,7 +17,7 @@ void macro_print_rl_jet_pt()
     double binning[Nbin_R_L+1];
     determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
-    TH2F* h = new TH2F("h","",Nbin_R_L,R_L_min,R_L_max, 150, jet_pt_min, jet_pt_max);
+    TH2F* h = new TH2F("h","",100,0.01,1, 150, jet_pt_min, jet_pt_max);
     
     // Create Canvas and draw in it
     TCanvas* c = new TCanvas("","",800,600);

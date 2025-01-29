@@ -10,6 +10,7 @@
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
+#include "TH3.h"
 #include "analysis-constants.h"
 #include "analysis-cuts.h"
 #include "analysis-functions.h"
@@ -18,108 +19,105 @@
 
 int main()
 {
-    // Open correction files
-    TFile* fpurity     = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
-    TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
+  // Open correction files
+  TFile* fpurity     = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
+  TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
+  
+  // Create output file
+  TFile* fout = new TFile((output_folder+namef_ntuple_e2c_corr).c_str(),"RECREATE");
+  
+  // Declare the TTrees to be used to build the ntuples
+  TZJetsData* datatree = new TZJetsData();
+  
+  // Create Ntuples
+  TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity.c_str()));
+  TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_mc.c_str()));
+  TNtuple* ntuple_efficiency_reco = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_reco.c_str()));
+  TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str(),"All Data",ntuple_corrdata_vars); 
+  ntuple_data->SetAutoSave(0);
+
+  // Calculate corrections
+  TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jet_pt,jet_pt_binning);
+  TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jet_pt,jet_pt_binning);
+  TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jet_pt,jet_pt_binning);
+  hsigp->Sumw2();
+  hallp->Sumw2();
+  hpurity->Sumw2();
+
+  TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jet_pt,jet_pt_binning);
+  TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jet_pt,jet_pt_binning);
+  TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jet_pt,jet_pt_binning);
+  hsigeff->Sumw2();
+  halleff->Sumw2();
+  hefficiency->Sumw2();
+
+  ntuple_purity->Project("hsigp","jet_pt:h_eta:h_p",single_signal_cut);
+  ntuple_purity->Project("hallp","jet_pt:h_eta:h_p",pair_cut         );
+  hpurity->Divide(hsigp,hallp,1,1,"B");
+
+  ntuple_efficiency_reco->Project("hsigeff","jet_pt:h_eta:h_p",single_signal_cut);
+  ntuple_efficiency_mc->Project("halleff","jet_pt:h_eta:h_p",pair_cut         );
+  hefficiency->Divide(hsigeff,halleff,1,1,"B");
+
+  // Create necessary 4vectors
+  TLorentzVector* Jet_4vector = new TLorentzVector();
+  TLorentzVector* Z0_4vector  = new TLorentzVector();
+  TLorentzVector* mum_4vector = new TLorentzVector();
+  TLorentzVector* mup_4vector = new TLorentzVector();
+  TLorentzVector* h1_4vector  = new TLorentzVector();
+  TLorentzVector* h2_4vector  = new TLorentzVector();
+  int eventNum;
+  unsigned long long last_eventNum = 0;
+  int events = 0;
+  bool maxjetpT_found = false;
     
-    // Create output file
-    TFile* fout = new TFile((output_folder+namef_ntuple_e2c_corr).c_str(),"RECREATE");
-    
-    // Declare the TTrees to be used to build the ntuples
-    TZJetsData* datatree = new TZJetsData();
-    
-    // Create Ntuples
-    TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity.c_str()));
-    TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_mc.c_str()));
-    TNtuple* ntuple_efficiency_reco = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_reco.c_str()));
-    TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str(),"All Data",ntuple_corrdata_vars); 
-    ntuple_data->SetAutoSave(0);
+  // Define array carrying the variables
+  float vars[Nvars_corrdata];
 
-    // Calculate corrections
-    TH2F* hsigp   = new TH2F("hsigp"  ,"",ic_p_nbins,ic_p_binning,12,2,4.5);
-    TH2F* hallp   = new TH2F("hallp"  ,"",ic_p_nbins,ic_p_binning,12,2,4.5);
-    TH2F* hpurity = new TH2F("hpurity","",ic_p_nbins,ic_p_binning,12,2,4.5);
-    hsigp->Sumw2();
-    hallp->Sumw2();
-    hpurity->Sumw2();
-
-    TH2F* hsigeff     = new TH2F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,12,2,4.5);
-    TH2F* halleff     = new TH2F("halleff"    ,"",ic_p_nbins,ic_p_binning,12,2,4.5);
-    TH2F* hefficiency = new TH2F("hefficiency","",ic_p_nbins,ic_p_binning,12,2,4.5);
-    hsigeff->Sumw2();
-    halleff->Sumw2();
-    hefficiency->Sumw2();
-
-    ntuple_purity->Project("hsigp","h_eta:h_p",single_signal_cut);
-    ntuple_purity->Project("hallp","h_eta:h_p",pair_cut         );
-    hpurity->Divide(hsigp,hallp,1,1,"B");
-
-    ntuple_efficiency_reco->Project("hsigeff","h_eta:h_p",single_signal_cut);
-    ntuple_efficiency_mc->Project("halleff","h_eta:h_p",pair_cut         );
-    hefficiency->Divide(hsigeff,halleff,1,1,"B");
-
-    // Create necessary 4vectors
-    TLorentzVector* Jet_4vector   = new TLorentzVector();
-    TLorentzVector* Z0_4vector    = new TLorentzVector();
-    TLorentzVector* mum_4vector   = new TLorentzVector();
-    TLorentzVector* mup_4vector   = new TLorentzVector();
-    TLorentzVector* h1_4vector    = new TLorentzVector();
-    TLorentzVector* h2_4vector    = new TLorentzVector();
-
-    int eventNum;
-    unsigned long long last_eventNum = 0;
-    int events = 0;
-    bool maxjetpT_found = false;
-    
-    // Define array carrying the variables
-    float vars[Nvars_corrdata];
-
-    // Fill the data TNtuple
-    for(int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
+  // Fill the data TNtuple
+  for(int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
+  {
+    // Access entry of tree
+    datatree->GetEntry(evt);
+    if(evt%10000==0)
     {
-        // Access entry of tree
-        datatree->GetEntry(evt);
+      double percentage = 100.*evt/datatree->fChain->GetEntries();
+      std::cout<<percentage<<"\% jets processed."<<std::endl;
+    }
+    // Access entry of tree
+    datatree->GetEntry(evt);
 
-        if(evt%10000==0)
-      {
-        double percentage = 100.*evt/datatree->fChain->GetEntries();
-        std::cout<<percentage<<"\% jets processed."<<std::endl;
-      }
-        // Access entry of tree
-        datatree->GetEntry(evt);
+    if (evt != 0)
+    {
+      if (datatree->eventNumber != last_eventNum) maxjetpT_found = false;
+      if (last_eventNum == datatree->eventNumber) continue;
+    }
+    last_eventNum = datatree->eventNumber;
+    if (maxjetpT_found) continue;
 
-        if (evt != 0)
-        {
-          if (datatree->eventNumber != last_eventNum) maxjetpT_found = false;
-          if (last_eventNum == datatree->eventNumber) continue;
-        }
+    // Apply PV cut
+    if(datatree->nPV!=1) continue;
 
-        last_eventNum = datatree->eventNumber;
-        if (maxjetpT_found) continue;
+    // Apply trigger cut
+    bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS==1&&datatree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+    bool mup_trigger = (datatree->mup_L0MuonEWDecision_TOS==1&&datatree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
 
-        // Apply PV cut
-        if(datatree->nPV!=1) continue;
-
-        // Apply trigger cut
-        bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS==1&&datatree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
-        bool mup_trigger = (datatree->mup_L0MuonEWDecision_TOS==1&&datatree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
-
-        if(!mum_trigger&&!mup_trigger) continue;
-
-        // Set Jet-associated 4 vectors and apply cuts
-        Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,datatree->Jet_PY/1000.,datatree->Jet_PZ/1000.,datatree->Jet_PE/1000.);
-        if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
-        
-        mum_4vector->SetPxPyPzE(datatree->mum_PX/1000.,datatree->mum_PY/1000.,datatree->mum_PZ/1000.,datatree->mum_PE/1000.);
-        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
-        //if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
-
-        mup_4vector->SetPxPyPzE(datatree->mup_PX/1000.,datatree->mup_PY/1000.,datatree->mup_PZ/1000.,datatree->mup_PE/1000.);
-        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
-        //if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
-
-        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-        if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if(!mum_trigger&&!mup_trigger) continue;
+    
+    // Set Jet-associated 4 vectors and apply cuts
+    Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,datatree->Jet_PY/1000.,datatree->Jet_PZ/1000.,datatree->Jet_PE/1000.);
+    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    
+    mum_4vector->SetPxPyPzE(datatree->mum_PX/1000.,datatree->mum_PY/1000.,datatree->mum_PZ/1000.,datatree->mum_PE/1000.);
+    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    //if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
+    
+    mup_4vector->SetPxPyPzE(datatree->mup_PX/1000.,datatree->mup_PY/1000.,datatree->mup_PZ/1000.,datatree->mup_PE/1000.);
+    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    //if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
+    
+    Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
+    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
         
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < datatree->Jet_NDtr ; h1_index++)
@@ -135,6 +133,10 @@ int main()
                                         datatree->Jet_Dtr_ProbNNghost[h1_index],
                                         Jet_4vector->DeltaR(*h1_4vector))) continue;
 
+            double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index],datatree->Jet_PT/1000.));
+            double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index],datatree->Jet_PT/1000.));
+            if(h1_purity>1.||h1_efficiency>1.) continue;
+
             // Loop over hadron 2
             for(int h2_index = h1_index+1 ; h2_index < datatree->Jet_NDtr ; h2_index++)
             {
@@ -149,22 +151,21 @@ int main()
                                             datatree->Jet_Dtr_ProbNNghost[h2_index],
                                             Jet_4vector->DeltaR(*h2_4vector))) continue;
 
+                double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index],datatree->Jet_PT/1000.));
+                double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index],datatree->Jet_PT/1000.));
+                if(h2_purity>1.||h2_efficiency>1.) continue;
 
-                double purity_correction = (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
-                                           (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index])));
+                double purity_correction = (h1_purity)*(h2_purity);
 
-                double purity_error = (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
-                                      (hpurity->GetBinError(hpurity->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index]))) +
-                                      (hpurity->GetBinError(hpurity->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
-                                      (hpurity->GetBinContent(hpurity->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index])));
+                double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index],datatree->Jet_PT/1000.));
+                double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index],datatree->Jet_PT/1000.));
+                double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
 
-                double efficiency_correction = (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
-                                               (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index])));
+                double efficiency_correction = (h1_efficiency)*(h2_efficiency);
 
-                double efficiency_error = (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
-                                          (hefficiency->GetBinError(hefficiency->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index]))) +
-                                          (hefficiency->GetBinError(hefficiency->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index])))*
-                                          (hefficiency->GetBinContent(hefficiency->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index])));
+                double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(datatree->Jet_Dtr_P[h1_index]/1000.,datatree->Jet_Dtr_ETA[h1_index],datatree->Jet_PT/1000.));
+                double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(datatree->Jet_Dtr_P[h2_index]/1000.,datatree->Jet_Dtr_ETA[h2_index],datatree->Jet_PT/1000.));
+                double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
                 vars[0 ] = weight(datatree->Jet_Dtr_E[h1_index], datatree->Jet_Dtr_E[h2_index], datatree->Jet_PE);
                 vars[1 ] = efficiency_correction;
@@ -196,13 +197,13 @@ int main()
                 
                 // Fill the TNtuple
                 ntuple_data->Fill(vars);
-            }
-        }
+          }
     }
+  }
 
-    fout->cd();
-    ntuple_data->Write();
-    fout->Close();
-
-    return 0;
+  fout->cd();
+  ntuple_data->Write();
+  fout->Close();
+  
+  return 0;
 }

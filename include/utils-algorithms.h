@@ -15,4 +15,16 @@ void determine_log10binning(int Nbins, double x_i, double x_f, double* binning)
     return;
 }
 
+void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning)
+{
+    double delta = (x_f - x_i)/Nbins;
+
+    for(int i = 0 ; i <=Nbins ; i++)
+    {
+        binning[i] = x_i + delta*i;
+    }
+
+    return;
+}
+
 #endif

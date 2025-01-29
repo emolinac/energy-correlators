@@ -14,9 +14,9 @@ void macro_print_singlepurity_momentum()
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig    = new TH1F("hsig"   ,"",ndim_corr,track_p_min,600);
-    TH1F* hall    = new TH1F("hall"   ,"",ndim_corr,track_p_min,600);
-    TH1F* hpurity = new TH1F("hpurity","",ndim_corr,track_p_min,600);
+    TH1F* hsig    = new TH1F("hsig"   ,"",10,track_p_min,track_p_max);
+    TH1F* hall    = new TH1F("hall"   ,"",10,track_p_min,track_p_max);
+    TH1F* hpurity = new TH1F("hpurity","",10,track_p_min,track_p_max);
     hsig->Sumw2();
     hall->Sumw2();
     hpurity->Sumw2();

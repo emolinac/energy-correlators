@@ -5,7 +5,7 @@
 #include "../../include/utils-algorithms.h"
 #include "../../include/utils-visual.h"
 
-void macro_print_singlepurity_eta_momentum()
+void macro_print_singlepurity_eta_momentum(double jet_pt_min_local = jet_pt_min_nom, double jet_pt_max_local = jet_pt_max)
 {
     // Open the necessary files
     TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
@@ -22,10 +22,10 @@ void macro_print_singlepurity_eta_momentum()
     hpurity->Sumw2();
 
     // Project into the histograms
-    ntuple_dtrmatch->Project("hsig","h_eta:h_p",single_signal_cut);
-    ntuple_dtrmatch->Project("hall","h_eta:h_p",pair_cut         );
+    ntuple_dtrmatch->Project("hsig","h_eta:h_p",single_signal_cut+Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_local,jet_pt_max_local));
+    ntuple_dtrmatch->Project("hall","h_eta:h_p",pair_cut         +Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_local,jet_pt_max_local));
     
-    TCanvas* c = new TCanvas("c","",800,600);
+    TCanvas* c = new TCanvas("c","",2880,1620);
     c->Draw();
 
     // PURITY PLOTS
@@ -33,14 +33,13 @@ void macro_print_singlepurity_eta_momentum()
     
     //set_histogram_style(hpurity, kViolet, std_line_width, std_marker_style, std_marker_size);
     
-    hpurity->Draw("colz");
+    hpurity->Draw("coltext");
     //hpurity->GetYaxis()->SetRangeUser(0,1);
     hpurity->SetTitle(";p (GeV);#eta");
 
     gPad->SetLogx(1);
 
     hpurity->Smooth();
-
-
-    //c->Print("../../plots/purity/singlehadron_purity_eta_momentum.pdf");
+    gStyle->SetPaintTextFormat("4.2f");
+    c->Print(Form("../../plots/purity/singlehadron_purity_eta_momentum_jetpt%.0fto%.0f.pdf",jet_pt_min_local,jet_pt_max_local));
 }

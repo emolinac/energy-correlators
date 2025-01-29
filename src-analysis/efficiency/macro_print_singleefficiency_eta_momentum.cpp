@@ -5,7 +5,7 @@
 #include "../../include/utils-algorithms.h"
 #include "../../include/utils-visual.h"
 
-void macro_print_singleefficiency_eta_momentum()
+void macro_print_singleefficiency_eta_momentum(double jet_pt_min_local = jet_pt_min_nom, double jet_pt_max_local = jet_pt_max)
 {
 // Open the necessary files
     TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
@@ -26,10 +26,10 @@ void macro_print_singleefficiency_eta_momentum()
     hefficiency->Sumw2();
 
     // Project into the histograms
-    ntuple_mcreco->Project("hsig","h_eta:h_p",single_signal_cut);
-    ntuple_mc->Project("hall","h_eta:h_p",pair_cut         );
+    ntuple_mcreco->Project("hsig","h_eta:h_p",single_signal_cut+Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_local,jet_pt_max_local));
+    ntuple_mc->Project("hall","h_eta:h_p",pair_cut             +Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_local,jet_pt_max_local));
 
-    TCanvas* c = new TCanvas("c","",800,600);
+    TCanvas* c = new TCanvas("c","",2880,1620);
     c->Draw();
 
     // efficiency PLOTS
@@ -44,12 +44,12 @@ void macro_print_singleefficiency_eta_momentum()
         }
     }
         
-    hefficiency->Draw("colz");
-    //hefficiency->GetYaxis()->SetRangeUser(0,1);
+    hefficiency->Draw("coltext");
     hefficiency->SetTitle(";p(GeV);#eta");
 
     gPad->SetLogx(1);
 
     hefficiency->Smooth();
-    //c->Print("../../plots/efficiency/singlehadron_efficiency_eta_momentum.pdf");
+    gStyle->SetPaintTextFormat("4.2f");
+    c->Print(Form("../../plots/efficiency/singlehadron_efficiency_eta_momentum_jetpt%.0fto%.0f.pdf",jet_pt_min_local,jet_pt_max_local));
 }
