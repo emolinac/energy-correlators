@@ -11,8 +11,8 @@ import tensorflow as tf
 import uproot
 
 # Specs
-niterations = 40
-nnodes = 10
+niterations = 2
+nnodes = 6
 
 # Get root files
 file      = uproot.open("../output-files/ntuple_e2c_unfolding.root")
@@ -33,22 +33,16 @@ n_to_remove = np.size(theta_unknown_S) - np.size(theta0_S)
 for index in range(0,n_to_remove):
     theta_unknown_S = np.delete(theta_unknown_S, index)
 
-if np.size(theta_unknown_S)==np.size(theta0_S) and np.size(theta_unknown_S)==np.size(theta0_G) :
-    print("Sizes are the same!")
-    
-# Now, stack them to feed them to Keras
-theta0 = np.stack([theta0_G, theta0_S], axis=1)
-
 # Calling layers of NN
 inputs = Input((1, ))
 hidden_layer_1 = Dense(nnodes, activation='relu')(inputs) # relu = rectified linear unit activation function
-# hidden_layer_2 = Dense(nnodes, activation='relu')(hidden_layer_1)
-# hidden_layer_3 = Dense(nnodes, activation='relu')(hidden_layer_2)
-outputs = Dense(1, activation='sigmoid')(hidden_layer_1)
+hidden_layer_2 = Dense(nnodes, activation='relu')(hidden_layer_1)
+hidden_layer_3 = Dense(nnodes, activation='relu')(hidden_layer_2)
+outputs = Dense(1, activation='sigmoid')(hidden_layer_3)
 model = Model(inputs=inputs, outputs=outputs)
 
 # First use of Omnifold
-myweights = of.omnifold(theta0,theta_unknown_S,niterations,model)
+myweights = of.omnifold(theta0_G, theta0_S,theta_unknown_S,niterations,model)
 
 # Visualize
 fig, (ax1, ax2) = plt.subplots(2, sharex = True)
@@ -75,5 +69,5 @@ ax2.plot(ratio_x,ratio_y,marker='o',label="Iter {}".format(niterations))
 
 ax1.legend(frameon=False,loc='upper left')
 ax2.legend(frameon=False,loc='upper left')
-plt.savefig("./plots/{}-iterations_{}-hlayers_{}-nodes_of.pdf".format(niterations, 1, nnodes), format="pdf", bbox_inches="tight")
+plt.savefig("./plots/{}-iterations_{}-hlayers_{}-nodes_of.pdf".format(niterations, 3, nnodes), format="pdf", bbox_inches="tight")
 plt.show()
