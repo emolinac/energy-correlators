@@ -40,6 +40,14 @@ int main()
     TLorentzVector* Z0_4vector  = new TLorentzVector();
     TLorentzVector* mum_4vector = new TLorentzVector();
     TLorentzVector* mup_4vector = new TLorentzVector();
+    TLorentzVector* h1_4vector  = new TLorentzVector();
+    TLorentzVector* h2_4vector  = new TLorentzVector();
+
+    int eventNum;
+    unsigned long long last_eventNum = 0;
+    int events = 0;
+    bool maxjetpT_found = false;
+    
 
     // Define array carrying the variables
     float vars[Nvars_data];
@@ -50,64 +58,58 @@ int main()
         // Access entry of tree
         datatree->GetEntry(evt);
 
+        if(evt%10000==0)
+        {
+          double percentage = 100.*evt/datatree->fChain->GetEntries();
+          std::cout<<percentage<<"\% jets processed."<<std::endl;
+        }
+        
+        if (evt != 0)
+        {
+          if (datatree->eventNumber != last_eventNum) maxjetpT_found = false;
+          if (last_eventNum == datatree->eventNumber) continue;
+        }
+
+        last_eventNum = datatree->eventNumber;
+        if (maxjetpT_found) continue;
+
         // Apply PV cut
         if(datatree->nPV!=1) continue;
 
         // Apply trigger cut
-        if(datatree->mum_L0MuonEWDecision_TOS!=1||datatree->mum_Hlt1SingleMuonHighPTDecision_TOS!=1||datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
-        if(datatree->mup_L0MuonEWDecision_TOS!=1||datatree->mup_Hlt1SingleMuonHighPTDecision_TOS!=1||datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
+        bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS==1&&datatree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+        bool mup_trigger = (datatree->mup_L0MuonEWDecision_TOS==1&&datatree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+
+        if(!mum_trigger&&!mup_trigger) continue;
 
         // Set Jet-associated 4 vectors and apply cuts
-        Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,
-                                datatree->Jet_PY/1000., 
-                                datatree->Jet_PZ/1000., 
-                                datatree->Jet_PE/1000.);
+        Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,datatree->Jet_PY/1000.,datatree->Jet_PZ/1000.,datatree->Jet_PE/1000.);
+        if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+        
+        mum_4vector->SetPxPyPzE(datatree->mum_PX/1000.,datatree->mum_PY/1000.,datatree->mum_PZ/1000.,datatree->mum_PE/1000.);
+        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+        //if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
 
-        if(Jet_4vector->Eta()<jet_eta_min||Jet_4vector->Eta()>jet_eta_max) continue;
-        if(Jet_4vector->Pt()<jet_pt_min) continue;
+        mup_4vector->SetPxPyPzE(datatree->mup_PX/1000.,datatree->mup_PY/1000.,datatree->mup_PZ/1000.,datatree->mup_PE/1000.);
+        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+        //if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
 
-        mum_4vector->SetPxPyPzE(datatree->mum_PX/1000., 
-                                datatree->mum_PY/1000., 
-                                datatree->mum_PZ/1000., 
-                                datatree->mum_PE/1000.);
-
-        if(Jet_4vector->DeltaR(*mum_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
-        if(mum_4vector->Pt()<muon_pt_min) continue;
-        if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
-        if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
-
-        mup_4vector->SetPxPyPzE(datatree->mup_PX/1000., 
-                                datatree->mup_PY/1000., 
-                                datatree->mup_PZ/1000., 
-                                datatree->mup_PE/1000.);
-
-        if(Jet_4vector->DeltaR(*mup_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
-        if(mup_4vector->Pt()<muon_pt_min) continue;
-        if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
-        if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
-
-        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(), 
-                               mup_4vector->Py()+mum_4vector->Py(), 
-                               mup_4vector->Pz()+mum_4vector->Pz(), 
-                               mup_4vector->E() +mum_4vector->E());
-
-        if(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector))<deltaphi_z_jet_min) continue;
-        if(Z0_4vector->M()<muonmuon_mass_min||Z0_4vector->M()>muonmuon_mass_max) continue;
-
+        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
+        if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+        
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < datatree->Jet_NDtr ; h1_index++)
         {
             // Skip non-hadronic particles
             if(datatree->Jet_Dtr_IsMeson[h1_index]!=1&&datatree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
-            // Skip neutrals
-            if(datatree->Jet_Dtr_ThreeCharge[h1_index]==0) continue;
-
-            // Apply cuts
-            if(datatree->Jet_Dtr_P[h1_index]/1000.<track_p_min||datatree->Jet_Dtr_P[h1_index]/1000.>track_p_max) continue;
-            if(datatree->Jet_Dtr_PT[h1_index]/1000.<track_pt_min) continue;
-            if(datatree->Jet_Dtr_TrackChi2[h1_index]/datatree->Jet_Dtr_TrackNDF[h1_index]>track_chi2ndf_max) continue;
-            if(datatree->Jet_Dtr_ProbNNghost[h1_index]>track_probnnghost_max) continue;
+            h1_4vector->SetPxPyPzE(datatree->Jet_Dtr_PX[h1_index]/1000.,datatree->Jet_Dtr_PY[h1_index]/1000.,datatree->Jet_Dtr_PZ[h1_index]/1000.,datatree->Jet_Dtr_E[h1_index]/1000.);
+            if(!apply_chargedtrack_cuts(datatree->Jet_Dtr_ThreeCharge[h1_index],
+                                        datatree->Jet_Dtr_P[h1_index]/1000.,
+                                        datatree->Jet_Dtr_PT[h1_index]/1000.,
+                                        datatree->Jet_Dtr_TrackChi2[h1_index]/datatree->Jet_Dtr_TrackNDF[h1_index],
+                                        datatree->Jet_Dtr_ProbNNghost[h1_index],
+                                        Jet_4vector->DeltaR(*h1_4vector))) continue;
 
             // Loop over hadron 2
             for(int h2_index = h1_index+1 ; h2_index < datatree->Jet_NDtr ; h2_index++)
@@ -115,14 +117,13 @@ int main()
                 // Skip non-hadronic particles
                 if(datatree->Jet_Dtr_IsMeson[h2_index]!=1&&datatree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
-                // Skip neutrals
-                if(datatree->Jet_Dtr_ThreeCharge[h2_index]==0) continue;
-
-                // Apply cuts
-                if(datatree->Jet_Dtr_P[h2_index]/1000.<track_p_min||datatree->Jet_Dtr_P[h2_index]/1000.>track_p_max) continue;
-                if(datatree->Jet_Dtr_PT[h2_index]/1000.<track_pt_min) continue;
-                if(datatree->Jet_Dtr_TrackChi2[h2_index]/datatree->Jet_Dtr_TrackNDF[h2_index]>track_chi2ndf_max) continue;
-                if(datatree->Jet_Dtr_ProbNNghost[h2_index]>track_probnnghost_max) continue;
+                h2_4vector->SetPxPyPzE(datatree->Jet_Dtr_PX[h2_index]/1000.,datatree->Jet_Dtr_PY[h2_index]/1000.,datatree->Jet_Dtr_PZ[h2_index]/1000.,datatree->Jet_Dtr_E[h2_index]/1000.);
+                if(!apply_chargedtrack_cuts(datatree->Jet_Dtr_ThreeCharge[h2_index],
+                                            datatree->Jet_Dtr_P[h2_index]/1000.,
+                                            datatree->Jet_Dtr_PT[h2_index]/1000.,
+                                            datatree->Jet_Dtr_TrackChi2[h2_index]/datatree->Jet_Dtr_TrackNDF[h2_index],
+                                            datatree->Jet_Dtr_ProbNNghost[h2_index],
+                                            Jet_4vector->DeltaR(*h2_4vector))) continue;
 
                 double h1_y = rapidity(datatree->Jet_Dtr_E[h1_index],datatree->Jet_Dtr_PZ[h1_index]); 
                 double h2_y = rapidity(datatree->Jet_Dtr_E[h2_index],datatree->Jet_Dtr_PZ[h2_index]);
@@ -165,64 +166,61 @@ int main()
         // Access entry of tree
         mcrecotree->GetEntry(evt);
 
+        if(evt%10000==0)
+        {
+          double percentage = 100.*evt/mcrecotree->fChain->GetEntries();
+          std::cout<<percentage<<"\% jets processed."<<std::endl;
+        }
+        
+        if (evt != 0)
+        {
+          if (mcrecotree->eventNumber != last_eventNum) maxjetpT_found = false;
+          if (last_eventNum == mcrecotree->eventNumber) continue;
+        }
+
+        last_eventNum = mcrecotree->eventNumber;
+        if (maxjetpT_found) continue;
+
+        // -999 means there is not matched jet
+        if(mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
+
         // Apply PV cut
         if(mcrecotree->nPV!=1) continue;
 
         // Apply trigger cut
-        if(mcrecotree->mum_L0MuonEWDecision_TOS!=1||mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS!=1||mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
-        if(mcrecotree->mup_L0MuonEWDecision_TOS!=1||mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS!=1||mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS!=1) continue;
+        bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS==1&&mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+        bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS==1&&mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+
+        if(!mum_trigger&&!mup_trigger) continue;
 
         // Set Jet-associated 4 vectors and apply cuts
-        Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,
-                                mcrecotree->Jet_PY/1000., 
-                                mcrecotree->Jet_PZ/1000., 
-                                mcrecotree->Jet_PE/1000.);
+        Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,mcrecotree->Jet_PY/1000.,mcrecotree->Jet_PZ/1000.,mcrecotree->Jet_PE/1000.);
+        if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+        
+        mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,mcrecotree->mum_PY/1000.,mcrecotree->mum_PZ/1000.,mcrecotree->mum_PE/1000.);
+        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+        //if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
 
-        if(Jet_4vector->Eta()<jet_eta_min||Jet_4vector->Eta()>jet_eta_max) continue;
-        if(Jet_4vector->Pt()<jet_pt_min) continue;
+        mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,mcrecotree->mup_PY/1000.,mcrecotree->mup_PZ/1000.,mcrecotree->mup_PE/1000.);
+        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+        //if(mcrecotree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
 
-        mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000., 
-                                mcrecotree->mum_PY/1000., 
-                                mcrecotree->mum_PZ/1000., 
-                                mcrecotree->mum_PE/1000.);
-
-        if(Jet_4vector->DeltaR(*mum_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
-        if(mum_4vector->Pt()<muon_pt_min) continue;
-        if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
-        if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
-
-        mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000., 
-                                mcrecotree->mup_PY/1000., 
-                                mcrecotree->mup_PZ/1000., 
-                                mcrecotree->mup_PE/1000.);
-
-        if(Jet_4vector->DeltaR(*mup_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
-        if(mup_4vector->Pt()<muon_pt_min) continue;
-        if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
-        if(mcrecotree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
-
-        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(), 
-                               mup_4vector->Py()+mum_4vector->Py(), 
-                               mup_4vector->Pz()+mum_4vector->Pz(), 
-                               mup_4vector->E() +mum_4vector->E());
-
-        if(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector))<deltaphi_z_jet_min) continue;
-        if(Z0_4vector->M()<muonmuon_mass_min||Z0_4vector->M()>muonmuon_mass_max) continue;
-
+        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
+        if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+                
         // Loop over hadron 1
         for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
         {
             // Skip non-hadronic particles
             if(mcrecotree->Jet_Dtr_IsMeson[h1_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
-            // Skip neutrals
-            if(mcrecotree->Jet_Dtr_ThreeCharge[h1_index]==0) continue;
-
-            // Apply cuts
-            if(mcrecotree->Jet_Dtr_P[h1_index]/1000.<track_p_min||mcrecotree->Jet_Dtr_P[h1_index]/1000.>track_p_max) continue;
-            if(mcrecotree->Jet_Dtr_PT[h1_index]/1000.<track_pt_min) continue;
-            if(mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index]>track_chi2ndf_max) continue;
-            if(mcrecotree->Jet_Dtr_ProbNNghost[h1_index]>track_probnnghost_max) continue;
+            h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,mcrecotree->Jet_Dtr_PY[h1_index]/1000.,mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,mcrecotree->Jet_Dtr_E[h1_index]/1000.);
+            if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h1_index],
+                                        mcrecotree->Jet_Dtr_P[h1_index]/1000.,
+                                        mcrecotree->Jet_Dtr_PT[h1_index]/1000.,
+                                        mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
+                                        mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
+                                        Jet_4vector->DeltaR(*h1_4vector))) continue;
 
             // Loop over hadron 2
             for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
@@ -230,14 +228,13 @@ int main()
                 // Skip non-hadronic particles
                 if(mcrecotree->Jet_Dtr_IsMeson[h2_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
-                // Skip neutrals
-                if(mcrecotree->Jet_Dtr_ThreeCharge[h2_index]==0) continue;
-
-                // Apply cuts
-                if(mcrecotree->Jet_Dtr_P[h2_index]/1000.<track_p_min||mcrecotree->Jet_Dtr_P[h2_index]/1000.>track_p_max) continue;
-                if(mcrecotree->Jet_Dtr_PT[h2_index]/1000.<track_pt_min) continue;
-                if(mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index]>track_chi2ndf_max) continue;
-                if(mcrecotree->Jet_Dtr_ProbNNghost[h2_index]>track_probnnghost_max) continue;
+                h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,mcrecotree->Jet_Dtr_PY[h2_index]/1000.,mcrecotree->Jet_Dtr_PZ[h2_index]/1000.,mcrecotree->Jet_Dtr_E[h2_index]/1000.);
+                if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h2_index],
+                                            mcrecotree->Jet_Dtr_P[h2_index]/1000.,
+                                            mcrecotree->Jet_Dtr_PT[h2_index]/1000.,
+                                            mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
+                                            mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
+                                            Jet_4vector->DeltaR(*h2_4vector))) continue;
 
                 double h1_y = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]); 
                 double h2_y = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]);
@@ -282,67 +279,66 @@ int main()
         // Access entry of tree
         mctree->GetEntry(evt);
 
+        if(evt%10000==0)
+        {
+          double percentage = 100*evt/mctree->fChain->GetEntries();
+          std::cout<<percentage<<"\% jets processed."<<std::endl;
+        }    
+        if (evt != 0)
+        {
+          if (mctree->eventNumber != last_eventNum) maxjetpT_found = false;
+          if (last_eventNum == mctree->eventNumber) continue;
+        }
+        last_eventNum = mcrecotree->eventNumber;
+        if (maxjetpT_found) continue;
+
+
         // Apply PV cut
         if(mctree->nPVs!=1) continue;
 
         // Set Jet-associated 4 vectors and apply cuts
-        Jet_4vector->SetPxPyPzE(mctree->MCJet_PX/1000.,
-                                mctree->MCJet_PY/1000., 
-                                mctree->MCJet_PZ/1000., 
-                                mctree->MCJet_PE/1000.);
-
-        if(Jet_4vector->Eta()<jet_eta_min||Jet_4vector->Eta()>jet_eta_max) continue;
-        if(Jet_4vector->Pt()<jet_pt_min) continue;
-
-        mum_4vector->SetPxPyPzE(mctree->MCJet_truth_mum_PX/1000., 
-                                mctree->MCJet_truth_mum_PY/1000., 
-                                mctree->MCJet_truth_mum_PZ/1000., 
-                                mctree->MCJet_truth_mum_PE/1000.);
-
-        if(Jet_4vector->DeltaR(*mum_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
-        if(mum_4vector->Pt()<muon_pt_min) continue;
-        if(mum_4vector->Eta()<muon_eta_min||mum_4vector->Eta()>muon_eta_max) continue;
+        Jet_4vector->SetPxPyPzE(mctree->MCJet_PX/1000.,mctree->MCJet_PY/1000.,mctree->MCJet_PZ/1000.,mctree->MCJet_PE/1000.);
+        if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
         
-        mup_4vector->SetPxPyPzE(mctree->MCJet_truth_mup_PX/1000., 
-                                mctree->MCJet_truth_mup_PY/1000., 
-                                mctree->MCJet_truth_mup_PZ/1000., 
-                                mctree->MCJet_truth_mup_PE/1000.);
-
-        if(Jet_4vector->DeltaR(*mup_4vector, 1/*use rapidity*/)<deltar_muon_jet_min) continue; 
-        if(mup_4vector->Pt()<muon_pt_min) continue;
-        if(mup_4vector->Eta()<muon_eta_min||mup_4vector->Eta()>muon_eta_max) continue;
+        mum_4vector->SetPxPyPzE(mctree->MCJet_truth_mum_PX/1000.,mctree->MCJet_truth_mum_PY/1000.,mctree->MCJet_truth_mum_PZ/1000.,mctree->MCJet_truth_mum_PE/1000.);
+        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
         
-        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(), 
-                               mup_4vector->Py()+mum_4vector->Py(), 
-                               mup_4vector->Pz()+mum_4vector->Pz(), 
-                               mup_4vector->E() +mum_4vector->E());
-
-        if(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector))<deltaphi_z_jet_min) continue;
-        if(Z0_4vector->M()<muonmuon_mass_min||Z0_4vector->M()>muonmuon_mass_max) continue;
-
+        mup_4vector->SetPxPyPzE(mctree->MCJet_truth_mup_PX/1000.,mctree->MCJet_truth_mup_PY/1000.,mctree->MCJet_truth_mup_PZ/1000.,mctree->MCJet_truth_mup_PE/1000.);
+        if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+        
+        Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
+        if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+        
         for(int h1_index = 0 ; h1_index < mctree->MCJet_Dtr_nmcdtrs ; h1_index++)
         {
             // Skip non-hadronic particles
             if(mctree->MCJet_Dtr_IsMeson[h1_index]!=1&&mctree->MCJet_Dtr_IsBaryon[h1_index]!=1) continue;
 
-            // Skip neutrals
-            if(mctree->MCJet_Dtr_ThreeCharge[h1_index]==0) continue;
+            h1_4vector->SetPxPyPzE(mctree->MCJet_Dtr_PX[h1_index]/1000.,
+                                   mctree->MCJet_Dtr_PY[h1_index]/1000.,
+                                   mctree->MCJet_Dtr_PZ[h1_index]/1000., 
+                                   mctree->MCJet_Dtr_E[h1_index]/1000.);
 
-            // Apply cuts
-            if(mctree->MCJet_Dtr_P[h1_index]/1000.<track_p_min||mctree->MCJet_Dtr_P[h1_index]/1000.>track_p_max) continue;
-            if(mctree->MCJet_Dtr_PT[h1_index]/1000.<track_pt_min) continue;
+            if(!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h1_index],
+                                                 mctree->MCJet_Dtr_P[h1_index]/1000.,
+                                                 mctree->MCJet_Dtr_PT[h1_index]/1000.,
+                                                 Jet_4vector->DeltaR(*h1_4vector))) continue;
 
             for(int h2_index = h1_index+1 ; h2_index < mctree->MCJet_Dtr_nmcdtrs ; h2_index++)
             {
                 // Skip non-hadronic particles
                 if(mctree->MCJet_Dtr_IsMeson[h2_index]!=1&&mctree->MCJet_Dtr_IsBaryon[h2_index]!=1) continue;
 
-                // Skip neutrals
-                if(mctree->MCJet_Dtr_ThreeCharge[h2_index]==0) continue;
+                h2_4vector->SetPxPyPzE(mctree->MCJet_Dtr_PX[h2_index]/1000.,
+                                       mctree->MCJet_Dtr_PY[h2_index]/1000.,
+                                       mctree->MCJet_Dtr_PZ[h2_index]/1000., 
+                                       mctree->MCJet_Dtr_E[h2_index]/1000.);
 
-                // Apply cuts
-                if(mctree->MCJet_Dtr_P[h2_index]/1000.<track_p_min||mctree->MCJet_Dtr_P[h2_index]/1000.>track_p_max) continue;
-                if(mctree->MCJet_Dtr_PT[h2_index]/1000.<track_pt_min) continue;
+                if(!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h2_index],
+                                                     mctree->MCJet_Dtr_P[h2_index]/1000.,
+                                                     mctree->MCJet_Dtr_PT[h2_index]/1000.,
+                                                     Jet_4vector->DeltaR(*h2_4vector))) continue;
+
 
                 double h1_y = rapidity(mctree->MCJet_Dtr_E[h1_index],mctree->MCJet_Dtr_PZ[h1_index]); 
                 double h2_y = rapidity(mctree->MCJet_Dtr_E[h2_index],mctree->MCJet_Dtr_PZ[h2_index]);

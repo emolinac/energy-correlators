@@ -13,12 +13,15 @@ void macro_determine_binning()
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_data.c_str());
     
     // Declare the histos to use
-    TH1F* h_jet_pt = new TH1F("h_jet_pt","",10000,jet_pt_min,jet_pt_max);
+    TH1F* h_jet_pt = new TH1F("h_jet_pt","",100000,jet_pt_min,jet_pt_max);
+    TH1F* h_weight = new TH1F("h_weight","",100000,0,.4);
 
     // Put the data into the histos and get the cumulative distributions
     ntuple->Project("h_jet_pt","jet_pt",pair_cut);
+    ntuple->Project("h_weight","weight",pair_cut);
 
     TH1F* h_jet_pt_cumul = (TH1F*) h_jet_pt->GetCumulative();
+    TH1F* h_weight_cumul = (TH1F*) h_weight->GetCumulative();
 
     // Determine binning in jet pt
     double entries_bin_jet_pt = h_jet_pt->Integral()/Nbin_jet_pt;
@@ -44,12 +47,43 @@ void macro_determine_binning()
             std::cout<<", "<<h_jet_pt_cumul->GetBinCenter(bin-1);
         }
     }
+
+    // Determine binning in weights
+    double entries_bin_weight = h_weight->Integral()/Nbin_weight;
+    std::cout<<"The number of entries for weight is "<<entries_bin_weight<<std::endl;
+    std::cout<<"Binning in weight : {0";
+    int counter_weight = 1;
+    for(int bin = 1 ; bin <= h_weight->GetNbinsX() ; bin++)
+    {
+        double q = h_weight_cumul->GetBinContent(bin);
+
+        // Exit when determined last bin
+        if(counter_weight==Nbin_weight) 
+        {
+            std::cout<<", 0.4}"<<std::endl;
+            break;
+        }
+        // Condition to determine limit
+        if(q>entries_bin_weight*counter_weight) 
+        {
+            counter_weight++;
+
+            // Print limits
+            std::cout<<", "<<h_weight_cumul->GetBinCenter(bin-1);
+        }
+    }
     
     // Close file
     f->Close();
+    double binning[Nbin_R_L+1];
+    determine_eqsizebinning(Nbin_R_L, R_L_min, R_L_max, binning);
 
-    std::cout<<"Given a range of angular distance from "<<R_L_min<<" to "<<R_L_max<<std::endl;
-    std::cout<<"Given an angular resolution of "<<R_L_res<<" we would need "<<(R_L_max-R_L_min)/R_L_res<<std::endl;
+    std::cout<<"Binning in R_L : {R_L_min";
+    for(int i = 1 ; i < Nbin_R_L ; i++)
+    {
+        std::cout<<", "<<binning[i];
+    }
+    std::cout<<", R_L_max};"<<std::endl;
 
     return 0;
 }
