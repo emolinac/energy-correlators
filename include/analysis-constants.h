@@ -64,9 +64,11 @@ const int corr_marker_color_jet_pt[] = {880,432,416,633,797}; // lighter
 const double em_rl_binning[] = {R_L_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933, 0.20194,
                                 0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 0.39398, 0.425987, 
                                 0.457993, R_L_max};
-const double em_rlunfolding_binning[] = {R_L_min-0.0005,R_L_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933,
+const double em_rlunfolding_binning[] = {R_L_min-0.005,R_L_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933,
                                          0.20194, 0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 
                                          0.39398, 0.425987, 0.457993, R_L_max, R_L_max + 0.04};
+
+const double em_jetptunfolding_binning[] = {15,20,30,50,100,150};
 
 // SL binning
 const double sl_p_binning[]   = {4., 10., 16., 22., 28., 40., 52., 76., 100., 150., 250., 500., 1000.};

@@ -93,7 +93,7 @@ Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&
 bool apply_jet_cuts(double jet_eta, double jet_pt)
 {
     if(jet_eta<jet_eta_min||jet_eta>jet_eta_max) return false;
-    if(jet_pt<jet_pt_min_nom) return false;
+    if(jet_pt<em_jetptunfolding_binning[0]) return false;
 
     return true;    
 }

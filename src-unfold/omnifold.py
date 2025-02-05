@@ -26,7 +26,7 @@ def weighted_binary_crossentropy(y_true, y_pred):
 
     return K.mean(t_loss)
 
-def omnifold(theta0_G,theta0_S,theta_unknown_S,iterations,model,verbose=0):
+def omnifold(theta0_G,theta0_S,theta_unknown_S,iterations,model,verbose=0, nepochs = 20, nbatch_size = 10000):
 
     weights = np.empty(shape=(iterations, 2, len(theta0_S)))
     # shape = (iteration, step, event)
@@ -72,12 +72,12 @@ def omnifold(theta0_G,theta0_S,theta_unknown_S,iterations,model,verbose=0):
         
         model.fit(X_train_1,
                   Y_train_1,
-                  epochs=20,
-                  batch_size=10000,
+                  epochs=nepochs,
+                  batch_size=nbatch_size,
                   validation_data=(X_test_1, Y_test_1),
                   verbose=verbose)
 
-        weights_pull = weights_push * reweight(theta0_S, model)
+        weights_pull = weights_push * reweight(theta0_S, model, nbatch_size)
         weights[i, :1, :] = weights_pull
 
         # STEP 2: classify Gen. to reweighted Gen. (which is reweighted by weights_pull)
@@ -101,12 +101,12 @@ def omnifold(theta0_G,theta0_S,theta_unknown_S,iterations,model,verbose=0):
                       metrics=['accuracy'])
         model.fit(X_train_2,
                   Y_train_2,
-                  epochs=20,
-                  batch_size=2000,
+                  epochs=nepochs,
+                  batch_size=nbatch_size,
                   validation_data=(X_test_2, Y_test_2),
                   verbose=verbose)
 
-        weights_push = reweight(theta0_G,model)
+        weights_push = reweight(theta0_G,model,nbatch_size)
         weights[i, 1:2, :] = weights_push
         pass
 
