@@ -5,4 +5,6 @@ void determine_log10binning(int Nbins, double x_i, double x_f, double* binning);
 
 void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning);
 
+double get_hwhm(TH1F* h);
+
 #endif

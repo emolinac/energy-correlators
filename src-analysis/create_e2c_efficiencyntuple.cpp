@@ -59,7 +59,7 @@ int main()
       if(evt%10000==0)
       {
         double percentage = 100*evt/mcrecotree->fChain->GetEntries();
-        std::cout<<percentage<<"\% jets processed."<<std::endl;
+        std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
       }
         // Access entry of tree
         mcrecotree->GetEntry(evt);

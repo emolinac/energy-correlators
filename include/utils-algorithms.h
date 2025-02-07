@@ -27,4 +27,19 @@ void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning)
     return;
 }
 
+double get_hwhm(TH1F* h)
+{
+    // As written, this function works for single peak distributions
+    double half_max = h->GetMaximum()/2.;
+ 
+    int halfwidth_bin;
+    for(int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
+    {
+        if(h->GetBinContent(bin)>=half_max){halfwidth_bin = bin; break;}
+    }
+    
+    // Return the Half width at half maximum value
+    return abs(h->GetBinCenter(h->GetMaximumBin()) - h->GetBinCenter(halfwidth_bin));
+}
+
 #endif

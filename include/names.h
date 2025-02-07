@@ -1,6 +1,20 @@
 #ifndef NAMES_H
 #define NAMES_H
 
+// JET NTUPLES SPECS
+std::string namef_ntuple_jet_purity     = "ntuple_jet_purity.root";
+std::string namef_ntuple_jet_efficiency = "ntuple_jet_efficiency.root";
+
+std::string name_ntuple_jetpurity     = "ntuple_jetpurity";
+std::string name_ntuple_jetefficiency = "ntuple_jetefficiency";
+
+const int Nvars_jetpurity     = 6;
+const int Nvars_jetefficiency = 6;
+const char* ntuple_jetpurity_vars  = "jet_pt:jet_e:jet_ndtr:jet_pt_truth:jet_e_truth:jet_ndtr_truth";
+const char* ntuple_jetefficiency_vars  = "jet_pt_truth:jet_e_truth:jet_ndtr_truth:jet_pt:jet_e:jet_ndtr";
+
+// HADRONIC NTUPLES SPECS
+
 // Names of the files
 std::string namef_ntuple_e2c            = "ntuple_e2c.root";
 std::string namef_ntuple_e2c_corr       = "ntuple_corre2c.root";
@@ -18,7 +32,6 @@ std::string name_ntuple_mcreco          = "ntuple_mcreco";
 std::string name_ntuple_mc              = "ntuple_mc";
 std::string name_ntuple_purity          = "ntuple_purity";
 std::string name_ntuple_unfolding       = "ntuple_unfolding";
-std::string name_ntuple_jetpurity       = "ntuple_jetpurity";
 std::string name_ntuple_efficiency_mc   = "ntuple_efficiency_mc";
 std::string name_ntuple_efficiency_reco = "ntuple_efficiency_reco";
 
