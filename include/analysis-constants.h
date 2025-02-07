@@ -36,7 +36,7 @@ const int Nbin_R_L    = 15;
 const int Nbin_jet_pt = 3;
 const int Nbin_weight = 10;
 
-const double corr_rel_error = 0.1;
+const double corr_rel_error = 0.2;
 const int ndim_corr = 50;
 
 const double R_L_min        = 0.0099;
@@ -68,7 +68,9 @@ const double em_rlunfolding_binning[] = {R_L_min-0.005,R_L_min, 0.0419067, 0.073
                                          0.20194, 0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 
                                          0.39398, 0.425987, 0.457993, R_L_max, R_L_max + 0.04};
 
-const double em_jetptunfolding_binning[] = {15,20,30,50,100,150};
+const double em_jetptunfolding_binning[]  = {15,20,30,50,100,150};
+const double em_jetptcorrection_binning[] = {20,22.5,25,30,40,50,75,100};
+const int em_jetptcorrection_nbins = 7;
 // const double em_jetptunfolding_binning[] = {12.5,15,20,30,50,100,150};
 
 // SL binning

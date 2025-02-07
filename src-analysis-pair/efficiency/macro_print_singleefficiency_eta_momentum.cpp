@@ -26,7 +26,7 @@ void macro_print_singleefficiency_eta_momentum(double jet_pt_min_local = jet_pt_
     hefficiency->Sumw2();
 
     // Project into the histograms
-    ntuple_mcreco->Project("hsig","h_eta:h_p",single_signal_cut+Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_local,jet_pt_max_local));
+    ntuple_mcreco->Project("hsig","h_eta_truth:h_p_truth",single_signal_cut+Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_local,jet_pt_max_local));
     ntuple_mc->Project("hall","h_eta:h_p",pair_cut             +Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_local,jet_pt_max_local));
 
     TCanvas* c = new TCanvas("c","",2880,1620);

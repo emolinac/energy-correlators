@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_singletrackcorrections()
+void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_error)
 {
     gStyle->SetOptStat(1110);
     // Open the necessary files
@@ -15,7 +15,7 @@ void macro_print_singletrackcorrections()
     TH2F* h = new TH2F("h","",100,0.2,1,100,0.2,1);
     
     // Project into the histograms
-    ntuple_data->Project("h","purity:efficiency",Form("efficiency_relerror<%f&&purity_relerror<%f",corr_rel_error,corr_rel_error));
+    ntuple_data->Project("h","purity:efficiency",Form("efficiency_relerror<%f&&purity_relerror<%f",corr_rel_error_local,corr_rel_error_local));
     // ntuple_data->Project("h","purity:efficiency","efficiency>0&&purity>0");
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -39,5 +39,5 @@ void macro_print_singletrackcorrections()
 
     // tex->DrawLatexNDC(0.2,0.2,"LHCb Internal");
 
-    // c->Print("../plots/eff_purity.pdf");
+    c->Print(Form("../plots/eff_purity_distribution_relerrorleq%.2f.pdf",corr_rel_error_local));
 }
