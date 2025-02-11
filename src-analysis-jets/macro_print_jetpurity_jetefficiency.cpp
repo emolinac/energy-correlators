@@ -13,24 +13,22 @@ void macro_print_jetpurity_jetefficiency()
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_purity = (TNtuple*) fpurity->Get((name_ntuple_jetpurity).c_str());
+    TNtuple* ntuple        = (TNtuple*) fefficiency->Get((name_ntuple_jetefficiency).c_str());
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig_purity    = new TH1F("hsig_purity"   ,"",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH1F* hall_purity    = new TH1F("hall_purity"   ,"",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH1F* hpurity = new TH1F("hpurity","",Nbin_jet_pt+2,em_jetptunfolding_binning);
+    TH1F* hsig_purity    = new TH1F("hsig_purity"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hall_purity    = new TH1F("hall_purity"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hpurity = new TH1F("hpurity","",Nbin_jet_pt+2,unfolding_jetpt_binning);
     hsig_purity->Sumw2();
     hall_purity->Sumw2();
     hpurity->Sumw2();
 
     set_histogram_style(hpurity, 797 , std_line_width, std_marker_style, std_marker_size);
 
-    // Get the corresponding Ntuples
-    TNtuple* ntuple = (TNtuple*) fefficiency->Get((name_ntuple_jetefficiency).c_str());
-
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH1F* hall    = new TH1F("hall"   ,"",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_jet_pt+2,em_jetptunfolding_binning);
+    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hall    = new TH1F("hall"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_jet_pt+2,unfolding_jetpt_binning);
     hsig->Sumw2();
     hall->Sumw2();
     hefficiency->Sumw2();
@@ -42,7 +40,6 @@ void macro_print_jetpurity_jetefficiency()
     ntuple_purity->Project("hall_purity","jet_pt");
     ntuple->Project("hsig","jet_pt_truth","jet_pt!=-999");
     ntuple->Project("hall","jet_pt_truth");
-    
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();

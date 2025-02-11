@@ -110,7 +110,7 @@ void macro_print_corre2c_rl_jet_pt()
     s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Corr. Norm. E2C",R_L_res));
     l_data->Draw("SAME");
 
-    tex->DrawLatexNDC(0.2,0.2,"LHCb Internal");
+    tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
     c->Print(Form("../plots/corr_e2c_jetpt_deltarleq%.3f.pdf",R_L_res));
 }

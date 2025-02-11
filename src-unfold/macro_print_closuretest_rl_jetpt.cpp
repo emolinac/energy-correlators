@@ -4,7 +4,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_closuretest_rl_jetpt(int Niter = 5, double jet_pt_min_local = em_jetptunfolding_binning[0], double jet_pt_max_local = em_jetptunfolding_binning[5])
+void macro_print_closuretest_rl_jetpt(int Niter = 5, double jet_pt_min_local = unfolding_jetpt_binning[0], double jet_pt_max_local = unfolding_jetpt_binning[5])
 {
     TFile* f = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_purity.c_str());
@@ -16,14 +16,14 @@ void macro_print_closuretest_rl_jetpt(int Niter = 5, double jet_pt_min_local = e
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH2F* hmeas = new TH2F("hmeas","",Nbin_R_L+2,em_rlunfolding_binning,Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH2F* htrue = new TH2F("htrue","",Nbin_R_L+2,em_rlunfolding_binning,Nbin_jet_pt+2,em_jetptunfolding_binning);
+    TH2F* hmeas = new TH2F("hmeas","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2F* htrue = new TH2F("htrue","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
 
     // Create response matrix object
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
 
-    TH2F* htrue_ref = new TH2F("htrue_ref","",Nbin_R_L+2,em_rlunfolding_binning,Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH2F* h_ct      = new TH2F("h_ct"     ,"",Nbin_R_L+2,em_rlunfolding_binning,Nbin_jet_pt+2,em_jetptunfolding_binning);
+    TH2F* htrue_ref = new TH2F("htrue_ref","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2F* h_ct      = new TH2F("h_ct"     ,"",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
 
     TRandom3* rndm = new TRandom3();
     for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)

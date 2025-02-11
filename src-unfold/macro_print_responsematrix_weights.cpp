@@ -14,7 +14,7 @@ void macro_print_responsematrix_weights()
 
     // Create histograms with the respective true and matched reco 
     double em_weightunfolding_binning[Nbin_weight+1];
-    determine_log10binning(Nbin_weight,0.000001,1,em_weightunfolding_binning);    
+    determine_log10binning(Nbin_weight,0.00001,0.2,em_weightunfolding_binning);    
     TH2F* hresp = new TH2F("hresp","",Nbin_weight,em_weightunfolding_binning,Nbin_weight,em_weightunfolding_binning);
 
     for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)

@@ -72,8 +72,8 @@ int main()
     // // -999 means there is not matched jet
     // if(mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
 
-    // Apply PV cut
-    if(mcrecotree->nPV!=1) continue;
+    // // Apply PV cut
+    // if(mcrecotree->nPV!=1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS==1&&mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);

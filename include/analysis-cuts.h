@@ -68,6 +68,13 @@ TCut e2c_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<%f&&
 TCut e2c_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
 TCut e2c_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
+TCut e2c_jetpt_full_corr_singletrack[] =
+{
+Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_binning[0],jet_pt_binning[1]),
+Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_binning[1],jet_pt_binning[2]),
+Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_binning[2],jet_pt_binning[3])
+};
+
 TCut pair_jetpt_signal_cut[] = 
 {
 Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[0],jet_pt_binning[1]),
@@ -93,7 +100,7 @@ Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&
 bool apply_jet_cuts(double jet_eta, double jet_pt)
 {
     if(jet_eta<jet_eta_min||jet_eta>jet_eta_max) return false;
-    if(jet_pt<em_jetptunfolding_binning[0]) return false;
+    if(jet_pt<unfolding_jetpt_binning[0]) return false;
 
     return true;    
 }

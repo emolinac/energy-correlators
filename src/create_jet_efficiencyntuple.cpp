@@ -48,12 +48,12 @@ int main()
   float vars[Nvars_jetefficiency];
   
   // Fill the matched jets Ntuple
-  for(int evt = 0 ; evt < /*mctree->fChain->GetEntries()*/1000000 ; evt++)
+  
+  for(int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
   {
     if(evt%10000==0)
     {
-      // double percentage = 100*evt/mctree->fChain->GetEntries();
-      double percentage = 100*evt/1000000.;
+      double percentage = 100*evt/mctree->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
     }
     // Access entry of tree
@@ -68,8 +68,8 @@ int main()
     // last_eventNum = mctree->eventNumber;
     // if (maxjetpT_found) continue;
 
-    // Apply PV cut
-    if(mctree->nPVs!=1) continue;
+    // // Apply PV cut
+    // if(mctree->nPVs!=1) continue;
 
     // Set Jet-associated 4 vectors and apply cuts
     true_Jet_4vector->SetPxPyPzE(mctree->MCJet_PX/1000.,mctree->MCJet_PY/1000.,mctree->MCJet_PZ/1000.,mctree->MCJet_PE/1000.);

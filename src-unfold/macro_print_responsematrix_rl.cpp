@@ -12,7 +12,7 @@ void macro_print_responsematrix_rl()
     ntuple->SetBranchAddress("R_L",&R_L);
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
     
-    TH2F* hresp = new TH2F("hresp","",Nbin_R_L+2,em_rlunfolding_binning,Nbin_R_L+2,em_rlunfolding_binning);
+    TH2F* hresp = new TH2F("hresp","",Nbin_R_L+2,unfolding_rl_binning,Nbin_R_L+2,unfolding_rl_binning);
 
     for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {

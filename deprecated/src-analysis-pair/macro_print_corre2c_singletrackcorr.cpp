@@ -67,7 +67,7 @@ void macro_print_corre2c_singletrackcorr()
     l_data->AddEntry(hall_data ,"Data"      ,"lpf");
     l_data->Draw("SAME");
 
-    tex->DrawLatexNDC(0.2,0.2,"LHCb Internal");
+    tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
     // c->Print("../plots/corr_e2c.pdf");
 }

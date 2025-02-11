@@ -4,7 +4,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = em_jetptunfolding_binning[0], double jet_pt_max_local = em_jetptunfolding_binning[5])
+void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfolding_jetpt_binning[0], double jet_pt_max_local = unfolding_jetpt_binning[5])
 {
     TFile* f = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_purity.c_str());
@@ -14,12 +14,12 @@ void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = em_j
     ntuple->SetBranchAddress("jet_pt_truth",&jet_pt_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH1F* hmeas = new TH1F("hmeas","",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH1F* htrue = new TH1F("htrue","",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH2F* hresp = new TH2F("hresp","",Nbin_jet_pt+2,em_jetptunfolding_binning,Nbin_jet_pt+2,em_jetptunfolding_binning);
+    TH1F* hmeas = new TH1F("hmeas","",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* htrue = new TH1F("htrue","",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2F* hresp = new TH2F("hresp","",Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
 
-    TH1F* htrue_ref = new TH1F("htrue_ref","",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH1F* h_ct      = new TH1F("h_ct"     ,"",Nbin_jet_pt+2,em_jetptunfolding_binning);
+    TH1F* htrue_ref = new TH1F("htrue_ref","",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* h_ct      = new TH1F("h_ct"     ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
 
     TRandom3* rndm = new TRandom3();
     for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)

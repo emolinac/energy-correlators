@@ -37,16 +37,16 @@ int main()
   ntuple_data->SetAutoSave(0);
 
   // Calculate corrections
-  TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,em_jetptcorrection_binning);
-  TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,em_jetptcorrection_binning);
-  TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,em_jetptcorrection_binning);
+  TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
+  TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
+  TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
   hsigp->Sumw2();
   hallp->Sumw2();
   hpurity->Sumw2();
 
-  TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,em_jetptcorrection_binning);
-  TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,em_jetptcorrection_binning);
-  TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,em_jetptcorrection_binning);
+  TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
+  TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
+  TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
   hsigeff->Sumw2();
   halleff->Sumw2();
   hefficiency->Sumw2();
@@ -190,12 +190,12 @@ int main()
         vars[17] = Jet_4vector->Eta();
         vars[18] = Jet_4vector->Phi();
         vars[19] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
-        vars[20] = R_L(Jet_4vector->Rapidity(),mum_4vector->Rapidity(),Jet_4vector->Phi(),mum_4vector->Phi());
-        vars[21] = mum_4vector->Pt();
-        vars[22] = mum_4vector->Eta();
-        vars[23] = R_L(Jet_4vector->Rapidity(),mup_4vector->Rapidity(),Jet_4vector->Phi(),mup_4vector->Phi());
-        vars[24] = mup_4vector->Pt();
-        vars[25] = mup_4vector->Eta();
+        vars[20] = datatree->Jet_PE/1000.;//R_L(Jet_4vector->Rapidity(),mum_4vector->Rapidity(),Jet_4vector->Phi(),mum_4vector->Phi());
+        vars[21] = datatree->Jet_Dtr_E[h1_index]/1000.;//mum_4vector->Pt();
+        vars[22] = datatree->Jet_Dtr_E[h2_index]/1000.;//mum_4vector->Eta();
+        //vars[23] = //R_L(Jet_4vector->Rapidity(),mup_4vector->Rapidity(),Jet_4vector->Phi(),mup_4vector->Phi());
+        //vars[24] = //mup_4vector->Pt();
+        //vars[25] = //mup_4vector->Eta();
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);

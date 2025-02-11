@@ -14,9 +14,9 @@ void macro_print_jetpurity()
     TNtuple* ntuple = (TNtuple*) fpurity->Get((name_ntuple_jetpurity).c_str());
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH1F* hall    = new TH1F("hall"   ,"",Nbin_jet_pt+2,em_jetptunfolding_binning);
-    TH1F* hpurity = new TH1F("hpurity","",Nbin_jet_pt+2,em_jetptunfolding_binning);
+    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hall    = new TH1F("hall"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hpurity = new TH1F("hpurity","",Nbin_jet_pt+2,unfolding_jetpt_binning);
     hsig->Sumw2();
     hall->Sumw2();
     hpurity->Sumw2();
