@@ -13,9 +13,9 @@ void macro_determine_binning()
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_data.c_str());
     
     // Declare the histos to use
-    TH1F* h_jet_pt = new TH1F("h_jet_pt","",100000,jet_pt_min,jet_pt_max);
-    TH1F* h_weight = new TH1F("h_weight","",100000,0,.4);
-    TH1F* h_jet_e  = new TH1F("h_jet_e" ,"",100000,100,3000);
+    TH1F* h_jet_pt = new TH1F("h_jet_pt","",1000000,jet_pt_min,jet_pt_max);
+    TH1F* h_weight = new TH1F("h_weight","",1000000,weight_min,weight_max);
+    TH1F* h_jet_e  = new TH1F("h_jet_e" ,"",1000000,jet_e_min,jet_e_max);
 
     // Put the data into the histos and get the cumulative distributions
     ntuple->Project("h_jet_pt","jet_pt",pair_cut);
@@ -29,7 +29,7 @@ void macro_determine_binning()
     // Determine binning in jet pt
     double entries_bin_jet_pt = h_jet_pt->Integral()/Nbin_jet_pt;
     std::cout<<"The number of entries for jet_pt is "<<entries_bin_jet_pt<<std::endl;
-    std::cout<<"Binning in jet_pt : {jet_pt_min";
+    std::cout<<"const double jet_pt_binning[] = {jet_pt_min";
     int counter_jet_pt = 1;
     for(int bin = 1 ; bin <= h_jet_pt->GetNbinsX() ; bin++)
     {
@@ -38,7 +38,7 @@ void macro_determine_binning()
         // Exit when determined last bin
         if(counter_jet_pt==Nbin_jet_pt) 
         {
-            std::cout<<", jet_pt_max}"<<std::endl;
+            std::cout<<", jet_pt_max};"<<std::endl;
             break;
         }
         // Condition to determine limit
@@ -54,7 +54,7 @@ void macro_determine_binning()
 // Determine binning in jet pt
     double entries_bin_jet_e = h_jet_e->Integral()/Nbin_jet_e;
     std::cout<<"The number of entries for jet_e is "<<entries_bin_jet_e<<std::endl;
-    std::cout<<"Binning in jet_e : {jet_e_min";
+    std::cout<<"const double jet_e_binning[]  = {jet_e_min";
     int counter_jet_e = 1;
     for(int bin = 1 ; bin <= h_jet_e->GetNbinsX() ; bin++)
     {
@@ -63,7 +63,7 @@ void macro_determine_binning()
         // Exit when determined last bin
         if(counter_jet_e==Nbin_jet_e) 
         {
-            std::cout<<", jet_e_max}"<<std::endl;
+            std::cout<<", jet_e_max};"<<std::endl;
             break;
         }
         // Condition to determine limit
@@ -79,7 +79,7 @@ void macro_determine_binning()
     // Determine binning in weights
     double entries_bin_weight = h_weight->Integral()/Nbin_weight;
     std::cout<<"The number of entries for weight is "<<entries_bin_weight<<std::endl;
-    std::cout<<"Binning in weight : {0";
+    std::cout<<"const double weight_binning[] = {"<<weight_min<<"";
     int counter_weight = 1;
     for(int bin = 1 ; bin <= h_weight->GetNbinsX() ; bin++)
     {
@@ -88,7 +88,7 @@ void macro_determine_binning()
         // Exit when determined last bin
         if(counter_weight==Nbin_weight) 
         {
-            std::cout<<", 0.4}"<<std::endl;
+            std::cout<<", "<<weight_max<<"};"<<std::endl;
             break;
         }
         // Condition to determine limit

@@ -30,13 +30,14 @@ void macro_print_energyproduct_jete()
     {
         hcorr_data[bin] = new TH1F(Form("hcorr_data[%i]",bin),"",100,0,3E4);
         set_histogram_style(hcorr_data[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
-        ntuple_data->Project(Form("hcorr_data[%i]",bin),"h1_e*h2_e",Form("jet_e>%f&&jet_e<%f",jetenergy_binning[bin],jetenergy_binning[bin+1]));
+        ntuple_data->Project(Form("hcorr_data[%i]",bin),"h1_e*h2_e",Form("jet_e>%f&&jet_e<%f",jet_e_binning[bin],jet_e_binning[bin+1]));
         s_data->Add(hcorr_data[bin]);
-        l_data->AddEntry(hcorr_data[bin],Form("%.1f<Jet E<%.1f GeV",jetenergy_binning[bin],jetenergy_binning[bin+1]),"lpf");
+        l_data->AddEntry(hcorr_data[bin],Form("%.1f<Jet E<%.1f GeV",jet_e_binning[bin],jet_e_binning[bin+1]),"lpf");
     }
     
     s_data->Draw("NOSTACK");
     s_data->SetTitle(";E_{i}*E_{j};");
+    gPad->SetLogx(1);
     gPad->SetLogy(1);
     l_data->Draw("SAME");
 

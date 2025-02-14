@@ -25,7 +25,10 @@ void macro_print_recondtrs()
         set_histogram_style(h[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
     }
 
+    TCanvas* c = new TCanvas("c","",1920,1080);
+    c->Draw();
     hs->Draw("NOSTACK");
     hs->SetTitle(";Reco Ndtrs;");
     l->Draw("SAME");
+    c->Print("../plots/avge_ndtrs.pdf");
 }

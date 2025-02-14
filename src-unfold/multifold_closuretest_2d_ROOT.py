@@ -1,15 +1,17 @@
 import numpy as np
-from matplotlib import pyplot as plt
-
-from keras.layers import Dense, Input
-from keras.models import Model
-
 import omnifold as of
 import os
 import tensorflow as tf
-
 import uproot
+import ROOT
+
+from matplotlib import pyplot as plt
+from keras.layers import Dense, Input
+from keras.models import Model
+from array import array
 from sklearn.model_selection import train_test_split
+
+ROOT.gStyle.SetPaintTextFormat(".3f")
 
 file      = uproot.open("../output-files/ntuple_e2c_unfolding.root")
 file_data = uproot.open("../output-files/ntuple_corre2c.root")
@@ -50,7 +52,7 @@ theta0_G_train , theta0_G_validate, theta0_S_train, theta_unknown_S_train = trai
 nnodes      = 10
 nepochs     = 25
 nbatch_size = 5000
-niterations = 6
+niterations = 20
 
 inputs = Input((np.shape(theta0_G_train)[-1], ))
 hidden_layer_1 = Dense(nnodes, activation='relu')(inputs) # relu = rectified linear unit activation function
@@ -62,41 +64,43 @@ model = Model(inputs=inputs, outputs=outputs)
 myweights = of.omnifold(theta0_G_train, theta0_S_train, theta_unknown_S_train, niterations, model, 0,nepochs, nbatch_size)
 
 # Visualize
-figtest, ((ax11test),(ax22test)) = plt.subplots(1, 2, layout='tight')
-fig, ((ax11),(ax22)) = plt.subplots(1, 2, layout='tight', sharey=True)
-fig.set_figwidth(20)
-fig.set_figheight(10)
+# rl_nbins = 16
+unfolding_rl_nbins = 17
 
-h_rl_validate    ,bins_rl_validate    ,_ = ax11test.hist(theta0_G_validate[:,0],bins=np.linspace(0.00999,0.5,15),color='orange',histtype="step",label="Data, reco",lw="2")
-h_jetpt_validate ,bins_jetpt_validate ,_ = ax22test.hist(theta0_G_validate[:,1],bins=[20,30,50,100]     ,color='orange',histtype="step",label="Data, reco",lw="2")
+# rl_binning     = array('d',np.linspace(0.00999,0.5,rl_nbins))
+# jetpt_binnning = array('d',[20,30,50,100])
 
-h_rl_unfolded    ,bins_rl_unfolded    ,_ = ax11test.hist(theta0_G_train[:,0], weights=myweights[niterations-1, 1, :], bins=np.linspace(0.00999,0.5,15),color='black',histtype="step",label="Unfolded",lw="2")
-h_jetpt_unfolded ,bins_jetpt_unfolded ,_ = ax22test.hist(theta0_G_train[:,1], weights=myweights[niterations-1, 1, :], bins=[20,30,50,100]     ,color='black',histtype="step",label="Unfolded",lw="2")
+R_L_min = 0.0099
+R_L_max = 0.49
 
-ct_rl     = np.array(h_rl_unfolded/h_rl_validate)
-ct_jetpt  = np.array(h_jetpt_unfolded/h_jetpt_validate)
+unfolding_rl_binning = array('d',[R_L_min-0.005,R_L_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933,
+                                          0.20194, 0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 
+                                          0.39398, 0.425987, 0.457993, R_L_max, R_L_max + 0.04])
+unfolding_jetpt_binning = array('d',[15,20,30,50,100,150])
 
-ratio_rl_xaxis, ratio_jetpt_xaxis, ratio_weight_xaxis = [], [], []
-for i in range(0,np.size(h_rl_validate)):
-    delta_rl = (bins_rl_validate[i+1]-bins_rl_validate[i])
-    ratio_rl_xaxis.append(bins_rl_validate[i] + delta_rl/2.)
-ratio_rl_xaxis = np.array(ratio_rl_xaxis)
+# Visualize
+htruth_rl     = ROOT.TH1F("htruth_rl"    ,"",unfolding_rl_nbins,unfolding_rl_binning)
+hunfol_rl     = ROOT.TH1F("hunfol_rl"    ,"",unfolding_rl_nbins,unfolding_rl_binning)
+hct_rl        = ROOT.TH1F("hct_rl"       ,"",unfolding_rl_nbins,unfolding_rl_binning)
+htruth_jetpt  = ROOT.TH1F("htruth_jetpt" ,"",5,unfolding_jetpt_binning)
+hunfol_jetpt  = ROOT.TH1F("hunfol_jetpt" ,"",5,unfolding_jetpt_binning)
+hct_jetpt     = ROOT.TH1F("hct_jetpt"    ,"",5,unfolding_jetpt_binning)
 
-for i in range(0,np.size(h_jetpt_validate)):
-    delta_jetpt = (bins_jetpt_validate[i+1]-bins_jetpt_validate[i])
-    ratio_jetpt_xaxis.append(bins_jetpt_validate[i] + delta_jetpt/2.)
-ratio_jetpt_xaxis = np.array(ratio_jetpt_xaxis)
+for entry in range(len(myweights[niterations-1, 1, :])-1):
+    htruth_rl.Fill(theta0_G_validate[entry,0])
+    hunfol_rl.Fill(theta0_G_train[entry,0],myweights[niterations-1, 1,entry])
+    
+    htruth_jetpt.Fill(theta0_G_validate[entry,1])
+    hunfol_jetpt.Fill(theta0_G_train[entry,1],myweights[niterations-1, 1,entry])
 
-ax11.set(xlabel="$R_L$",ylabel="Unfolded/Truth",xscale='log')
-ax11.scatter(ratio_rl_xaxis,ct_rl,marker='o')
+hct_rl.Divide(htruth_rl,hunfol_rl,1,1)
+hct_jetpt.Divide(htruth_jetpt,hunfol_jetpt,1,1)
 
-ax22.set(xlabel="$p^{jet}_T$",ylabel="Unfolded/Truth")
-ax22.scatter(ratio_jetpt_xaxis,ct_jetpt,marker='o')
+fout = ROOT.TFile("../output-files/multifold_closuretest_2d.root","RECREATE")
+fout.cd()
+hct_rl.Write()
+hct_jetpt.Write()
+fout.Close()
 
-ax11.grid(axis='y', color='gainsboro', linewidth=0.5)
-ax11.set_ylim((0.9,1.1))
-ax22.grid(axis='y', color='gainsboro', linewidth=0.5)
-
-plt.suptitle('Iter {}, 3 layers , #Nodes = {} , #Epochs = {} , Batch size = {}'.format(niterations,nnodes,nepochs,nbatch_size))
-plt.savefig("./plots/closuretest-2d-multifold-{}iterations-{}nodes-{}epochs-{}nbatchsize.pdf".format(niterations, nnodes, nepochs, nbatch_size), format="pdf", bbox_inches="tight")
+# plt.savefig("./plots/closuretest-2d-multifold-{}iterations-{}nodes-{}epochs-{}nbatchsize.pdf".format(niterations, nnodes, nepochs, nbatch_size), format="pdf", bbox_inches="tight")
 # plt.show()

@@ -16,9 +16,9 @@ void macro_print_jetpurity_jetefficiency()
     TNtuple* ntuple        = (TNtuple*) fefficiency->Get((name_ntuple_jetefficiency).c_str());
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig_purity    = new TH1F("hsig_purity"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hall_purity    = new TH1F("hall_purity"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hpurity = new TH1F("hpurity","",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hsig_purity = new TH1F("hsig_purity"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hall_purity = new TH1F("hall_purity"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hpurity     = new TH1F("hpurity","",Nbin_jet_pt+2,unfolding_jetpt_binning);
     hsig_purity->Sumw2();
     hall_purity->Sumw2();
     hpurity->Sumw2();
@@ -26,8 +26,8 @@ void macro_print_jetpurity_jetefficiency()
     set_histogram_style(hpurity, 797 , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hall    = new TH1F("hall"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hsig        = new TH1F("hsig"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hall        = new TH1F("hall"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
     TH1F* hefficiency = new TH1F("hefficiency","",Nbin_jet_pt+2,unfolding_jetpt_binning);
     hsig->Sumw2();
     hall->Sumw2();
