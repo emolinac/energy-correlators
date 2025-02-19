@@ -68,8 +68,8 @@ int main()
     // last_eventNum = mctree->eventNumber;
     // if (maxjetpT_found) continue;
 
-    // // Apply PV cut
-    // if(mctree->nPVs!=1) continue;
+    // Apply PV cut
+    if(mctree->nPVs!=1) continue;
 
     // Set Jet-associated 4 vectors and apply cuts
     true_Jet_4vector->SetPxPyPzE(mctree->MCJet_PX/1000.,mctree->MCJet_PY/1000.,mctree->MCJet_PZ/1000.,mctree->MCJet_PE/1000.);

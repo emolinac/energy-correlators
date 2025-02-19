@@ -25,7 +25,7 @@ int main()
   TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
   // Create Ntuples
-  TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_unfolding.c_str(),"Reco jet&dtr matched 2 MC",ntuple_pairpurity_vars); 
+  TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_unfolding.c_str(),"Reco jet&dtr matched 2 MC",ntuple_unfold_vars); 
   
   ntuple_jet_match->SetAutoSave(0);
   
@@ -50,7 +50,7 @@ int main()
   bool maxjetpT_found = false;
   
   // Define array carrying the variables
-  float vars[Nvars_pairpurity];
+  float vars[Nvars_unfold];
 
   // Fill the matched jets Ntuple
   for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
@@ -216,7 +216,10 @@ int main()
           vars[30] = (key1_match==0||key2_match==0) ? -999 : R_L(matchedmc_y1,matchedmc_y2,matchedmc_phi1,matchedmc_phi2);
 
           double weight_truth = weight(mcrecotree->Jet_Dtr_TRUE_E[h1_index],mcrecotree->Jet_Dtr_TRUE_E[h2_index],mcrecotree->Jet_mcjet_PE);
+          double weight_pt_truth = weight(mcrecotree->Jet_Dtr_TRUE_PT[h1_index],mcrecotree->Jet_Dtr_TRUE_PT[h2_index],mcrecotree->Jet_mcjet_PT);
           vars[31] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
+          vars[32] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
+          vars[33] = weight(mcrecotree->Jet_Dtr_PT[h1_index]/1000., mcrecotree->Jet_Dtr_PT[h2_index]/1000., mcrecotree->Jet_PT/1000.);
 
           // Fill the TNtuple
           ntuple_jet_match->Fill(vars);

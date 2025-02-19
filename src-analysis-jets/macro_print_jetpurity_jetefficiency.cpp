@@ -68,5 +68,5 @@ void macro_print_jetpurity_jetefficiency()
     l->AddEntry(hefficiency,"Efficiency","lpf");
     l->Draw("SAME");
 
-    c->Print(Form("../plots/jet_purity_efficiency.pdf"));
+    // c->Print(Form("../plots/jet_purity_efficiency.pdf"));
 }

@@ -32,7 +32,7 @@ void macro_print_normnpair_data_jetpt()
         set_histogram_style(h[jet_pt_bin] , corr_marker_color_jet_pt[jet_pt_bin] , std_line_width, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size);
 
         s->Add(h[jet_pt_bin]);
-        l->AddEntry(h[jet_pt_bin],Form("%.1f<Jet p_{T}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lpf");    
+        l->AddEntry(h[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lpf");    
     }
 
     // Create Canvas and draw in it

@@ -24,7 +24,7 @@ void macro_print_rl_jet_pt()
     c->Draw();
     ntuple->Draw("jet_pt:R_L>>h",pair_cut,"colz");
     
-    h->SetTitle(";R_{L};Jet P_{T}(GeV)");
+    h->SetTitle(";R_{L};p^{jet}_{t}(GeV)");
 
     gPad->SetLogx(1);
 

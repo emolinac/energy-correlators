@@ -21,7 +21,7 @@ void macro_print_jet_pt_weight()
     c->Draw();
     ntuple->Draw("weight:jet_pt>>h",pair_cut,"colz");
     
-    h->SetTitle(";Jet P_{T};Weight");
+    h->SetTitle(";p^{jet}_{t};Weight");
 
     c->Print("../plots/phase_space_jetpt_weight.pdf");
 }

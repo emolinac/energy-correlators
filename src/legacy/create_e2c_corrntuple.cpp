@@ -20,10 +20,8 @@
 int main()
 {
   // Open correction files
-  TFile* fpurity         = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
-  TFile* fefficiency     = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
-  TFile* fpurity_jet     = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
-  TFile* fefficiency_jet = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
+  TFile* fpurity     = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
+  TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
   
   // Create output file
   TFile* fout = new TFile((output_folder+namef_ntuple_e2c_corr).c_str(),"RECREATE");
@@ -35,53 +33,31 @@ int main()
   TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity.c_str()));
   TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_mc.c_str()));
   TNtuple* ntuple_efficiency_reco = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_reco.c_str()));
-  TNtuple* ntuple_purity_jet      = (TNtuple*) fpurity_jet->Get((name_ntuple_jetpurity.c_str()));
-  TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jetefficiency.c_str()));
   TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str(),"All Data",ntuple_corrdata_vars); 
-  TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str(),"All Data",ntuple_jet_vars); 
   ntuple_data->SetAutoSave(0);
-  ntuple_corrjet->SetAutoSave(0);
 
-  // Jet corrections
-  TH1F* hsigp_jet   = new TH1F("hsigp_jet"  ,"",em_jetptcorrection_nbins,corrections_jetpt_binning);
-  TH1F* hallp_jet   = new TH1F("hallp_jet"  ,"",em_jetptcorrection_nbins,corrections_jetpt_binning);
-  TH1F* hpurity_jet = new TH1F("hpurity_jet","",em_jetptcorrection_nbins,corrections_jetpt_binning);
-  hsigp_jet->Sumw2();
-  hallp_jet->Sumw2();
-
-  TH1F* hsigeff_jet     = new TH1F("hsigeff_jet"    ,"",em_jetptcorrection_nbins,corrections_jetpt_binning);
-  TH1F* halleff_jet     = new TH1F("halleff_jet"    ,"",em_jetptcorrection_nbins,corrections_jetpt_binning);
-  TH1F* hefficiency_jet = new TH1F("hefficiency_jet","",em_jetptcorrection_nbins,corrections_jetpt_binning);
-  hsigeff_jet->Sumw2();
-  halleff_jet->Sumw2();
-
-  ntuple_purity_jet->Project("hsigp_jet","jet_pt","jet_pt_truth!=-999");
-  ntuple_purity_jet->Project("hallp_jet","jet_pt");
-  ntuple_efficiency_jet->Project("hsigeff_jet","jet_pt_truth","jet_pt!=-999");
-  ntuple_efficiency_jet->Project("halleff_jet","jet_pt_truth");
-
-  hpurity_jet->Divide(hsigp_jet,hallp_jet,1,1,"B");
-  hefficiency_jet->Divide(hsigeff_jet,halleff_jet,1,1,"B");
-
-  // Hadron corrections
+  // Calculate corrections
   TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
   TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
   TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
   hsigp->Sumw2();
   hallp->Sumw2();
-  
+  hpurity->Sumw2();
+
   TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
   TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
   TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
   hsigeff->Sumw2();
   halleff->Sumw2();
-  
+  hefficiency->Sumw2();
+
   ntuple_purity->Project("hsigp","jet_pt:h_eta:h_p",single_signal_cut);
   ntuple_purity->Project("hallp","jet_pt:h_eta:h_p",pair_cut         );
-  ntuple_efficiency_reco->Project("hsigeff","jet_pt_truth:h_eta_truth:h_p_truth",single_signal_cut);
-  ntuple_efficiency_mc->Project("halleff","jet_pt:h_eta:h_p",pair_cut);
-
   hpurity->Divide(hsigp,hallp,1,1,"B");
+
+  // ntuple_efficiency_reco->Project("hsigeff","jet_pt:h_eta:h_p",single_signal_cut);
+  ntuple_efficiency_reco->Project("hsigeff","jet_pt_truth:h_eta_truth:h_p_truth",single_signal_cut);
+  ntuple_efficiency_mc->Project("halleff","jet_pt:h_eta:h_p",pair_cut         );
   hefficiency->Divide(hsigeff,halleff,1,1,"B");
 
   // Create necessary 4vectors
@@ -98,7 +74,6 @@ int main()
     
   // Define array carrying the variables
   float vars[Nvars_corrdata];
-  float vars_jet[Nvars_corrjet];
 
   // Fill the data TNtuple
   for(int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
@@ -145,23 +120,7 @@ int main()
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
-
-    double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(datatree->Jet_PT/1000.));
-    double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(datatree->Jet_PT/1000.));
-    
-    double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(datatree->Jet_PT/1000.));
-    double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(datatree->Jet_PT/1000.));
-    
-    vars_jet[0] = datatree->Jet_PT/1000.;
-    vars_jet[1] = datatree->Jet_PE/1000.;
-    vars_jet[2] = datatree->Jet_NDtr;
-    vars_jet[3] = jet_efficiency;
-    vars_jet[4] = jet_purity;
-    vars_jet[5] = jet_efficiency_error;
-    vars_jet[6] = jet_purity_error;
-
-    ntuple_corrjet->Fill(vars_jet);
-
+        
     // Loop over hadron 1
     for(int h1_index = 0 ; h1_index < datatree->Jet_NDtr ; h1_index++)
     {
@@ -230,10 +189,13 @@ int main()
         vars[16] = datatree->Jet_PT/1000.;
         vars[17] = Jet_4vector->Eta();
         vars[18] = Jet_4vector->Phi();
-        vars[19] = weight(datatree->Jet_Dtr_PT[h1_index], datatree->Jet_Dtr_PT[h2_index], datatree->Jet_PT);
+        vars[19] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
         vars[20] = datatree->Jet_PE/1000.;//R_L(Jet_4vector->Rapidity(),mum_4vector->Rapidity(),Jet_4vector->Phi(),mum_4vector->Phi());
         vars[21] = datatree->Jet_Dtr_E[h1_index]/1000.;//mum_4vector->Pt();
         vars[22] = datatree->Jet_Dtr_E[h2_index]/1000.;//mum_4vector->Eta();
+        //vars[23] = //R_L(Jet_4vector->Rapidity(),mup_4vector->Rapidity(),Jet_4vector->Phi(),mup_4vector->Phi());
+        //vars[24] = //mup_4vector->Pt();
+        //vars[25] = //mup_4vector->Eta();
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
@@ -243,7 +205,6 @@ int main()
 
   fout->cd();
   ntuple_data->Write();
-  ntuple_corrjet->Write();
   fout->Close();
   
   std::cout<<std::endl;

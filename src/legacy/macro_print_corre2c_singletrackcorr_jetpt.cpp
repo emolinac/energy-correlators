@@ -43,8 +43,8 @@ void macro_print_corre2c_singletrackcorr_jetpt()
     
         s_data->Add(hcorr_data[bin-1]);
         s_data->Add(hall_data[bin-1]);
-        l_data->AddEntry(hcorr_data[bin-1],Form("%.1f<Jet p_{T}<%.1f GeV",jet_pt_binning[bin-1],jet_pt_binning[bin]),"lpf");
-        l_data->AddEntry(hall_data[bin-1] ,Form("%.1f<Jet p_{T}<%.1f GeV",jet_pt_binning[bin-1],jet_pt_binning[bin]),"lpf");
+        l_data->AddEntry(hcorr_data[bin-1],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin-1],jet_pt_binning[bin]),"lpf");
+        l_data->AddEntry(hall_data[bin-1] ,Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin-1],jet_pt_binning[bin]),"lpf");
     
     }
     

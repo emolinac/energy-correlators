@@ -18,7 +18,8 @@ const double phi_mass      = 1.019455;
 const double mass_res      = 0.008; // Mass resolution parameter (see src-resolution)
 
 // Correction-related constants
-const double corr_rel_error = 0.15;
+// const double corr_rel_error = 0.15;
+const double corr_rel_error = 0.5;
 const int ndim_corr = 50;
 
 // Limits of variables

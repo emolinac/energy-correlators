@@ -1,9 +1,9 @@
-#include "../../include/analysis-constants.h"
-#include "../../include/analysis-cuts.h"
-#include "../../include/directories.h"
-#include "../../include/names.h"
-#include "../../include/utils-algorithms.h"
-#include "../../include/utils-visual.h"
+#include "../include/analysis-constants.h"
+#include "../include/analysis-cuts.h"
+#include "../include/directories.h"
+#include "../include/names.h"
+#include "../include/utils-algorithms.h"
+#include "../include/utils-visual.h"
 
 void macro_print_resolution_jetpt()
 {
@@ -43,7 +43,7 @@ void macro_print_resolution_jetpt()
 
     gPad->SetLogy(1);
     
-    c->Print("../../plots/resolution_jetpt.pdf");
+    c->Print("../plots/resolution_jetpt.pdf");
 
     hratio->Draw();
     hratio->SetTitle(";p^{jet}_{t}(Reco)/p^{jet}_{t}(Truth);");
@@ -52,6 +52,6 @@ void macro_print_resolution_jetpt()
 
     gPad->SetLogy(0);
     
-    c->Print("../../plots/resolution_jetpt_ratio.pdf");
+    c->Print("../plots/resolution_jetpt_ratio.pdf");
 
 }

@@ -32,7 +32,7 @@ void macro_print_weight_jetpt()
         set_histogram_style(hcorr_data[bin-1], corr_marker_color_jet_pt[bin-1], std_line_width, corr_marker_style_jet_pt[bin-1], std_marker_size+1);
         ntuple_data->Project(Form("hcorr_data[%i]",bin-1),"weight",pair_jetpt_cut[bin-1]);
         s_data->Add(hcorr_data[bin-1]);
-        l_data->AddEntry(hcorr_data[bin-1],Form("%.1f<Jet p_{T}<%.1f GeV",jet_pt_binning[bin-1],jet_pt_binning[bin]),"lpf");
+        l_data->AddEntry(hcorr_data[bin-1],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin-1],jet_pt_binning[bin]),"lpf");
     }
     
     s_data->Draw("NOSTACK");

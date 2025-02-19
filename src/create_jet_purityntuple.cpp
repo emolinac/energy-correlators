@@ -69,9 +69,6 @@ int main()
     // last_eventNum = mcrecotree->eventNumber;
     // if (maxjetpT_found) continue;
 
-    // // -999 means there is not matched jet
-    // if(mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
-
     // // Apply PV cut
     // if(mcrecotree->nPV!=1) continue;
 
