@@ -60,17 +60,17 @@ int main()
     // Access entry of tree
     mcrecotree->GetEntry(evt);
 
-    // if (evt != 0)
-    // {
-    //   if (mcrecotree->eventNumber != last_eventNum) maxjetpT_found = false;
-    //   if (last_eventNum == mcrecotree->eventNumber) continue;
-    // }
+    if (evt != 0)
+    {
+      if (mcrecotree->eventNumber != last_eventNum) maxjetpT_found = false;
+      if (last_eventNum == mcrecotree->eventNumber) continue;
+    }
 
-    // last_eventNum = mcrecotree->eventNumber;
-    // if (maxjetpT_found) continue;
+    last_eventNum = mcrecotree->eventNumber;
+    if (maxjetpT_found) continue;
 
-    // // Apply PV cut
-    // if(mcrecotree->nPV!=1) continue;
+    // Apply PV cut
+    if(mcrecotree->nPV!=1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS==1&&mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);

@@ -11,7 +11,8 @@ ROOTINCDIR  := $(shell root-config --incdir)
 ROOTLIBS    := $(shell root-config --libs) -lEG
 
 all: ${BIN}/create_e2c_purityntuple ${BIN}/create_e2c_pairpurityntuple ${BIN}/create_e2c_corrntuple ${BIN}/create_e2c_efficiencyntuple \
-	 ${BIN}/create_e2c_unfoldingntuple ${BIN}/create_jet_purityntuple ${BIN}/create_jet_efficiencyntuple 
+	 ${BIN}/create_e2c_unfoldingntuple ${BIN}/create_jet_purityntuple ${BIN}/create_jet_efficiencyntuple \
+	 ${BIN}/create_jes_jer_ntuple
 
 ${BIN}/create_e2c_purityntuple: ${SRC}/create_e2c_purityntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_purityntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_purityntuple
@@ -21,6 +22,9 @@ ${BIN}/create_jet_purityntuple: ${SRC}/create_jet_purityntuple.cpp
 
 ${BIN}/create_jet_efficiencyntuple: ${SRC}/create_jet_efficiencyntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_jet_efficiencyntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_jet_efficiencyntuple
+
+${BIN}/create_jes_jer_ntuple: ${SRC}/create_jes_jer_ntuple.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_jes_jer_ntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_jes_jer_ntuple
 
 ${BIN}/create_e2c_pairpurityntuple: ${SRC}/create_e2c_pairpurityntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_pairpurityntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_pairpurityntuple

@@ -59,14 +59,14 @@ int main()
     // Access entry of tree
     mctree->GetEntry(evt);
 
-    // if (evt != 0)
-    // {
-    //   if (mctree->eventNumber != last_eventNum) maxjetpT_found = false;
-    //   if (last_eventNum == mctree->eventNumber) continue;
-    // }
+    if (evt != 0)
+    {
+      if (mctree->eventNumber != last_eventNum) maxjetpT_found = false;
+      if (last_eventNum == mctree->eventNumber) continue;
+    }
 
-    // last_eventNum = mctree->eventNumber;
-    // if (maxjetpT_found) continue;
+    last_eventNum = mctree->eventNumber;
+    if (maxjetpT_found) continue;
 
     // Apply PV cut
     if(mctree->nPVs!=1) continue;

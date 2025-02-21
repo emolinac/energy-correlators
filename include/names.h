@@ -51,16 +51,27 @@ const char* ntuple_efficiency_mc_vars   = "h_eta:h_y:h_phi:h_p:h_pt:jet_pt:jet_e
 std::string namef_ntuple_jet_corr       = "ntuple_corrjet.root";
 std::string namef_ntuple_jet_purity     = "ntuple_jet_purity.root";
 std::string namef_ntuple_jet_efficiency = "ntuple_jet_efficiency.root";
+std::string namef_ntuple_jes_jer        = "ntuple_jes_jer.root";
 
 std::string name_ntuple_corrjet       = "ntuple_jet";
 std::string name_ntuple_jetpurity     = "ntuple_jetpurity";
 std::string name_ntuple_jetefficiency = "ntuple_jetefficiency";
+std::string name_ntuple_jes_data      = "ntuple_jes_data";
+std::string name_ntuple_jes_reco      = "ntuple_jes_reco";
+std::string name_ntuple_jes_mc        = "ntuple_jes_mc";
+std::string name_ntuple_jer           = "ntuple_jer";
 
 const int Nvars_corrjet       = 7;
 const int Nvars_jetpurity     = 6;
 const int Nvars_jetefficiency = 6;
+const int Nvars_jes           = 3;
+const int Nvars_jes_mc        = 2;
+
 const char* ntuple_jet_vars           = "jet_pt:jet_e:jet_ndtr:jet_efficiency:jet_purity:jet_efficiency_error:jet_purity_error";
 const char* ntuple_jetpurity_vars     = "jet_pt:jet_e:jet_ndtr:jet_pt_truth:jet_e_truth:jet_ndtr_truth";
 const char* ntuple_jetefficiency_vars = "jet_pt_truth:jet_e_truth:jet_ndtr_truth:jet_pt:jet_e:jet_ndtr";
+const char* ntuple_jes_data_vars      = "jet_pt:z_pt:jet_jes_cor";
+const char* ntuple_jes_reco_vars      = "jet_pt:z_pt:jet_jes_cor";
+const char* ntuple_jes_mc_vars        = "jet_pt:z_pt";
 
 #endif
