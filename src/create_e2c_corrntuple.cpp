@@ -22,8 +22,13 @@ int main()
   // Open correction files
   TFile* fpurity         = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
   TFile* fefficiency     = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
+  
   TFile* fpurity_jet     = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
   TFile* fefficiency_jet = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
+  
+  TFile* fefficiency_muon_id  = new TFile((muons_folder+"IDEff_Data_2016.root").c_str());
+  TFile* fefficiency_muon_trk = new TFile((muons_folder+"TRKEff_Data_2016.root").c_str());
+  TFile* fefficiency_muon_trg = new TFile((muons_folder+"TRGEff_Data_2016.root").c_str());
   
   // Create output file
   TFile* fout = new TFile((output_folder+namef_ntuple_e2c_corr).c_str(),"RECREATE");
@@ -41,6 +46,11 @@ int main()
   TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str(),"All Data",ntuple_jet_vars); 
   ntuple_data->SetAutoSave(0);
   ntuple_corrjet->SetAutoSave(0);
+
+  // Muon corrections
+  TH2D* h2_muon_ideff_data  = (TH2D*) fefficiency_muon_id->Get("Hist_ALL_2016_ETA_PT_Eff");
+  TH2D* h2_muon_trkeff_data = (TH2D*) fefficiency_muon_trk->Get("Hist_ALL_2016_ETA_PT_Eff");
+  TH2D* h2_muon_trgeff_data = (TH2D*) fefficiency_muon_trg->Get("Hist_ALL_2016_ETA_PT_Eff");
 
   // Jet corrections
   TH1F* hsigp_jet   = new TH1F("hsigp_jet"  ,"",em_jetptcorrection_nbins,corrections_jetpt_binning);
@@ -146,20 +156,34 @@ int main()
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
+    double mup_eff_id  = h2_muon_ideff_data->GetBinContent(h2_muon_ideff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
+    double mup_eff_trk = h2_muon_trkeff_data->GetBinContent(h2_muon_trkeff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
+    double mup_eff_trg = h2_muon_trgeff_data->GetBinContent(h2_muon_trgeff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
+
+    double mum_eff_id  = h2_muon_ideff_data->GetBinContent(h2_muon_ideff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
+    double mum_eff_trk = h2_muon_trkeff_data->GetBinContent(h2_muon_trkeff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
+    double mum_eff_trg = h2_muon_trgeff_data->GetBinContent(h2_muon_trgeff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
+
     double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(datatree->Jet_PT/1000.));
     double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(datatree->Jet_PT/1000.));
     
     double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(datatree->Jet_PT/1000.));
     double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(datatree->Jet_PT/1000.));
     
-    vars_jet[0] = datatree->Jet_PT/1000.;
-    vars_jet[1] = datatree->Jet_PE/1000.;
-    vars_jet[2] = datatree->Jet_NDtr;
-    vars_jet[3] = jet_efficiency;
-    vars_jet[4] = jet_purity;
-    vars_jet[5] = jet_efficiency_error;
-    vars_jet[6] = jet_purity_error;
-
+    vars_jet[0]  = datatree->Jet_PT/1000.;
+    vars_jet[1]  = datatree->Jet_PE/1000.;
+    vars_jet[2]  = datatree->Jet_NDtr;
+    vars_jet[3]  = jet_efficiency;
+    vars_jet[4]  = jet_purity;
+    vars_jet[5]  = jet_efficiency_error;
+    vars_jet[6]  = jet_purity_error;
+    vars_jet[7]  = mup_eff_id;
+    vars_jet[8]  = mup_eff_trk;
+    vars_jet[9]  = mup_eff_trg;
+    vars_jet[10] = mum_eff_id;
+    vars_jet[11] = mum_eff_trk;
+    vars_jet[12] = mum_eff_trg;
+    
     ntuple_corrjet->Fill(vars_jet);
 
     // Loop over hadron 1

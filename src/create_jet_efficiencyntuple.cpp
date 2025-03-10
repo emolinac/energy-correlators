@@ -59,15 +59,9 @@ int main()
     // Access entry of tree
     mctree->GetEntry(evt);
 
-    if (evt != 0)
-    {
-      if (mctree->eventNumber != last_eventNum) maxjetpT_found = false;
-      if (last_eventNum == mctree->eventNumber) continue;
-    }
-
+    if(evt != 0){if(last_eventNum == mctree->eventNumber) continue;}
     last_eventNum = mctree->eventNumber;
-    if (maxjetpT_found) continue;
-
+    
     // Apply PV cut
     if(mctree->nPVs!=1) continue;
 
@@ -77,8 +71,7 @@ int main()
 
     true_mum_4vector->SetPxPyPzE(mctree->MCJet_truth_mum_PX/1000.,mctree->MCJet_truth_mum_PY/1000.,mctree->MCJet_truth_mum_PZ/1000.,mctree->MCJet_truth_mum_PE/1000.);
     if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) continue;
-    //if(mctree->MCJet_truth_match_mum_TRACK_PCHI2<muon_trackprob_min) continue;
-
+    
     true_mup_4vector->SetPxPyPzE(mctree->MCJet_truth_mup_PX/1000.,mctree->MCJet_truth_mup_PY/1000.,mctree->MCJet_truth_mup_PZ/1000.,mctree->MCJet_truth_mup_PE/1000.);
     if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) continue;
     

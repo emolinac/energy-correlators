@@ -53,7 +53,7 @@ void macro_print_jetpurity_jetefficiency()
     hpurity->Divide(hsig_purity,hall_purity,1,1,"B");
     hefficiency->Divide(hsig,hall,1,1,"B");
 
-    hpurity->GetYaxis()->SetRangeUser(0,1.2);
+    // hpurity->GetYaxis()->SetRangeUser(0,1.2);
 
     THStack* hs = new THStack();
     hs->Add(hefficiency);
