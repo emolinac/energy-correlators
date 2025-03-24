@@ -41,5 +41,5 @@ void macro_print_singleefficiency_momentum()
     hefficiency->GetYaxis()->SetRangeUser(0,1);
     hefficiency->SetTitle(";p(GeV);Single Hadron efficiency");
 
-    c->Print("../../plots/efficiency/singlehadron_efficiency_momentum.pdf");
+    c->Print("./plots/singlehadron_efficiency_momentum.pdf");
 }

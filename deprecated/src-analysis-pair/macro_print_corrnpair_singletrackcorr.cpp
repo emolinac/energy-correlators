@@ -69,5 +69,5 @@ void macro_print_corrnpair_singletrackcorr()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("../plots/corr_npair.pdf");
+    c->Print("./plots/corr_npair.pdf");
 }

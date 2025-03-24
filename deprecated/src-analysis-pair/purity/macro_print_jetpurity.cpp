@@ -42,5 +42,5 @@ void macro_print_jetpurity()
     
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    // c->Print(Form("../../plots/purity/jet_purity.pdf"));
+    // c->Print(Form("./plots/jet_purity.pdf"));
 }

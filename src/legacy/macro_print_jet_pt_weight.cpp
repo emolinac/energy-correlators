@@ -23,5 +23,5 @@ void macro_print_jet_pt_weight()
     
     h->SetTitle(";p^{jet}_{t};Weight");
 
-    c->Print("../plots/phase_space_jetpt_weight.pdf");
+    c->Print("./plots/phase_space_jetpt_weight.pdf");
 }

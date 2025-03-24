@@ -42,5 +42,5 @@ void macro_print_jetefficiency()
     
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    // c->Print(Form("../../plots/efficiency/jet_efficiency.pdf"));
+    // c->Print(Form("./plots/jet_efficiency.pdf"));
 }

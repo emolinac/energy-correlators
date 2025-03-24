@@ -43,5 +43,5 @@ void macro_print_energyproduct_jete()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("../plots/energyproduct_jete.pdf");
+    c->Print("./plots/energyproduct_jete.pdf");
 }

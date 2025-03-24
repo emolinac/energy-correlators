@@ -36,5 +36,5 @@ void macro_print_R_h_jetaxis()
     s->SetTitle(";R_{L};");
     gPad->SetLogy(1);
 
-    c->Print("../../plots/R_h_jet.pdf");
+    c->Print("./plots/R_h_jet.pdf");
 }

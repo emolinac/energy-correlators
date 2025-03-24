@@ -63,11 +63,10 @@ int main()
     if (evt != 0)
     {
       if (mcrecotree->eventNumber != last_eventNum) maxjetpT_found = false;
-      if (last_eventNum == mcrecotree->eventNumber) continue;
+      // if (last_eventNum == mcrecotree->eventNumber) continue;
     }
 
-    last_eventNum = mcrecotree->eventNumber;
-    if (maxjetpT_found) continue;
+    // if (maxjetpT_found) continue;
 
     // Apply PV cut
     if(mcrecotree->nPV!=1) continue;
@@ -112,6 +111,8 @@ int main()
     vars[3]  = (truth_passed) ? mcrecotree->Jet_mcjet_PT/1000. : -999 ;
     vars[4]  = (truth_passed) ? mcrecotree->Jet_mcjet_PE/1000. : -999 ;
     vars[5]  = (truth_passed) ? mcrecotree->Jet_mcjet_nmcdtrs  : -999 ;
+
+    last_eventNum = mcrecotree->eventNumber;
     
     // Fill the TNtuple
     ntuple_jet_match->Fill(vars); 

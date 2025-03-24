@@ -49,6 +49,7 @@ void macro_print_comparison_closuretest_3d(int Niter = 5, double jet_pt_min_loca
     }
 
     TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c2d = new TCanvas("c2d","",1920,1080);
     c->Draw();
 
     RooUnfoldBayes unfold(response, hmeas, Niter);

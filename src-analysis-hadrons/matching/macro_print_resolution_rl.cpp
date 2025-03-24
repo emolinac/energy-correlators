@@ -69,7 +69,7 @@ void macro_print_resolution_rl()
 
     //tex->DrawLatexNDC(0.3,0.3,"simulations");
     
-    c->Print("../../plots/resolution_rl.pdf");
+    c->Print("./plots/resolution_rl.pdf");
 
     hratio->Draw();
     hratio->SetTitle(";R_{L}(Reco)/R_{L}(Truth);");
@@ -78,5 +78,5 @@ void macro_print_resolution_rl()
     line2->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),hratio->GetMaximum());
 
     gPad->SetLogy(0);
-    c->Print("../../plots/resolution_rl_ratio.pdf");
+    c->Print("./plots/resolution_rl_ratio.pdf");
 }

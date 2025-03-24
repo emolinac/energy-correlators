@@ -32,18 +32,18 @@ int main()
   ntuple_mc->SetAutoSave(0);
   
   // Create necessary 4vectors
-  TLorentzVector* Jet_4vector   = new TLorentzVector();
-  TLorentzVector* Z0_4vector    = new TLorentzVector();
-  TLorentzVector* mum_4vector   = new TLorentzVector();
-  TLorentzVector* mup_4vector   = new TLorentzVector();
-  TLorentzVector* true_h_4vector = new TLorentzVector();
-  TLorentzVector* h_4vector = new TLorentzVector();
+  TLorentzVector* Jet_4vector = new TLorentzVector();
+  TLorentzVector* Z0_4vector  = new TLorentzVector();
+  TLorentzVector* mum_4vector = new TLorentzVector();
+  TLorentzVector* mup_4vector = new TLorentzVector();
+  TLorentzVector* h_4vector   = new TLorentzVector();
 
-  TLorentzVector* true_Jet_4vector   = new TLorentzVector();
-  TLorentzVector* true_Z0_4vector    = new TLorentzVector();
-  TLorentzVector* true_mum_4vector   = new TLorentzVector();
-  TLorentzVector* true_mup_4vector   = new TLorentzVector();
-
+  TLorentzVector* true_Jet_4vector = new TLorentzVector();
+  TLorentzVector* true_Z0_4vector  = new TLorentzVector();
+  TLorentzVector* true_mum_4vector = new TLorentzVector();
+  TLorentzVector* true_mup_4vector = new TLorentzVector();
+  TLorentzVector* true_h_4vector   = new TLorentzVector();
+  
   int eventNum;
   unsigned long long last_eventNum = 0;
   int events = 0;
@@ -70,9 +70,6 @@ int main()
       if (mcrecotree->eventNumber != last_eventNum) maxjetpT_found = false;
       if (last_eventNum == mcrecotree->eventNumber) continue;
     }
-
-    last_eventNum = mcrecotree->eventNumber;
-    if (maxjetpT_found) continue;
 
     // -There must be a matched truth-level jet
     if(mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
@@ -132,7 +129,7 @@ int main()
         
         if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ID[h_index],
                                              mcrecotree->Jet_Dtr_TRUE_P[h_index]/1000.,
-                                             mcrecotree->Jet_Dtr_TRUE_PT[h_index],
+                                             mcrecotree->Jet_Dtr_TRUE_PT[h_index]/1000.,
                                              true_Jet_4vector->DeltaR(*true_h_4vector))) key_match = 0;
       } 
 
@@ -199,6 +196,8 @@ int main()
       // Fill the TNtuple
       ntuple_mc->Fill(vars_mc);
     }
+
+    last_eventNum = mcrecotree->eventNumber;
   }
 
   fout->cd();

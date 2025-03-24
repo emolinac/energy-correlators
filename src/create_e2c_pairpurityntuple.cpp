@@ -69,9 +69,6 @@ int main()
       if (last_eventNum == mcrecotree->eventNumber) continue;
     }
 
-    last_eventNum = mcrecotree->eventNumber;
-    if (maxjetpT_found) continue;
-
     // -999 means there is not matched jet
     if(mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
 
@@ -220,6 +217,9 @@ int main()
         ntuple_jet_match->Fill(vars);
       }
     }
+
+    last_eventNum = mcrecotree->eventNumber;
+    
   }
 
   fout->cd();

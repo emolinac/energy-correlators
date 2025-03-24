@@ -67,9 +67,6 @@ int main()
       if (last_eventNum == mcrecotree->eventNumber) continue;
     }
 
-    last_eventNum = mcrecotree->eventNumber;
-    if (maxjetpT_found) continue;
-
     // -999 means there is not matched jet
     if(mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
 
@@ -136,7 +133,7 @@ int main()
         
         if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ID[h_index],
                                              mcrecotree->Jet_Dtr_TRUE_P[h_index]/1000.,
-                                             mcrecotree->Jet_Dtr_TRUE_PT[h_index],
+                                             mcrecotree->Jet_Dtr_TRUE_PT[h_index]/1000.,
                                              true_Jet_4vector->DeltaR(*true_h_4vector))) key_match = 0;
       } 
       
@@ -168,6 +165,8 @@ int main()
       // Fill the TNtuple
       ntuple_jet_match->Fill(vars);
     }
+
+    last_eventNum = mcrecotree->eventNumber;
   }
 
   fout->cd();

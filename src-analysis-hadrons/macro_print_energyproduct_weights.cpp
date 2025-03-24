@@ -41,5 +41,5 @@ void macro_print_energyproduct_weights()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("../plots/energyproduct_weight.pdf");
+    c->Print("./plots/energyproduct_weight.pdf");
 }

@@ -43,5 +43,5 @@ void macro_print_weight_jetpt()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("../plots/weight_jetpt.pdf");
+    c->Print("./plots/weight_jetpt.pdf");
 }

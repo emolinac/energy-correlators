@@ -56,5 +56,5 @@ void macro_print_corre2c_singletrackcorr_jetpt()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("../plots/corr_e2c_jetpt.pdf");
+    c->Print("./plots/corr_e2c_jetpt.pdf");
 }

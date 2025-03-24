@@ -73,7 +73,7 @@ void macro_print_pairpurity_rl()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/purity/npair_rl_signalvsall_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_rl_signalvsall_deltarleq%.3f.pdf",R_L_res));
     
     gPad->SetLogy(0);
 
@@ -89,7 +89,7 @@ void macro_print_pairpurity_rl()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/purity/npair_purity_rl_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_purity_rl_deltarleq%.3f.pdf",R_L_res));
     
     // DATA PLOTS
     hsig_data->Multiply(hpurity);
@@ -112,5 +112,5 @@ void macro_print_pairpurity_rl()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
     
-    c->Print(Form("../../plots/purity/npair_wpurity_rl_data_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_wpurity_rl_data_deltarleq%.3f.pdf",R_L_res));
 }

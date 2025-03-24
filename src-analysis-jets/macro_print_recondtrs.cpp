@@ -30,5 +30,5 @@ void macro_print_recondtrs()
     hs->Draw("NOSTACK");
     hs->SetTitle(";Reco Ndtrs;");
     l->Draw("SAME");
-    c->Print("../plots/avge_ndtrs.pdf");
+    c->Print("./plots/avge_ndtrs.pdf");
 }

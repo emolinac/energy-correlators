@@ -95,7 +95,7 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/efficiency/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",R_L_res));
     gPad->SetLogy(0);
 
     // efficiency PLOTS
@@ -120,7 +120,7 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/efficiency/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
     
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -147,5 +147,5 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/efficiency/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
 }

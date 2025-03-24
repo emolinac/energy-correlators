@@ -40,5 +40,5 @@ void macro_print_singlepurity_eta()
     hpurity->GetYaxis()->SetRangeUser(0,1);
     hpurity->SetTitle(";#eta;Single Hadron Purity");
 
-    c->Print("../../plots/purity/singlehadron_purity_eta.pdf");
+    c->Print("./plots/singlehadron_purity_eta.pdf");
 }

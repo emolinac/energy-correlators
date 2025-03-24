@@ -41,5 +41,5 @@ void macro_print_singleefficiency_phi()
     hefficiency->GetYaxis()->SetRangeUser(0,1);
     hefficiency->SetTitle(";#phi;Single Hadron efficiency");
 
-    c->Print("../../plots/efficiency/singlehadron_efficiency_phi.pdf");
+    c->Print("./plots/singlehadron_efficiency_phi.pdf");
 }

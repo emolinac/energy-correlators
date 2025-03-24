@@ -51,5 +51,5 @@ void macro_print_singleefficiency_eta_momentum(double jet_pt_min_local = jet_pt_
 
     hefficiency->Smooth();
     gStyle->SetPaintTextFormat("4.2f");
-    c->Print(Form("../../plots/efficiency/singlehadron_efficiency_eta_momentum_jetpt%.0fto%.0f.pdf",jet_pt_min_local,jet_pt_max_local));
+    c->Print(Form("./plots/singlehadron_efficiency_eta_momentum_jetpt%.0fto%.0f.pdf",jet_pt_min_local,jet_pt_max_local));
 }

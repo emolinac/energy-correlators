@@ -47,5 +47,5 @@ void macro_print_normnpair_data_jetpt()
 
     l->Draw("SAME");
 
-    c->Print("../plots/normnpair_rl_data_jetpt.pdf");
+    c->Print("./plots/normnpair_rl_data_jetpt.pdf");
 }

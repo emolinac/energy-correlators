@@ -89,5 +89,5 @@ void macro_print_corre2c_rl()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("../plots/corr_e2c_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/corr_e2c_deltarleq%.3f.pdf",R_L_res));
 }

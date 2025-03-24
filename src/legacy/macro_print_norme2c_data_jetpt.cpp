@@ -56,5 +56,5 @@ void macro_print_norme2c_data_jetpt()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("../plots/norme2c_rl_data_jetpt.pdf");
+    c->Print("./plots/norme2c_rl_data_jetpt.pdf");
 }

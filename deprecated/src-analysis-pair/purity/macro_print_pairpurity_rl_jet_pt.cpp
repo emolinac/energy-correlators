@@ -94,7 +94,7 @@ void macro_print_pairpurity_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/purity/npair_rl_signalvsall_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_rl_signalvsall_jetpt_deltarleq%.3f.pdf",R_L_res));
     
     gPad->SetLogy(0);
 
@@ -119,7 +119,7 @@ void macro_print_pairpurity_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/purity/npair_purity_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_purity_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
     
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -146,5 +146,5 @@ void macro_print_pairpurity_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/purity/npair_wpurity_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_wpurity_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
 }

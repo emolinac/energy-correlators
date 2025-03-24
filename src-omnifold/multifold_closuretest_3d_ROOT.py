@@ -1,116 +1,95 @@
+from omnifold import DataLoader
+from omnifold import MultiFold
+from omnifold import MLP
+
 import numpy as np
-import omnifold as of
 import os
-import tensorflow as tf
 import uproot
 import ROOT
 
 from matplotlib import pyplot as plt
-from keras.layers import Dense, Input
-from keras.models import Model
+# from keras.layers import Dense, Input
+# from keras.models import Model
 from array import array
 from sklearn.model_selection import train_test_split
 
+ROOT.gStyle.SetPaintTextFormat(".3f")
+Niter = 3
+
 file      = uproot.open("../output-files/ntuple_e2c_unfolding.root")
-file_data = uproot.open("../output-files/ntuple_corre2c.root")
-root_tree      = file["ntuple_unfolding"]
-root_tree_data = file_data["ntuple_data"]
-
-# Regularize input entries
-theta0_G_rl_np = np.array(root_tree["R_L_truth"])
-theta0_G_jp_np = np.array(root_tree["jet_pt_truth"])
-theta0_G_w_np  = np.array(root_tree["weight_truth"])
-theta_unknown_S_rl_np = np.array(root_tree_data["R_L"])
-theta_unknown_S_jp_np = np.array(root_tree_data["jet_pt"])
-theta_unknown_S_w_np  = np.array(root_tree_data["weight"])
-
-n_to_remove = np.size(theta_unknown_S_rl_np) - np.size(theta0_G_rl_np)
-for index in range(0,n_to_remove):
-    theta_unknown_S_rl_np = np.delete(theta_unknown_S_rl_np, index)
-    theta_unknown_S_jp_np = np.delete(theta_unknown_S_jp_np, index)
-    theta_unknown_S_w_np  = np.delete(theta_unknown_S_w_np, index)
+root_tree = file["ntuple_unfolding"]
 
 # Synthetic
-theta0_G = np.column_stack((theta0_G_rl_np,theta0_G_jp_np,theta0_G_w_np))
-theta0_S = np.column_stack((root_tree["R_L"],root_tree["jet_pt"],root_tree["weight"]))
-
-# Data
-theta_unknown_S = np.column_stack((theta_unknown_S_rl_np,theta_unknown_S_jp_np,theta_unknown_S_w_np))
+mc_set        = np.column_stack((root_tree["R_L_truth"],root_tree["jet_pt_truth"],root_tree["weight_truth"]))
+mcreco_set    = np.column_stack((root_tree["R_L"],root_tree["jet_pt"],root_tree["weight"]))
 
 # Split sets to perform CT
 # CT Steps : 
 # - Divide the simulation set in two groups
 # - Use one group to perform the Unfolding procedure.
-#     - In this case you need to reweight not against data but to MC reco!
-# - Then with the unfolded results of the first group ratio it to the MC of the second group
+#     - In this case you need to reweight not against data but to mc_set reco!
+# - Then with the unfolded results of the first group ratio it to the mc_set of the second group
 
-# theta0_G_train , theta0_S_train, theta0_S_validate : Used to calculate the weights
-# theta0_G_validate : unfolded result should be compared to this set of values!
+# mc_set_ofinput , mcreco_set_ofinput, recodata_set_ofinput : Used to calculate the weights
+# mc_set_validate : unfolded result should be compared to this set of values!
 
-theta0_G_train , theta0_G_validate, theta0_S_train, theta_unknown_S_train = train_test_split(theta0_G, theta0_S, random_state=42, test_size=0.5, train_size=0.5)
+mc_set_ofinput , mc_set_validate, mcreco_set_ofinput, recodata_set_ofinput = train_test_split(mc_set, mcreco_set, random_state=42, test_size=0.5, train_size=0.5)
 
-# Calling layers of NN
-nnodes      = 10
-nepochs     = 25
-nbatch_size = 5000
-niterations = 20
+# New procedure for Multifold
+sim_dataloader  = DataLoader(reco = mcreco_set_ofinput, gen = mc_set_ofinput)
+data_dataloader = DataLoader(reco = recodata_set_ofinput)
 
-inputs = Input((np.shape(theta0_G_train)[-1], ))
-hidden_layer_1 = Dense(nnodes, activation='relu')(inputs) # relu = rectified linear unit activation function
-hidden_layer_2 = Dense(nnodes, activation='relu')(hidden_layer_1)
-hidden_layer_3 = Dense(nnodes, activation='relu')(hidden_layer_2)
-outputs = Dense(1, activation='sigmoid')(hidden_layer_3) # Must have one output!
-model = Model(inputs=inputs, outputs=outputs)
+nfeatures  = 3
+reco_model = MLP(nfeatures)
+gen_model  = MLP(nfeatures)
 
-myweights = of.omnifold(theta0_G_train, theta0_S_train, theta_unknown_S_train, niterations, model, 0,nepochs, nbatch_size)
+omnifold = MultiFold("EEC Unfolding", reco_model, gen_model, data = data_dataloader, mc = sim_dataloader, niter = Niter)
+omnifold.Unfold()
 
-rl_nbins = 16
-
-rl_binning     = array('d',np.linspace(0.00999,0.5,rl_nbins))
-jetpt_binnning = array('d',[20,30,50,100])
-weight_binning = array('d',[1e-05, 0.000370882, 0.000689666, 0.00108385, 0.00159442, 0.00228839, 0.00327794, 0.00482046, 0.00751032, 0.0135402, 0.2])
+of_weights = omnifold.reweight(mc_set_validate, omnifold.model2, batch_size = 1000)
 
 # Visualize
-htruth_rl     = ROOT.TH1F("htruth_rl"    ,"",rl_nbins-1,rl_binning)
-hunfol_rl     = ROOT.TH1F("hunfol_rl"    ,"",rl_nbins-1,rl_binning)
-hct_rl        = ROOT.TH1F("hct_rl"       ,"",rl_nbins-1,rl_binning)
-htruth_jetpt  = ROOT.TH1F("htruth_jetpt" ,"",3,jetpt_binnning)
-hunfol_jetpt  = ROOT.TH1F("hunfol_jetpt" ,"",3,jetpt_binnning)
-hct_jetpt     = ROOT.TH1F("hct_jetpt"    ,"",3,jetpt_binnning)
-htruth_weight = ROOT.TH1F("htruth_weight","",10,weight_binning)
-hunfol_weight = ROOT.TH1F("hunfol_weight","",10,weight_binning)
-hct_weight    = ROOT.TH1F("hct_weight"   ,"",10,weight_binning)
+unfolding_rl_nbins = 17
+R_L_min = 0.0099
+R_L_max = 0.49
 
-for entry in range(len(myweights[niterations-1, 1, :])-1):
-    htruth_rl.Fill(theta0_G_validate[entry,0])
-    hunfol_rl.Fill(theta0_G_train[entry,0],myweights[niterations-1, 1,entry])
+unfolding_rl_binning = array('d',[R_L_min-0.005,R_L_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933,
+                                          0.20194, 0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 
+                                          0.39398, 0.425987, 0.457993, R_L_max, R_L_max + 0.04])
+unfolding_jetpt_binning = array('d',[15,20,30,50,100,150])
+unfolding_weight_binning = array('d',[1e-05, 0.000370882, 0.000689666, 0.00108385, 0.00159442, 0.00228839, 0.00327794, 0.00482046, 0.00751032, 0.0135402, 0.2])
+# Visualize
+htruth_rl     = ROOT.TH1F("htruth_rl"    ,"",unfolding_rl_nbins,unfolding_rl_binning)
+hunfol_rl     = ROOT.TH1F("hunfol_rl"    ,"",unfolding_rl_nbins,unfolding_rl_binning)
+hct_rl        = ROOT.TH1F("hct_rl"       ,"",unfolding_rl_nbins,unfolding_rl_binning)
+htruth_jetpt  = ROOT.TH1F("htruth_jetpt" ,"",5,unfolding_jetpt_binning)
+hunfol_jetpt  = ROOT.TH1F("hunfol_jetpt" ,"",5,unfolding_jetpt_binning)
+hct_jetpt     = ROOT.TH1F("hct_jetpt"    ,"",5,unfolding_jetpt_binning)
+htruth_weight = ROOT.TH1F("htruth_weight","",10,unfolding_weight_binning)
+hunfol_weight = ROOT.TH1F("hunfol_weight","",10,unfolding_weight_binning)
+hct_weight    = ROOT.TH1F("hct_weight"   ,"",10,unfolding_weight_binning)
+
+for entry in range(len(of_weights)-1):
+    htruth_rl.Fill(mc_set_ofinput[entry,0])
+    hunfol_rl.Fill(mc_set_validate[entry,0],of_weights[entry])
+
+    htruth_jetpt.Fill(mc_set_ofinput[entry,1])
+    hunfol_jetpt.Fill(mc_set_validate[entry,1],of_weights[entry])
+
+    htruth_weight.Fill(mc_set_ofinput[entry,2])
+    hunfol_weight.Fill(mc_set_validate[entry,2],of_weights[entry])
     
-    htruth_jetpt.Fill(theta0_G_validate[entry,1])
-    hunfol_jetpt.Fill(theta0_G_train[entry,1],myweights[niterations-1, 1,entry])
-
-    htruth_weight.Fill(theta0_G_validate[entry,2])
-    hunfol_weight.Fill(theta0_G_train[entry,2],myweights[niterations-1, 1,entry])
 
 hct_rl.Divide(htruth_rl,hunfol_rl,1,1)
 hct_jetpt.Divide(htruth_jetpt,hunfol_jetpt,1,1)
 hct_weight.Divide(htruth_weight,hunfol_weight,1,1)
 
-# c = ROOT.TCanvas()
-# c.Divide(3,1)
-# c.cd(1)
-# hct_rl.Draw()
-# c.cd(2)
-# hct_jetpt.Draw()
-# c.cd(3)
-# hct_weight.Draw()
-
-# c.Print("./plots/closuretest-3d-multifold-ROOT.pdf")
-
-fout = ROOT.TFile("../output-files/multifold_closuretest_3d.root","RECREATE")
+fout = ROOT.TFile("../output-files/multifold_closuretest_3d_newof_{}Iter.root".format(Niter),"RECREATE")
 fout.cd()
 hct_rl.Write()
 hct_jetpt.Write()
 hct_weight.Write()
 fout.Close()
-# plt.savefig("./plots/closuretest-3d-multifold-{}iterations-{}nodes-{}epochs-{}nbatchsize.pdf".format(niterations, nnodes, nepochs, nbatch_size), format="pdf", bbox_inches="tight")
-# plt.show()
+
+# # plt.savefig("./plots/closuretest-2d-multifold-{}iterations-{}nodes-{}epochs-{}nbatchsize.pdf".format(niterations, nnodes, nepochs, nbatch_size), format="pdf", bbox_inches="tight")
+# # plt.show()

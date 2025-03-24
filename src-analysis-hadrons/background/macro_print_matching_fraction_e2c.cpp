@@ -75,6 +75,6 @@ void macro_print_matching_fraction_e2c()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("../../plots/purity/matched_unmatched_e2c_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/matched_unmatched_e2c_deltarleq%.3f.pdf",R_L_res));
     
 }

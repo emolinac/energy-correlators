@@ -40,5 +40,5 @@ void macro_print_singlepurity_momentum()
     hpurity->GetYaxis()->SetRangeUser(0,1.19);
     hpurity->SetTitle(";p(GeV);Single Hadron Purity");
 
-    c->Print("../../plots/purity/singlehadron_purity_momentum.pdf");
+    c->Print("./plots/singlehadron_purity_momentum.pdf");
 }

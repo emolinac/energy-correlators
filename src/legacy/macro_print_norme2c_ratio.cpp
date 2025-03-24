@@ -45,5 +45,5 @@ void macro_print_norme2c_ratio()
     rp->GetLowerPad()->SetLogx(1);
     rp->GetLowerPad()->SetLogy(1);
     
-    c->Print("../plots/rationorme2c_rl.pdf");
+    c->Print("./plots/rationorme2c_rl.pdf");
 }

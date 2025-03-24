@@ -113,5 +113,5 @@ void macro_print_corre2c_rl_ratio_jet_pt()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
     
-    c->Print(Form("../plots/corr_e2c_ratio_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/corr_e2c_ratio_jetpt_deltarleq%.3f.pdf",R_L_res));
 }

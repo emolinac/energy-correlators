@@ -68,5 +68,5 @@ void macro_print_norme2c()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("../plots/norme2c_rl.pdf");
+    c->Print("./plots/norme2c_rl.pdf");
 }

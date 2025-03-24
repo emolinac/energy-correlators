@@ -75,6 +75,8 @@ TCut e2c_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<%f&&
 TCut e2c_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
 TCut e2c_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
+TCut pair_purity_corr_singletrack_weightpt = Form("purity*(purity_relerror<%f)",corr_rel_error);
+
 // TCut jet_full_corr[] =
 // {
 // Form("jet_purity*(1./jet_efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
@@ -103,6 +105,13 @@ Form("weight_pt*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<
 Form("weight_pt*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_binning[2],jet_pt_binning[3])
 };
 
+TCut e2c_jetpt_purity_corr_singletrack_weightpt[] =
+{
+Form("weight_pt*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_binning[0],jet_pt_binning[1]),
+Form("weight_pt*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_binning[1],jet_pt_binning[2]),
+Form("weight_pt*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_binning[2],jet_pt_binning[3])
+};
+
 TCut pair_jetpt_signal_cut[] = 
 {
 Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[0],jet_pt_binning[1]),
@@ -125,6 +134,32 @@ Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&
 };
 
 TCut jet_signal_cut = Form("jet_pt>%f&&jet_pt<%f&&jet_pt_truth!=999",jet_pt_min_nom,jet_pt_max);
+
+// ANALYSIS VARIATIONS CUTS
+TCut e2c_jetpt_cut_weightpt_pp[] = 
+{Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])};
+
+TCut e2c_jetpt_cut_weightpt_mm[] = 
+{Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])};
+
+TCut e2c_jetpt_cut_weightpt_pm[] = 
+{Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])};
+
+TCut e2c_jetpt_cut_weightpt_kaon[] = 
+{Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])};
+
+TCut e2c_jetpt_cut_weightpt_nokaon[] = 
+{Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
+ Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
+ Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])};
 
 // FUNCTIONS TO APPLY CUTS
 bool apply_jet_cuts(double jet_eta, double jet_pt)
@@ -159,8 +194,7 @@ bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf,
     if(pt<track_pt_min) return false;
     if(chi2ndf>track_chi2ndf_max) return false;
     if(probnnghost>track_probnnghost_max) return false;
-    if(deltaR_h_jet>jet_radius) return false;
-
+    
     return true;
 }
 
@@ -169,8 +203,7 @@ bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double
     if(charge==0) return false;
     if(p<track_p_min||p>track_p_max) return false;
     if(pt<track_pt_min) return false;
-    if(deltaR_h_jet>jet_radius) return false;
-
+    
     return true;
 }
 

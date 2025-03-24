@@ -60,7 +60,7 @@ int main()
     mctree->GetEntry(evt);
 
     if(evt != 0){if(last_eventNum == mctree->eventNumber) continue;}
-    last_eventNum = mctree->eventNumber;
+    
     
     // Apply PV cut
     if(mctree->nPVs!=1) continue;
@@ -100,6 +100,8 @@ int main()
     vars[3]  = (reco_passed) ? mctree->MCJet_recojet_PT/1000.  : -999;
     vars[4]  = (reco_passed) ? mctree->MCJet_recojet_PE/1000.  : -999;
     vars[5]  = (reco_passed) ? mctree->MCJet_recojet_nrecodtrs : -999;
+
+    last_eventNum = mctree->eventNumber;
 
     ntuple->Fill(vars);
   }

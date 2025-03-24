@@ -41,5 +41,5 @@ void macro_print_singleefficiency_eta()
     hefficiency->GetYaxis()->SetRangeUser(0,1);
     hefficiency->SetTitle(";#eta;Single Hadron efficiency");
 
-    c->Print("../../plots/efficiency/singlehadron_efficiency_eta.pdf");
+    c->Print("./plots/singlehadron_efficiency_eta.pdf");
 }

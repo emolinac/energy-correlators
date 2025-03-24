@@ -39,5 +39,5 @@ void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_e
 
     // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("../plots/eff_purity_distribution_relerrorleq%.2f.pdf",corr_rel_error_local));
+    c->Print(Form("./plots/eff_purity_distribution_relerrorleq%.2f.pdf",corr_rel_error_local));
 }

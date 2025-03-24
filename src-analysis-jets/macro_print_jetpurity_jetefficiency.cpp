@@ -53,7 +53,7 @@ void macro_print_jetpurity_jetefficiency()
     hpurity->Divide(hsig_purity,hall_purity,1,1,"B");
     hefficiency->Divide(hsig,hall,1,1,"B");
 
-    // hpurity->GetYaxis()->SetRangeUser(0,1.2);
+    hpurity->GetYaxis()->SetRangeUser(0,1.2);
 
     THStack* hs = new THStack();
     hs->Add(hefficiency);
@@ -68,5 +68,5 @@ void macro_print_jetpurity_jetefficiency()
     l->AddEntry(hefficiency,"Efficiency","lpf");
     l->Draw("SAME");
 
-    c->Print(Form("../plots/jet_purity_efficiency.pdf"));
+    c->Print(Form("./plots/jet_purity_efficiency.pdf"));
 }

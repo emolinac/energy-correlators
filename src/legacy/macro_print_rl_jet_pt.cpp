@@ -28,5 +28,5 @@ void macro_print_rl_jet_pt()
 
     gPad->SetLogx(1);
 
-    c->Print("../plots/phase_space_rl_jet_pt.pdf");
+    c->Print("./plots/phase_space_rl_jet_pt.pdf");
 }

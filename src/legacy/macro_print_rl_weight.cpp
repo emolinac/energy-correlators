@@ -28,5 +28,5 @@ void macro_print_rl_weight()
 
     gPad->SetLogx(1);
 
-    c->Print("../plots/phase_space_rl_weight.pdf");
+    c->Print("./plots/phase_space_rl_weight.pdf");
 }

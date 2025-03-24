@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_corrnorme2c_singletrackcorr_jetpt()
+void macro_print_corre2c()
 {
     // Open the necessary files
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
@@ -50,8 +50,8 @@ void macro_print_corrnorme2c_singletrackcorr_jetpt()
         set_histogram_style(hall_data[bin] , std_marker_color_jet_pt[bin] , std_line_width, std_marker_style_jet_pt[bin] , std_marker_size+1);
 
         // Project into the histograms
-        ntuple_data->Project(Form("hcorr_data[%i]",bin),"R_L",e2c_jetpt_full_corr_singletrack[bin]);
-        ntuple_data->Project(Form("hall_data[%i]" ,bin),"R_L",e2c_jetpt_cut[bin]);
+        ntuple_data->Project(Form("hcorr_data[%i]",bin),"R_L",e2c_jetpt_full_corr_singletrack_weightpt[bin]);
+        ntuple_data->Project(Form("hall_data[%i]" ,bin),"R_L",e2c_jetpt_cut_weightpt[bin]);
         ntuple_jet->Project(Form("hcorrref_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
         ntuple_jet->Project(Form("hallref_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
 
@@ -73,7 +73,7 @@ void macro_print_corrnorme2c_singletrackcorr_jetpt()
         hall_data[bin]->Write();
         gROOT->cd();
 
-        s_data->Add(hcorr_data[bin],"EX0");
+        s_data->Add(hcorr_data[bin],"E");
         // s_data->Add(hall_data[bin]);
         l_data->AddEntry(hcorr_data[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
         // l_data->AddEntry(hall_data[bin] ,Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lpf");
@@ -88,5 +88,5 @@ void macro_print_corrnorme2c_singletrackcorr_jetpt()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("../plots/corr_norme2c_jetpt_relerrorleq%.2f.pdf",corr_rel_error));
+    c->Print(Form("./plots/corr_norme2c_jetpt_relerrorleq%.2f_weightpt_nominaljetptbinning.pdf",corr_rel_error));
 }
