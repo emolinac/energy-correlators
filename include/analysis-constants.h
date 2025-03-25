@@ -23,7 +23,8 @@ const double corr_rel_error = 0.15;
 const int ndim_corr = 50;
 
 // Limits of variables
-const double R_L_min        = 0.005;
+const double R_L_absmin     = 0.001; // Lowest value achievable for MC. Used as limit for the underflow in the unfolding
+const double R_L_min        = 0.01;
 // const double R_L_max        = 0.5;
 const double R_L_max        = 1.05;
 const double jet_pt_min_nom = 20; 
@@ -57,16 +58,10 @@ const int Nbin_jet_e  = 3;
 const double jet_pt_binning[] = {jet_pt_min_nom, 30., 50., jet_pt_max};
 const double weight_binning[] = {1e-05, 0.000370882, 0.000689666, 0.00108385, 0.00159442, 0.00228839, 0.00327794, 0.00482046, 0.00751032, 0.0135402, 0.2};
 const double jet_e_binning[]  = {jet_e_min,350,560,jet_e_max};
-// const double rl_binning[]     = {R_L_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933, 0.20194,
-//                                  0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 0.39398, 0.425987, 
-//                                  0.457993, R_L_max};
-const double rl_binning[] = {R_L_min, 0.00714142, 0.0102, 0.0145685, 0.0208079, 0.0297196, 0.042448, 0.0606279, 0.0865938, 0.123681, 0.176651, 0.252308, 0.360367, 0.514707, 0.735148, R_L_max};
+const double rl_binning[]     = {R_L_min, 0.00714142, 0.0102, 0.0145685, 0.0208079, 0.0297196, 0.042448, 0.0606279, 0.0865938, 0.123681, 0.176651, 0.252308, 0.360367, 0.514707, 0.735148, R_L_max};
 
 const double unfolding_jetpt_binning[] = {15,20,30,50,100,150};
-// const double unfolding_rl_binning[]    = {R_L_min-0.005,R_L_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933,
-//                                           0.20194, 0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 
-//                                           0.39398, 0.425987, 0.457993, R_L_max, R_L_max + 0.04};
-const double unfolding_rl_binning[]    = {R_L_min-0.005,R_L_min, 0.00714142, 0.0102, 0.0145685, 0.0208079, 0.0297196, 0.042448, 0.0606279, 0.0865938, 0.123681, 0.176651, 0.252308, 0.360367, 0.514707, 0.735148, R_L_max, R_L_max + 0.04};
+const double unfolding_rl_binning[]    = {R_L_absmin,R_L_min, 0.00714142, 0.0102, 0.0145685, 0.0208079, 0.0297196, 0.042448, 0.0606279, 0.0865938, 0.123681, 0.176651, 0.252308, 0.360367, 0.514707, 0.735148, R_L_max, R_L_max + 0.04};
 
 const int em_jetptcorrection_nbins = 7;
 const double corrections_jetpt_binning[] = {20,22.5,25,30,40,50,75,100};
