@@ -12,6 +12,7 @@ std::string namef_ntuple_e2c_unfolding  = "ntuple_e2c_unfolding.root";
 std::string namef_ntuple_e2c_efficiency = "ntuple_e2c_efficiency.root";
 std::string namef_ntuple_jetptpurity    = "ntuple_jetpurity.root";
 std::string namef_ntuple_mc_e2c         = "ntuple_mc_e2c.root";
+std::string namef_ntuple_mc_at_e2c      = "ntuple_mc_at_e2c.root";
 
 // Name of the ntuples
 std::string name_ntuple_unfold          = "ntuple_unfold";
@@ -36,6 +37,10 @@ const int Nvars_purity          = 23;
 const int Nvars_efficiency_mc   = 14;
 const int Nvars_efficiency_reco = 21;
 const int Nvars_pairpurity      = 32;
+const int Nvars_mc_at           = 4;
+
+const char* ntuple_mc_at_vars     = "weight:weight_pt:R_L:jet_pt";
+const char* ntuple_mcreco_at_vars = "weight:weight_pt:R_L:jet_pt";
 
 const char* ntuple_mcreco_vars          = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:deltaphi_z_jet:R_L_mum_jet:mum_pt:mum_eta:R_L_mup_jet:mup_pt:mup_eta:h1_pid:h2_pid";
 const char* ntuple_data_vars            = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_phi:h2_phi:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:jet_phi:deltaphi_z_jet:R_L_mum_jet:mum_pt:mum_eta:R_L_mup_jet:mup_pt:mup_eta:jet_e";
