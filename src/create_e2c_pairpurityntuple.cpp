@@ -211,7 +211,10 @@ int main()
         vars[30] = (key1_match==0||key2_match==0) ? -999 : R_L(matchedmc_y1,matchedmc_y2,matchedmc_phi1,matchedmc_phi2);
 
         double weight_truth = weight(mcrecotree->Jet_Dtr_TRUE_E[h1_index],mcrecotree->Jet_Dtr_TRUE_E[h2_index],mcrecotree->Jet_mcjet_PE);
+        double weight_pt_truth = weight(mcrecotree->Jet_Dtr_TRUE_PT[h1_index],mcrecotree->Jet_Dtr_TRUE_PT[h2_index],mcrecotree->Jet_mcjet_PT);
         vars[31] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
+        vars[32] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
+        vars[33] = weight(mcrecotree->Jet_Dtr_PT[h1_index]/1000., mcrecotree->Jet_Dtr_PT[h2_index]/1000., mcrecotree->Jet_PT/1000.);
 
         // Fill the TNtuple
         ntuple_jet_match->Fill(vars);

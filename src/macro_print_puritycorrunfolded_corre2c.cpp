@@ -29,13 +29,13 @@ void macro_print_puritycorrunfolded_corre2c(int niter = 10)
     TFile* f = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_purity.c_str());
 
-    float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_reco, weight_truth;
+    float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
     ntuple->SetBranchAddress("jet_pt",&jet_pt_reco);
     ntuple->SetBranchAddress("jet_pt_truth",&jet_pt_truth);
     ntuple->SetBranchAddress("R_L",&R_L_reco);
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
-    ntuple->SetBranchAddress("weight",&weight_reco);
-    ntuple->SetBranchAddress("weight_truth",&weight_truth);
+    ntuple->SetBranchAddress("weight_pt",&weight_pt_reco);
+    ntuple->SetBranchAddress("weight_pt_truth",&weight_pt_truth);
     
     // Create histograms with the respective true and matched reco 
     TH2D* hpurcorr = new TH2D("hpurcorr","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
@@ -121,10 +121,10 @@ void macro_print_puritycorrunfolded_corre2c(int niter = 10)
     s_data->Draw("NOSTACK");
     s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
     gPad->SetLogx(1);
-    // gPad->SetLogy(1);
+    gPad->SetLogy(1);
     l_data->Draw("SAME");
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("./plots/corr_norme2c_weightpt_unfolded2d_inputpurcorr_logbinning_logscale.pdf");
+    c->Print("./plots/corr_norme2c_weightpt_unfolded2d_inputpurcorr_finnerlogbinning_logscale.pdf");
 }

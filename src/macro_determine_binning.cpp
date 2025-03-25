@@ -104,8 +104,8 @@ void macro_determine_binning()
 //     // Close file
 //     f->Close();
     double binning[Nbin_R_L+1];
-    determine_eqsizebinning(Nbin_R_L, R_L_min, R_L_max, binning);
-    // determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    // determine_eqsizebinning(Nbin_R_L, R_L_min, R_L_max, binning);
+    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
     std::cout<<"Binning in R_L : {R_L_min";
     for(int i = 1 ; i < Nbin_R_L ; i++)

@@ -36,7 +36,7 @@ const int Nvars_mc              = 24;
 const int Nvars_purity          = 23;
 const int Nvars_efficiency_mc   = 14;
 const int Nvars_efficiency_reco = 21;
-const int Nvars_pairpurity      = 32;
+const int Nvars_pairpurity      = 34;
 const int Nvars_mc_at           = 4;
 
 const char* ntuple_mc_at_vars     = "weight:weight_pt:R_L:jet_pt";
@@ -48,7 +48,7 @@ const char* ntuple_corrdata_vars        = "weight:efficiency:purity:efficiency_r
 const char* ntuple_mc_vars              = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:deltaphi_z_jet:R_L_mum_jet:mum_pt:mum_eta:R_L_mup_jet:mup_pt:mup_eta:h1_pid:h2_pid";
 
 const char* ntuple_purity_vars          = "h_eta:h_y:h_phi:h_p:h_pt:jet_pt:jet_eta:deltaphi_z_jet_root:deltaphi_z_jet_em:R_L_mum_jet:mum_pt:mum_eta:R_L_mup_jet:mup_pt:mup_eta:recojet_e:truthjet_e:ndtr:h_y_truth:h_eta_truth:h_phi_truth:R_jet_h:key_match";
-const char* ntuple_pairpurity_vars      = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_phi:h2_phi:h1_p:h2_p:h1_pt:h2_pt:jet_eta:jet_phi:deltaphi_z_jet:R_L_mum_jet:mum_pt:mum_eta:R_L_mup_jet:mup_pt:mup_eta:jet_pt:jet_pt_truth:ndtr:deltaR_h1:deltaR_h2:h1truth_y:h2truth_y:h1truth_phi:h2truth_phi:R_L_truth:weight_truth";
+const char* ntuple_pairpurity_vars      = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_phi:h2_phi:h1_p:h2_p:h1_pt:h2_pt:jet_eta:jet_phi:deltaphi_z_jet:R_L_mum_jet:mum_pt:mum_eta:R_L_mup_jet:mup_pt:mup_eta:jet_pt:jet_pt_truth:ndtr:deltaR_h1:deltaR_h2:h1truth_y:h2truth_y:h1truth_phi:h2truth_phi:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
 const char* ntuple_unfold_vars          = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_phi:h2_phi:h1_p:h2_p:h1_pt:h2_pt:jet_eta:jet_phi:deltaphi_z_jet:R_L_mum_jet:mum_pt:mum_eta:R_L_mup_jet:mup_pt:mup_eta:jet_pt:jet_pt_truth:reco_passed:deltaR_h1:deltaR_h2:h1truth_y:h2truth_y:h1truth_phi:h2truth_phi:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
 
 const char* ntuple_efficiency_reco_vars = "h_eta:h_y:h_phi:h_p:h_pt:jet_pt:jet_eta:deltaphi_z_jet_root:deltaphi_z_jet_em:R_L_mum_jet:R_L_mup_jet:recojet_e:truthjet_e:jet_pt_truth:ndtr:h_y_truth:h_eta_truth:h_phi_truth:h_p_truth:R_jet_h:key_match";
