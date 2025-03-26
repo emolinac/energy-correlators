@@ -34,7 +34,7 @@ int main()
   // ntuple_mcreco_jet->SetAutoSave(0);
 
   // Create Ntuples
-  TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"MC Sim","R_L:weight_pt:jet_pt:z_pt:deltaphi_z_h1:deltaphi_z_h2");
+  TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"MC Sim","R_L:weight_pt:jet_pt:z_pt:deltaphi_z_h1:deltaphi_z_h2:h1_pt:h2_pt:h1_p:h2_p");
   TNtuple* ntuple_mc_jet = new TNtuple(name_ntuple_mc_jet.c_str(),"MC Sim","jet_pt:z_pt");
   ntuple_mc->SetAutoSave(0);
   ntuple_mc_jet->SetAutoSave(0);
@@ -52,7 +52,7 @@ int main()
   bool maxjetpT_found = false;
   
   // Fill the MC TNtuple
-  float vars_mc[6];
+  float vars_mc[10];
   float vars_mc_jet[2];
   for(int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
   {
@@ -112,12 +112,16 @@ int main()
           if(h2_4vector->Eta()<muon_eta_min||h2_4vector->Eta()>muon_eta_max) continue;
           if(h2_4vector->Pt()<track_pt_min) continue;
 
-          vars_mc[0]  = h2_4vector->DeltaR(*h1_4vector);
-          vars_mc[1]  = weight(h1_4vector->Pt(),h2_4vector->Pt(),Z0_4vector->Pt());
-          vars_mc[2]  = mctree->MCJet_PT/1000.;
-          vars_mc[3]  = Z0_4vector->Pt();
-          vars_mc[4]  = Z0_4vector->DeltaPhi(*h1_4vector);
-          vars_mc[5]  = Z0_4vector->DeltaPhi(*h2_4vector);
+          vars_mc[0] = h2_4vector->DeltaR(*h1_4vector);
+          vars_mc[1] = weight(h1_4vector->Pt(),h2_4vector->Pt(),Z0_4vector->Pt());
+          vars_mc[2] = mctree->MCJet_PT/1000.;
+          vars_mc[3] = Z0_4vector->Pt();
+          vars_mc[4] = Z0_4vector->DeltaPhi(*h1_4vector);
+          vars_mc[5] = Z0_4vector->DeltaPhi(*h2_4vector);
+          vars_mc[6] = h1_4vector->Pt();
+          vars_mc[7] = h2_4vector->Pt();
+          vars_mc[8] = h1_4vector->P();
+          vars_mc[9] = h2_4vector->P();
             
           // Fill the TNtuple
           ntuple_mc->Fill(vars_mc);        
