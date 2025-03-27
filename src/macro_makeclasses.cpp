@@ -15,18 +15,14 @@ void macro_makeclasses()
     chain1->Add((input_folder+"Zjet_MC_Sim09j_2016_MU_03112025_full.root").c_str());
     chain2->Add((input_folder+"Zjet_MC_Sim09j_2016_MD_03112025_full.root").c_str());
     chain2->Add((input_folder+"Zjet_MC_Sim09j_2016_MU_03112025_full.root").c_str());
-    chain1->Add((input_folder+"Zjet_MC_Sim09l_2016_MD_03112025_full.root").c_str());
-    chain1->Add((input_folder+"Zjet_MC_Sim09l_2016_MU_03112025_full.root").c_str());
-    chain2->Add((input_folder+"Zjet_MC_Sim09l_2016_MD_03112025_full.root").c_str());
-    chain2->Add((input_folder+"Zjet_MC_Sim09l_2016_MU_03112025_full.root").c_str());
+    // chain1->Add((input_folder+"Zjet_MC_Sim09l_2016_MD_03112025_full.root").c_str());
+    // chain1->Add((input_folder+"Zjet_MC_Sim09l_2016_MU_03112025_full.root").c_str());
+    // chain2->Add((input_folder+"Zjet_MC_Sim09l_2016_MD_03112025_full.root").c_str());
+    // chain2->Add((input_folder+"Zjet_MC_Sim09l_2016_MU_03112025_full.root").c_str());
 
-    chain3->Add((input_folder+"Zjet_Data_2016_MU_04062024.root").c_str());
-    chain3->Add((input_folder+"Zjet_Data_2016_MD_04062024.root").c_str());
-    chain3->Add((input_folder+"Zjet_Data_2017_MU_04062024.root").c_str());
-    chain3->Add((input_folder+"Zjet_Data_2017_MD_04062024.root").c_str());
-    chain3->Add((input_folder+"Zjet_Data_2018_MU_04062024.root").c_str());
-    chain3->Add((input_folder+"Zjet_Data_2018_MD_04062024.root").c_str());
-
+    chain3->Add((input_folder+"Zjet_MC_Sim09l_2016_MD_03112025_full.root").c_str());
+    chain3->Add((input_folder+"Zjet_MC_Sim09l_2016_MU_03112025_full.root").c_str());
+    
     chain4->Add((input_folder+"Zjet_MC_Sim09j_2016_MD_03252025_0_full.root").c_str());
     chain4->Add((input_folder+"Zjet_MC_Sim09j_2016_MU_03252025_0_full.root").c_str());
     
