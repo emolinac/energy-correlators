@@ -16,8 +16,8 @@ void macro_print_responsematrices()
     ntuple->SetBranchAddress("jet_pt_truth",&jet_pt_truth);
     ntuple->SetBranchAddress("R_L",&R_L);
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
-    ntuple->SetBranchAddress("weight",&weight);
-    ntuple->SetBranchAddress("weight_truth",&weight_truth);
+    ntuple->SetBranchAddress("weight_pt",&weight);
+    ntuple->SetBranchAddress("weight_pt_truth",&weight_truth);
     
     TH2F* hresp_rl     = new TH2F("hresp_rl","",Nbin_R_L+2,unfolding_rl_binning,Nbin_R_L+2,unfolding_rl_binning);
     TH2F* hresp_jetpt  = new TH2F("hresp_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
@@ -38,12 +38,16 @@ void macro_print_responsematrices()
 
     hresp_jetpt->Draw("col text");
     hresp_jetpt->SetTitle("Response matrix of p^{jet}_{t};Reco;Truth");
+    gPad->SetLogx(1);
+    gPad->SetLogy(1);
     c->Print("./plots/responsematrix_jetpt.pdf");
     hresp_rl->Draw("col text");
     hresp_rl->SetTitle("Response matrix of R_{L};Reco;Truth");
+    gPad->SetLogx(1);
+    gPad->SetLogy(1);
     c->Print("./plots/responsematrix_rl.pdf");
     hresp_weight->Draw("col text");
-    hresp_weight->SetTitle("Response matrix of weights;Reco;Truth");
+    hresp_weight->SetTitle("Response matrix of momentum weights;Reco;Truth");
     gPad->SetLogx(1);
     gPad->SetLogy(1);
     c->Print("./plots/responsematrix_weight.pdf");

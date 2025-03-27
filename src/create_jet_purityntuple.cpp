@@ -83,12 +83,10 @@ int main()
     
     mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,mcrecotree->mum_PY/1000.,mcrecotree->mum_PZ/1000.,mcrecotree->mum_PE/1000.);
     if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
-    //if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
-
+    
     mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,mcrecotree->mup_PY/1000.,mcrecotree->mup_PZ/1000.,mcrecotree->mup_PE/1000.);
     if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
-    //if(mcrecotree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
-
+    
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
@@ -105,12 +103,13 @@ int main()
          apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) truth_passed = true;
     }
           
-    vars[0]  = mcrecotree->Jet_PT/1000.;
-    vars[1]  = mcrecotree->Jet_PE/1000.;
-    vars[2]  = mcrecotree->Jet_NDtr;
-    vars[3]  = (truth_passed) ? mcrecotree->Jet_mcjet_PT/1000. : -999 ;
-    vars[4]  = (truth_passed) ? mcrecotree->Jet_mcjet_PE/1000. : -999 ;
-    vars[5]  = (truth_passed) ? mcrecotree->Jet_mcjet_nmcdtrs  : -999 ;
+    vars[0] = mcrecotree->Jet_PT/1000.;
+    vars[1] = mcrecotree->Jet_PE/1000.;
+    vars[2] = mcrecotree->Jet_NDtr;
+    vars[3] = (truth_passed) ? mcrecotree->Jet_mcjet_PT/1000. : -999 ;
+    vars[4] = (truth_passed) ? mcrecotree->Jet_mcjet_PE/1000. : -999 ;
+    vars[5] = (truth_passed) ? mcrecotree->Jet_mcjet_nmcdtrs  : -999 ;
+    vars[6] = (truth_passed) ? Jet_4vector->DeltaR(*true_Jet_4vector) : -999;
 
     last_eventNum = mcrecotree->eventNumber;
     

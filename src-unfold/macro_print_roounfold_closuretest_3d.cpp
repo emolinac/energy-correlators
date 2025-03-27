@@ -43,7 +43,6 @@ void macro_print_roounfold_closuretest_3d(int Niter = 5, double jet_pt_min_local
     }
 
     TCanvas* c = new TCanvas("c","",1920,1080);
-    TCanvas* c2d = new TCanvas("c2d","",1920,1080);
     c->Draw();
     c->cd();
 
@@ -93,17 +92,19 @@ void macro_print_roounfold_closuretest_3d(int Niter = 5, double jet_pt_min_local
     set_histogram_style(hct_jetpt    , std_marker_color_jet_pt[1], std_line_width, std_marker_style, std_marker_size+1);
     set_histogram_style(hct_weight   , std_marker_color_jet_pt[1], std_line_width, std_marker_style, std_marker_size+1);
     
+    TLine* line = new TLine();
     TLegend* lrl = new TLegend();
     lrl->AddEntry(hct_rl,"RooUnfold","lpf");
     THStack* hs_rl = new THStack();
     hs_rl->Add(hct_rl);
     hs_rl->Draw("NOSTACK");
     hs_rl->SetTitle(";R_{L};Truth/Unfolded");
-    hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_R_L]);
-    hs_rl->SetMinimum(0.89);
-    hs_rl->SetMaximum(1.11);
+    // hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_R_L]);
+    // hs_rl->SetMinimum(0.89);
+    // hs_rl->SetMaximum(1.11);
     gPad->SetLogx(1);
     lrl->Draw("SAME");
+    line->DrawLine(unfolding_rl_binning[0],1,unfolding_rl_binning[Nbin_R_L+1],1);
     c->Print(Form("./plots/closuretest_3d_roounfold_rl_iter%i_jetptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
     gPad->SetLogx(0);
 
@@ -113,10 +114,11 @@ void macro_print_roounfold_closuretest_3d(int Niter = 5, double jet_pt_min_local
     hs_jetpt->Add(hct_jetpt);
     hs_jetpt->Draw("NOSTACK");
     hs_jetpt->SetTitle(";p^{jet}_{t}(GeV);Truth/Unfolded");
-    hs_jetpt->GetXaxis()->SetRangeUser(20,100);
+    // hs_jetpt->GetXaxis()->SetRangeUser(20,100);
     hs_jetpt->SetMinimum(0.89);
     hs_jetpt->SetMaximum(1.11);
     ljetpt->Draw("SAME");
+    line->DrawLine(unfolding_jetpt_binning[0],1,unfolding_jetpt_binning[Nbin_jet_pt+2],1);
     c->Print(Form("./plots/closuretest_3d_roounfold_jetpt_iter%i_jetptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
 
     TLegend* lweight = new TLegend();
@@ -129,14 +131,14 @@ void macro_print_roounfold_closuretest_3d(int Niter = 5, double jet_pt_min_local
     hs_weight->SetMaximum(1.11);
     gPad->SetLogx(1);
     lweight->Draw("SAME");
+    line->DrawLine(weight_binning[0],1,weight_binning[Nbin_weight],1);
     c->Print(Form("./plots/closuretest_3d_roounfold_weight_iter%i_jetptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
 
-    c2d->Draw();
-    c2d->cd();
     hct_rl_jetpt->Draw("COLTEXT");
     hct_rl_jetpt->SetTitle(";p^{jet}_{T} GeV;R_{L}");
     gStyle->SetPaintTextFormat(".3f");
     gPad->SetLogx(1);
+    gPad->SetLogy(1);
     
-    c2d->Print(Form("./plots/closuretest_3d_roounfold_rl_jetpt_iter%i_jetptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
+    c->Print(Form("./plots/closuretest_3d_roounfold_rl_jetpt_iter%i_jetptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
 }
