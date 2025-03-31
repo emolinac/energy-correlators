@@ -29,6 +29,10 @@ void macro_makeclasses()
 
     chain4->Add((input_folder+"Zjet_MC_Sim09j_2016_MD_03252025_0_full.root").c_str());
     chain4->Add((input_folder+"Zjet_MC_Sim09j_2016_MU_03252025_0_full.root").c_str());
+    chain4->Add((input_folder+"Zjet_MC_Sim09l_2016_MD_03272025.root").c_str());
+    chain4->Add((input_folder+"Zjet_MC_Sim09l_2016_MU_03272025.root").c_str());
+    chain4->Add((input_folder+"Zjet_MC_Sim10a_2016_MD_03272025.root").c_str());
+    chain4->Add((input_folder+"Zjet_MC_Sim10a_2016_MU_03272025.root").c_str());
     
     chain1->MakeClass("TZJetsMC");
     chain2->MakeClass("TZJetsMCReco");
