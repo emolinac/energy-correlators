@@ -3,8 +3,6 @@
 #include "TZJetsMC.C"
 #include "TZJetsMCReco.h"
 #include "TZJetsMCReco.C"
-#include "TZJetsData.h"
-#include "TZJetsData.C"
 #include "TROOT.h"
 #include "TNtuple.h"
 #include "TFile.h"
