@@ -8,8 +8,10 @@ void macro_makeclasses()
     // Add the files located in the input folder
     TChain* chain1 = new TChain("mcjettuple/MCJetTree");  
     TChain* chain2 = new TChain("StdHltZJets/DecayTree");
-    TChain* chain3 = new TChain("StdHltZJets/DecayTree");    // Used for data
-    TChain* chain4 = new TChain("mcjettuple/MCJetTree");  
+    TChain* chain3 = new TChain("StdHltZJets/DecayTree");
+    TChain* chain4 = new TChain("StdHltZJets/DecayTree");
+    TChain* chain5 = new TChain("StdHltZJets/DecayTree");
+    TChain* chain6 = new TChain("mcjettuple/MCJetTree");  
 
     chain1->Add((input_folder+"Zjet_MC_Sim09j_2016_MD_03112025_full.root").c_str());
     chain1->Add((input_folder+"Zjet_MC_Sim09j_2016_MU_03112025_full.root").c_str());

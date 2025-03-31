@@ -89,7 +89,7 @@ void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
     hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
     gPad->SetLogx(1);
     gPad->SetLogy(1);
-    c->Print(Form("./plots/unfolded3d_%initer_ratio.pdf",niter));
+    c->Print(Form("./plots/unfolded3d_%initer_ratio_sepyears.pdf",niter));
 
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend();
@@ -128,5 +128,5 @@ void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_unf3d_%initer_.pdf",niter));
+    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears.pdf",niter));
 }
