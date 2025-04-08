@@ -125,7 +125,7 @@ int main()
                                    mcrecotree->Jet_Dtr_TRUE_PZ[h_index]/1000.,
                                    mcrecotree->Jet_Dtr_TRUE_E[h_index]/1000.);
         
-        if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ID[h_index],
+        if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h_index],
                                              mcrecotree->Jet_Dtr_TRUE_P[h_index]/1000.,
                                              mcrecotree->Jet_Dtr_TRUE_PT[h_index]/1000.,
                                              true_Jet_4vector->DeltaR(*true_h_4vector))) key_match = 0;

@@ -131,7 +131,7 @@ int main()
                                    mcrecotree->Jet_Dtr_TRUE_PZ[h1_index]/1000.,
                                    mcrecotree->Jet_Dtr_TRUE_E[h1_index]/1000.);
        
-       if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ID[h1_index],
+       if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h1_index],
                                             mcrecotree->Jet_Dtr_TRUE_P[h1_index]/1000.,
                                             mcrecotree->Jet_Dtr_TRUE_PT[h1_index],
                                             true_Jet_4vector->DeltaR(*true_h1_4vector))) key1_match = 0;
@@ -160,7 +160,7 @@ int main()
                                       mcrecotree->Jet_Dtr_TRUE_PZ[h2_index]/1000.,
                                       mcrecotree->Jet_Dtr_TRUE_E[h2_index]/1000.);
           
-          if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ID[h2_index],
+          if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h2_index],
                                                mcrecotree->Jet_Dtr_TRUE_P[h2_index]/1000.,
                                                mcrecotree->Jet_Dtr_TRUE_PT[h2_index],
                                                true_Jet_4vector->DeltaR(*true_h2_4vector))) key2_match = 0;
