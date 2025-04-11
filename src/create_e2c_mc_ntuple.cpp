@@ -135,15 +135,12 @@ int main()
           vars_mc[12] = mctree->MCJet_PT/1000.;
           vars_mc[13] = mctree->MCJet_ETA;
           vars_mc[14] = weight(mctree->MCJet_Dtr_PT[h1_index], mctree->MCJet_Dtr_PT[h2_index], mctree->MCJet_PT);
-          vars_mc[15] = delta_phi(mctree->MCJet_PHI,Z0_4vector->Phi());
-          vars_mc[16] = R_L(Jet_4vector->Rapidity(),mum_4vector->Rapidity(),mctree->MCJet_PHI,mctree->MCJet_truth_mum_PHI);
-          vars_mc[17] = mctree->MCJet_truth_mum_PT/1000.;
-          vars_mc[18] = mctree->MCJet_truth_mum_ETA;
-          vars_mc[19] = R_L(Jet_4vector->Rapidity(),mup_4vector->Rapidity(),mctree->MCJet_PHI,mctree->MCJet_truth_mup_PHI);
-          vars_mc[20] = mctree->MCJet_truth_mup_PT/1000.;
-          vars_mc[21] = mctree->MCJet_truth_mup_ETA;
-          vars_mc[22] = mctree->MCJet_Dtr_ID[h1_index];
-          vars_mc[23] = mctree->MCJet_Dtr_ID[h2_index];
+          vars_mc[15] = mctree->MCJet_truth_mum_PT/1000.;
+          vars_mc[16] = mctree->MCJet_truth_mum_ETA;
+          vars_mc[17] = mctree->MCJet_truth_mup_PT/1000.;
+          vars_mc[18] = mctree->MCJet_truth_mup_ETA;
+          vars_mc[19] = mctree->MCJet_Dtr_ID[h1_index];
+          vars_mc[20] = mctree->MCJet_Dtr_ID[h2_index];
             
           // Fill the TNtuple
           ntuple_mc->Fill(vars_mc);        
@@ -242,15 +239,12 @@ int main()
             vars[12] = mcrecotree->Jet_PT/1000.;
             vars[13] = Jet_4vector->Eta();
             vars[14] = weight(mcrecotree->Jet_Dtr_PT[h1_index], mcrecotree->Jet_Dtr_PT[h2_index], mcrecotree->Jet_PT);
-            vars[15] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
-            vars[16] = R_L(Jet_4vector->Rapidity(),mum_4vector->Rapidity(),Jet_4vector->Phi(),mum_4vector->Phi());
-            vars[17] = mum_4vector->Pt();
-            vars[18] = mum_4vector->Eta();
-            vars[19] = R_L(Jet_4vector->Rapidity(),mup_4vector->Rapidity(),Jet_4vector->Phi(),mup_4vector->Phi());
-            vars[20] = mup_4vector->Pt();
-            vars[21] = mup_4vector->Eta();
-            vars[22] = mcrecotree->Jet_Dtr_ID[h1_index];
-            vars[23] = mcrecotree->Jet_Dtr_ID[h2_index];
+            vars[15] = mum_4vector->Pt();
+            vars[16] = mum_4vector->Eta();
+            vars[17] = mup_4vector->Pt();
+            vars[18] = mup_4vector->Eta();
+            vars[19] = mcrecotree->Jet_Dtr_ID[h1_index];
+            vars[20] = mcrecotree->Jet_Dtr_ID[h2_index];
             
             // Fill the TNtuple
             ntuple_mcreco->Fill(vars);

@@ -134,27 +134,22 @@ int main()
       // If all good, fill Ntuple
       vars[0]  = mcrecotree->Jet_Dtr_ETA[h_index];
       vars[1]  = rapidity(mcrecotree->Jet_Dtr_E[h_index],mcrecotree->Jet_Dtr_PZ[h_index]);
-      vars[2]  = mcrecotree->Jet_Dtr_PHI[h_index];
-      vars[3]  = mcrecotree->Jet_Dtr_P[h_index]/1000.;
-      vars[4]  = mcrecotree->Jet_Dtr_PT[h_index]/1000.;
-      vars[5]  = mcrecotree->Jet_PT/1000.;
-      vars[6]  = Jet_4vector->Eta();
-      vars[7]  = Jet_4vector->DeltaPhi(*Z0_4vector);//Jet_4vector->Phi();
-      vars[8]  = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
-      vars[9]  = Jet_4vector->DeltaR(*mum_4vector);
-      vars[10] = mum_4vector->Pt();
-      vars[11] = mum_4vector->Eta();
-      vars[12] = Jet_4vector->DeltaR(*mup_4vector);
-      vars[13] = mup_4vector->Pt();
-      vars[14] = mup_4vector->Eta();
-      vars[15] = mcrecotree->Jet_PE/1000.;
-      vars[16] = mcrecotree->Jet_mcjet_PE/1000.;
-      vars[17] = mcrecotree->Jet_mcjet_nmcdtrs;
-      vars[18] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
-      vars[19] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_ETA[h_index];
-      vars[20] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_PHI[h_index];
-      vars[21] = Jet_4vector->DeltaR(*h_4vector);            
-      vars[22] = key_match;            
+      vars[2]  = mcrecotree->Jet_Dtr_P[h_index]/1000.;
+      vars[3]  = mcrecotree->Jet_Dtr_PT[h_index]/1000.;
+      vars[4]  = mcrecotree->Jet_PT/1000.;
+      vars[5]  = Jet_4vector->Eta();
+      vars[6]  = mum_4vector->Pt();
+      vars[7]  = mum_4vector->Eta();
+      vars[8]  = mup_4vector->Pt();
+      vars[9]  = mup_4vector->Eta();
+      vars[10] = mcrecotree->Jet_PE/1000.;
+      vars[11] = mcrecotree->Jet_mcjet_PE/1000.;
+      vars[12] = mcrecotree->Jet_mcjet_nmcdtrs;
+      vars[13] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
+      vars[14] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_ETA[h_index];
+      vars[15] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_PHI[h_index];
+      vars[16] = Jet_4vector->DeltaR(*h_4vector);            
+      vars[17] = key_match;            
 
       // Fill the TNtuple
       ntuple_jet_match->Fill(vars);

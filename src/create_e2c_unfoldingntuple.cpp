@@ -161,43 +161,35 @@ int main()
         vars[3]  = mcrecotree->Jet_Dtr_ETA[h2_index];
         vars[4]  = h1_y;
         vars[5]  = h2_y;
-        vars[6]  = mcrecotree->Jet_Dtr_PHI[h1_index];
-        vars[7]  = mcrecotree->Jet_Dtr_PHI[h2_index];
-        vars[8]  = mcrecotree->Jet_Dtr_P[h1_index]/1000.;
-        vars[9]  = mcrecotree->Jet_Dtr_P[h2_index]/1000.;
-        vars[10] = mcrecotree->Jet_Dtr_PT[h1_index]/1000.;
-        vars[11] = mcrecotree->Jet_Dtr_PT[h2_index]/1000.;
-        vars[12] = Jet_4vector->Eta();
-        vars[13] = Jet_4vector->DeltaPhi(*Z0_4vector);//Jet_4vector->Phi();
-        vars[14] = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
-        vars[15] = Jet_4vector->DeltaR(*mum_4vector, 1);
-        vars[16] = mum_4vector->Pt();
-        vars[17] = mum_4vector->Eta();
-        vars[18] = Jet_4vector->DeltaR(*mup_4vector, 1);
-        vars[19] = mup_4vector->Pt();
-        vars[20] = mup_4vector->Eta();
-        vars[21] = mcrecotree->Jet_PT/1000.;
-        vars[22] = mcrecotree->Jet_mcjet_PT/1000.;
-        vars[23] = (key1_match==0||key2_match==0) ? 0 : 1 ;
+        vars[6]  = mcrecotree->Jet_Dtr_P[h1_index]/1000.;
+        vars[7]  = mcrecotree->Jet_Dtr_P[h2_index]/1000.;
+        vars[8]  = mcrecotree->Jet_Dtr_PT[h1_index]/1000.;
+        vars[9]  = mcrecotree->Jet_Dtr_PT[h2_index]/1000.;
+        vars[10] = Jet_4vector->Eta();
+        vars[11] = mum_4vector->Pt();
+        vars[12] = mum_4vector->Eta();
+        vars[13] = mup_4vector->Pt();
+        vars[14] = mup_4vector->Eta();
+        vars[15] = mcrecotree->Jet_PT/1000.;
+        vars[16] = mcrecotree->Jet_mcjet_PT/1000.;
+        vars[17] = (key1_match==0||key2_match==0) ? 0 : 1 ;
 
         double matchedmc_y1   = rapidity(mcrecotree->Jet_Dtr_TRUE_E[h1_index],mcrecotree->Jet_Dtr_TRUE_PZ[h1_index]);
         double matchedmc_y2   = rapidity(mcrecotree->Jet_Dtr_TRUE_E[h2_index],mcrecotree->Jet_Dtr_TRUE_PZ[h2_index]);
         double matchedmc_phi1 = mcrecotree->Jet_Dtr_TRUE_PHI[h1_index];
         double matchedmc_phi2 = mcrecotree->Jet_Dtr_TRUE_PHI[h2_index];
 
-        vars[24] = (key1_match==0) ? -999 : R_L(h1_y, matchedmc_y1, mcrecotree->Jet_Dtr_PHI[h1_index], matchedmc_phi1);
-        vars[25] = (key2_match==0) ? -999 : R_L(h2_y, matchedmc_y2, mcrecotree->Jet_Dtr_PHI[h2_index], matchedmc_phi2);
-        vars[26] = (key1_match==0) ? -999 : matchedmc_y1;
-        vars[27] = (key2_match==0) ? -999 : matchedmc_y2;
-        vars[28] = (key1_match==0) ? -999 : matchedmc_phi1;
-        vars[29] = (key2_match==0) ? -999 : matchedmc_phi2;
-        vars[30] = (key1_match==0||key2_match==0) ? -999 : R_L(matchedmc_y1,matchedmc_y2,matchedmc_phi1,matchedmc_phi2);
+        vars[18] = (key1_match==0) ? -999 : R_L(h1_y, matchedmc_y1, mcrecotree->Jet_Dtr_PHI[h1_index], matchedmc_phi1);
+        vars[19] = (key2_match==0) ? -999 : R_L(h2_y, matchedmc_y2, mcrecotree->Jet_Dtr_PHI[h2_index], matchedmc_phi2);
+        vars[20] = (key1_match==0) ? -999 : matchedmc_y1;
+        vars[21] = (key2_match==0) ? -999 : matchedmc_y2;
+        vars[22] = (key1_match==0||key2_match==0) ? -999 : R_L(matchedmc_y1,matchedmc_y2,matchedmc_phi1,matchedmc_phi2);
 
         double weight_truth    = weight(mcrecotree->Jet_Dtr_TRUE_E[h1_index],mcrecotree->Jet_Dtr_TRUE_E[h2_index],mcrecotree->Jet_mcjet_PE);
         double weight_pt_truth = weight(mcrecotree->Jet_Dtr_TRUE_PT[h1_index],mcrecotree->Jet_Dtr_TRUE_PT[h2_index],mcrecotree->Jet_mcjet_PT);
-        vars[31] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
-        vars[32] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
-        vars[33] = weight(mcrecotree->Jet_Dtr_PT[h1_index]/1000., mcrecotree->Jet_Dtr_PT[h2_index]/1000., mcrecotree->Jet_PT/1000.);
+        vars[23] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
+        vars[24] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
+        vars[25] = weight(mcrecotree->Jet_Dtr_PT[h1_index]/1000., mcrecotree->Jet_Dtr_PT[h2_index]/1000., mcrecotree->Jet_PT/1000.);
 
         // Fill the TNtuple
         ntuple_jet_match->Fill(vars);

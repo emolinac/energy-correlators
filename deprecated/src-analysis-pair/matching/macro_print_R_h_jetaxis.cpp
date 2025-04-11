@@ -23,8 +23,8 @@ void macro_print_R_h_jetaxis()
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Project into the histograms
-    ntuple_dtrmatch->Project("hsig","R_jet_h",pair_cut+"key_match==1");
-    ntuple_dtrmatch->Project("hall","R_jet_h",pair_cut);
+    ntuple_dtrmatch->Project("hsig","deltaR_jet_h",pair_cut+"key_match==1");
+    ntuple_dtrmatch->Project("hall","deltaR_jet_h",pair_cut);
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();

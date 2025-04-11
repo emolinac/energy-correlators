@@ -134,26 +134,19 @@ int main()
       // If all good, fill Ntuple
       vars_reco[0]  = mcrecotree->Jet_Dtr_ETA[h_index];
       vars_reco[1]  = h_4vector->Rapidity();
-      vars_reco[2]  = mcrecotree->Jet_Dtr_PHI[h_index];
-      vars_reco[3]  = mcrecotree->Jet_Dtr_P[h_index]/1000.;
-      vars_reco[4]  = mcrecotree->Jet_Dtr_PT[h_index]/1000.;
-      vars_reco[5]  = mcrecotree->Jet_PT/1000.;
-      vars_reco[6]  = Jet_4vector->Eta();
-      vars_reco[7]  = Jet_4vector->DeltaPhi(*Z0_4vector);//Jet_4vector->Phi();
-      vars_reco[8]  = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
-      vars_reco[9]  = Jet_4vector->DeltaR(*mum_4vector);
-      vars_reco[10] = Jet_4vector->DeltaR(*mup_4vector);
-      vars_reco[11] = mcrecotree->Jet_PE/1000.;
-      vars_reco[12] = mcrecotree->Jet_mcjet_PE/1000.;
-      vars_reco[13] = mcrecotree->Jet_mcjet_PT/1000.;
-      vars_reco[14] = mcrecotree->Jet_mcjet_nmcdtrs;
-      vars_reco[15] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
-      vars_reco[16] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_ETA[h_index];
-      vars_reco[17] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_PHI[h_index];
-      double h_p_truth = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->P();
-      vars_reco[18] = h_p_truth;
-      vars_reco[19] = Jet_4vector->DeltaR(*h_4vector);            
-      vars_reco[20] = key_match;
+      vars_reco[2]  = mcrecotree->Jet_Dtr_P[h_index]/1000.;
+      vars_reco[3]  = mcrecotree->Jet_Dtr_PT[h_index]/1000.;
+      vars_reco[4]  = mcrecotree->Jet_PT/1000.;
+      vars_reco[5]  = Jet_4vector->Eta();
+      vars_reco[6]  = mcrecotree->Jet_PE/1000.;
+      vars_reco[7]  = mcrecotree->Jet_mcjet_PE/1000.;
+      vars_reco[8]  = mcrecotree->Jet_mcjet_PT/1000.;
+      vars_reco[9]  = mcrecotree->Jet_mcjet_nmcdtrs;
+      vars_reco[10] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
+      vars_reco[11] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_ETA[h_index];
+      vars_reco[12] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->P();
+      vars_reco[13] = Jet_4vector->DeltaR(*h_4vector);            
+      vars_reco[14] = key_match;
 
       // Fill the TNtuple
       ntuple_reco->Fill(vars_reco);
@@ -176,20 +169,15 @@ int main()
                                            true_Jet_4vector->DeltaR(*true_h_4vector))) continue;
 
       // If all good, fill Ntuple
-      vars_mc[0]  = mcrecotree->Jet_mcjet_dtrETA[h_index];
-      vars_mc[1]  = true_h_4vector->Rapidity();
-      vars_mc[2]  = mcrecotree->Jet_mcjet_dtrPHI[h_index];
-      vars_mc[3]  = mcrecotree->Jet_mcjet_dtrP[h_index]/1000.;
-      vars_mc[4]  = mcrecotree->Jet_mcjet_dtrPT[h_index]/1000.;
-      vars_mc[5]  = mcrecotree->Jet_mcjet_PT/1000.;
-      vars_mc[6]  = true_Jet_4vector->Eta();
-      vars_mc[7]  = true_Jet_4vector->DeltaPhi(*true_Z0_4vector);//Jet_4vector->Phi();
-      vars_mc[8]  = delta_phi(true_Jet_4vector->Phi(),true_Z0_4vector->Phi());
-      vars_mc[9]  = true_Jet_4vector->DeltaR(*true_mum_4vector);
-      vars_mc[10] = true_Jet_4vector->DeltaR(*true_mup_4vector);
-      vars_mc[11] = mcrecotree->Jet_mcjet_PE/1000.;
-      vars_mc[12] = mcrecotree->Jet_mcjet_nmcdtrs;
-      vars_mc[13] = true_Jet_4vector->DeltaR(*true_h_4vector);
+      vars_mc[0] = mcrecotree->Jet_mcjet_dtrETA[h_index];
+      vars_mc[1] = true_h_4vector->Rapidity();
+      vars_mc[2] = mcrecotree->Jet_mcjet_dtrP[h_index]/1000.;
+      vars_mc[3] = mcrecotree->Jet_mcjet_dtrPT[h_index]/1000.;
+      vars_mc[4] = mcrecotree->Jet_mcjet_PT/1000.;
+      vars_mc[5] = true_Jet_4vector->Eta();
+      vars_mc[6] = mcrecotree->Jet_mcjet_PE/1000.;
+      vars_mc[7] = mcrecotree->Jet_mcjet_nmcdtrs;
+      vars_mc[8] = true_Jet_4vector->DeltaR(*true_h_4vector);
 
       // Fill the TNtuple
       ntuple_mc->Fill(vars_mc);

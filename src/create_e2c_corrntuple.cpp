@@ -258,20 +258,17 @@ int main()
         vars[7 ] = datatree_2016->Jet_Dtr_ETA[h2_index];
         vars[8 ] = h1_4vector->Rapidity();
         vars[9 ] = h2_4vector->Rapidity();
-        vars[10] = datatree_2016->Jet_Dtr_PHI[h1_index];
-        vars[11] = datatree_2016->Jet_Dtr_PHI[h2_index];
-        vars[12] = datatree_2016->Jet_Dtr_P[h1_index]/1000.;
-        vars[13] = datatree_2016->Jet_Dtr_P[h2_index]/1000.;
-        vars[14] = datatree_2016->Jet_Dtr_PT[h1_index]/1000.;
-        vars[15] = datatree_2016->Jet_Dtr_PT[h2_index]/1000.;
-        vars[16] = datatree_2016->Jet_PT/1000.;
-        vars[17] = Jet_4vector->Eta();
-        vars[18] = Jet_4vector->Phi();
-        vars[19] = weight(datatree_2016->Jet_Dtr_PT[h1_index], datatree_2016->Jet_Dtr_PT[h2_index], datatree_2016->Jet_PT);
-        vars[20] = datatree_2016->Jet_PE/1000.;
-        vars[21] = datatree_2016->Jet_Dtr_E[h1_index]/1000.;
-        vars[22] = datatree_2016->Jet_Dtr_E[h2_index]/1000.;
-        vars[23] = 2016;
+        vars[10] = datatree_2016->Jet_Dtr_P[h1_index]/1000.;
+        vars[11] = datatree_2016->Jet_Dtr_P[h2_index]/1000.;
+        vars[12] = datatree_2016->Jet_Dtr_PT[h1_index]/1000.;
+        vars[13] = datatree_2016->Jet_Dtr_PT[h2_index]/1000.;
+        vars[14] = datatree_2016->Jet_PT/1000.;
+        vars[15] = Jet_4vector->Eta();
+        vars[16] = weight(datatree_2016->Jet_Dtr_PT[h1_index], datatree_2016->Jet_Dtr_PT[h2_index], datatree_2016->Jet_PT);
+        vars[17] = datatree_2016->Jet_PE/1000.;
+        vars[18] = datatree_2016->Jet_Dtr_E[h1_index]/1000.;
+        vars[19] = datatree_2016->Jet_Dtr_E[h2_index]/1000.;
+        vars[20] = 2016;
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
@@ -410,20 +407,17 @@ int main()
         vars[7 ] = datatree_2017->Jet_Dtr_ETA[h2_index];
         vars[8 ] = h1_4vector->Rapidity();
         vars[9 ] = h2_4vector->Rapidity();
-        vars[10] = datatree_2017->Jet_Dtr_PHI[h1_index];
-        vars[11] = datatree_2017->Jet_Dtr_PHI[h2_index];
-        vars[12] = datatree_2017->Jet_Dtr_P[h1_index]/1000.;
-        vars[13] = datatree_2017->Jet_Dtr_P[h2_index]/1000.;
-        vars[14] = datatree_2017->Jet_Dtr_PT[h1_index]/1000.;
-        vars[15] = datatree_2017->Jet_Dtr_PT[h2_index]/1000.;
-        vars[16] = datatree_2017->Jet_PT/1000.;
-        vars[17] = Jet_4vector->Eta();
-        vars[18] = Jet_4vector->Phi();
-        vars[19] = weight(datatree_2017->Jet_Dtr_PT[h1_index], datatree_2017->Jet_Dtr_PT[h2_index], datatree_2017->Jet_PT);
-        vars[20] = datatree_2017->Jet_PE/1000.;
-        vars[21] = datatree_2017->Jet_Dtr_E[h1_index]/1000.;
-        vars[22] = datatree_2017->Jet_Dtr_E[h2_index]/1000.;
-        vars[23] = 2017;
+        vars[10] = datatree_2017->Jet_Dtr_P[h1_index]/1000.;
+        vars[11] = datatree_2017->Jet_Dtr_P[h2_index]/1000.;
+        vars[12] = datatree_2017->Jet_Dtr_PT[h1_index]/1000.;
+        vars[13] = datatree_2017->Jet_Dtr_PT[h2_index]/1000.;
+        vars[14] = datatree_2017->Jet_PT/1000.;
+        vars[15] = Jet_4vector->Eta();
+        vars[16] = weight(datatree_2017->Jet_Dtr_PT[h1_index], datatree_2017->Jet_Dtr_PT[h2_index], datatree_2017->Jet_PT);
+        vars[17] = datatree_2017->Jet_PE/1000.;
+        vars[18] = datatree_2017->Jet_Dtr_E[h1_index]/1000.;
+        vars[19] = datatree_2017->Jet_Dtr_E[h2_index]/1000.;
+        vars[20] = 2017;
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
@@ -562,20 +556,17 @@ int main()
         vars[7 ] = datatree_2018->Jet_Dtr_ETA[h2_index];
         vars[8 ] = h1_4vector->Rapidity();
         vars[9 ] = h2_4vector->Rapidity();
-        vars[10] = datatree_2018->Jet_Dtr_PHI[h1_index];
-        vars[11] = datatree_2018->Jet_Dtr_PHI[h2_index];
-        vars[12] = datatree_2018->Jet_Dtr_P[h1_index]/1000.;
-        vars[13] = datatree_2018->Jet_Dtr_P[h2_index]/1000.;
-        vars[14] = datatree_2018->Jet_Dtr_PT[h1_index]/1000.;
-        vars[15] = datatree_2018->Jet_Dtr_PT[h2_index]/1000.;
-        vars[16] = datatree_2018->Jet_PT/1000.;
-        vars[17] = Jet_4vector->Eta();
-        vars[18] = Jet_4vector->Phi();
-        vars[19] = weight(datatree_2018->Jet_Dtr_PT[h1_index], datatree_2018->Jet_Dtr_PT[h2_index], datatree_2018->Jet_PT);
-        vars[20] = datatree_2018->Jet_PE/1000.;
-        vars[21] = datatree_2018->Jet_Dtr_E[h1_index]/1000.;
-        vars[22] = datatree_2018->Jet_Dtr_E[h2_index]/1000.;
-        vars[23] = 2018;
+        vars[10] = datatree_2018->Jet_Dtr_P[h1_index]/1000.;
+        vars[11] = datatree_2018->Jet_Dtr_P[h2_index]/1000.;
+        vars[12] = datatree_2018->Jet_Dtr_PT[h1_index]/1000.;
+        vars[13] = datatree_2018->Jet_Dtr_PT[h2_index]/1000.;
+        vars[14] = datatree_2018->Jet_PT/1000.;
+        vars[15] = Jet_4vector->Eta();
+        vars[16] = weight(datatree_2018->Jet_Dtr_PT[h1_index], datatree_2018->Jet_Dtr_PT[h2_index], datatree_2018->Jet_PT);
+        vars[17] = datatree_2018->Jet_PE/1000.;
+        vars[18] = datatree_2018->Jet_Dtr_E[h1_index]/1000.;
+        vars[19] = datatree_2018->Jet_Dtr_E[h2_index]/1000.;
+        vars[20] = 2018;
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
