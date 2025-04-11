@@ -133,7 +133,7 @@ int main()
 
       // If all good, fill Ntuple
       vars_reco[0]  = mcrecotree->Jet_Dtr_ETA[h_index];
-      vars_reco[1]  = rapidity(mcrecotree->Jet_Dtr_E[h_index],mcrecotree->Jet_Dtr_PZ[h_index]);
+      vars_reco[1]  = h_4vector->Rapidity();
       vars_reco[2]  = mcrecotree->Jet_Dtr_PHI[h_index];
       vars_reco[3]  = mcrecotree->Jet_Dtr_P[h_index]/1000.;
       vars_reco[4]  = mcrecotree->Jet_Dtr_PT[h_index]/1000.;
@@ -141,16 +141,16 @@ int main()
       vars_reco[6]  = Jet_4vector->Eta();
       vars_reco[7]  = Jet_4vector->DeltaPhi(*Z0_4vector);//Jet_4vector->Phi();
       vars_reco[8]  = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
-      vars_reco[9]  = Jet_4vector->DeltaR(*mum_4vector, 1);
-      vars_reco[10] = Jet_4vector->DeltaR(*mup_4vector, 1);
+      vars_reco[9]  = Jet_4vector->DeltaR(*mum_4vector);
+      vars_reco[10] = Jet_4vector->DeltaR(*mup_4vector);
       vars_reco[11] = mcrecotree->Jet_PE/1000.;
       vars_reco[12] = mcrecotree->Jet_mcjet_PE/1000.;
       vars_reco[13] = mcrecotree->Jet_mcjet_PT/1000.;
       vars_reco[14] = mcrecotree->Jet_mcjet_nmcdtrs;
-      vars_reco[15] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : rapidity(mcrecotree->Jet_Dtr_TRUE_E[h_index],mcrecotree->Jet_Dtr_TRUE_PZ[h_index]);
+      vars_reco[15] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
       vars_reco[16] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_ETA[h_index];
       vars_reco[17] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_PHI[h_index];
-      double h_p_truth = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : sqrt(pow(mcrecotree->Jet_Dtr_TRUE_PX[h_index]/1000.,2)+pow(mcrecotree->Jet_Dtr_TRUE_PY[h_index]/1000.,2)+pow(mcrecotree->Jet_Dtr_TRUE_PZ[h_index]/1000.,2));
+      double h_p_truth = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->P();
       vars_reco[18] = h_p_truth;
       vars_reco[19] = Jet_4vector->DeltaR(*h_4vector);            
       vars_reco[20] = key_match;
@@ -166,9 +166,9 @@ int main()
       if(mcrecotree->Jet_mcjet_dtrIsMeson[h_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h_index]!=1) continue;
       
       true_h_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h_index]/1000.,
-                                mcrecotree->Jet_mcjet_dtrPY[h_index]/1000.,
-                                mcrecotree->Jet_mcjet_dtrPZ[h_index]/1000., 
-                                mcrecotree->Jet_mcjet_dtrE[h_index]/1000.);
+                                 mcrecotree->Jet_mcjet_dtrPY[h_index]/1000.,
+                                 mcrecotree->Jet_mcjet_dtrPZ[h_index]/1000., 
+                                 mcrecotree->Jet_mcjet_dtrE[h_index]/1000.);
 
       if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h_index],
                                            mcrecotree->Jet_mcjet_dtrP[h_index]/1000.,
@@ -177,7 +177,7 @@ int main()
 
       // If all good, fill Ntuple
       vars_mc[0]  = mcrecotree->Jet_mcjet_dtrETA[h_index];
-      vars_mc[1]  = rapidity(mcrecotree->Jet_mcjet_dtrE[h_index],mcrecotree->Jet_mcjet_dtrPZ[h_index]);
+      vars_mc[1]  = true_h_4vector->Rapidity();
       vars_mc[2]  = mcrecotree->Jet_mcjet_dtrPHI[h_index];
       vars_mc[3]  = mcrecotree->Jet_mcjet_dtrP[h_index]/1000.;
       vars_mc[4]  = mcrecotree->Jet_mcjet_dtrPT[h_index]/1000.;
@@ -185,8 +185,8 @@ int main()
       vars_mc[6]  = true_Jet_4vector->Eta();
       vars_mc[7]  = true_Jet_4vector->DeltaPhi(*true_Z0_4vector);//Jet_4vector->Phi();
       vars_mc[8]  = delta_phi(true_Jet_4vector->Phi(),true_Z0_4vector->Phi());
-      vars_mc[9]  = true_Jet_4vector->DeltaR(*true_mum_4vector, 1);
-      vars_mc[10] = true_Jet_4vector->DeltaR(*true_mup_4vector, 1);
+      vars_mc[9]  = true_Jet_4vector->DeltaR(*true_mum_4vector);
+      vars_mc[10] = true_Jet_4vector->DeltaR(*true_mup_4vector);
       vars_mc[11] = mcrecotree->Jet_mcjet_PE/1000.;
       vars_mc[12] = mcrecotree->Jet_mcjet_nmcdtrs;
       vars_mc[13] = true_Jet_4vector->DeltaR(*true_h_4vector);

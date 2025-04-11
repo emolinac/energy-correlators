@@ -59,7 +59,6 @@ int main()
 
     if(evt != 0){if(last_eventNum == mctree->eventNumber) continue;}
     
-    
     // Apply PV cut
     if(mctree->nPVs!=1) continue;
 

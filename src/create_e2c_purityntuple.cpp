@@ -61,7 +61,6 @@ int main()
 
     if (evt != 0)
     {
-      if (mcrecotree->eventNumber != last_eventNum) maxjetpT_found = false;
       if (last_eventNum == mcrecotree->eventNumber) continue;
     }
 
@@ -86,16 +85,13 @@ int main()
     
     mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,mcrecotree->mum_PY/1000.,mcrecotree->mum_PZ/1000.,mcrecotree->mum_PE/1000.);
     if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
-    //if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
-
+    
     mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,mcrecotree->mup_PY/1000.,mcrecotree->mup_PZ/1000.,mcrecotree->mup_PE/1000.);
     if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
-    //if(mcrecotree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
-
+    
     true_mum_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mum_PX/1000.,mcrecotree->Jet_mcjet_mum_PY/1000.,mcrecotree->Jet_mcjet_mum_PZ/1000.,mcrecotree->Jet_mcjet_mum_PE/1000.);
     if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) continue;
-    //if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
-
+    
     true_mup_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mup_PX/1000.,mcrecotree->Jet_mcjet_mup_PY/1000.,mcrecotree->Jet_mcjet_mup_PZ/1000.,mcrecotree->Jet_mcjet_mup_PE/1000.);
     if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) continue;
     
@@ -125,9 +121,9 @@ int main()
         key_match++;
 
         true_h_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_TRUE_PX[h_index]/1000.,
-                                  mcrecotree->Jet_Dtr_TRUE_PY[h_index]/1000.,
-                                  mcrecotree->Jet_Dtr_TRUE_PZ[h_index]/1000.,
-                                  mcrecotree->Jet_Dtr_TRUE_E[h_index]/1000.);
+                                   mcrecotree->Jet_Dtr_TRUE_PY[h_index]/1000.,
+                                   mcrecotree->Jet_Dtr_TRUE_PZ[h_index]/1000.,
+                                   mcrecotree->Jet_Dtr_TRUE_E[h_index]/1000.);
         
         if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h_index],
                                              mcrecotree->Jet_Dtr_TRUE_P[h_index]/1000.,
@@ -145,16 +141,16 @@ int main()
       vars[6]  = Jet_4vector->Eta();
       vars[7]  = Jet_4vector->DeltaPhi(*Z0_4vector);//Jet_4vector->Phi();
       vars[8]  = delta_phi(Jet_4vector->Phi(),Z0_4vector->Phi());
-      vars[9]  = Jet_4vector->DeltaR(*mum_4vector, 1);
+      vars[9]  = Jet_4vector->DeltaR(*mum_4vector);
       vars[10] = mum_4vector->Pt();
       vars[11] = mum_4vector->Eta();
-      vars[12] = Jet_4vector->DeltaR(*mup_4vector, 1);
+      vars[12] = Jet_4vector->DeltaR(*mup_4vector);
       vars[13] = mup_4vector->Pt();
       vars[14] = mup_4vector->Eta();
       vars[15] = mcrecotree->Jet_PE/1000.;
       vars[16] = mcrecotree->Jet_mcjet_PE/1000.;
       vars[17] = mcrecotree->Jet_mcjet_nmcdtrs;
-      vars[18] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : rapidity(mcrecotree->Jet_Dtr_TRUE_E[h_index],mcrecotree->Jet_Dtr_TRUE_PZ[h_index]);
+      vars[18] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
       vars[19] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_ETA[h_index];
       vars[20] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : mcrecotree->Jet_Dtr_TRUE_PHI[h_index];
       vars[21] = Jet_4vector->DeltaR(*h_4vector);            

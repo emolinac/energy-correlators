@@ -60,11 +60,10 @@ int main()
 
     if (evt != 0)
     {
-      if (mcrecotree->eventNumber != last_eventNum) maxjetpT_found = false;
-      // if (last_eventNum == mcrecotree->eventNumber) continue;
+      if (last_eventNum == mcrecotree->eventNumber) continue;
     }
 
-    // if (maxjetpT_found) continue;
+    if (maxjetpT_found) continue;
 
     // Apply PV cut
     if(mcrecotree->nPV!=1) continue;
