@@ -1,9 +1,9 @@
-#include "../../include/analysis-constants.h"
-#include "../../include/analysis-cuts.h"
-#include "../../include/directories.h"
-#include "../../include/names.h"
-#include "../../include/utils-algorithms.h"
-#include "../../include/utils-visual.h"
+#include "../include/analysis-constants.h"
+#include "../include/analysis-cuts.h"
+#include "../include/directories.h"
+#include "../include/names.h"
+#include "../include/utils-algorithms.h"
+#include "../include/utils-visual.h"
 
 void macro_print_resolution_rl()
 {
@@ -17,8 +17,8 @@ void macro_print_resolution_rl()
 
     // Define the necessary histograms to calculate purity
     // TH1F* hres = new TH1F("hres","",200,-.06,.06);
-    TH1F* hres   = new TH1F("hres","",1000,-.5,.5);
-    TH1F* hratio = new TH1F("hratio","",1000,0,2);
+    TH1F* hres   = new TH1F("hres","",1000,-.2,.2);
+    TH1F* hratio = new TH1F("hratio","",1000,0.6,1.4);
     hres->Sumw2();
     hratio->Sumw2();
     set_histogram_style(hres, kViolet, std_line_width, std_marker_style, std_marker_size);
@@ -46,10 +46,11 @@ void macro_print_resolution_rl()
     // Draw
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
+
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
+    // tex->SetTextColorAlpha(16,0.3);
+    // tex->SetTextSize(0.1991525);
+    // tex->SetTextAngle(26.15998);
     tex->SetLineWidth(2);
 
     hres->Draw();
@@ -66,9 +67,9 @@ void macro_print_resolution_rl()
 
     line1->DrawLine(hres->GetBinCenter(hres->GetMaximumBin())-get_hwhm(hres),0,hres->GetBinCenter(hres->GetMaximumBin())-get_hwhm(hres),hres->GetMaximum());
     line2->DrawLine(hres->GetBinCenter(hres->GetMaximumBin())+get_hwhm(hres),0,hres->GetBinCenter(hres->GetMaximumBin())+get_hwhm(hres),hres->GetMaximum());
-
-    //tex->DrawLatexNDC(0.3,0.3,"simulations");
     
+    tex->DrawLatexNDC(0.2,0.75,Form("HWHM = %.5f",get_hwhm(hres)));
+
     c->Print("./plots/resolution_rl.pdf");
 
     hratio->Draw();
@@ -77,6 +78,8 @@ void macro_print_resolution_rl()
     line1->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())-get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())-get_hwhm(hratio),hratio->GetMaximum());
     line2->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),hratio->GetMaximum());
 
-    gPad->SetLogy(0);
+    tex->DrawLatexNDC(0.2,0.75,Form("HWHM = %.5f",get_hwhm(hratio)));
+
+    // gPad->SetLogy(0);
     c->Print("./plots/resolution_rl_ratio.pdf");
 }

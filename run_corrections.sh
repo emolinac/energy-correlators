@@ -8,6 +8,9 @@ echo "Creating purity ntuple"
 ./create_e2c_purityntuple
 echo "Purity ntuple ready!"
 echo "Creating efficiency ntuple"
+./create_e2c_pairpurityntuple
+echo "Pair purity ntuple ready!"
+echo "Creating efficiency ntuple"
 ./create_e2c_efficiencyntuple
 echo "Efficiency ntuple ready!"
 echo "Creating corr data ntuple"
