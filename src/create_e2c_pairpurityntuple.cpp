@@ -115,8 +115,8 @@ int main()
 
       h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,mcrecotree->Jet_Dtr_PY[h1_index]/1000.,mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,mcrecotree->Jet_Dtr_E[h1_index]/1000.);
       if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h1_index],
-                                  mcrecotree->Jet_Dtr_P[h1_index]/1000.,
-                                  mcrecotree->Jet_Dtr_PT[h1_index]/1000.,
+                                  h1_4vector->P(),
+                                  h1_4vector->Pt(),
                                   mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                   mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
                                   Jet_4vector->DeltaR(*h1_4vector))) continue;
@@ -144,8 +144,8 @@ int main()
 
         h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,mcrecotree->Jet_Dtr_PY[h2_index]/1000.,mcrecotree->Jet_Dtr_PZ[h2_index]/1000.,mcrecotree->Jet_Dtr_E[h2_index]/1000.);
         if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h2_index],
-                                    mcrecotree->Jet_Dtr_P[h2_index]/1000.,
-                                    mcrecotree->Jet_Dtr_PT[h2_index]/1000.,
+                                    h2_4vector->P(),
+                                    h2_4vector->Pt(),
                                     mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
                                     mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
                                     Jet_4vector->DeltaR(*h2_4vector))) continue;
@@ -176,10 +176,10 @@ int main()
         vars[3]  = h2_4vector->Eta();
         vars[4]  = h1_4vector->Rapidity();
         vars[5]  = h2_4vector->Rapidity();
-        vars[6]  = mcrecotree->Jet_Dtr_P[h1_index]/1000.;
-        vars[7]  = mcrecotree->Jet_Dtr_P[h2_index]/1000.;
-        vars[8]  = mcrecotree->Jet_Dtr_PT[h1_index]/1000.;
-        vars[9]  = mcrecotree->Jet_Dtr_PT[h2_index]/1000.;
+        vars[6]  = h1_4vector->P();
+        vars[7]  = h2_4vector->P();
+        vars[8]  = h1_4vector->Pt();
+        vars[9]  = h2_4vector->Pt();
         vars[10] = Jet_4vector->Eta();
         vars[11] = mum_4vector->Pt();
         vars[12] = mum_4vector->Eta();
@@ -187,18 +187,17 @@ int main()
         vars[14] = mup_4vector->Eta();
         vars[15] = mcrecotree->Jet_PT/1000.;
         vars[16] = mcrecotree->Jet_mcjet_PT/1000.;
-        vars[17] = mcrecotree->Jet_mcjet_nmcdtrs;
-        vars[18] = (key1_match==0) ? -999 : true_h1_4vector->DeltaR(*h1_4vector);
-        vars[19] = (key2_match==0) ? -999 : true_h2_4vector->DeltaR(*h2_4vector);
-        vars[20] = (key1_match==0) ? -999 : true_h1_4vector->Rapidity();
-        vars[21] = (key2_match==0) ? -999 : true_h2_4vector->Rapidity();
-        vars[22] = (key1_match==0||key2_match==0) ? -999 : true_h1_4vector->DeltaR(*true_h2_4vector);
+        vars[17] = (key1_match==0) ? -999 : true_h1_4vector->DeltaR(*h1_4vector);
+        vars[18] = (key2_match==0) ? -999 : true_h2_4vector->DeltaR(*h2_4vector);
+        vars[19] = (key1_match==0) ? -999 : true_h1_4vector->Rapidity();
+        vars[20] = (key2_match==0) ? -999 : true_h2_4vector->Rapidity();
+        vars[21] = (key1_match==0||key2_match==0) ? -999 : true_h1_4vector->DeltaR(*true_h2_4vector);
 
         double weight_truth = weight(mcrecotree->Jet_Dtr_TRUE_E[h1_index],mcrecotree->Jet_Dtr_TRUE_E[h2_index],mcrecotree->Jet_mcjet_PE);
         double weight_pt_truth = weight(mcrecotree->Jet_Dtr_TRUE_PT[h1_index],mcrecotree->Jet_Dtr_TRUE_PT[h2_index],mcrecotree->Jet_mcjet_PT);
-        vars[23] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
-        vars[24] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
-        vars[25] = weight(mcrecotree->Jet_Dtr_PT[h1_index]/1000., mcrecotree->Jet_Dtr_PT[h2_index]/1000., mcrecotree->Jet_PT/1000.);
+        vars[22] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
+        vars[23] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
+        vars[24] = weight(h1_4vector->Pt(), h2_4vector->Pt(), mcrecotree->Jet_PT/1000.);
 
         // Fill the TNtuple
         ntuple_jet_match->Fill(vars);

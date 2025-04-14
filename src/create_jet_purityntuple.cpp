@@ -107,6 +107,7 @@ int main()
     vars[4] = (truth_passed) ? mcrecotree->Jet_mcjet_PE/1000. : -999 ;
     vars[5] = (truth_passed) ? mcrecotree->Jet_mcjet_nmcdtrs  : -999 ;
     vars[6] = (truth_passed) ? Jet_4vector->DeltaR(*true_Jet_4vector) : -999;
+    vars[7] = Jet_4vector->Eta();
 
     last_eventNum = mcrecotree->eventNumber;
     

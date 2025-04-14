@@ -179,8 +179,8 @@ int main()
 
   //       h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,mcrecotree->Jet_Dtr_PY[h1_index]/1000.,mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,mcrecotree->Jet_Dtr_E[h1_index]/1000.);
   //       if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h1_index],
-  //                                   mcrecotree->Jet_Dtr_P[h1_index]/1000.,
-  //                                   mcrecotree->Jet_Dtr_PT[h1_index]/1000.,
+  //                                   h1_4vector->P(),
+  //                                   h1_4vector->Pt(),
   //                                   mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
   //                                   mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
   //                                   Jet_4vector->DeltaR(*h1_4vector))) continue;
@@ -193,8 +193,8 @@ int main()
 
   //           h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,mcrecotree->Jet_Dtr_PY[h2_index]/1000.,mcrecotree->Jet_Dtr_PZ[h2_index]/1000.,mcrecotree->Jet_Dtr_E[h2_index]/1000.);
   //           if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h2_index],
-  //                                       mcrecotree->Jet_Dtr_P[h2_index]/1000.,
-  //                                       mcrecotree->Jet_Dtr_PT[h2_index]/1000.,
+  //                                       h2_4vector->P(),
+  //                                       h2_4vector->Pt(),
   //                                       mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
   //                                       mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
   //                                       Jet_4vector->DeltaR(*h2_4vector))) continue;
@@ -211,10 +211,10 @@ int main()
   //           vars[5]  = h2_y;
   //           vars[6]  = mcrecotree->Jet_Dtr_ThreeCharge[h1_index];
   //           vars[7]  = mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
-  //           vars[8]  = mcrecotree->Jet_Dtr_P[h1_index]/1000.;
-  //           vars[9]  = mcrecotree->Jet_Dtr_P[h2_index]/1000.;
-  //           vars[10] = mcrecotree->Jet_Dtr_PT[h1_index]/1000.;
-  //           vars[11] = mcrecotree->Jet_Dtr_PT[h2_index]/1000.;
+  //           vars[8]  = h1_4vector->P();
+  //           vars[9]  = h2_4vector->P();
+  //           vars[10] = h1_4vector->Pt();
+  //           vars[11] = h2_4vector->Pt();
   //           vars[12] = mcrecotree->Jet_PT/1000.;
   //           vars[13] = Jet_4vector->Eta();
   //           vars[14] = weight(mcrecotree->Jet_Dtr_PT[h1_index], mcrecotree->Jet_Dtr_PT[h2_index], mcrecotree->Jet_PT);

@@ -197,6 +197,7 @@ int main()
     vars_jet[11] = mum_eff_trk;
     vars_jet[12] = mum_eff_trg;
     vars_jet[13] = 2016;
+    vars_jet[14] = Jet_4vector->Eta();
     
     ntuple_corrjet->Fill(vars_jet);
 
@@ -346,6 +347,7 @@ int main()
     vars_jet[11] = mum_eff_trk;
     vars_jet[12] = mum_eff_trg;
     vars_jet[13] = 2017;
+    vars_jet[14] = Jet_4vector->Eta();
     
     ntuple_corrjet->Fill(vars_jet);
 
@@ -495,6 +497,7 @@ int main()
     vars_jet[11] = mum_eff_trk;
     vars_jet[12] = mum_eff_trg;
     vars_jet[13] = 2018;
+    vars_jet[14] = Jet_4vector->Eta();
     
     ntuple_corrjet->Fill(vars_jet);
 

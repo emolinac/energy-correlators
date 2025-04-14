@@ -109,8 +109,8 @@ int main()
 
       h_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h_index]/1000.,mcrecotree->Jet_Dtr_PY[h_index]/1000.,mcrecotree->Jet_Dtr_PZ[h_index]/1000.,mcrecotree->Jet_Dtr_E[h_index]/1000.);
       if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h_index],
-                                  mcrecotree->Jet_Dtr_P[h_index]/1000.,
-                                  mcrecotree->Jet_Dtr_PT[h_index]/1000.,
+                                  h_4vector->P(),
+                                  h_4vector->Pt(),
                                   mcrecotree->Jet_Dtr_TrackChi2[h_index]/mcrecotree->Jet_Dtr_TrackNDF[h_index],
                                   mcrecotree->Jet_Dtr_ProbNNghost[h_index],
                                   Jet_4vector->DeltaR(*h_4vector))) continue;
@@ -134,8 +134,8 @@ int main()
       // If all good, fill Ntuple
       vars_reco[0]  = mcrecotree->Jet_Dtr_ETA[h_index];
       vars_reco[1]  = h_4vector->Rapidity();
-      vars_reco[2]  = mcrecotree->Jet_Dtr_P[h_index]/1000.;
-      vars_reco[3]  = mcrecotree->Jet_Dtr_PT[h_index]/1000.;
+      vars_reco[2]  = h_4vector->P();
+      vars_reco[3]  = h_4vector->Pt();
       vars_reco[4]  = mcrecotree->Jet_PT/1000.;
       vars_reco[5]  = Jet_4vector->Eta();
       vars_reco[6]  = mcrecotree->Jet_PE/1000.;

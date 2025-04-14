@@ -35,8 +35,8 @@ const int Nvars_mc              = 21;
 const int Nvars_data            = 17; 
 const int Nvars_corrdata        = 21; 
 
-const int Nvars_purity          = 18;
-const int Nvars_pairpurity      = 26;
+const int Nvars_purity          = 16;
+const int Nvars_pairpurity      = 25;
 
 const int Nvars_efficiency_mc   = 9;
 const int Nvars_efficiency_reco = 15;
@@ -50,8 +50,8 @@ const char* ntuple_data_vars            = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1
 const char* ntuple_corrdata_vars        = "weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year";
 const char* ntuple_mc_vars              = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
 
-const char* ntuple_purity_vars          = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e:jet_e_truth:ndtr:h_y_truth:h_eta_truth:h_phi_truth:deltaR_jet_h:key_match";
-const char* ntuple_pairpurity_vars      = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_pt:jet_pt_truth:ndtr:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
+const char* ntuple_purity_vars          = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e:jet_e_truth:h_y_truth:h_eta_truth:deltaR_jet_h:key_match";
+const char* ntuple_pairpurity_vars      = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
 const char* ntuple_unfold_vars          = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_pt:jet_pt_truth:reco_passed:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
 
 const char* ntuple_efficiency_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:jet_e_truth:jet_pt_truth:ndtr:h_y_truth:h_eta_truth:h_p_truth:deltaR_jet_h:key_match";
@@ -72,15 +72,15 @@ std::string name_ntuple_jes_reco      = "ntuple_jes_reco";
 std::string name_ntuple_jes_mc        = "ntuple_jes_mc";
 std::string name_ntuple_jer           = "ntuple_jer";
 
-const int Nvars_corrjet       = 14;
-const int Nvars_jetpurity     = 7;
-const int Nvars_jetefficiency = 6;
+const int Nvars_corrjet       = 15;
+const int Nvars_jetpurity     = 8;
+const int Nvars_jetefficiency = 7;
 const int Nvars_jes_reco      = 3;
 const int Nvars_jes           = 2;
 
-const char* ntuple_jet_vars           = "jet_pt:jet_e:jet_ndtr:jet_efficiency:jet_purity:jet_efficiency_error:jet_purity_error:mup_eff_id:mup_eff_trk:mup_eff_trg:mum_eff_id:mum_eff_trk:mum_eff_trg:year";
-const char* ntuple_jetpurity_vars     = "jet_pt:jet_e:jet_ndtr:jet_pt_truth:jet_e_truth:jet_ndtr_truth:deltaR_matchedjets";
-const char* ntuple_jetefficiency_vars = "jet_pt_truth:jet_e_truth:jet_ndtr_truth:jet_pt:jet_e:jet_ndtr";
+const char* ntuple_jet_vars           = "jet_pt:jet_e:jet_ndtr:jet_efficiency:jet_purity:jet_efficiency_error:jet_purity_error:mup_eff_id:mup_eff_trk:mup_eff_trg:mum_eff_id:mum_eff_trk:mum_eff_trg:year:jet_eta";
+const char* ntuple_jetpurity_vars     = "jet_pt:jet_e:jet_ndtr:jet_pt_truth:jet_e_truth:jet_ndtr_truth:deltaR_matchedjets:jet_eta";
+const char* ntuple_jetefficiency_vars = "jet_pt_truth:jet_e_truth:jet_ndtr_truth:jet_pt:jet_e:jet_ndtr:jet_eta_truth";
 const char* ntuple_jes_reco_vars      = "jet_pt:z_pt:jet_jes_cor";
 const char* ntuple_jes_mc_vars        = "jet_pt:z_pt";
 const char* ntuple_jes_data_vars      = "jet_pt:z_pt";
