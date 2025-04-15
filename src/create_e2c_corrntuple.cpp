@@ -198,6 +198,9 @@ int main()
     vars_jet[12] = mum_eff_trg;
     vars_jet[13] = 2016;
     vars_jet[14] = Jet_4vector->Eta();
+    vars_jet[15] = Z0_4vector->Pt();
+    vars_jet[16] = Z0_4vector->Eta();
+    vars_jet[17] = Z0_4vector->Rapidity();
     
     ntuple_corrjet->Fill(vars_jet);
 
@@ -348,6 +351,9 @@ int main()
     vars_jet[12] = mum_eff_trg;
     vars_jet[13] = 2017;
     vars_jet[14] = Jet_4vector->Eta();
+    vars_jet[15] = Z0_4vector->Pt();
+    vars_jet[16] = Z0_4vector->Eta();
+    vars_jet[17] = Z0_4vector->Rapidity();
     
     ntuple_corrjet->Fill(vars_jet);
 
@@ -498,6 +504,9 @@ int main()
     vars_jet[12] = mum_eff_trg;
     vars_jet[13] = 2018;
     vars_jet[14] = Jet_4vector->Eta();
+    vars_jet[15] = Z0_4vector->Pt();
+    vars_jet[16] = Z0_4vector->Eta();
+    vars_jet[17] = Z0_4vector->Rapidity();
     
     ntuple_corrjet->Fill(vars_jet);
 

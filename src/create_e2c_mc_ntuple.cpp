@@ -25,13 +25,13 @@ int main()
   
   // Create Ntuples
   TNtuple* ntuple_mcreco     = new TNtuple(name_ntuple_mcreco.c_str()    ,"Reco Sim" ,ntuple_mcreco_vars);
-  TNtuple* ntuple_mcreco_jet = new TNtuple(name_ntuple_mcreco_jet.c_str(),"Reco Sim","jet_pt");
+  TNtuple* ntuple_mcreco_jet = new TNtuple(name_ntuple_mcreco_jet.c_str(),"Reco Sim","jet_pt:jet_eta:z_pt:z_eta:z_y");
   ntuple_mcreco->SetAutoSave(0);
   ntuple_mcreco_jet->SetAutoSave(0);
 
   // Create Ntuples
   TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"MC Sim",ntuple_mc_vars);
-  TNtuple* ntuple_mc_jet = new TNtuple(name_ntuple_mc_jet.c_str(),"MC Sim","jet_pt");
+  TNtuple* ntuple_mc_jet = new TNtuple(name_ntuple_mc_jet.c_str(),"MC Sim","jet_pt:jet_eta:z_pt:z_eta:z_y");
   ntuple_mc->SetAutoSave(0);
   ntuple_mc_jet->SetAutoSave(0);
   
@@ -49,7 +49,6 @@ int main()
   
   // Fill the MC TNtuple
   float vars_mc[Nvars_mc];
-  float vars_mc_jet[1];
   for(int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
@@ -83,8 +82,7 @@ int main()
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
-    vars_mc_jet[0] = mctree->MCJet_PT/1000.;
-    ntuple_mc_jet->Fill(vars_mc_jet);
+    ntuple_mc_jet->Fill(Jet_4vector->Pt(),Jet_4vector->Eta(),Z0_4vector->Pt(),Z0_4vector->Eta(),Z0_4vector->Rapidity());
     
     for(int h1_index = 0 ; h1_index < mctree->MCJet_Dtr_nmcdtrs ; h1_index++)
     {
@@ -190,7 +188,7 @@ int main()
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
-    ntuple_mcreco_jet->Fill(Jet_4vector->Pt());
+    ntuple_mcreco_jet->Fill(Jet_4vector->Pt(),Jet_4vector->Eta(),Z0_4vector->Pt(),Z0_4vector->Eta(),Z0_4vector->Rapidity());
             
     // Loop over hadron 1
     for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
