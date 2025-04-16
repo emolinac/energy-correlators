@@ -43,8 +43,8 @@ void macro_print_responsematrices()
     c->Print("./plots/responsematrix_jetpt.pdf");
     hresp_rl->Draw("col text");
     hresp_rl->SetTitle("Response matrix of R_{L};Reco;Truth");
-    gPad->SetLogx(1);
-    gPad->SetLogy(1);
+    gPad->SetLogx(0);
+    gPad->SetLogy(0);
     c->Print("./plots/responsematrix_rl.pdf");
     hresp_weight->Draw("col text");
     hresp_weight->SetTitle("Response matrix of momentum weights;Reco;Truth");
