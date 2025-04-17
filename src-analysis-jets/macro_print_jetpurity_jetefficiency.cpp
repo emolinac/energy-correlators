@@ -16,9 +16,9 @@ void macro_print_jetpurity_jetefficiency()
     TNtuple* ntuple        = (TNtuple*) fefficiency->Get((name_ntuple_jetefficiency).c_str());
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig_purity = new TH1F("hsig_purity"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hall_purity = new TH1F("hall_purity"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hpurity     = new TH1F("hpurity","",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hsig_purity = new TH1F("hsig_purity"   ,"",Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH1F* hall_purity = new TH1F("hall_purity"   ,"",Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH1F* hpurity     = new TH1F("hpurity","",Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     hsig_purity->Sumw2();
     hall_purity->Sumw2();
     hpurity->Sumw2();
@@ -26,9 +26,9 @@ void macro_print_jetpurity_jetefficiency()
     set_histogram_style(hpurity, 797 , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig        = new TH1F("hsig"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hall        = new TH1F("hall"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hsig        = new TH1F("hsig"   ,"",Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH1F* hall        = new TH1F("hall"   ,"",Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     hsig->Sumw2();
     hall->Sumw2();
     hefficiency->Sumw2();
@@ -61,12 +61,17 @@ void macro_print_jetpurity_jetefficiency()
     hs->SetTitle(";p^{jet}_{t}(GeV);");
     hs->Draw("NOSTACK");
     
-
     // tex->DrawLatexNDC(0.3,0.3,"simulations");
     TLegend* l = new TLegend();
     l->AddEntry(hpurity,"Purity","lpf");
     l->AddEntry(hefficiency,"Efficiency","lpf");
     l->Draw("SAME");
 
-    c->Print(Form("./plots/jet_purity_efficiency_a.pdf"));
+    c->Print(Form("./plots/jet_purity_efficiency_fullsim.pdf"));
+
+    for(int bin = 1 ; bin <= hpurity->GetNbinsX() ; bin++)
+    {
+        double jet_total_correction = hpurity->GetBinContent(bin)/hefficiency->GetBinContent(bin);
+        std::cout<<"Total correction between "<<unfolding_rl_binning[bin-1]<<" and "<<unfolding_jetpt_binning[bin]<<" is "<<jet_total_correction<<std::endl;
+    }
 }

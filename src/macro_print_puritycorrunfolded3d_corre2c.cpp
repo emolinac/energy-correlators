@@ -38,25 +38,25 @@ void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
     ntuple->SetBranchAddress("weight_pt_truth",&weight_pt_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH3D* hpurcorr = new TH3D("hpurcorr","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-    TH3D* hmeas    = new TH3D("hmeas"   ,"",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-    TH3D* htrue    = new TH3D("htrue"   ,"",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH3D* hpurcorr = new TH3D("hpurcorr","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH3D* hmeas    = new TH3D("hmeas"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH3D* htrue    = new TH3D("htrue"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
 
     for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if(jet_pt_reco<unfolding_jetpt_binning[0]||jet_pt_reco>unfolding_jetpt_binning[4]) continue;
+        // if(jet_pt_reco<unfolding_jetpt_binning[0]||jet_pt_reco>unfolding_jetpt_binning[4]) continue;
         if(R_L_truth==-999) continue;
     
         response->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
     }
 
     // Fill the purity corrected distributions
-    TH2D* hunfolded_ratio   = new TH2D("hunfolded_ratio"  ,"",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH3D* hpuritycorrected  = new TH3D("hpuritycorrected" ,"",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-    TH3D* hpuritycorrected2 = new TH3D("hpuritycorrected2","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH2D* hunfolded_ratio   = new TH2D("hunfolded_ratio"  ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH3D* hpuritycorrected  = new TH3D("hpuritycorrected" ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH3D* hpuritycorrected2 = new TH3D("hpuritycorrected2","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
     ntuple_data->Project("hpuritycorrected" ,"weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     ntuple_data->Project("hpuritycorrected2","weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     
@@ -87,9 +87,9 @@ void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
     hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
     hunfolded_ratio->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
     hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
-    gPad->SetLogx(1);
+    gPad->SetLogx(0);
     gPad->SetLogy(1);
-    c->Print(Form("./plots/unfolded3d_%initer_ratio_sepyears_linearbinning.pdf",niter));
+    // c->Print(Form("./plots/unfolded3d_%initer_ratio_sepyears_linearbinning_unfbinvarv2.pdf",niter));
 
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend();
@@ -111,6 +111,7 @@ void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
             if(purity<=0||purity>1) continue;
 
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
+            // double unfolding_weight = 1.;
             hcorr_data[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
         }
         ntuple_jet->Project(Form("hcorrref_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
@@ -128,5 +129,5 @@ void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_linearbinning.pdf",niter));
+    // c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_linearbinning_unfbinvarv2.pdf",niter));
 }

@@ -37,16 +37,16 @@ int main()
   ntuple_data->SetAutoSave(0);
 
   // Calculate corrections
-  TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
-  TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
-  TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
+  TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   hsigp->Sumw2();
   hallp->Sumw2();
   hpurity->Sumw2();
 
-  TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
-  TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
-  TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,em_jetptcorrection_nbins,corrections_jetpt_binning);
+  TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   hsigeff->Sumw2();
   halleff->Sumw2();
   hefficiency->Sumw2();

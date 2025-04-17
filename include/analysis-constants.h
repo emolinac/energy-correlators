@@ -18,8 +18,8 @@ const double phi_mass      = 1.019455;
 const double mass_res      = 0.008; // Mass resolution parameter (see src-resolution)
 
 // Correction-related constants
-const double corr_rel_error = 0.05;
-// const double corr_rel_error = 0.2;
+// const double corr_rel_error = 0.05;
+const double corr_rel_error = 0.3;
 const int ndim_corr = 50;
 
 // Limits of variables
@@ -68,11 +68,14 @@ const double jet_e_binning[]  = {jet_e_min,350,560,jet_e_max};
 const double rl_binning[]     = {R_L_min, 0.0564706, 0.102941, 0.149412, 0.195882, 0.242353, 0.288824, 0.335294, 0.381765, 0.428235, 0.474706, 0.521176, 0.567647, 0.614118, 0.660588, 0.707059, 0.753529, R_L_max};
 const double rl_binning_at[]  = {R_L_min_at, 0.102401, 0.149799, 0.219136, 0.320567, 0.468947, 0.686008, 1.00354, 1.46805, 2.14756, R_L_max_at};
 
-const double unfolding_jetpt_binning[] = {15,20,30,50,100,150};
-const double unfolding_rl_binning[]    = {R_L_absmin, R_L_min, 0.0564706, 0.102941, 0.149412, 0.195882, 0.242353, 0.288824, 0.335294, 0.381765, 0.428235, 0.474706, 0.521176, 0.567647, 0.614118, 0.660588, 0.707059, 0.753529, R_L_max, R_L_absmax};
-
-const int em_jetptcorrection_nbins = 7;
+const int Nbin_jetpt_corrections = 7;
 const double corrections_jetpt_binning[] = {20,22.5,25,30,40,50,75,100};
+
+const int Nbin_R_L_unfolding    = Nbin_R_L + 2;
+const int Nbin_jet_pt_unfolding = Nbin_jet_pt+2;
+const double unfolding_jetpt_binning[] = {15,20,30,50,100,150};
+// const double unfolding_jetpt_binning[] = {15,20,22.5,25,30,40,50,75,100,150};
+const double unfolding_rl_binning[]    = {R_L_absmin, R_L_min, 0.0564706, 0.102941, 0.149412, 0.195882, 0.242353, 0.288824, 0.335294, 0.381765, 0.428235, 0.474706, 0.521176, 0.567647, 0.614118, 0.660588, 0.707059, 0.753529, R_L_max, R_L_absmax};
 
 // Alternative binnings
 const double sl_p_binning[]   = {4., 10., 16., 22., 28., 40., 52., 76., 100., 150., 250., 500., 1000.};

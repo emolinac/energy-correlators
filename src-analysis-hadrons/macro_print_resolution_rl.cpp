@@ -31,18 +31,25 @@ void macro_print_resolution_rl()
     // Calculate event fractions 
     double total = hres->Integral();
     
-    // std::cout<<"There are "<<total<<" entries."<<std::endl;
-    // for(int bin = 1 ; bin <= hres->GetNbinsX()/2. ; bin++)
-    // {
-    //     double integral = hres->Integral(bin,hres->GetNbinsX()-bin);
-    //     if(integral/total < 0.95) {std::cout<<"Between "<<hres->GetBinCenter(bin)<<" and "<<hres->GetBinCenter(hres->GetNbinsX()-bin)<<" is the 95%% of the sample"<<std::endl; resolution = hres->GetBinCenter(hres->GetNbinsX()-bin);break;}
-    // }
-    // for(int bin = 1 ; bin <= hres->GetNbinsX()/2 ; bin++)
-    // {
-    //     double integral = hres->Integral(bin,hres->GetNbinsX()-bin);
-    //     if(integral/total < 0.68) {std::cout<<"Between "<<hres->GetBinCenter(bin)<<" and "<<hres->GetBinCenter(hres->GetNbinsX()-bin)<<" is the 68%% of the sample"<<std::endl; break;}
-    // }
-
+    std::cout<<"There are "<<total<<" entries."<<std::endl;
+    std::cout<<"For resolution:"<<std::endl;
+    for(int bin = 1 ; bin <= hres->GetNbinsX()/2. ; bin++)
+    {
+        double integral = hres->Integral(bin,hres->GetNbinsX()-bin);
+        if(integral/total < 0.95) {std::cout<<"Between "<<hres->GetBinCenter(bin)<<" and "<<hres->GetBinCenter(hres->GetNbinsX()-bin)<<" is the 95%% of the sample"<<std::endl; break;}
+    }
+    for(int bin = 1 ; bin <= hres->GetNbinsX()/2 ; bin++)
+    {
+        double integral = hres->Integral(bin,hres->GetNbinsX()-bin);
+        if(integral/total < 0.68) {std::cout<<"Between "<<hres->GetBinCenter(bin)<<" and "<<hres->GetBinCenter(hres->GetNbinsX()-bin)<<" is the 68%% of the sample"<<std::endl; break;}
+    }
+    std::cout<<"For resolutionas a percentage:"<<std::endl;
+    for(int bin = 1 ; bin <= hratio->GetNbinsX()/2. ; bin++)
+    {
+        double integral = hratio->Integral(bin,hratio->GetNbinsX()-bin);
+        if(integral/total < 0.95) {std::cout<<"Between "<<hratio->GetBinCenter(bin)<<" and "<<hratio->GetBinCenter(hratio->GetNbinsX()-bin)<<" is the 95%% of the sample"<<std::endl; break;}
+    }
+    
     // Draw
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
@@ -65,20 +72,20 @@ void macro_print_resolution_rl()
     line2->SetLineColorAlpha(3,0.4);
     line2->SetLineStyle(9);
 
-    line1->DrawLine(hres->GetBinCenter(hres->GetMaximumBin())-get_hwhm(hres),0,hres->GetBinCenter(hres->GetMaximumBin())-get_hwhm(hres),hres->GetMaximum());
-    line2->DrawLine(hres->GetBinCenter(hres->GetMaximumBin())+get_hwhm(hres),0,hres->GetBinCenter(hres->GetMaximumBin())+get_hwhm(hres),hres->GetMaximum());
+    // line1->DrawLine(hres->GetBinCenter(hres->GetMaximumBin())-get_hwhm(hres),0,hres->GetBinCenter(hres->GetMaximumBin())-get_hwhm(hres),hres->GetMaximum());
+    // line2->DrawLine(hres->GetBinCenter(hres->GetMaximumBin())+get_hwhm(hres),0,hres->GetBinCenter(hres->GetMaximumBin())+get_hwhm(hres),hres->GetMaximum());
     
-    tex->DrawLatexNDC(0.2,0.75,Form("HWHM = %.5f",get_hwhm(hres)));
+    // tex->DrawLatexNDC(0.2,0.75,Form("HWHM = %.5f",get_hwhm(hres)));
 
     c->Print("./plots/resolution_rl.pdf");
 
     hratio->Draw();
     hratio->SetTitle(";R_{L}(Reco)/R_{L}(Truth);");
 
-    line1->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())-get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())-get_hwhm(hratio),hratio->GetMaximum());
-    line2->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),hratio->GetMaximum());
+    // line1->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())-get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())-get_hwhm(hratio),hratio->GetMaximum());
+    // line2->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),hratio->GetMaximum());
 
-    tex->DrawLatexNDC(0.2,0.75,Form("HWHM = %.5f",get_hwhm(hratio)));
+    // tex->DrawLatexNDC(0.2,0.75,Form("HWHM = %.5f",get_hwhm(hratio)));
 
     // gPad->SetLogy(0);
     c->Print("./plots/resolution_rl_ratio.pdf");
