@@ -13,6 +13,7 @@ std::string namef_ntuple_e2c_efficiency = "ntuple_e2c_efficiency.root";
 std::string namef_ntuple_jetptpurity    = "ntuple_jetpurity.root";
 std::string namef_ntuple_mc_e2c         = "ntuple_mc_e2c.root";
 std::string namef_ntuple_mc_at_e2c      = "ntuple_mc_at_e2c.root";
+std::string namef_ntuple_hadron         = "ntuple_hadron.root";
 
 // Name of the ntuples
 std::string name_ntuple_unfold          = "ntuple_unfold";
@@ -30,8 +31,8 @@ std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
 // TNTuples variables
 const int Nvars_unfold          = 26; 
 
-const int Nvars_mcreco          = 21; 
-const int Nvars_mc              = 21; 
+const int Nvars_mcreco          = 22; 
+const int Nvars_mc              = 22; 
 const int Nvars_data            = 17; 
 const int Nvars_corrdata        = 21; 
 

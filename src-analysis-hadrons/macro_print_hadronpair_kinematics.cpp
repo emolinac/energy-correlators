@@ -10,19 +10,26 @@ void macro_print_hadronpair_kinematics()
     TFile* findata = new TFile((output_folder+namef_ntuple_e2c_corr).c_str());
     TFile* fin     = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
     
-    TNtuple* ntuple_data   = (TNtuple*) findata->Get(name_ntuple_corrjet.c_str());
+    TNtuple* ntuple_data   = (TNtuple*) findata->Get(name_ntuple_data.c_str());
     TNtuple* ntuple_mc     = (TNtuple*) fin->Get(name_ntuple_mc.c_str());
     TNtuple* ntuple_mcreco = (TNtuple*) fin->Get(name_ntuple_mcreco.c_str());
 
-    TH1F* h_rl_data   = new TH1F("h_rl_data"   ,"",Nbin_R_L,rl_binning);
-    TH1F* h_rl_mc     = new TH1F("h_rl_mc"     ,"",Nbin_R_L,rl_binning);
-    TH1F* h_rl_mcreco = new TH1F("h_rl_mcreco" ,"",Nbin_R_L,rl_binning);
+    TH1F* h_rl_data   = new TH1F("h_rl_data"   ,"",50,R_L_absmin,R_L_absmax);
+    TH1F* h_rl_mc     = new TH1F("h_rl_mc"     ,"",50,R_L_absmin,R_L_absmax);
+    TH1F* h_rl_mcreco = new TH1F("h_rl_mcreco" ,"",50,R_L_absmin,R_L_absmax);
     
-    TH1F* h_weight_data   = new TH1F("h_weight_data"   ,"",Nbin_weight,weight_binning);
-    TH1F* h_weight_mc     = new TH1F("h_weight_mc"     ,"",Nbin_weight,weight_binning);
-    TH1F* h_weight_mcreco = new TH1F("h_weight_mcreco" ,"",Nbin_weight,weight_binning);
+    TH1F* h_weight_data   = new TH1F("h_weight_data"   ,"",50,weight_min,weight_max);
+    TH1F* h_weight_mc     = new TH1F("h_weight_mc"     ,"",50,weight_min,weight_max);
+    TH1F* h_weight_mcreco = new TH1F("h_weight_mcreco" ,"",50,weight_min,weight_max);
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    set_histogram_style(h_rl_data   , 875 , std_line_width, std_marker_style, std_marker_size);
+    set_histogram_style(h_rl_mc     , 797 , std_line_width, std_marker_style, std_marker_size);
+    set_histogram_style(h_rl_mcreco , 868 , std_line_width, std_marker_style, std_marker_size);
+    set_histogram_style(h_weight_data  , 875 , std_line_width, std_marker_style, std_marker_size);
+    set_histogram_style(h_weight_mc    , 797 , std_line_width, std_marker_style, std_marker_size);
+    set_histogram_style(h_weight_mcreco, 868 , std_line_width, std_marker_style, std_marker_size);
+
+    TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
 
     TLatex* tex = new TLatex();
@@ -67,18 +74,18 @@ void macro_print_hadronpair_kinematics()
     l_weight->AddEntry(h_weight_mcreco,"mcreco","lpf");
     
     s_rl->Draw("NOSTACK");
-    s_rl->SetTitle(";R_{L};A.U.");
-    gPad->SetLogx(1);
+    s_rl->SetTitle(";R_{L};Normalized Distributions");
+    gPad->SetLogx(0);
     gPad->SetLogy(1);
     l_rl->Draw("SAME");
 
-    // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
+    c->Print("./plots/rl_kinematics.pdf");
 
-    // c->Print("./plots/weight_jetpt.pdf");
     s_weight->Draw("NOSTACK");
-    s_weight->SetTitle(";w;A.U.");
-    gPad->SetLogx(1);
+    s_weight->SetTitle(";w;Normalized Distributions");
+    gPad->SetLogx(0);
     gPad->SetLogy(1);
-    l_weight->Draw("SAME");
+    l_weight->Draw("SAME"); 
 
+    c->Print("./plots/weight_kinematics.pdf");
 }
