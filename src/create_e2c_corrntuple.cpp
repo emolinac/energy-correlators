@@ -71,15 +71,15 @@ int main()
   TH2D* h2_muon_2018_trgeff_data = (TH2D*) fefficiency_muon_2018_trg->Get("Hist_ALL_2018_ETA_PT_Eff");
 
   // Jet corrections
-  TH1F* hsigp_jet   = new TH1F("hsigp_jet"  ,"",5,unfolding_jetpt_binning);
-  TH1F* hallp_jet   = new TH1F("hallp_jet"  ,"",5,unfolding_jetpt_binning);
-  TH1F* hpurity_jet = new TH1F("hpurity_jet","",5,unfolding_jetpt_binning);
+  TH1F* hsigp_jet   = new TH1F("hsigp_jet"  ,"",Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH1F* hallp_jet   = new TH1F("hallp_jet"  ,"",Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH1F* hpurity_jet = new TH1F("hpurity_jet","",Nbin_jetpt_corrections,corrections_jetpt_binning);
   hsigp_jet->Sumw2();
   hallp_jet->Sumw2();
 
-  TH1F* hsigeff_jet     = new TH1F("hsigeff_jet"    ,"",5,unfolding_jetpt_binning);
-  TH1F* halleff_jet     = new TH1F("halleff_jet"    ,"",5,unfolding_jetpt_binning);
-  TH1F* hefficiency_jet = new TH1F("hefficiency_jet","",5,unfolding_jetpt_binning);
+  TH1F* hsigeff_jet     = new TH1F("hsigeff_jet"    ,"",Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH1F* halleff_jet     = new TH1F("halleff_jet"    ,"",Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH1F* hefficiency_jet = new TH1F("hefficiency_jet","",Nbin_jetpt_corrections,corrections_jetpt_binning);
   hsigeff_jet->Sumw2();
   halleff_jet->Sumw2();
 
@@ -92,15 +92,15 @@ int main()
   hefficiency_jet->Divide(hsigeff_jet,halleff_jet,1,1,"B");
 
   // Hadron corrections
-  TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,5,unfolding_jetpt_binning);
-  TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,5,unfolding_jetpt_binning);
-  TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,5,unfolding_jetpt_binning);
+  TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   hsigp->Sumw2();
   hallp->Sumw2();
   
-  TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,5,unfolding_jetpt_binning);
-  TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,5,unfolding_jetpt_binning);
-  TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,5,unfolding_jetpt_binning);
+  TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   hsigeff->Sumw2();
   halleff->Sumw2();
   

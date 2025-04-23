@@ -139,7 +139,7 @@ int main()
           vars_mc[18] = mctree->MCJet_truth_mup_ETA;
           vars_mc[19] = mctree->MCJet_Dtr_ID[h1_index];
           vars_mc[20] = mctree->MCJet_Dtr_ID[h2_index];
-            
+
           // Fill the TNtuple
           ntuple_mc->Fill(vars_mc);        
       }   
@@ -243,7 +243,7 @@ int main()
             vars[18] = mup_4vector->Eta();
             vars[19] = mcrecotree->Jet_Dtr_ID[h1_index];
             vars[20] = mcrecotree->Jet_Dtr_ID[h2_index];
-            
+          
             // Fill the TNtuple
             ntuple_mcreco->Fill(vars);
         }

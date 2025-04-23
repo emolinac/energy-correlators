@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_error)
+void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_error, double jet_pt_min_local = jet_pt_binning[0], double jet_pt_max_local = jet_pt_binning[Nbin_jet_pt])
 {
     gStyle->SetOptStat(1110);
     // Open the necessary files
@@ -15,7 +15,7 @@ void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_e
     TH2F* h = new TH2F("h","",100,0.2,1,100,0.2,1);
     
     // Project into the histograms
-    ntuple_data->Project("h","purity:efficiency",Form("efficiency_relerror<%f&&purity_relerror<%f",corr_rel_error_local,corr_rel_error_local));
+    ntuple_data->Project("h","purity:efficiency",Form("efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f",corr_rel_error_local,corr_rel_error_local,jet_pt_min_local,jet_pt_max_local));
     // ntuple_data->Project("h","purity:efficiency","efficiency>0&&purity>0");
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -32,12 +32,5 @@ void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_e
     h->SetTitle(";efficiency;purity");
     h->Smooth();
 
-    // TLegend* l_data = new TLegend();
-    // l_data->AddEntry(hcorr_data,"Corr. Data","lpf");
-    // l_data->AddEntry(hall_data ,"Data"      ,"lpf");
-    // l_data->Draw("SAME");
-
-    // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
-
-    c->Print(Form("./plots/eff_purity_distribution_relerrorleq%.2f.pdf",corr_rel_error_local));
+    c->Print(Form("./plots/eff_purity_distribution_relerrorleq%.2f_jetpt%.0fto%.0f.pdf",corr_rel_error_local,jet_pt_min_local,jet_pt_max_local));
 }
