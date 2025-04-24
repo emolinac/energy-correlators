@@ -15,6 +15,12 @@ const double jet_eta_min = 2.5;
 const double jet_eta_max = 4.0;
 const double jet_pt_min  = 15;
 
+// Jet ID cuts
+const double mpf_max = 0.8; 
+const double cpf_min = 0.1;
+const double mpt_min = 1.2;
+const double nPVtrks_min = 1.5;
+
 // Topological cuts
 const double deltaphi_z_jet_min  = 7*TMath::Pi()/8.;
 const double jet_radius = 0.5;
@@ -176,6 +182,16 @@ bool apply_jet_cuts(double jet_eta, double jet_pt)
 {
     if(jet_eta<jet_eta_min||jet_eta>jet_eta_max) return false;
     if(jet_pt<unfolding_jetpt_binning[0]) return false;
+
+    return true;    
+}
+
+bool apply_jet_id_cuts(double mpt, double nPVtrk, double cpf, double mpf)
+{
+    if(mpt < mpt_min) return false;
+    if(nPVtrk < nPVtrks_min) return false;
+    if(cpf < cpf_min) return false;
+    if(mpf > mpf_max) return false;
 
     return true;    
 }

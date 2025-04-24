@@ -37,4 +37,6 @@ if [ ! -d "./systematics/"${name_systematic} ]; then
     rm src-analysis-jets/plots/*.pdf
 
     echo "Now set all the specs associated to "${name_systematic}
+    echo "First, start with changing the mother folder in the directories.h file"
+    
 fi
