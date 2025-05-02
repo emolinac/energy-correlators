@@ -31,8 +31,8 @@ std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
 // TNTuples variables
 const int Nvars_unfold          = 26; 
 
-const int Nvars_mcreco          = 22; 
-const int Nvars_mc              = 22; 
+const int Nvars_mcreco          = 21; 
+const int Nvars_mc              = 21; 
 const int Nvars_data            = 17; 
 const int Nvars_corrdata        = 21; 
 
@@ -70,18 +70,16 @@ std::string name_ntuple_jetpurity     = "ntuple_jetpurity";
 std::string name_ntuple_jetefficiency = "ntuple_jetefficiency";
 std::string name_ntuple_jes_data      = "ntuple_jes_data";
 std::string name_ntuple_jes_reco      = "ntuple_jes_reco";
-std::string name_ntuple_jes_mc        = "ntuple_jes_mc";
-std::string name_ntuple_jer           = "ntuple_jer";
 
-const int Nvars_corrjet       = 18;
-const int Nvars_jetpurity     = 8;
-const int Nvars_jetefficiency = 7;
+const int Nvars_corrjet       = 22;
+const int Nvars_jetpurity     = 12;
+const int Nvars_jetefficiency = 11;
 const int Nvars_jes_reco      = 3;
 const int Nvars_jes           = 2;
 
-const char* ntuple_jet_vars           = "jet_pt:jet_e:jet_ndtr:jet_efficiency:jet_purity:jet_efficiency_error:jet_purity_error:mup_eff_id:mup_eff_trk:mup_eff_trg:mum_eff_id:mum_eff_trk:mum_eff_trg:year:jet_eta:z_pt:z_eta:z_y";
-const char* ntuple_jetpurity_vars     = "jet_pt:jet_e:jet_ndtr:jet_pt_truth:jet_e_truth:jet_ndtr_truth:deltaR_matchedjets:jet_eta";
-const char* ntuple_jetefficiency_vars = "jet_pt_truth:jet_e_truth:jet_ndtr_truth:jet_pt:jet_e:jet_ndtr:jet_eta_truth";
+const char* ntuple_jet_vars           = "jet_pt:jet_e:jet_ndtr:jet_efficiency:jet_purity:jet_efficiency_error:jet_purity_error:mup_eff_id:mup_eff_trk:mup_eff_trg:mum_eff_id:mum_eff_trk:mum_eff_trg:year:jet_eta:z_pt:z_eta:z_y:mpt:nPVtrk:cpf:mpf";
+const char* ntuple_jetpurity_vars     = "jet_pt:jet_e:jet_ndtr:jet_pt_truth:jet_e_truth:jet_ndtr_truth:deltaR_matchedjets:jet_eta:mpt:nPVtrk:cpf:mpf";
+const char* ntuple_jetefficiency_vars = "jet_pt_truth:jet_e_truth:jet_ndtr_truth:jet_pt:jet_e:jet_ndtr:jet_eta_truth:mpt:nPVtrk:cpf:mpf";
 const char* ntuple_jes_reco_vars      = "jet_pt:z_pt:jet_jes_cor";
 const char* ntuple_jes_mc_vars        = "jet_pt:z_pt";
 const char* ntuple_jes_data_vars      = "jet_pt:z_pt";
