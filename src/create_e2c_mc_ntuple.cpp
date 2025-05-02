@@ -95,8 +95,8 @@ int main()
                              mctree->MCJet_Dtr_E[h1_index]/1000.);
 
       if(!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h1_index],
-                                           mctree->MCJet_Dtr_P[h1_index]/1000.,
-                                           mctree->MCJet_Dtr_PT[h1_index]/1000.,
+                                           h1_4vector->P(),
+                                           h1_4vector->Pt(),
                                            Jet_4vector->DeltaR(*h1_4vector))) continue;
 
       for(int h2_index = h1_index+1 ; h2_index < mctree->MCJet_Dtr_nmcdtrs ; h2_index++)
@@ -110,33 +110,29 @@ int main()
                                  mctree->MCJet_Dtr_E[h2_index]/1000.);
 
           if(!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h2_index],
-                                               mctree->MCJet_Dtr_P[h2_index]/1000.,
-                                               mctree->MCJet_Dtr_PT[h2_index]/1000.,
+                                               h2_4vector->P(),
+                                               h2_4vector->Pt(),
                                                Jet_4vector->DeltaR(*h2_4vector))) continue;
 
-
-          double h1_y = rapidity(mctree->MCJet_Dtr_E[h1_index],mctree->MCJet_Dtr_PZ[h1_index]); 
-          double h2_y = rapidity(mctree->MCJet_Dtr_E[h2_index],mctree->MCJet_Dtr_PZ[h2_index]);
-
-          vars_mc[0]  = weight(mctree->MCJet_Dtr_E[h1_index]/1000.,mctree->MCJet_Dtr_E[h2_index]/1000.,mctree->MCJet_PE/1000.);
-          vars_mc[1]  = R_L(h1_y, h2_y, mctree->MCJet_Dtr_PHI[h1_index], mctree->MCJet_Dtr_PHI[h2_index]);
-          vars_mc[2]  = mctree->MCJet_Dtr_ETA[h1_index];
-          vars_mc[3]  = mctree->MCJet_Dtr_ETA[h2_index];
-          vars_mc[4]  = h1_y;
-          vars_mc[5]  = h2_y;
+          vars_mc[0]  = weight(h1_4vector->E(), h2_4vector->E(),Jet_4vector->E());
+          vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
+          vars_mc[2]  = h1_4vector->Eta();
+          vars_mc[3]  = h2_4vector->Eta();
+          vars_mc[4]  = h1_4vector->Rapidity();
+          vars_mc[5]  = h2_4vector->Rapidity();
           vars_mc[6]  = mctree->MCJet_Dtr_ThreeCharge[h1_index];
           vars_mc[7]  = mctree->MCJet_Dtr_ThreeCharge[h2_index];
-          vars_mc[8]  = mctree->MCJet_Dtr_P[h1_index]/1000.;
-          vars_mc[9]  = mctree->MCJet_Dtr_P[h2_index]/1000.;
-          vars_mc[10] = mctree->MCJet_Dtr_PT[h1_index]/1000.;
-          vars_mc[11] = mctree->MCJet_Dtr_PT[h2_index]/1000.; 
-          vars_mc[12] = mctree->MCJet_PT/1000.;
-          vars_mc[13] = mctree->MCJet_ETA;
-          vars_mc[14] = weight(mctree->MCJet_Dtr_PT[h1_index], mctree->MCJet_Dtr_PT[h2_index], mctree->MCJet_PT);
-          vars_mc[15] = mctree->MCJet_truth_mum_PT/1000.;
-          vars_mc[16] = mctree->MCJet_truth_mum_ETA;
-          vars_mc[17] = mctree->MCJet_truth_mup_PT/1000.;
-          vars_mc[18] = mctree->MCJet_truth_mup_ETA;
+          vars_mc[8]  = h1_4vector->P();
+          vars_mc[9]  = h2_4vector->P();
+          vars_mc[10] = h1_4vector->Pt();
+          vars_mc[11] = h2_4vector->Pt(); 
+          vars_mc[12] = Jet_4vector->Pt();
+          vars_mc[13] = Jet_4vector->Eta();
+          vars_mc[14] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+          vars_mc[15] = mum_4vector->Pt(); 
+          vars_mc[16] = mum_4vector->Eta();
+          vars_mc[17] = mup_4vector->Pt(); 
+          vars_mc[18] = mup_4vector->Eta();
           vars_mc[19] = mctree->MCJet_Dtr_ID[h1_index];
           vars_mc[20] = mctree->MCJet_Dtr_ID[h2_index];
 
@@ -222,21 +218,21 @@ int main()
             double h2_y = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]);
 
             // If all good, fille Ntuple
-            vars[0]  = weight(mcrecotree->Jet_Dtr_E[h1_index], mcrecotree->Jet_Dtr_E[h2_index], mcrecotree->Jet_PE);
-            vars[1]  = R_L(h1_y, h2_y, mcrecotree->Jet_Dtr_PHI[h1_index], mcrecotree->Jet_Dtr_PHI[h2_index]);
-            vars[2]  = mcrecotree->Jet_Dtr_ETA[h1_index];
-            vars[3]  = mcrecotree->Jet_Dtr_ETA[h2_index];
-            vars[4]  = h1_y;
-            vars[5]  = h2_y;
+            vars[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
+            vars[1]  = h1_4vector->DeltaR(*h2_4vector);
+            vars[2]  = h1_4vector->Eta();
+            vars[3]  = h2_4vector->Eta();
+            vars[4]  = h1_4vector->Rapidity();
+            vars[5]  = h2_4vector->Rapidity();
             vars[6]  = mcrecotree->Jet_Dtr_ThreeCharge[h1_index];
             vars[7]  = mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
             vars[8]  = h1_4vector->P();
             vars[9]  = h2_4vector->P();
             vars[10] = h1_4vector->Pt();
             vars[11] = h2_4vector->Pt();
-            vars[12] = mcrecotree->Jet_PT/1000.;
+            vars[12] = Jet_4vector->Pt();
             vars[13] = Jet_4vector->Eta();
-            vars[14] = weight(mcrecotree->Jet_Dtr_PT[h1_index], mcrecotree->Jet_Dtr_PT[h2_index], mcrecotree->Jet_PT);
+            vars[14] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
             vars[15] = mum_4vector->Pt();
             vars[16] = mum_4vector->Eta();
             vars[17] = mup_4vector->Pt();
