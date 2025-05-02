@@ -126,8 +126,8 @@ int main()
                                    mcrecotree->Jet_Dtr_TRUE_E[h_index]/1000.);
         
         if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h_index],
-                                             mcrecotree->Jet_Dtr_TRUE_P[h_index]/1000.,
-                                             mcrecotree->Jet_Dtr_TRUE_PT[h_index]/1000.,
+                                             true_h_4vector->P(),
+                                             true_h_4vector->Pt(),
                                              true_Jet_4vector->DeltaR(*true_h_4vector))) key_match = 0;
       } 
       
@@ -136,14 +136,14 @@ int main()
       vars[1]  = h_4vector->Rapidity();
       vars[2]  = h_4vector->P();
       vars[3]  = h_4vector->Pt();
-      vars[4]  = mcrecotree->Jet_PT/1000.;
+      vars[4]  = Jet_4vector->Pt();
       vars[5]  = Jet_4vector->Eta();
       vars[6]  = mum_4vector->Pt();
       vars[7]  = mum_4vector->Eta();
       vars[8]  = mup_4vector->Pt();
       vars[9]  = mup_4vector->Eta();
-      vars[10] = mcrecotree->Jet_PE/1000.;
-      vars[11] = mcrecotree->Jet_mcjet_PE/1000.;
+      vars[10] = Jet_4vector->E();
+      vars[11] = true_Jet_4vector->E();
       vars[12] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
       vars[13] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Eta();
       vars[14] = Jet_4vector->DeltaR(*h_4vector);            
