@@ -132,8 +132,8 @@ int main()
                                    mcrecotree->Jet_Dtr_TRUE_E[h1_index]/1000.);
        
        if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h1_index],
-                                            mcrecotree->Jet_Dtr_TRUE_P[h1_index]/1000.,
-                                            mcrecotree->Jet_Dtr_TRUE_PT[h1_index],
+                                            true_h1_4vector->P(),
+                                            true_h1_4vector->Pt(),
                                             true_Jet_4vector->DeltaR(*true_h1_4vector))) key1_match = 0;
       } 
 
@@ -161,16 +161,12 @@ int main()
                                       mcrecotree->Jet_Dtr_TRUE_E[h2_index]/1000.);
           
           if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h2_index],
-                                               mcrecotree->Jet_Dtr_TRUE_P[h2_index]/1000.,
-                                               mcrecotree->Jet_Dtr_TRUE_PT[h2_index],
+                                               true_h2_4vector->P(),
+                                               true_h2_4vector->Pt(),
                                                true_Jet_4vector->DeltaR(*true_h2_4vector))) key2_match = 0;
         } 
       
-        double h1_y = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]);                
-        double h2_y = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]);
-
-        // If all good, fill Ntuple
-        vars[0]  = weight(mcrecotree->Jet_Dtr_E[h1_index]/1000., mcrecotree->Jet_Dtr_E[h2_index]/1000., mcrecotree->Jet_PE/1000.);
+        vars[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
         vars[1]  = h1_4vector->DeltaR(*h2_4vector);
         vars[2]  = h1_4vector->Eta();
         vars[3]  = h2_4vector->Eta();
@@ -185,19 +181,19 @@ int main()
         vars[12] = mum_4vector->Eta();
         vars[13] = mup_4vector->Pt();
         vars[14] = mup_4vector->Eta();
-        vars[15] = mcrecotree->Jet_PT/1000.;
-        vars[16] = mcrecotree->Jet_mcjet_PT/1000.;
+        vars[15] = Jet_4vector->Pt();
+        vars[16] = true_Jet_4vector->Pt();
         vars[17] = (key1_match==0) ? -999 : true_h1_4vector->DeltaR(*h1_4vector);
         vars[18] = (key2_match==0) ? -999 : true_h2_4vector->DeltaR(*h2_4vector);
         vars[19] = (key1_match==0) ? -999 : true_h1_4vector->Rapidity();
         vars[20] = (key2_match==0) ? -999 : true_h2_4vector->Rapidity();
         vars[21] = (key1_match==0||key2_match==0) ? -999 : true_h1_4vector->DeltaR(*true_h2_4vector);
 
-        double weight_truth = weight(mcrecotree->Jet_Dtr_TRUE_E[h1_index],mcrecotree->Jet_Dtr_TRUE_E[h2_index],mcrecotree->Jet_mcjet_PE);
-        double weight_pt_truth = weight(mcrecotree->Jet_Dtr_TRUE_PT[h1_index],mcrecotree->Jet_Dtr_TRUE_PT[h2_index],mcrecotree->Jet_mcjet_PT);
+        double weight_truth = weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E());
+        double weight_pt_truth = weight(true_h1_4vector->Pt(), true_h2_4vector->Pt(), true_Jet_4vector->Pt());
         vars[22] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
         vars[23] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
-        vars[24] = weight(h1_4vector->Pt(), h2_4vector->Pt(), mcrecotree->Jet_PT/1000.);
+        vars[24] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
         // Fill the TNtuple
         ntuple_jet_match->Fill(vars);
