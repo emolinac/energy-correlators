@@ -100,12 +100,12 @@ int main()
          apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) truth_passed = true;
     }
           
-    vars[0] = mcrecotree->Jet_PT/1000.;
-    vars[1] = mcrecotree->Jet_PE/1000.;
+    vars[0] = Jet_4vector->Pt();
+    vars[1] = Jet_4vector->E();
     vars[2] = mcrecotree->Jet_NDtr;
-    vars[3] = (truth_passed) ? mcrecotree->Jet_mcjet_PT/1000. : -999 ;
-    vars[4] = (truth_passed) ? mcrecotree->Jet_mcjet_PE/1000. : -999 ;
-    vars[5] = (truth_passed) ? mcrecotree->Jet_mcjet_nmcdtrs  : -999 ;
+    vars[3] = (truth_passed) ? true_Jet_4vector->Pt() : -999 ;
+    vars[4] = (truth_passed) ? true_Jet_4vector->E()  : -999 ;
+    vars[5] = (truth_passed) ? mcrecotree->Jet_mcjet_nmcdtrs : -999 ;
     vars[6] = (truth_passed) ? Jet_4vector->DeltaR(*true_Jet_4vector) : -999;
     vars[7] = Jet_4vector->Eta();
 

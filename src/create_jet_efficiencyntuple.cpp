@@ -91,11 +91,11 @@ int main()
          apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) reco_passed = true;
     }
     
-    vars[0] = mctree->MCJet_PT/1000.;
-    vars[1] = mctree->MCJet_PE/1000.;
+    vars[0] = true_Jet_4vector->Pt();
+    vars[1] = true_Jet_4vector->E();
     vars[2] = mctree->MCJet_Dtr_nmcdtrs;
-    vars[3] = (reco_passed) ? mctree->MCJet_recojet_PT/1000.  : -999;
-    vars[4] = (reco_passed) ? mctree->MCJet_recojet_PE/1000.  : -999;
+    vars[3] = (reco_passed) ? Jet_4vector->Pt() : -999;
+    vars[4] = (reco_passed) ? Jet_4vector->E()  : -999;
     vars[5] = (reco_passed) ? mctree->MCJet_recojet_nrecodtrs : -999;
     vars[6] = true_Jet_4vector->Eta();
 

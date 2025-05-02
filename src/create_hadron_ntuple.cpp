@@ -99,8 +99,8 @@ int main()
                              mctree->MCJet_Dtr_E[h1_index]/1000.);
 
       if(!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h1_index],
-                                           mctree->MCJet_Dtr_P[h1_index]/1000.,
-                                           mctree->MCJet_Dtr_PT[h1_index]/1000.,
+                                           h_4vector->P(),
+                                           h_4vector->Pt(),
                                            Jet_4vector->DeltaR(*h_4vector))) continue;
       
       vars[0] = h_4vector->P();
@@ -228,8 +228,8 @@ int main()
 
       h_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,datatree_2016->Jet_Dtr_PY[h1_index]/1000.,datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,datatree_2016->Jet_Dtr_E[h1_index]/1000.);
       if(!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
-                                  datatree_2016->Jet_Dtr_P[h1_index]/1000.,
-                                  datatree_2016->Jet_Dtr_PT[h1_index]/1000.,
+                                  h_4vector->P(),
+                                  h_4vector->Pt(),
                                   datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
                                   Jet_4vector->DeltaR(*h_4vector))) continue;
@@ -293,8 +293,8 @@ int main()
 
       h_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,datatree_2017->Jet_Dtr_PY[h1_index]/1000.,datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,datatree_2017->Jet_Dtr_E[h1_index]/1000.);
       if(!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
-                                  datatree_2017->Jet_Dtr_P[h1_index]/1000.,
-                                  datatree_2017->Jet_Dtr_PT[h1_index]/1000.,
+                                  h_4vector->P(),
+                                  h_4vector->Pt(),
                                   datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
                                   Jet_4vector->DeltaR(*h_4vector))) continue;
@@ -358,8 +358,8 @@ int main()
 
       h_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h1_index]/1000.,datatree_2018->Jet_Dtr_PY[h1_index]/1000.,datatree_2018->Jet_Dtr_PZ[h1_index]/1000.,datatree_2018->Jet_Dtr_E[h1_index]/1000.);
       if(!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h1_index],
-                                  datatree_2018->Jet_Dtr_P[h1_index]/1000.,
-                                  datatree_2018->Jet_Dtr_PT[h1_index]/1000.,
+                                  h_4vector->P(),
+                                  h_4vector->Pt(),
                                   datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
                                   Jet_4vector->DeltaR(*h_4vector))) continue;
