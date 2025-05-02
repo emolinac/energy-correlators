@@ -2,7 +2,7 @@
 
 echo "Make sure to execute this code in the home folder."
 
-name_systematic=jet-id
+name_systematic=hadron-correction-scheme
 
 if [ ! -d "./systematics" ]; then
     echo "Systematics folder does not exist. Creating folder ..."
