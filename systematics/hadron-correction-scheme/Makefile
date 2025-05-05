@@ -11,7 +11,7 @@ ROOTINCDIR  := $(shell root-config --incdir)
 ROOTLIBS    := $(shell root-config --libs) -lEG
 
 all: ${BIN}/create_e2c_purityntuple ${BIN}/create_e2c_pairpurityntuple ${BIN}/create_e2c_corrntuple ${BIN}/create_e2c_efficiencyntuple \
-	 ${BIN}/create_jet_purityntuple ${BIN}/create_jet_efficiencyntuple \
+	 ${BIN}/create_jet_purityntuple ${BIN}/create_jet_efficiencyntuple ${BIN}/create_e2c_pairefficiencyntuple \
 	 ${BIN}/create_e2c_mc_ntuple ${BIN}/create_hadron_ntuple ${BIN}/create_jes_jer_ntuple
 
 ${BIN}/create_e2c_purityntuple: ${SRC}/create_e2c_purityntuple.cpp
@@ -25,6 +25,9 @@ ${BIN}/create_jet_efficiencyntuple: ${SRC}/create_jet_efficiencyntuple.cpp
 
 ${BIN}/create_e2c_pairpurityntuple: ${SRC}/create_e2c_pairpurityntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_pairpurityntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_pairpurityntuple
+
+${BIN}/create_e2c_pairefficiencyntuple: ${SRC}/create_e2c_pairefficiencyntuple.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_pairefficiencyntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_pairefficiencyntuple
 
 ${BIN}/create_e2c_corrntuple: ${SRC}/create_e2c_corrntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_corrntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_corrntuple

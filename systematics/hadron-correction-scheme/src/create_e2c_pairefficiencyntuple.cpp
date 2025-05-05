@@ -17,16 +17,18 @@
 int main()
 {
   // Create output file
-  TFile* fout = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str(),"RECREATE");
+  TFile* fout = new TFile((output_folder+namef_ntuple_e2c_pairefficiency).c_str(),"RECREATE");
   
   // Declare the TTrees to be used to build the ntuples
   TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
   // Create Ntuples
-  TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_purity.c_str(),"Reco jet&dtr matched 2 MC",ntuple_pairpurity_vars); 
+  TNtuple* ntuple_reco = new TNtuple(name_ntuple_efficiency_reco.c_str(),"",ntuple_pairefficiency_reco_vars); 
+  TNtuple* ntuple_mc   = new TNtuple(name_ntuple_efficiency_mc.c_str()  ,"",ntuple_pairefficiency_mc_vars); 
   
-  ntuple_jet_match->SetAutoSave(0);
-  
+  ntuple_reco->SetAutoSave(0);
+  ntuple_mc->SetAutoSave(0);
+
   // Create necessary 4vectors
   TLorentzVector* Jet_4vector   = new TLorentzVector();
   TLorentzVector* Z0_4vector    = new TLorentzVector();
@@ -48,7 +50,8 @@ int main()
   bool maxjetpT_found = false;
   
   // Define array carrying the variables
-  float vars[Nvars_pairpurity];
+  float vars[Nvars_pairefficiency_mcreco];
+  float vars_mc[Nvars_pairefficiency_mc];
 
   // Fill the matched jets Ntuple
   for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
@@ -80,40 +83,67 @@ int main()
     if(!mum_trigger&&!mup_trigger) continue;
 
     // Set Jet-associated 4 vectors and apply cuts
-    Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,mcrecotree->Jet_PY/1000.,mcrecotree->Jet_PZ/1000.,mcrecotree->Jet_PE/1000.);
+    Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,
+                            mcrecotree->Jet_PY/1000.,
+                            mcrecotree->Jet_PZ/1000.,
+                            mcrecotree->Jet_PE/1000.);
     if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
     
-    true_Jet_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_PX/1000.,mcrecotree->Jet_mcjet_PY/1000.,mcrecotree->Jet_mcjet_PZ/1000.,mcrecotree->Jet_mcjet_PE/1000.);
+    true_Jet_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_PX/1000.,
+                                 mcrecotree->Jet_mcjet_PY/1000.,
+                                 mcrecotree->Jet_mcjet_PZ/1000.,
+                                 mcrecotree->Jet_mcjet_PE/1000.);
     if(!apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) continue;
     
-    mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,mcrecotree->mum_PY/1000.,mcrecotree->mum_PZ/1000.,mcrecotree->mum_PE/1000.);
+    mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,
+                            mcrecotree->mum_PY/1000.,
+                            mcrecotree->mum_PZ/1000.,
+                            mcrecotree->mum_PE/1000.);
     if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
     //if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
 
-    mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,mcrecotree->mup_PY/1000.,mcrecotree->mup_PZ/1000.,mcrecotree->mup_PE/1000.);
+    mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,
+                            mcrecotree->mup_PY/1000.,
+                            mcrecotree->mup_PZ/1000.,
+                            mcrecotree->mup_PE/1000.);
     if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
     //if(mcrecotree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
 
-    true_mum_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mum_PX/1000.,mcrecotree->Jet_mcjet_mum_PY/1000.,mcrecotree->Jet_mcjet_mum_PZ/1000.,mcrecotree->Jet_mcjet_mum_PE/1000.);
+    true_mum_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mum_PX/1000.,
+                                 mcrecotree->Jet_mcjet_mum_PY/1000.,
+                                 mcrecotree->Jet_mcjet_mum_PZ/1000.,
+                                 mcrecotree->Jet_mcjet_mum_PE/1000.);
     if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) continue;
     //if(mcrecotree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
 
-    true_mup_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mup_PX/1000.,mcrecotree->Jet_mcjet_mup_PY/1000.,mcrecotree->Jet_mcjet_mup_PZ/1000.,mcrecotree->Jet_mcjet_mup_PE/1000.);
+    true_mup_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mup_PX/1000.,
+                                 mcrecotree->Jet_mcjet_mup_PY/1000.,
+                                 mcrecotree->Jet_mcjet_mup_PZ/1000.,
+                                 mcrecotree->Jet_mcjet_mup_PE/1000.);
     if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) continue;
     
-    Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
+    Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
+                           mup_4vector->Py()+mum_4vector->Py(),
+                           mup_4vector->Pz()+mum_4vector->Pz(),
+                           mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
     
-    true_Z0_4vector->SetPxPyPzE(true_mup_4vector->Px()+true_mum_4vector->Px(),true_mup_4vector->Py()+true_mum_4vector->Py(),true_mup_4vector->Pz()+true_mum_4vector->Pz(),true_mup_4vector->E() +true_mum_4vector->E());
+    true_Z0_4vector->SetPxPyPzE(true_mup_4vector->Px()+true_mum_4vector->Px(),
+                                true_mup_4vector->Py()+true_mum_4vector->Py(),
+                                true_mup_4vector->Pz()+true_mum_4vector->Pz(),
+                                true_mup_4vector->E() +true_mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) continue;
     
-    // Loop over hadron 2
+    // Fill the mcreco ntuple
     for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
       if(mcrecotree->Jet_Dtr_IsMeson[h1_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
-      h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,mcrecotree->Jet_Dtr_PY[h1_index]/1000.,mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,mcrecotree->Jet_Dtr_E[h1_index]/1000.);
+      h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,
+                             mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
+                             mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,
+                             mcrecotree->Jet_Dtr_E[h1_index]/1000.);
       if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h1_index],
                                   h1_4vector->P(),
                                   h1_4vector->Pt(),
@@ -126,15 +156,15 @@ int main()
       {
         key1_match++;
 
-       true_h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_TRUE_PX[h1_index]/1000.,
-                                   mcrecotree->Jet_Dtr_TRUE_PY[h1_index]/1000.,
-                                   mcrecotree->Jet_Dtr_TRUE_PZ[h1_index]/1000.,
-                                   mcrecotree->Jet_Dtr_TRUE_E[h1_index]/1000.);
+        true_h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_TRUE_PX[h1_index]/1000.,
+                                    mcrecotree->Jet_Dtr_TRUE_PY[h1_index]/1000.,
+                                    mcrecotree->Jet_Dtr_TRUE_PZ[h1_index]/1000.,
+                                    mcrecotree->Jet_Dtr_TRUE_E[h1_index]/1000.);
        
-       if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h1_index],
-                                            true_h1_4vector->P(),
-                                            true_h1_4vector->Pt(),
-                                            true_Jet_4vector->DeltaR(*true_h1_4vector))) key1_match = 0;
+        if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h1_index],
+                                             true_h1_4vector->P(),
+                                             true_h1_4vector->Pt(),
+                                             true_Jet_4vector->DeltaR(*true_h1_4vector))) key1_match = 0;
       } 
 
       for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
@@ -142,7 +172,10 @@ int main()
         // Skip non-hadronic particles
         if(mcrecotree->Jet_Dtr_IsMeson[h2_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
-        h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,mcrecotree->Jet_Dtr_PY[h2_index]/1000.,mcrecotree->Jet_Dtr_PZ[h2_index]/1000.,mcrecotree->Jet_Dtr_E[h2_index]/1000.);
+        h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,
+                               mcrecotree->Jet_Dtr_PY[h2_index]/1000.,
+                               mcrecotree->Jet_Dtr_PZ[h2_index]/1000.,
+                               mcrecotree->Jet_Dtr_E[h2_index]/1000.);
         if(!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h2_index],
                                     h2_4vector->P(),
                                     h2_4vector->Pt(),
@@ -196,15 +229,65 @@ int main()
         vars[24] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
         // Fill the TNtuple
-        ntuple_jet_match->Fill(vars);
+        ntuple_reco->Fill(vars);
+      }
+    }
+
+    // Fill the mc ntuple
+    for(int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++)
+    {
+      // Skip non-hadronic particles
+      if(mcrecotree->Jet_mcjet_dtrIsMeson[h1_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h1_index]!=1) continue;
+
+      h1_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h1_index]/1000.,
+                             mcrecotree->Jet_mcjet_dtrPY[h1_index]/1000.,
+                             mcrecotree->Jet_mcjet_dtrPZ[h1_index]/1000.,
+                             mcrecotree->Jet_mcjet_dtrE[h1_index]/1000.);
+      if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h1_index],
+                                           h1_4vector->P(),
+                                           h1_4vector->Pt(),
+                                           Jet_4vector->DeltaR(*h1_4vector))) continue;
+
+      for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++)
+      {
+        // Skip non-hadronic particles
+        if(mcrecotree->Jet_mcjet_dtrIsMeson[h2_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h2_index]!=1) continue;
+
+        h2_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h2_index]/1000.,
+                               mcrecotree->Jet_mcjet_dtrPY[h2_index]/1000.,
+                               mcrecotree->Jet_mcjet_dtrPZ[h2_index]/1000.,
+                               mcrecotree->Jet_mcjet_dtrE[h2_index]/1000.);
+        if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h2_index],
+                                             h2_4vector->P(),
+                                             h2_4vector->Pt(),
+                                             Jet_4vector->DeltaR(*h2_4vector))) continue;
+
+        vars_mc[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
+        vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
+        vars_mc[2]  = h1_4vector->Eta();
+        vars_mc[3]  = h2_4vector->Eta();
+        vars_mc[4]  = h1_4vector->Rapidity();
+        vars_mc[5]  = h2_4vector->Rapidity();
+        vars_mc[6]  = h1_4vector->P();
+        vars_mc[7]  = h2_4vector->P();
+        vars_mc[8]  = h1_4vector->Pt();
+        vars_mc[9]  = h2_4vector->Pt();
+        vars_mc[10] = Jet_4vector->Eta();
+        vars_mc[11] = Jet_4vector->Pt();
+        vars_mc[12] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+
+        // Fill the TNtuple
+        ntuple_mc->Fill(vars_mc);
       }
     }
 
     last_eventNum = mcrecotree->eventNumber;
   }
 
+  
   fout->cd();
-  ntuple_jet_match->Write();
+  ntuple_reco->Write();
+  ntuple_mc->Write();
   fout->Close();
 
   std::cout<<std::endl;
