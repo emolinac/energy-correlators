@@ -24,8 +24,8 @@
 int main()
 {
   // Open correction files
-  TFile* fpurity         = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
-  TFile* fefficiency     = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
+  TFile* fpurity         = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
+  TFile* fefficiency     = new TFile((output_folder+namef_ntuple_e2c_pairefficiency).c_str());
   
   TFile* fpurity_jet     = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
   TFile* fefficiency_jet = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
@@ -92,22 +92,22 @@ int main()
   hefficiency_jet->Divide(hsigeff_jet,halleff_jet,1,1,"B");
 
   // Hadron corrections
-  TH3F* hsigp   = new TH3F("hsigp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  TH3F* hallp   = new TH3F("hallp"  ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  TH3F* hpurity = new TH3F("hpurity","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hsigp   = new TH2F("hsigp"  ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hallp   = new TH2F("hallp"  ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hpurity = new TH2F("hpurity","",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   hsigp->Sumw2();
   hallp->Sumw2();
   
-  TH3F* hsigeff     = new TH3F("hsigeff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  TH3F* halleff     = new TH3F("halleff"    ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hsigeff     = new TH2F("hsigeff"    ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* halleff     = new TH2F("halleff"    ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hefficiency = new TH2F("hefficiency","",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   hsigeff->Sumw2();
   halleff->Sumw2();
   
-  ntuple_purity->Project("hsigp","jet_pt:h_eta:h_p",single_signal_cut);
-  ntuple_purity->Project("hallp","jet_pt:h_eta:h_p",pair_cut         );
-  ntuple_efficiency_reco->Project("hsigeff","jet_pt_truth:h_eta_truth:h_p_truth",single_signal_cut);
-  ntuple_efficiency_mc->Project("halleff","jet_pt:h_eta:h_p",pair_cut);
+  ntuple_purity->Project("hsigp","jet_pt:R_L",pair_signal_cut);
+  ntuple_purity->Project("hallp","jet_pt:R_L",pair_cut         );
+  ntuple_efficiency_reco->Project("hsigeff","jet_pt_truth:R_L_truth",pair_signal_cut);
+  ntuple_efficiency_mc->Project("halleff","jet_pt:R_L",pair_cut);
 
   hpurity->Divide(hsigp,hallp,1,1,"B");
   hefficiency->Divide(hsigeff,halleff,1,1,"B");
@@ -218,10 +218,6 @@ int main()
                                   datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
                                   Jet_4vector->DeltaR(*h1_4vector))) continue;
 
-      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      if(h1_purity>1.||h1_efficiency>1.) continue;
-
       // Loop over hadron 2
       for(int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++)
       {
@@ -236,27 +232,18 @@ int main()
                                     datatree_2016->Jet_Dtr_ProbNNghost[h2_index],
                                     Jet_4vector->DeltaR(*h2_4vector))) continue;
 
-        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        if(h2_purity>1.||h2_efficiency>1.) continue;
+        double pair_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        double pair_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        if(pair_purity>1.||pair_efficiency>1.) continue;
 
-        double purity_correction = (h1_purity)*(h2_purity);
-
-        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
-
-        double efficiency_correction = (h1_efficiency)*(h2_efficiency);
-
-        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
+        double pair_purity_err     = hpurity->GetBinError(hpurity->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        double pair_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
 
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
-        vars[1 ] = efficiency_correction;
-        vars[2 ] = purity_correction;
-        vars[3 ] = efficiency_error/efficiency_correction;
-        vars[4 ] = purity_error/purity_correction;
+        vars[1 ] = pair_efficiency;
+        vars[2 ] = pair_purity;
+        vars[3 ] = pair_efficiency_err/pair_efficiency;
+        vars[4 ] = pair_purity_err/pair_purity;
         vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
         vars[6 ] = h1_4vector->Eta();
         vars[7 ] = h2_4vector->Eta();
@@ -371,10 +358,6 @@ int main()
                                   datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
                                   Jet_4vector->DeltaR(*h1_4vector))) continue;
 
-      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      if(h1_purity>1.||h1_efficiency>1.) continue;
-
       // Loop over hadron 2
       for(int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++)
       {
@@ -389,27 +372,18 @@ int main()
                                     datatree_2017->Jet_Dtr_ProbNNghost[h2_index],
                                     Jet_4vector->DeltaR(*h2_4vector))) continue;
 
-        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        if(h2_purity>1.||h2_efficiency>1.) continue;
+        double pair_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        double pair_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        if(pair_purity>1.||pair_efficiency>1.) continue;
 
-        double purity_correction = (h1_purity)*(h2_purity);
-
-        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
-
-        double efficiency_correction = (h1_efficiency)*(h2_efficiency);
-
-        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
+        double pair_purity_err     = hpurity->GetBinError(hpurity->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        double pair_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
 
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
-        vars[1 ] = efficiency_correction;
-        vars[2 ] = purity_correction;
-        vars[3 ] = efficiency_error/efficiency_correction;
-        vars[4 ] = purity_error/purity_correction;
+        vars[1 ] = pair_efficiency;
+        vars[2 ] = pair_purity;
+        vars[3 ] = pair_efficiency_err/pair_efficiency;
+        vars[4 ] = pair_purity_err/pair_purity;
         vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
         vars[6 ] = h1_4vector->Eta();
         vars[7 ] = h2_4vector->Eta();
@@ -524,10 +498,6 @@ int main()
                                   datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
                                   Jet_4vector->DeltaR(*h1_4vector))) continue;
 
-      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      if(h1_purity>1.||h1_efficiency>1.) continue;
-
       // Loop over hadron 2
       for(int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++)
       {
@@ -542,27 +512,18 @@ int main()
                                     datatree_2018->Jet_Dtr_ProbNNghost[h2_index],
                                     Jet_4vector->DeltaR(*h2_4vector))) continue;
 
-        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        if(h2_purity>1.||h2_efficiency>1.) continue;
+        double pair_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        double pair_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        if(pair_purity>1.||pair_efficiency>1.) continue;
 
-        double purity_correction = (h1_purity)*(h2_purity);
-
-        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
-
-        double efficiency_correction = (h1_efficiency)*(h2_efficiency);
-
-        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
+        double pair_purity_err     = hpurity->GetBinError(hpurity->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
+        double pair_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->DeltaR(*h2_4vector),Jet_4vector->Pt()));
 
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
-        vars[1 ] = efficiency_correction;
-        vars[2 ] = purity_correction;
-        vars[3 ] = efficiency_error/efficiency_correction;
-        vars[4 ] = purity_error/purity_correction;
+        vars[1 ] = pair_efficiency;
+        vars[2 ] = pair_purity;
+        vars[3 ] = pair_efficiency_err/pair_efficiency;
+        vars[4 ] = pair_purity_err/pair_purity;
         vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
         vars[6 ] = h1_4vector->Eta();
         vars[7 ] = h2_4vector->Eta();
