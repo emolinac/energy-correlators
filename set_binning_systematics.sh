@@ -5,15 +5,15 @@ echo $mother_dir
 
 ls -1 systematics/ > folder-list.txt
 
-for line in $(cat ${motherdir}/folder-list.txt); do
-    if [ -d "${motherdir}/systematics/${line}/include" ]; then
+for line in $(cat ${mother_dir}/folder-list.txt); do
+    if [ -d "${mother_dir}/systematics/${line}/include" ]; then
         echo "Include exists on ${line}. Copying binning settings into ${line}"
-        cp ${motherdir}/include/analysis-binning.h ${motherdir}/systematics/${line}/include/
+        cp ${mother_dir}/include/analysis-binning.h ${mother_dir}/systematics/${line}/include/
 
-        cd ${motherdir}/systematics/${line}/
+        cd ${mother_dir}/systematics/${line}/
         make clean
         make
-        cd ${motherdir}
+        cd ${mother_dir}
     fi
 done
 

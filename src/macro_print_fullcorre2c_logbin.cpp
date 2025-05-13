@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c(int niter = 20)
+void macro_print_fullcorre2c_logbin(int niter = 20)
 {
     // Open the necessary files
     TFile* fout = new TFile((output_folder+namef_histos_corr_e2c).c_str(),"RECREATE");
@@ -42,9 +42,9 @@ void macro_print_fullcorre2c(int niter = 20)
     ntuple->SetBranchAddress("weight_pt_truth",&weight_pt_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH3D* hpurcorr = new TH3D("hpurcorr","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-    TH3D* hmeas    = new TH3D("hmeas"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-    TH3D* htrue    = new TH3D("htrue"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH3D* hpurcorr = new TH3D("hpurcorr","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH3D* hmeas    = new TH3D("hmeas"   ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH3D* htrue    = new TH3D("htrue"   ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
 
     for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -58,9 +58,9 @@ void macro_print_fullcorre2c(int niter = 20)
     }
 
     // Fill the purity corrected distributions
-    TH2D* hunfolded_ratio   = new TH2D("hunfolded_ratio"  ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH3D* hpuritycorrected  = new TH3D("hpuritycorrected" ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-    TH3D* hpuritycorrected2 = new TH3D("hpuritycorrected2","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH2D* hunfolded_ratio   = new TH2D("hunfolded_ratio"  ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH3D* hpuritycorrected  = new TH3D("hpuritycorrected" ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+    TH3D* hpuritycorrected2 = new TH3D("hpuritycorrected2","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
     ntuple_data->Project("hpuritycorrected" ,"weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     ntuple_data->Project("hpuritycorrected2","weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     
@@ -101,7 +101,7 @@ void macro_print_fullcorre2c(int niter = 20)
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         hcorrref_jet[bin] = new TH1F(Form("hcorrref_jet[%i]" ,bin) ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-        hcorr_data[bin]   = new TH1F(Form("hcorr_data[%i]",bin),"",Nbin_R_L,rl_binning);
+        hcorr_data[bin]   = new TH1F(Form("hcorr_data[%i]",bin),"",Nbin_R_L_logbin,rl_logbinning);
         set_histogram_style(hcorr_data[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
     
         for(int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
@@ -137,5 +137,5 @@ void macro_print_fullcorre2c(int niter = 20)
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_rlnbin%i.pdf",niter,Nbin_R_L));
+    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_logbin_rlnbin%i.pdf",niter,Nbin_R_L_logbin));
 }

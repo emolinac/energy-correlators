@@ -178,10 +178,10 @@ int main()
         vars[8]  = h1_4vector->Pt();
         vars[9]  = h2_4vector->Pt();
         vars[10] = Jet_4vector->Eta();
-        vars[11] = (key1_match==0) ? -999 : true_h1_4vector->P();
-        vars[12] = (key2_match==0) ? -999 : true_h2_4vector->P();
-        vars[13] = (key1_match==0) ? -999 : true_h1_4vector->Pt();
-        vars[14] = (key2_match==0) ? -999 : true_h2_4vector->Pt();
+        vars[11] = mum_4vector->Pt();
+        vars[12] = mum_4vector->Eta();
+        vars[13] = mup_4vector->Pt();
+        vars[14] = mup_4vector->Eta();
         vars[15] = Jet_4vector->Pt();
         vars[16] = true_Jet_4vector->Pt();
         vars[17] = (key1_match==0) ? -999 : true_h1_4vector->DeltaR(*h1_4vector);
@@ -190,7 +190,7 @@ int main()
         vars[20] = (key2_match==0) ? -999 : true_h2_4vector->Rapidity();
         vars[21] = (key1_match==0||key2_match==0) ? -999 : true_h1_4vector->DeltaR(*true_h2_4vector);
 
-        double weight_truth    = weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E());
+        double weight_truth = weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E());
         double weight_pt_truth = weight(true_h1_4vector->Pt(), true_h2_4vector->Pt(), true_Jet_4vector->Pt());
         vars[22] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
         vars[23] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;

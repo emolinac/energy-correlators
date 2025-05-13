@@ -49,17 +49,28 @@ void macro_determine_binning()
     // Close file
     f->Close();
 
-    const int Nbin = Nbin_R_L_unfolding;
+    const int Nbin = Nbin_R_L;
     double binning[Nbin+1];
-    determine_eqsizebinning(Nbin, R_L_min, R_L_max, binning);
-    // determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    
+    const int Nbin_log = Nbin_R_L_logbin;
+    double binning_log[Nbin_log+1];
 
-    std::cout<<"Binning in R_L : {R_L_min";
+    determine_eqsizebinning(Nbin, R_L_min, R_L_max, binning);
+    determine_log10binning(Nbin_log, R_L_logmin, R_L_logmax, binning_log);
+
+    std::cout<<"const double rl_binning[]              = {R_L_min";
     for(int i = 1 ; i < Nbin ; i++)
     {
         std::cout<<", "<<binning[i];
     }
     std::cout<<", R_L_max};"<<std::endl;
+
+    std::cout<<"const double rl_logbinning[]           = {R_L_logmin";
+    for(int i = 1 ; i < Nbin_log ; i++)
+    {
+        std::cout<<", "<<binning_log[i];
+    }
+    std::cout<<", R_L_logmax};"<<std::endl;
 
     return 0;
 }

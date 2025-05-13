@@ -95,10 +95,11 @@ int main()
       true_mum_4vector->SetPxPyPzE(mcrecotree->mum_TRUEP_X/1000.,mcrecotree->mum_TRUEP_Y/1000.,mcrecotree->mum_TRUEP_Z/1000.,mcrecotree->mum_TRUEP_E/1000.);
       true_mup_4vector->SetPxPyPzE(mcrecotree->mup_TRUEP_X/1000.,mcrecotree->mup_TRUEP_Y/1000.,mcrecotree->mup_TRUEP_Z/1000.,mcrecotree->mup_TRUEP_E/1000.);
       true_Z0_4vector->SetPxPyPzE(true_mup_4vector->Px()+true_mum_4vector->Px(),true_mup_4vector->Py()+true_mum_4vector->Py(),true_mup_4vector->Pz()+true_mum_4vector->Pz(),true_mup_4vector->E() +true_mum_4vector->E());
-      if(apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())&&\
-         apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())&&\
-         apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())&&\
-         apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) truth_passed = true;
+      // if(apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())&&\
+      //    apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())&&\
+      //    apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())&&\
+      //    apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) truth_passed = true;
+      if(apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) truth_passed = true; // Ibrahim conditions
     }
           
     vars[0] = Jet_4vector->Pt();

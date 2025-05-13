@@ -86,10 +86,11 @@ int main()
       mum_4vector->SetPxPyPzE(mctree->MCJet_truth_match_mum_PX/1000.,mctree->MCJet_truth_match_mum_PY/1000.,mctree->MCJet_truth_match_mum_PZ/1000.,mum_energy/1000.);
       mup_4vector->SetPxPyPzE(mctree->MCJet_truth_match_mup_PX/1000.,mctree->MCJet_truth_match_mup_PY/1000.,mctree->MCJet_truth_match_mup_PZ/1000.,mup_energy/1000.);
       Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-      if(apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())&&\
-         apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())&&\
-         apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())&&\
-         apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) reco_passed = true;
+      // if(apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())&&\
+      //    apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())&&\
+      //    apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())&&\
+      //    apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) reco_passed = true;
+      if(apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) reco_passed = true; // Ibrahim condition
     }
     
     vars[0] = true_Jet_4vector->Pt();

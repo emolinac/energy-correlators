@@ -68,7 +68,7 @@ void macro_print_jetpurity_jetefficiency()
     l->AddEntry(hefficiency,"Efficiency","lpf");
     l->Draw("SAME");
 
-    c->Print(Form("./plots/jet_purity_efficiency_fullsim.pdf"));
+    c->Print(Form("./plots/jet_purity_efficiency_ibrahimcuts.pdf"));
 
     for(int bin = 1 ; bin <= hpurity->GetNbinsX() ; bin++)
     {
