@@ -4,6 +4,7 @@
 #include "TCut.h"
 #include "TString.h"
 #include "analysis-constants.h"
+#include "analysis-binning.h"
 
 // _______________________________ Z Tagged Jet Cuts _______________________________ //
 

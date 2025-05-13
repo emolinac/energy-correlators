@@ -9,6 +9,7 @@
 #include "TLorentzVector.h"
 #include "TVector3.h"
 #include "analysis-constants.h"
+#include "analysis-binning.h"
 #include "analysis-cuts.h"
 #include "analysis-functions.h"
 #include "directories.h"

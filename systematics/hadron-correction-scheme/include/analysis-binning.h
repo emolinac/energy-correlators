@@ -18,8 +18,6 @@ const double weight_min     = 0.00001;
 const double R_L_min_at     = R_L_min;
 const double R_L_max_at     = TMath::Pi();
 
-const double R_L_res  = 0.015;
-
 // Binning
 // const int Nbin_R_L    = 10; // Golden binning
 const int Nbin_R_L    = 20;
