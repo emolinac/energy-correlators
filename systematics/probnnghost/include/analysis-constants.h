@@ -19,7 +19,7 @@ const double mass_res      = 0.008; // Mass resolution parameter (see src-resolu
 
 // Correction-related constants
 // const double corr_rel_error = 0.05;
-const double corr_rel_error = 0.2; // nominal
+const double corr_rel_error = 0.5; // nominal
 const int ndim_corr = 50;
 
 const double R_L_res  = 0.015;

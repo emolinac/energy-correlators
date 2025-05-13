@@ -9,7 +9,7 @@
 void macro_print_fullcorre2c_logbin(int niter = 20)
 {
     // Open the necessary files
-    TFile* fout = new TFile((output_folder+namef_histos_corr_e2c).c_str(),"RECREATE");
+    TFile* fout = new TFile((output_folder+namef_histos_corr_e2c_logbin).c_str(),"RECREATE");
     gROOT->cd();
 
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
@@ -73,7 +73,8 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
     
     hunfolded_ratio->Divide(hunfolded_bayes_rl_jetpt,hpuritycorrected2_rl_jetpt,1,1);
 
-    TH1F* hcorr_data[Nbin_jet_pt]; 
+    TH1F* hcorr_e2c[Nbin_jet_pt]; 
+    TH1F* hcorr_npair[Nbin_jet_pt]; 
     TH1F* hcorr_jet[Nbin_jet_pt]; 
     TH1F* hcorrref_jet[Nbin_jet_pt];
    
@@ -101,8 +102,9 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         hcorrref_jet[bin] = new TH1F(Form("hcorrref_jet[%i]" ,bin) ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-        hcorr_data[bin]   = new TH1F(Form("hcorr_data[%i]",bin),"",Nbin_R_L_logbin,rl_logbinning);
-        set_histogram_style(hcorr_data[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+        hcorr_e2c[bin]    = new TH1F(Form("hcorr_e2c[%i]",bin)     ,"",Nbin_R_L_logbin,rl_logbinning);
+        hcorr_npair[bin]  = new TH1F(Form("hcorr_npair[%i]",bin)   ,"",Nbin_R_L_logbin,rl_logbinning);
+        set_histogram_style(hcorr_e2c[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
     
         for(int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
         {
@@ -116,16 +118,19 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
 
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
             // double unfolding_weight = 1.;
-            hcorr_data[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+            hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+            hcorr_npair[bin]->Fill(R_L,purity*unfolding_weight/efficiency);
         }
         ntuple_jet->Project(Form("hcorrref_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
-        hcorr_data[bin]->Scale(1./hcorrref_jet[bin]->Integral());
+        hcorr_e2c[bin]->Scale(1./hcorrref_jet[bin]->Integral());
+        hcorr_npair[bin]->Scale(1./hcorrref_jet[bin]->Integral());
         
-        s_data->Add(hcorr_data[bin],"E");
-        l_data->AddEntry(hcorr_data[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
+        s_data->Add(hcorr_e2c[bin],"E");
+        l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
 
         fout->cd();
-        hcorr_data[bin]->Write();
+        hcorr_e2c[bin]->Write();
+        hcorr_npair[bin]->Write();
         gROOT->cd();
     }
     

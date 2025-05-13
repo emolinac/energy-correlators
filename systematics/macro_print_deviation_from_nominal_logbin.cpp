@@ -9,10 +9,10 @@
 std::string systematic = "hadron-correction-scheme";
 // std::string systematic = "probnnghost";
 
-void macro_print_deviation_from_nominal()
+void macro_print_deviation_from_nominal_logbin()
 {
-    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_corr_e2c).c_str());
-    TFile* fsystematic = new TFile((systematic+"/output-files/"+namef_histos_corr_e2c).c_str());
+    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_corr_e2c_logbin).c_str());
+    TFile* fsystematic = new TFile((systematic+"/output-files/"+namef_histos_corr_e2c_logbin).c_str());
 
     THStack* s = new THStack();
     TLegend* l = new TLegend();
@@ -25,7 +25,7 @@ void macro_print_deviation_from_nominal()
     {
         h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_e2c[%i]",jet_pt_bin));
         h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_e2c[%i]",jet_pt_bin));
-        h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",Nbin_R_L,rl_binning);
+        h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",Nbin_R_L_logbin,rl_logbinning);
 
         h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
         h_deviations[jet_pt_bin]->Divide(h_nominal[jet_pt_bin]);
@@ -47,5 +47,5 @@ void macro_print_deviation_from_nominal()
     s->SetMaximum(0.49);
     s->SetMinimum(-0.49);
 
-    c->Print(Form("./plots/fracdev_from_nominal_%s_relerrorcorr%.1f.pdf",systematic.c_str(),corr_rel_error));
+    c->Print(Form("./plots/fracdev_from_nominal_%s_relerrorcorr%.1f_logbin.pdf",systematic.c_str(),corr_rel_error));
 }

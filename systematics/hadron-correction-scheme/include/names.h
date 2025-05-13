@@ -16,7 +16,8 @@ std::string namef_ntuple_mc_e2c             = "ntuple_mc_e2c.root";
 std::string namef_ntuple_mc_at_e2c          = "ntuple_mc_at_e2c.root";
 std::string namef_ntuple_hadron             = "ntuple_hadron.root";
 
-std::string namef_histos_corr_e2c       = "histos_corr_e2c.root";
+std::string namef_histos_corr_e2c        = "histos_corr_e2c.root";
+std::string namef_histos_corr_e2c_logbin = "histos_corr_e2c_logbin.root";
 
 // Name of the ntuples
 std::string name_ntuple_unfold          = "ntuple_unfold";
