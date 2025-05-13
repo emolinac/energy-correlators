@@ -5,9 +5,12 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
+void macro_print_fullcorre2c(int niter = 20)
 {
     // Open the necessary files
+    TFile* fout = new TFile((output_folder+namef_histos_corr_e2c).c_str(),"RECREATE");
+    gROOT->cd();
+
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
     if(fcorr->IsZombie()) return;
     
@@ -119,6 +122,10 @@ void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
         
         s_data->Add(hcorr_data[bin],"E");
         l_data->AddEntry(hcorr_data[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
+
+        fout->cd();
+        hcorr_data[bin]->Write();
+        gROOT->cd();
     }
     
     s_data->Draw("NOSTACK");
@@ -129,5 +136,5 @@ void macro_print_puritycorrunfolded3d_corre2c(int niter = 10)
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    // c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_linearbinning_unfbinvarv2.pdf",niter));
+    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_linearbinning.pdf",niter));
 }

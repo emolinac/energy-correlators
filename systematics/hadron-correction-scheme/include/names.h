@@ -16,6 +16,8 @@ std::string namef_ntuple_mc_e2c             = "ntuple_mc_e2c.root";
 std::string namef_ntuple_mc_at_e2c          = "ntuple_mc_at_e2c.root";
 std::string namef_ntuple_hadron             = "ntuple_hadron.root";
 
+std::string namef_histos_corr_e2c       = "histos_corr_e2c.root";
+
 // Name of the ntuples
 std::string name_ntuple_unfold          = "ntuple_unfold";
 std::string name_ntuple_data            = "ntuple_hadron";
@@ -50,7 +52,7 @@ const int Nvars_purity          = 16;
 const int Nvars_pairpurity      = 25;
 
 const char* ntuple_purity_vars     = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e:jet_e_truth:h_y_truth:h_eta_truth:deltaR_jet_h:key_match";
-const char* ntuple_pairpurity_vars = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
+const char* ntuple_pairpurity_vars = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:h1_p_truth:h2_p_truth:h1_pt_truth:h2_pt_truth:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_efficiency_mc   = 9;
@@ -62,7 +64,7 @@ const char* ntuple_efficiency_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet
 const char* ntuple_efficiency_mc_vars   = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:ndtr:deltaR_jet_h";
 
 const char* ntuple_pairefficiency_mc_vars   = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:jet_pt:weight_pt";
-const char* ntuple_pairefficiency_reco_vars = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
+const char* ntuple_pairefficiency_reco_vars = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:h1_p_truth:h2_p_truth:h1_pt_truth:h2_pt_truth:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
 //--------------------------------------------------------------------------------------//
 const int Nvars_mc_at           = 4;
 

@@ -25,6 +25,6 @@ echo "Pair efficiency ntuple ready!"
 # ./create_jet_efficiencyntuple
 # echo "Jet efficiency ntuple ready!"
 
-# echo "Creating corr data ntuple"
-# ./create_e2c_corrntuple
-# echo "Corr. data ntuple ready!"
+echo "Creating corr data ntuple"
+./create_e2c_corrntuple
+echo "Corr. data ntuple ready!"
