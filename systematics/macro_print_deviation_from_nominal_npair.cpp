@@ -6,8 +6,8 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-std::string systematic = "hadron-correction-scheme";
-// std::string systematic = "probnnghost";
+// std::string systematic = "hadron-correction-scheme";
+std::string systematic = "probnnghost";
 
 void macro_print_deviation_from_nominal_npair()
 {
