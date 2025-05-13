@@ -1,4 +1,5 @@
 #include "../include/analysis-constants.h"
+#include "../include/analysis-binning.h"
 #include "../include/analysis-cuts.h"
 #include "../include/directories.h"
 #include "../include/names.h"
@@ -136,5 +137,5 @@ void macro_print_fullcorre2c(int niter = 20)
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_linearbinning.pdf",niter));
+    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_rlnbin%i.pdf",niter,Nbin_R_L));
 }

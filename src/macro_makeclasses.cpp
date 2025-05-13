@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/analysis-constants.h"
+#include "../include/analysis-binning.h"
 #include "../include/directories.h"
 #include "../include/names.h"
 

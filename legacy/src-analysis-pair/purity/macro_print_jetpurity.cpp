@@ -1,4 +1,5 @@
 #include "../../include/analysis-constants.h"
+#include "../../include/analysis-binning.h"
 #include "../../include/analysis-cuts.h"
 #include "../../include/directories.h"
 #include "../../include/names.h"
