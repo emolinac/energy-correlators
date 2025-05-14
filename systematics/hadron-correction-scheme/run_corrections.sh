@@ -28,3 +28,9 @@ echo "Pair efficiency ntuple ready!"
 echo "Creating corr data ntuple"
 ./create_e2c_corrntuple
 echo "Corr. data ntuple ready!"
+
+
+echo "Producing results"
+root -b -q src/macro_print_fullcorre2c_logbin.cpp
+root -b -q src/macro_print_fullcorre2c.cpp
+
