@@ -214,22 +214,24 @@ bool apply_zboson_cuts(double deltaphi_zboson_jet, double zboson_mass)
     return true;
 }
 
-bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double deltaR_h_jet)
+bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta)
 {
     if(charge==0) return false;
     if(p<track_p_min||p>track_p_max) return false;
     if(pt<track_pt_min) return false;
     if(chi2ndf>track_chi2ndf_max) return false;
     if(probnnghost>track_probnnghost_max) return false;
-    
+    if(eta<muon_eta_min||eta>muon_eta_max) return false;
+
     return true;
 }
 
-bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double deltaR_h_jet)
+bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta)
 {
     if(charge==0) return false;
     if(p<track_p_min||p>track_p_max) return false;
     if(pt<track_pt_min) return false;
+    if(eta<muon_eta_min||eta>muon_eta_max) return false;
     
     return true;
 }

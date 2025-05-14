@@ -98,9 +98,9 @@ int main()
     true_mup_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mup_PX/1000.,mcrecotree->Jet_mcjet_mup_PY/1000.,mcrecotree->Jet_mcjet_mup_PZ/1000.,mcrecotree->Jet_mcjet_mup_PE/1000.);
     true_Z0_4vector->SetPxPyPzE(true_mup_4vector->Px()+true_mum_4vector->Px(),true_mup_4vector->Py()+true_mum_4vector->Py(),true_mup_4vector->Pz()+true_mum_4vector->Pz(),true_mup_4vector->E() +true_mum_4vector->E());
     if(!apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) continue;
-    if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) continue;
-    if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) continue;
-    if(!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) continue;
+    // if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) continue;
+    // if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) continue;
+    // if(!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) continue;
     
     // Loop over reco
     for(int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++)
@@ -114,7 +114,7 @@ int main()
                                   h_4vector->Pt(),
                                   mcrecotree->Jet_Dtr_TrackChi2[h_index]/mcrecotree->Jet_Dtr_TrackNDF[h_index],
                                   mcrecotree->Jet_Dtr_ProbNNghost[h_index],
-                                  Jet_4vector->DeltaR(*h_4vector))) continue;
+                                  h_4vector->Eta())) continue;
 
       int key_match = 0;
       if(mcrecotree->Jet_Dtr_TRUE_ETA[h_index]!=-999)
@@ -129,7 +129,7 @@ int main()
         if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h_index],
                                              true_h_4vector->P(), 
                                              true_h_4vector->Pt(),
-                                             true_Jet_4vector->DeltaR(*true_h_4vector))) key_match = 0;
+                                             true_h_4vector->Eta())) key_match = 0;
       } 
 
       // If all good, fill Ntuple
@@ -167,7 +167,7 @@ int main()
       if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h_index],
                                            true_h_4vector->P(),
                                            true_h_4vector->Pt(),
-                                           true_Jet_4vector->DeltaR(*true_h_4vector))) continue;
+                                           true_h_4vector->Eta())) continue;
 
       // If all good, fill Ntuple
       vars_mc[0] = true_h_4vector->Eta();

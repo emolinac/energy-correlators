@@ -4,16 +4,20 @@
 make clean
 make
 cd ./bin
+
 echo "Creating purity ntuple"
 ./create_e2c_purityntuple
 echo "Purity ntuple ready!"
 echo "Creating efficiency ntuple"
-./create_e2c_pairpurityntuple
-echo "Pair purity ntuple ready!"
-echo "Creating efficiency ntuple"
 ./create_e2c_efficiencyntuple
 echo "Efficiency ntuple ready!"
-echo "Creating corr data ntuple"
+
+echo "Creating pair purity ntuple"
+./create_e2c_pairpurityntuple
+echo "Pair purity ntuple ready!"
+echo "Creating pair efficiency ntuple"
+./create_e2c_pairefficiencyntuple
+echo "Pair efficiency ntuple ready!"
 
 echo "Creating jet purity ntuple"
 ./create_jet_purityntuple
@@ -28,5 +32,6 @@ echo "Corr. data ntuple ready!"
 
 
 echo "Producing results"
-root -b -q src/macro_print_fullcorre2c_logbin.cpp
-root -b -q src/macro_print_fullcorre2c.cpp
+cd ../src/
+root -b -q macro_print_fullcorre2c_logbin.cpp
+root -b -q macro_print_fullcorre2c.cpp
