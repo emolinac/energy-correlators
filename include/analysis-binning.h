@@ -14,7 +14,7 @@ const double jet_e_min      = 100;
 const double jet_e_max      = 4000;
 const double eta_min        = 2.;
 const double eta_max        = 4.5;
-const double weight_max     = 0.2;
+const double weight_max     = 0.1;
 const double weight_min     = 0.00001;
 
 const double R_L_min_at     = R_L_min;

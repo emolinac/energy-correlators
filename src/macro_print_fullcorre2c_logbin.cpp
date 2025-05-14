@@ -97,7 +97,7 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
     // c->Print(Form("./plots/unfolded3d_%initer_ratio_sepyears_linearbinning_unfbinvarv2.pdf",niter));
 
     THStack* s_data = new THStack();
-    TLegend* l_data = new TLegend();
+    TLegend* l_data = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
 
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
@@ -115,11 +115,18 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
             if(purity_relerror>corr_rel_error) continue;
             if(efficiency<=0||efficiency>1) continue;
             if(purity<=0||purity>1) continue;
+            if((jet_pt>20&&jet_pt<30)&&weight_pt>0.1) continue;
+            if((jet_pt>30&&jet_pt<50)&&weight_pt>0.07) continue;
+            if((jet_pt>50&&jet_pt<100)&&weight_pt>0.04) continue;
 
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
             // double unfolding_weight = 1.;
+
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
             hcorr_npair[bin]->Fill(R_L,purity*unfolding_weight/efficiency);
+
+            // hcorr_e2c[bin]->Fill(R_L,weight_pt*purity/efficiency);
+            // hcorr_npair[bin]->Fill(R_L,purity/efficiency);
         }
         ntuple_jet->Project(Form("hcorrref_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
         hcorr_e2c[bin]->Scale(1./hcorrref_jet[bin]->Integral());
