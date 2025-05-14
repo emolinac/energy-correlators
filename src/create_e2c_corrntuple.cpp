@@ -217,7 +217,7 @@ int main()
                                   h1_4vector->Pt(),
                                   datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
-                                  Jet_4vector->DeltaR(*h1_4vector))) continue;
+                                  h1_4vector->Eta())) continue;
 
       double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
       double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
@@ -235,7 +235,7 @@ int main()
                                     h2_4vector->Pt(),
                                     datatree_2016->Jet_Dtr_TrackChi2[h2_index]/datatree_2016->Jet_Dtr_TrackNDF[h2_index],
                                     datatree_2016->Jet_Dtr_ProbNNghost[h2_index],
-                                    Jet_4vector->DeltaR(*h2_4vector))) continue;
+                                    h2_4vector->Eta())) continue;
 
         double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
         double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
@@ -370,7 +370,7 @@ int main()
                                   h1_4vector->Pt(),
                                   datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
-                                  Jet_4vector->DeltaR(*h1_4vector))) continue;
+                                  h1_4vector->Eta())) continue;
 
       double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
       double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
@@ -388,7 +388,7 @@ int main()
                                     h2_4vector->Pt(),
                                     datatree_2017->Jet_Dtr_TrackChi2[h2_index]/datatree_2017->Jet_Dtr_TrackNDF[h2_index],
                                     datatree_2017->Jet_Dtr_ProbNNghost[h2_index],
-                                    Jet_4vector->DeltaR(*h2_4vector))) continue;
+                                    h2_4vector->Eta())) continue;
 
         double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
         double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
@@ -523,7 +523,7 @@ int main()
                                   h1_4vector->Pt(),
                                   datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
-                                  Jet_4vector->DeltaR(*h1_4vector))) continue;
+                                  h1_4vector->Eta())) continue;
 
       double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
       double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
@@ -541,7 +541,7 @@ int main()
                                     h2_4vector->Pt(),
                                     datatree_2018->Jet_Dtr_TrackChi2[h2_index]/datatree_2018->Jet_Dtr_TrackNDF[h2_index],
                                     datatree_2018->Jet_Dtr_ProbNNghost[h2_index],
-                                    Jet_4vector->DeltaR(*h2_4vector))) continue;
+                                    h2_4vector->Eta())) continue;
 
         double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
         double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));

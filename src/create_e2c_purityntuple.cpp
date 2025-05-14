@@ -114,7 +114,7 @@ int main()
                                   h_4vector->Pt(),
                                   mcrecotree->Jet_Dtr_TrackChi2[h_index]/mcrecotree->Jet_Dtr_TrackNDF[h_index],
                                   mcrecotree->Jet_Dtr_ProbNNghost[h_index],
-                                  Jet_4vector->DeltaR(*h_4vector))) continue;
+                                  h_4vector->Eta())) continue;
 
       int key_match = 0;
       if(mcrecotree->Jet_Dtr_TRUE_ETA[h_index]!=-999)
@@ -129,7 +129,7 @@ int main()
         if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h_index],
                                              true_h_4vector->P(),
                                              true_h_4vector->Pt(),
-                                             true_Jet_4vector->DeltaR(*true_h_4vector))) key_match = 0;
+                                             true_h_4vector->Eta())) key_match = 0;
       } 
       
       // If all good, fill Ntuple

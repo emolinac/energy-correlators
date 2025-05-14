@@ -98,7 +98,7 @@ int main()
       if(!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h1_index],
                                            h1_4vector->P(),
                                            h1_4vector->Pt(),
-                                           Jet_4vector->DeltaR(*h1_4vector))) continue;
+                                           h1_4vector->Eta())) continue;
 
       for(int h2_index = h1_index+1 ; h2_index < mctree->MCJet_Dtr_nmcdtrs ; h2_index++)
       {
@@ -113,7 +113,7 @@ int main()
           if(!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h2_index],
                                                h2_4vector->P(),
                                                h2_4vector->Pt(),
-                                               Jet_4vector->DeltaR(*h2_4vector))) continue;
+                                               h2_4vector->Eta())) continue;
 
           vars_mc[0]  = weight(h1_4vector->E(), h2_4vector->E(),Jet_4vector->E());
           vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
@@ -199,7 +199,7 @@ int main()
                                     h1_4vector->Pt(),
                                     mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                     mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                    Jet_4vector->DeltaR(*h1_4vector))) continue;
+                                    h1_4vector->Eta())) continue;
 
         // Loop over hadron 2
         for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
@@ -213,7 +213,7 @@ int main()
                                         h2_4vector->Pt(),
                                         mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
                                         mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
-                                        Jet_4vector->DeltaR(*h2_4vector))) continue;
+                                        h2_4vector->Eta())) continue;
 
             double h1_y = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]); 
             double h2_y = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]);

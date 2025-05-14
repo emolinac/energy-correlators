@@ -102,7 +102,7 @@ int main()
       if(!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h1_index],
                                            h_4vector->P(),
                                            h_4vector->Pt(),
-                                           Jet_4vector->DeltaR(*h_4vector))) continue;
+                                           h_4vector->Eta())) continue;
       
       vars[0] = h_4vector->P();
       vars[1] = h_4vector->Pt();
@@ -168,7 +168,7 @@ int main()
                                   h_4vector->Pt(),
                                   mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                   mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                  Jet_4vector->DeltaR(*h_4vector))) continue;
+                                  h_4vector->Eta())) continue;
 
       vars[0] = h_4vector->P();
       vars[1] = h_4vector->Pt();
@@ -233,7 +233,7 @@ int main()
                                   h_4vector->Pt(),
                                   datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
-                                  Jet_4vector->DeltaR(*h_4vector))) continue;
+                                  h_4vector->Eta())) continue;
 
       vars[0] = h_4vector->P();
       vars[1] = h_4vector->Pt();
@@ -298,7 +298,7 @@ int main()
                                   h_4vector->Pt(),
                                   datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
-                                  Jet_4vector->DeltaR(*h_4vector))) continue;
+                                  h_4vector->Eta())) continue;
 
       vars[0] = h_4vector->P();
       vars[1] = h_4vector->Pt();
@@ -363,7 +363,7 @@ int main()
                                   h_4vector->Pt(),
                                   datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
                                   datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
-                                  Jet_4vector->DeltaR(*h_4vector))) continue;
+                                  h_4vector->Eta())) continue;
 
       vars[0] = h_4vector->P();
       vars[1] = h_4vector->Pt();

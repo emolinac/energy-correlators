@@ -150,7 +150,7 @@ int main()
                                   h1_4vector->Pt(),
                                   mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                   mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                  Jet_4vector->DeltaR(*h1_4vector))) continue;
+                                  h1_4vector->Eta())) continue;
 
       int key1_match = 0;
       if(mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]!=-999)
@@ -165,7 +165,7 @@ int main()
         if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h1_index],
                                              true_h1_4vector->P(),
                                              true_h1_4vector->Pt(),
-                                             true_Jet_4vector->DeltaR(*true_h1_4vector))) key1_match = 0;
+                                             true_h1_4vector->Eta())) key1_match = 0;
       } 
 
       for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
@@ -182,7 +182,7 @@ int main()
                                     h2_4vector->Pt(),
                                     mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
                                     mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
-                                    Jet_4vector->DeltaR(*h2_4vector))) continue;
+                                    h2_4vector->Eta())) continue;
 
         int key2_match = 0;
         if(mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]!=-999)
@@ -197,7 +197,7 @@ int main()
           if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h2_index],
                                                true_h2_4vector->P(),
                                                true_h2_4vector->Pt(),
-                                               true_Jet_4vector->DeltaR(*true_h2_4vector))) key2_match = 0;
+                                               true_h2_4vector->Eta())) key2_match = 0;
         } 
       
         vars[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
@@ -247,7 +247,7 @@ int main()
       if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h1_index],
                                            h1_4vector->P(),
                                            h1_4vector->Pt(),
-                                           Jet_4vector->DeltaR(*h1_4vector))) continue;
+                                           h1_4vector->Eta())) continue;
 
       for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++)
       {
@@ -261,7 +261,7 @@ int main()
         if(!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h2_index],
                                              h2_4vector->P(),
                                              h2_4vector->Pt(),
-                                             Jet_4vector->DeltaR(*h2_4vector))) continue;
+                                             h2_4vector->Eta())) continue;
 
         vars_mc[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
         vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
