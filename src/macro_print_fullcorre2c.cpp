@@ -115,6 +115,9 @@ void macro_print_fullcorre2c(int niter = 20)
             if(purity_relerror>corr_rel_error) continue;
             if(efficiency<=0||efficiency>1) continue;
             if(purity<=0||purity>1) continue;
+            if((jet_pt>20&&jet_pt<30)&&weight_pt>0.1) continue;
+            if((jet_pt>30&&jet_pt<50)&&weight_pt>0.07) continue;
+            if((jet_pt>50&&jet_pt<100)&&weight_pt>0.04) continue;
 
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
             // double unfolding_weight = 1.;

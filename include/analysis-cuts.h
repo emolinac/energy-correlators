@@ -46,8 +46,6 @@ const double track_probnnghost_max = 0.5;
 TCut e2c_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 
-TString muons_eff = "1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))";
-
 // Cuts as function of jet pt
 TCut e2c_jetpt_cut[] = 
 {Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
@@ -93,6 +91,8 @@ TCut e2c_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_
 TCut e2c_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
 TCut pair_purity_corr_singletrack_weightpt = Form("purity*(purity_relerror<%f)",corr_rel_error);
+
+TString muons_eff = "1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))";
 
 // TCut jet_full_corr[] =
 // {

@@ -6,17 +6,19 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_corre2c_mc_comp(int niter = 1)
+void macro_print_corre2c_mc_comp_logbin(int niter = 20)
 {
     // Open the necessary files
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
     TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
     if(fcorr->IsZombie()) return;
     
-    TNtuple* ntuple_data   = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
-    TNtuple* ntuple_jet    = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
-    TNtuple* ntuple_mc     = (TNtuple*) fmc->Get((name_ntuple_mcreco).c_str());
-    TNtuple* ntuple_mc_jet = (TNtuple*) fmc->Get((name_ntuple_mcreco_jet).c_str());
+    TNtuple* ntuple_data       = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
+    TNtuple* ntuple_jet        = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
+    TNtuple* ntuple_mc         = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
+    TNtuple* ntuple_mc_jet     = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
+    TNtuple* ntuple_mcreco     = (TNtuple*) fmc->Get((name_ntuple_mcreco).c_str());
+    TNtuple* ntuple_mcreco_jet = (TNtuple*) fmc->Get((name_ntuple_mcreco_jet).c_str());
 
     // Set the branches of data
     float R_L, jet_pt, weight_pt;
@@ -29,11 +31,17 @@ void macro_print_corre2c_mc_comp(int niter = 1)
     ntuple_data->SetBranchAddress("purity",&purity);
     ntuple_data->SetBranchAddress("purity_relerror",&purity_relerror);
 
-    // Set the branches of mc
+    // Set the branches of data
     float R_L_mc, jet_pt_mc, weight_pt_mc;
     ntuple_mc->SetBranchAddress("R_L",&R_L_mc);
     ntuple_mc->SetBranchAddress("jet_pt",&jet_pt_mc);
     ntuple_mc->SetBranchAddress("weight_pt",&weight_pt_mc);
+    
+    // Set the branches of data
+    float R_L_mcreco, jet_pt_mcreco, weight_pt_mcreco;
+    ntuple_mcreco->SetBranchAddress("R_L",&R_L_mcreco);
+    ntuple_mcreco->SetBranchAddress("jet_pt",&jet_pt_mcreco);
+    ntuple_mcreco->SetBranchAddress("weight_pt",&weight_pt_mcreco);
     
     // UNFOLDING FIRST
     TFile* f = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
@@ -80,16 +88,14 @@ void macro_print_corre2c_mc_comp(int niter = 1)
     hunfolded_ratio->Divide(hunfolded_bayes_rl_jetpt,hpuritycorrected2_rl_jetpt,1,1);
 
     TH1F* hcorr_e2c[Nbin_jet_pt]; 
-    TH1F* hall_data[Nbin_jet_pt];  
-    TH1F* hcorr_jet[Nbin_jet_pt]; 
-    TH1F* hall_jet[Nbin_jet_pt];
-    TH1F* hallref_jet[Nbin_jet_pt];
-    TH1F* hcorrref_jet[Nbin_jet_pt];
+    TH1F* hcorr_jet[Nbin_jet_pt];
 
     TH1F* hmc[Nbin_jet_pt]; 
     TH1F* hmc_jet[Nbin_jet_pt]; 
-    TH1F* hmcref_jet[Nbin_jet_pt];
-
+    
+    TH1F* hmcreco[Nbin_jet_pt]; 
+    TH1F* hmcreco_jet[Nbin_jet_pt]; 
+    
     TCanvas* c = new TCanvas("c","",1800,600);
     c->Draw();
     c->Divide(3,1);
@@ -107,16 +113,19 @@ void macro_print_corre2c_mc_comp(int niter = 1)
     {
         c->cd(bin+1);
         s_data[bin] = new THStack();
-        l_data[bin] = new TLegend();
-        hcorrref_jet[bin] = new TH1F(Form("hcorrref_jet[%i]" ,bin) ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-        hcorr_e2c[bin]    = new TH1F(Form("hcorr_e2c[%i]",bin)     ,"",Nbin_R_L,rl_binning);
-        // hcorr_npair[bin]  = new TH1F(Form("hcorr_npair[%i]",bin)   ,"",Nbin_R_L,rl_binning);
+        l_data[bin] = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
 
-        hmc[bin]     = new TH1F(Form("hmc[%i]" ,bin)       ,"",Nbin_R_L,rl_binning);
-        hmc_jet[bin] = new TH1F(Form("hmc_jet[%i]" ,bin)   ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]);
+        hcorr_e2c[bin] = new TH1F(Form("hcorr_e2c[%i]",bin) ,"",Nbin_R_L_logbin,rl_logbinning);
+        hmc[bin]       = new TH1F(Form("hmc[%i]" ,bin)      ,"",Nbin_R_L_logbin,rl_logbinning);
+        hmcreco[bin]   = new TH1F(Form("hmcreco[%i]" ,bin)  ,"",Nbin_R_L_logbin,rl_logbinning);
         
-        set_histogram_style(hcorr_e2c[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
-        set_histogram_style(hmc[bin]      , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
+        hcorr_jet[bin]   = new TH1F(Form("hcorr_jet[%i]" ,bin)   ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
+        hmc_jet[bin]     = new TH1F(Form("hmc_jet[%i]" ,bin)     ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]);
+        hmcreco_jet[bin] = new TH1F(Form("hmcreco_jet[%i]" ,bin) ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]);
+        
+        set_histogram_style(hcorr_e2c[bin], corr_marker_color_jet_pt[0], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
+        set_histogram_style(hmc[bin]      , corr_marker_color_jet_pt[1], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
+        set_histogram_style(hmcreco[bin]  , corr_marker_color_jet_pt[2], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
     
         for(int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
         {
@@ -135,8 +144,8 @@ void macro_print_corre2c_mc_comp(int niter = 1)
             // double unfolding_weight = 1.;
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
         }
-        ntuple_jet->Project(Form("hcorrref_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
-        hcorr_e2c[bin]->Scale(1./hcorrref_jet[bin]->Integral());
+        ntuple_jet->Project(Form("hcorr_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
+        hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral());
         
         for(int entry = 0 ; entry < ntuple_mc->GetEntries() ; entry++)
         {
@@ -147,20 +156,39 @@ void macro_print_corre2c_mc_comp(int niter = 1)
             if((jet_pt_mc>30&&jet_pt_mc<50)&&weight_pt_mc>0.07) continue;
             if((jet_pt_mc>50&&jet_pt_mc<100)&&weight_pt_mc>0.04) continue;
 
-            hmc[bin]->Fill(R_L_mc,weight_pt);
+            hmc[bin]->Fill(R_L_mc,weight_pt_mc);
             // std::cout<<R_L_mc<<std::endl;
         }
         ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
-        std::cout<<hmc_jet[bin]->GetBinContent(1)<<std::endl;
         hmc[bin]->Scale(1./hmc_jet[bin]->Integral());
 
+        for(int entry = 0 ; entry < ntuple_mcreco->GetEntries() ; entry++)
+        {
+            ntuple_mcreco->GetEntry(entry);
+
+            if(jet_pt_mcreco<jet_pt_binning[bin]||jet_pt_mcreco>jet_pt_binning[bin+1]) continue;
+            if((jet_pt_mcreco>20&&jet_pt_mcreco<30)&&weight_pt_mcreco>0.1) continue;
+            if((jet_pt_mcreco>30&&jet_pt_mcreco<50)&&weight_pt_mcreco>0.07) continue;
+            if((jet_pt_mcreco>50&&jet_pt_mcreco<100)&&weight_pt_mcreco>0.04) continue;
+
+            hmcreco[bin]->Fill(R_L_mcreco,weight_pt_mcreco);
+            // std::cout<<R_L_mc<<std::endl;
+        }
+        ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
+        hmcreco[bin]->Scale(1./hmcreco_jet[bin]->Integral());
+
         s_data[bin]->Add(hmc[bin],"E");
+        s_data[bin]->Add(hmcreco[bin],"E");
         s_data[bin]->Add(hcorr_e2c[bin],"E");
         s_data[bin]->Draw("NOSTACK");
-        s_data[bin]->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
+        s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
+
+        l_data[bin]->AddEntry(hmc[bin]      ,"mc"    ,"p");
+        l_data[bin]->AddEntry(hmcreco[bin]  ,"mcreco","p");
+        l_data[bin]->AddEntry(hcorr_e2c[bin],"data"  ,"p");
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-    
+        l_data[bin]->Draw("SAME");    
         // l_data->AddEntry(hmc[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
     }
     

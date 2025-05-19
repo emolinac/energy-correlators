@@ -14,8 +14,10 @@ const double jet_e_min      = 100;
 const double jet_e_max      = 4000;
 const double eta_min        = 2.;
 const double eta_max        = 4.5;
-const double weight_max     = 0.1;
-const double weight_min     = 0.00001;
+const double weight_max     = 0.01;
+const double weight_min     = 2*0.0001;
+const double weight_absmax  = 0.1;
+const double weight_absmin  = 0.00001;
 
 const double R_L_min_at     = R_L_min;
 const double R_L_max_at     = TMath::Pi();
@@ -23,6 +25,7 @@ const double R_L_max_at     = TMath::Pi();
 // Binning
 const int Nbin_jet_pt            = 3;
 const int Nbin_weight            = 10;
+const int Nbin_weight_unfolding  = Nbin_weight+2;
 const int Nbin_jet_e             = 3;
 const int Nbin_z_pt              = 3;
 const int Nbin_jetpt_corrections = 7;
@@ -30,7 +33,9 @@ const int Nbin_jet_pt_unfolding  = Nbin_jet_pt+2;
 
 const double z_pt_binning[]   = {15,20,30,75};
 const double jet_pt_binning[] = {jet_pt_min_nom, 30., 50., jet_pt_max};
-const double weight_binning[] = {1e-05, 0.000370882, 0.000689666, 0.00108385, 0.00159442, 0.00228839, 0.00327794, 0.00482046, 0.00751032, 0.0135402, 0.2};
+// const double weight_binning[] = {1e-05, 0.000370882, 0.000689666, 0.00108385, 0.00159442, 0.00228839, 0.00327794, 0.00482046, 0.00751032, 0.0135402, 0.2};
+const double weight_binning[]          = {0.0002, 0.000437528, 0.000702059, 0.00101735, 0.00140803, 0.00189985, 0.00254533, 0.00341064, 0.0046413, 0.0065906, 0.01};
+const double weight_unfoldingbinning[] = {weight_absmin,0.0002, 0.000437528, 0.000702059, 0.00101735, 0.00140803, 0.00189985, 0.00254533, 0.00341064, 0.0046413, 0.0065906, 0.01,weight_absmax};
 const double jet_e_binning[]  = {jet_e_min,350,560,jet_e_max};
 
 const double corrections_jetpt_binning[] = {20,22.5,25,30,40,50,75,100};
