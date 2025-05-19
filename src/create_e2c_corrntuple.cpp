@@ -170,13 +170,18 @@ int main()
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
-    double mup_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
-    double mup_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
-    double mup_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
+    double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
+    double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
+    double mup_eta = mup_4vector->Eta();
+    double mum_eta = mum_4vector->Eta();
 
-    double mum_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
-    double mum_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
-    double mum_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
+    double mup_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mup_eta,mup_pt));
+
+    double mum_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mum_eta,mum_pt));
 
     double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
     double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
@@ -323,13 +328,18 @@ int main()
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
-    double mup_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
-    double mup_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
-    double mup_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
+    double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
+    double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
+    double mup_eta = mup_4vector->Eta();
+    double mum_eta = mum_4vector->Eta();
 
-    double mum_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
-    double mum_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
-    double mum_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
+    double mup_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mup_eta,mup_pt));
+
+    double mum_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mum_eta,mum_pt));
 
     double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
     double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
@@ -476,13 +486,18 @@ int main()
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
-    double mup_eff_id  = h2_muon_2018_ideff_data->GetBinContent(h2_muon_2018_ideff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
-    double mup_eff_trk = h2_muon_2018_trkeff_data->GetBinContent(h2_muon_2018_trkeff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
-    double mup_eff_trg = h2_muon_2018_trgeff_data->GetBinContent(h2_muon_2018_trgeff_data->FindBin(mup_4vector->Eta(),mup_4vector->Pt()));
+    double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
+    double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
+    double mup_eta = mup_4vector->Eta();
+    double mum_eta = mum_4vector->Eta();
 
-    double mum_eff_id  = h2_muon_2018_ideff_data->GetBinContent(h2_muon_2018_ideff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
-    double mum_eff_trk = h2_muon_2018_trkeff_data->GetBinContent(h2_muon_2018_trkeff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
-    double mum_eff_trg = h2_muon_2018_trgeff_data->GetBinContent(h2_muon_2018_trgeff_data->FindBin(mum_4vector->Eta(),mum_4vector->Pt()));
+    double mup_eff_id  = h2_muon_2018_ideff_data->GetBinContent(h2_muon_2018_ideff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_trk = h2_muon_2018_trkeff_data->GetBinContent(h2_muon_2018_trkeff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_trg = h2_muon_2018_trgeff_data->GetBinContent(h2_muon_2018_trgeff_data->FindBin(mup_eta,mup_pt));
+
+    double mum_eff_id  = h2_muon_2018_ideff_data->GetBinContent(h2_muon_2018_ideff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_trk = h2_muon_2018_trkeff_data->GetBinContent(h2_muon_2018_trkeff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_trg = h2_muon_2018_trgeff_data->GetBinContent(h2_muon_2018_trgeff_data->FindBin(mum_eta,mum_pt));
 
     double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
     double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));

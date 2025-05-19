@@ -29,6 +29,11 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
     ntuple_data->SetBranchAddress("purity",&purity);
     ntuple_data->SetBranchAddress("purity_relerror",&purity_relerror);
 
+    float jet_pt_jetdata, jet_efficiency, jet_purity;
+    ntuple_jet->SetBranchAddress("jet_pt"        ,&jet_pt_jetdata);
+    ntuple_jet->SetBranchAddress("jet_efficiency",&jet_efficiency);
+    ntuple_jet->SetBranchAddress("jet_purity"    ,&jet_purity);
+
     // UNFOLDING FIRST
     TFile* f = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_purity.c_str());
@@ -128,6 +133,18 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
             // hcorr_e2c[bin]->Fill(R_L,weight_pt*purity/efficiency);
             // hcorr_npair[bin]->Fill(R_L,purity/efficiency);
         }
+
+        // for(int entry = 0 ; entry < ntuple_jet->GetEntries() ; entry++)
+        // {
+        //     ntuple_jet->GetEntry(entry);
+
+        //     if(jet_pt_jetdata<jet_pt_binning[bin]||jet_pt_jetdata>jet_pt_binning[bin+1]) continue;
+        //     if(jet_efficiency<=0||jet_efficiency>1) continue;
+        //     if(jet_purity<=0||jet_purity>1) continue;
+
+        //     hcorrref_jet[bin]->Fill(jet_pt_jetdata,jet_purity/jet_efficiency);
+            
+        // }
         ntuple_jet->Project(Form("hcorrref_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
         hcorr_e2c[bin]->Scale(1./hcorrref_jet[bin]->Integral());
         hcorr_npair[bin]->Scale(1./hcorrref_jet[bin]->Integral());
@@ -149,5 +166,5 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_logbin_rlnbin%i.pdf",niter,Nbin_R_L_logbin));
+    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_logbin_rlnbin%i_wexplicitmuoncuts.pdf",niter,Nbin_R_L_logbin));
 }

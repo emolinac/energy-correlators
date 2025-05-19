@@ -101,11 +101,18 @@ TString muons_eff = "1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_
 // Form("jet_purity*(1./jet_efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])
 // };
 
+// TCut jet_full_corr[] =
+// {
+// Form("jet_purity*(1./jet_efficiency)*"+muons_eff+"*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
+// Form("jet_purity*(1./jet_efficiency)*"+muons_eff+"*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
+// Form("jet_purity*(1./jet_efficiency)*"+muons_eff+"*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])
+// };
+
 TCut jet_full_corr[] =
 {
-Form("jet_purity*(1./jet_efficiency)*"+muons_eff+"*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
-Form("jet_purity*(1./jet_efficiency)*"+muons_eff+"*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
-Form("jet_purity*(1./jet_efficiency)*"+muons_eff+"*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])
+Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[0],jet_pt_binning[1]),
+Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[1],jet_pt_binning[2]),
+Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)",jet_pt_binning[2],jet_pt_binning[3])
 };
 
 TCut e2c_jetpt_full_corr_singletrack[] =
