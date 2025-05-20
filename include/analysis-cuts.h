@@ -41,6 +41,9 @@ const double track_p_max           = 1000;
 const double track_pt_min          = 0.25;
 const double track_probnnghost_max = 0.5;
 
+// Weight pt cuts
+const double weight_pt_cut[] = {0.1,0.07,0.04};
+
 // _______________________________ Nominal Analysis Cuts _______________________________ //
 
 TCut e2c_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);

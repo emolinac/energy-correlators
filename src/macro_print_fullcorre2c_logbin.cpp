@@ -118,14 +118,14 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
             if(jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
             if(efficiency_relerror>corr_rel_error) continue;
             if(purity_relerror>corr_rel_error) continue;
-            if(efficiency<=0||efficiency>1) continue;
-            if(purity<=0||purity>1) continue;
-            if((jet_pt>20&&jet_pt<30)&&weight_pt>0.1) continue;
-            if((jet_pt>30&&jet_pt<50)&&weight_pt>0.1) continue;
-            if((jet_pt>50&&jet_pt<100)&&weight_pt>0.1) continue;
+            if(efficiency<=0||efficiency>1) efficiency = 1;//continue;
+            if(purity<=0||purity>1) purity = 1;//continue;
+            if((jet_pt>20&&jet_pt<30)&&weight_pt>weight_pt_cut[0]) continue;
+            if((jet_pt>30&&jet_pt<50)&&weight_pt>weight_pt_cut[1]) continue;
+            if((jet_pt>50&&jet_pt<100)&&weight_pt>weight_pt_cut[2]) continue;
 
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
-            // double unfolding_weight = 1.;
+            if(unfolding_weight<=0) unfolding_weight = 1;
 
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
             hcorr_npair[bin]->Fill(R_L,purity*unfolding_weight/efficiency);
@@ -146,8 +146,11 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
             
         // }
         ntuple_jet->Project(Form("hcorrref_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
-        hcorr_e2c[bin]->Scale(1./hcorrref_jet[bin]->Integral());
-        hcorr_npair[bin]->Scale(1./hcorrref_jet[bin]->Integral());
+        std::cout<<"Number of corrected jets is "<<hcorrref_jet[bin]->Integral()<<std::endl;
+        std::cout<<"Number of corrected e2c  is "<<hcorr_e2c[bin]->Integral()<<std::endl;
+        std::cout<<"Fraction of e2c/Njets is "<<hcorr_e2c[bin]->Integral()/hcorrref_jet[bin]->Integral()<<std::endl;
+        // hcorr_e2c[bin]->Scale(1./hcorrref_jet[bin]->Integral());
+        // hcorr_npair[bin]->Scale(1./hcorrref_jet[bin]->Integral());
         
         s_data->Add(hcorr_e2c[bin],"E");
         l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
@@ -166,5 +169,5 @@ void macro_print_fullcorre2c_logbin(int niter = 20)
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_logbin_rlnbin%i_wexplicitmuoncuts.pdf",niter,Nbin_R_L_logbin));
+    c->Print(Form("./plots/corr_e2c_unf3d_%initer_sepyears_logbin_rlnbin%i_wexplicitmuoncutsfix_corrfix.pdf",niter,Nbin_R_L_logbin));
 }

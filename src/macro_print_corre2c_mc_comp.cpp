@@ -127,9 +127,9 @@ void macro_print_corre2c_mc_comp(int niter = 1)
             if(purity_relerror>corr_rel_error) continue;
             if(efficiency<=0||efficiency>1) continue;
             if(purity<=0||purity>1) continue;
-            if((jet_pt>20&&jet_pt<30)&&weight_pt>0.1) continue;
-            if((jet_pt>30&&jet_pt<50)&&weight_pt>0.07) continue;
-            if((jet_pt>50&&jet_pt<100)&&weight_pt>0.04) continue;
+            if((jet_pt>20&&jet_pt<30)&&weight_pt>weight_pt_cut[0]) continue;
+            if((jet_pt>30&&jet_pt<50)&&weight_pt>weight_pt_cut[1]) continue;
+            if((jet_pt>50&&jet_pt<100)&&weight_pt>weight_pt_cut[2]) continue;
 
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
             // double unfolding_weight = 1.;
@@ -143,9 +143,9 @@ void macro_print_corre2c_mc_comp(int niter = 1)
             ntuple_mc->GetEntry(entry);
 
             if(jet_pt_mc<jet_pt_binning[bin]||jet_pt_mc>jet_pt_binning[bin+1]) continue;
-            if((jet_pt_mc>20&&jet_pt_mc<30)&&weight_pt_mc>0.1) continue;
-            if((jet_pt_mc>30&&jet_pt_mc<50)&&weight_pt_mc>0.07) continue;
-            if((jet_pt_mc>50&&jet_pt_mc<100)&&weight_pt_mc>0.04) continue;
+            if((jet_pt_mc>20&&jet_pt_mc<30)&&weight_pt_mc>weight_pt_cut[0]) continue;
+            if((jet_pt_mc>30&&jet_pt_mc<50)&&weight_pt_mc>weight_pt_cut[1]) continue;
+            if((jet_pt_mc>50&&jet_pt_mc<100)&&weight_pt_mc>weight_pt_cut[2]) continue;
 
             hmc[bin]->Fill(R_L_mc,weight_pt);
             // std::cout<<R_L_mc<<std::endl;

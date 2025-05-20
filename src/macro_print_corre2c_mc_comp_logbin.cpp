@@ -134,65 +134,85 @@ void macro_print_corre2c_mc_comp_logbin(int niter = 20)
             if(jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
             if(efficiency_relerror>corr_rel_error) continue;
             if(purity_relerror>corr_rel_error) continue;
-            if(efficiency<=0||efficiency>1) continue;
-            if(purity<=0||purity>1) continue;
-            if((jet_pt>20&&jet_pt<30)&&weight_pt>0.1) continue;
-            if((jet_pt>30&&jet_pt<50)&&weight_pt>0.07) continue;
-            if((jet_pt>50&&jet_pt<100)&&weight_pt>0.04) continue;
+            if(efficiency<=0||efficiency>1) efficiency = 1 ; //continue;
+            if(purity<=0||purity>1) purity = 1 ;// continue;
+            if((jet_pt>20&&jet_pt<30)&&weight_pt>weight_pt_cut[0]) continue;
+            if((jet_pt>30&&jet_pt<50)&&weight_pt>weight_pt_cut[1]) continue;
+            if((jet_pt>50&&jet_pt<100)&&weight_pt>weight_pt_cut[2]) continue;
 
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
-            // double unfolding_weight = 1.;
+            if(unfolding_weight<=0) unfolding_weight = 1;
+
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
         }
+        std::cout<<"binning norm"<<std::endl;
+        for(int bin_2 = 1 ; bin_2 <= hcorr_e2c[bin]->GetNbinsX(); bin_2++)
+        {
+            hcorr_e2c[bin]->SetBinContent(bin_2, hcorr_e2c[bin]->GetBinContent(bin_2)/(rl_logbinning[bin_2]-rl_logbinning[bin_2-1]));
+        }
+
         ntuple_jet->Project(Form("hcorr_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
         hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral());
+        // hcorr_e2c[bin]->Scale(1./hcorr_e2c[bin]->Integral());
         
         for(int entry = 0 ; entry < ntuple_mc->GetEntries() ; entry++)
         {
             ntuple_mc->GetEntry(entry);
 
             if(jet_pt_mc<jet_pt_binning[bin]||jet_pt_mc>jet_pt_binning[bin+1]) continue;
-            if((jet_pt_mc>20&&jet_pt_mc<30)&&weight_pt_mc>0.1) continue;
-            if((jet_pt_mc>30&&jet_pt_mc<50)&&weight_pt_mc>0.07) continue;
-            if((jet_pt_mc>50&&jet_pt_mc<100)&&weight_pt_mc>0.04) continue;
+            if((jet_pt_mc>20&&jet_pt_mc<30)&&weight_pt_mc>weight_pt_cut[0]) continue;
+            if((jet_pt_mc>30&&jet_pt_mc<50)&&weight_pt_mc>weight_pt_cut[1]) continue;
+            if((jet_pt_mc>50&&jet_pt_mc<100)&&weight_pt_mc>weight_pt_cut[2]) continue;
 
             hmc[bin]->Fill(R_L_mc,weight_pt_mc);
             // std::cout<<R_L_mc<<std::endl;
         }
+        for(int bin_2 = 1 ; bin_2 <= hmc[bin]->GetNbinsX(); bin_2++)
+        {
+            hmc[bin]->SetBinContent(bin_2, hmc[bin]->GetBinContent(bin_2)/(rl_logbinning[bin_2]-rl_logbinning[bin_2-1]));
+        }
         ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
         hmc[bin]->Scale(1./hmc_jet[bin]->Integral());
+        // hmc[bin]->Scale(1./hmc[bin]->Integral());
 
         for(int entry = 0 ; entry < ntuple_mcreco->GetEntries() ; entry++)
         {
             ntuple_mcreco->GetEntry(entry);
 
             if(jet_pt_mcreco<jet_pt_binning[bin]||jet_pt_mcreco>jet_pt_binning[bin+1]) continue;
-            if((jet_pt_mcreco>20&&jet_pt_mcreco<30)&&weight_pt_mcreco>0.1) continue;
-            if((jet_pt_mcreco>30&&jet_pt_mcreco<50)&&weight_pt_mcreco>0.07) continue;
-            if((jet_pt_mcreco>50&&jet_pt_mcreco<100)&&weight_pt_mcreco>0.04) continue;
+            if((jet_pt_mcreco>20&&jet_pt_mcreco<30)&&weight_pt_mcreco>weight_pt_cut[0]) continue;
+            if((jet_pt_mcreco>30&&jet_pt_mcreco<50)&&weight_pt_mcreco>weight_pt_cut[1]) continue;
+            if((jet_pt_mcreco>50&&jet_pt_mcreco<100)&&weight_pt_mcreco>weight_pt_cut[2]) continue;
 
             hmcreco[bin]->Fill(R_L_mcreco,weight_pt_mcreco);
             // std::cout<<R_L_mc<<std::endl;
         }
+        for(int bin_2 = 1 ; bin_2 <= hmcreco[bin]->GetNbinsX(); bin_2++)
+        {
+            hmcreco[bin]->SetBinContent(bin_2, hmcreco[bin]->GetBinContent(bin_2)/(rl_logbinning[bin_2]-rl_logbinning[bin_2-1]));
+        }
         ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
         hmcreco[bin]->Scale(1./hmcreco_jet[bin]->Integral());
+        // hmcreco[bin]->Scale(1./hmcreco[bin]->Integral());
 
         s_data[bin]->Add(hmc[bin],"E");
         s_data[bin]->Add(hmcreco[bin],"E");
         s_data[bin]->Add(hcorr_e2c[bin],"E");
         s_data[bin]->Draw("NOSTACK");
         s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
+        s_data[bin]->SetMaximum(1.1);
+        s_data[bin]->SetMinimum(40E-03);
 
         l_data[bin]->AddEntry(hmc[bin]      ,"mc"    ,"p");
         l_data[bin]->AddEntry(hmcreco[bin]  ,"mcreco","p");
         l_data[bin]->AddEntry(hcorr_e2c[bin],"data"  ,"p");
         gPad->SetLogx(1);
-        gPad->SetLogy(1);
+        // gPad->SetLogy(1);
         l_data[bin]->Draw("SAME");    
         // l_data->AddEntry(hmc[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
     }
     
     // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    // c->Print(Form("./plots/corr_norme2c_jetpt_relerrorleq%.2f_weightpt_mccomp.pdf",corr_rel_error));
+    c->Print(Form("./plots/corr_norme2c_jetpt_rlleqr_relerrorleq%.2f_weightptallwithcuts_mccomp_normincbinwidth_linearscaley.pdf",corr_rel_error));
 }
