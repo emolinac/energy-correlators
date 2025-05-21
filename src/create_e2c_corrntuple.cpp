@@ -96,12 +96,12 @@ int main()
   TH3F* hnum_pur = new TH3F("hnum_pur","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   TH3F* hden_pur = new TH3F("hden_pur","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   TH3F* hpurity  = new TH3F("hpurity" ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  hnum_pur->Sumw2();
-  hden_pur->Sumw2();
-  
   TH3F* hnum_eff    = new TH3F("hnum_eff"   ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   TH3F* hden_eff    = new TH3F("hden_eff"   ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   TH3F* hefficiency = new TH3F("hefficiency","",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  
+  hnum_pur->Sumw2();
+  hden_pur->Sumw2();
   hnum_eff->Sumw2();
   hden_eff->Sumw2();
   
@@ -258,6 +258,15 @@ int main()
         double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
         double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
+        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
         vars[1 ] = efficiency_correction;
         vars[2 ] = purity_correction;
@@ -279,6 +288,14 @@ int main()
         vars[18] = h1_4vector->E();
         vars[19] = h2_4vector->E();
         vars[20] = 2016;
+        vars[21] = nreco_ok_h1;
+        vars[22] = nreco_h1;
+        vars[23] = ntruth_ok_h1;
+        vars[24] = ntruth_h1;
+        vars[25] = nreco_ok_h2;
+        vars[26] = nreco_h2;
+        vars[27] = ntruth_ok_h2;
+        vars[28] = ntruth_h2;
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
@@ -416,6 +433,15 @@ int main()
         double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
         double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
+        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
         vars[1 ] = efficiency_correction;
         vars[2 ] = purity_correction;
@@ -437,6 +463,14 @@ int main()
         vars[18] = h1_4vector->E();
         vars[19] = h2_4vector->E();
         vars[20] = 2017;
+        vars[21] = nreco_ok_h1;
+        vars[22] = nreco_h1;
+        vars[23] = ntruth_ok_h1;
+        vars[24] = ntruth_h1;
+        vars[25] = nreco_ok_h2;
+        vars[26] = nreco_h2;
+        vars[27] = ntruth_ok_h2;
+        vars[28] = ntruth_h2;
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
@@ -574,6 +608,15 @@ int main()
         double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
         double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
+        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
         vars[1 ] = efficiency_correction;
         vars[2 ] = purity_correction;
@@ -595,6 +638,14 @@ int main()
         vars[18] = h1_4vector->E();
         vars[19] = h2_4vector->E();
         vars[20] = 2018;
+        vars[21] = nreco_ok_h1;
+        vars[22] = nreco_h1;
+        vars[23] = ntruth_ok_h1;
+        vars[24] = ntruth_h1;
+        vars[25] = nreco_ok_h2;
+        vars[26] = nreco_h2;
+        vars[27] = ntruth_ok_h2;
+        vars[28] = ntruth_h2;
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
