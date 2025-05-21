@@ -157,7 +157,7 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
             if(purity_relerror>corr_rel_error) continue;
             if(efficiency<=0||efficiency>1) efficiency = 1 ; //continue;
             if(purity<=0||purity>1) purity = 1 ;// continue;
-            // if(weight_pt>weight_pt_cut[bin]) continue;
+            if(weight_pt>weight_pt_cut[bin]) continue;
             
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
             if(unfolding_weight<=0) unfolding_weight = 1;
@@ -169,14 +169,9 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
             hcorr_e2c_l[bin]->Fill(R_L,purity*unfolding_weight_l*weight_pt/efficiency);
         }
         
-        for(int i = 1 ; i <= hcorr_e2c[bin]->GetNbinsX(); i++)
-        {
-            hcorr_e2c[bin]->SetBinContent(i, hcorr_e2c[bin]->GetBinContent(i)/(rl_logbinning[i]-rl_logbinning[i-1]));
-            hcorr_e2c[bin]->SetBinError(i, hcorr_e2c[bin]->GetBinError(i)/(rl_logbinning[i]-rl_logbinning[i-1]));
-        }
-
         ntuple_jet->Project(Form("hcorr_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
-        hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral());
+        
+        hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
         hcorr_e2c_l[bin]->Scale(1./hcorr_jet[bin]->Integral());
 
         // Fill and normalize MC        
@@ -185,18 +180,14 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
             ntuple_mc->GetEntry(entry);
 
             if(jet_pt_mc<jet_pt_binning[bin]||jet_pt_mc>jet_pt_binning[bin+1]) continue;
-            // if(weight_pt_mc>weight_pt_cut[bin]) continue;
+            if(weight_pt_mc>weight_pt_cut[bin]) continue;
             
             hmc[bin]->Fill(R_L_mc,weight_pt_mc);
             hmc_l[bin]->Fill(R_L_mc,weight_pt_mc);
         }
-        for(int i = 1 ; i <= hmc[bin]->GetNbinsX(); i++)
-        {
-            hmc[bin]->SetBinContent(i, hmc[bin]->GetBinContent(i)/(rl_logbinning[i]-rl_logbinning[i-1]));
-            hmc[bin]->SetBinError(i, hmc[bin]->GetBinError(i)/(rl_logbinning[i]-rl_logbinning[i-1]));
-        }
+        
         ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
-        hmc[bin]->Scale(1./hmc_jet[bin]->Integral());
+        hmc[bin]->Scale(1./hmc_jet[bin]->Integral(),"width");
         hmc_l[bin]->Scale(1./hmc_jet[bin]->Integral());
 
         // Fill and normalize MCReco
@@ -205,19 +196,14 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
             ntuple_mcreco->GetEntry(entry);
 
             if(jet_pt_mcreco<jet_pt_binning[bin]||jet_pt_mcreco>jet_pt_binning[bin+1]) continue;
-            // if(weight_pt_mcreco>weight_pt_cut[bin]) continue;
+            if(weight_pt_mcreco>weight_pt_cut[bin]) continue;
 
             hmcreco[bin]->Fill(R_L_mcreco,weight_pt_mcreco);
             hmcreco_l[bin]->Fill(R_L_mcreco,weight_pt_mcreco);
         }
 
-        for(int i = 1 ; i <= hmcreco[bin]->GetNbinsX(); i++)
-        {
-            hmcreco[bin]->SetBinContent(i, hmcreco[bin]->GetBinContent(i)/(rl_logbinning[i]-rl_logbinning[i-1]));
-            hmcreco[bin]->SetBinError(i, hmcreco[bin]->GetBinError(i)/(rl_logbinning[i]-rl_logbinning[i-1]));
-        }
         ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
-        hmcreco[bin]->Scale(1./hmcreco_jet[bin]->Integral());
+        hmcreco[bin]->Scale(1./hmcreco_jet[bin]->Integral(),"width");
         hmcreco_l[bin]->Scale(1./hmcreco_jet[bin]->Integral());
     }
 
@@ -242,7 +228,7 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
         gPad->SetLogx(1);
         l_data[bin]->Draw("SAME");    
     }
-    c->Print(Form("./plots/fullcorre2c_niter%i_relerrorleq%.2f_withoutweightpt_mccomp_logbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullcorre2c_niter%i_relerrorleq%.2f_mccomp_logbinning.pdf",niter,corr_rel_error));
     
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
@@ -251,7 +237,7 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
         gPad->SetLogx(1);
         gPad->SetLogy(1);
     }
-    c->Print(Form("./plots/fullcorre2c_niter%i_relerrorleq%.2f_withoutweightpt_mccomp_logbinning_logscale.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullcorre2c_niter%i_relerrorleq%.2f_mccomp_logbinning_logscale.pdf",niter,corr_rel_error));
     
     // Draw the log binning histos
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
@@ -276,5 +262,5 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
         l_data[bin]->Draw("SAME");    
     }
     
-    c->Print(Form("./plots/fullcorre2c_niter%i_relerrorleq%.2f_withoutweightpt_mccomp_linbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullcorre2c_niter%i_relerrorleq%.2f_mccomp_linbinning.pdf",niter,corr_rel_error));
 }

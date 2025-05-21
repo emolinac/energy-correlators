@@ -152,23 +152,12 @@ void macro_print_fullcorre2c(int niter = 20)
             hcorr_npair_l[bin]->Fill(R_L,purity*unfolding_weight_l/efficiency);
         }
 
+        // Normalize the distributions
         ntuple_jet->Project(Form("hcorr_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
-    }
 
-    // Normalize the distributions
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
-    {
-        std::cout<<"Jet Pt Bin = "<<bin<<std::endl;
         // Log binning
-        for(int i = 1 ; i <= hcorr_e2c[bin]->GetNbinsX() ; i++)
-        {
-            hcorr_e2c[bin]->SetBinContent(i, hcorr_e2c[bin]->GetBinContent(i)/(rl_logbinning[i]-rl_logbinning[i-1]));
-            hcorr_npair[bin]->SetBinContent(i, hcorr_npair[bin]->GetBinContent(i)/(rl_logbinning[i]-rl_logbinning[i-1]));
-
-            std::cout<<hcorr_e2c[bin]->GetBinContent(i)<<std::endl;
-        }
-        hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral());
-        hcorr_npair[bin]->Scale(1./hcorr_jet[bin]->Integral());
+        hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+        hcorr_npair[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
         
         // Linear binning
         hcorr_e2c_l[bin]->Scale(1./hcorr_jet[bin]->Integral());
@@ -192,12 +181,12 @@ void macro_print_fullcorre2c(int niter = 20)
     
     s_data->Draw("NOSTACK");
     s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
-    gPad->SetLogx(1);
     l_data->Draw("SAME");
-
+    gPad->SetLogx(1);
+    
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/fullcorre2c_initer%_relerrorleq%.2f_logbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullcorre2c_niter%i_relerrorleq%.2f_logbinning.pdf",niter,corr_rel_error));
     
     // Draw Linear binning distribution
     s_data = new THStack();
@@ -207,11 +196,11 @@ void macro_print_fullcorre2c(int niter = 20)
     }
     s_data->Draw("NOSTACK");
     s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
+    l_data->Draw("SAME");
     gPad->SetLogx(1);
     gPad->SetLogy(1);
-    l_data->Draw("SAME");
-
+    
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/fullcorre2c_initer%_relerrorleq%.2f_linbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullcorre2c_niter%i_relerrorleq%.2f_linbinning.pdf",niter,corr_rel_error));
 }
