@@ -6,14 +6,14 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c(int niter = 20)
+void macro_print_fullcorre2c_paircorr(int niter = 20)
 {
     // Open the necessary files
-    TFile* fout        = new TFile((output_folder+namef_histos_corr_e2c_logbin).c_str(),"RECREATE");
-    TFile* fout_linear = new TFile((output_folder+namef_histos_corr_e2c).c_str(),"RECREATE");
+    TFile* fout        = new TFile((output_folder+namef_histos_paircorr_e2c_logbin).c_str(),"RECREATE");
+    TFile* fout_linear = new TFile((output_folder+namef_histos_paircorr_e2c).c_str(),"RECREATE");
     gROOT->cd();
 
-    TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
+    TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr).c_str()); 
     if(fcorr->IsZombie()) return;
     
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
@@ -105,15 +105,23 @@ void macro_print_fullcorre2c(int niter = 20)
     tex->SetTextAngle(26.15998);
     tex->SetLineWidth(2);
 
-    // gStyle->SetPaintTextFormat("4.2f");
-    // hunfolded_ratio->Draw("col text");
-    // hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
-    // hunfolded_ratio->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
-    // hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
-    // gPad->SetLogx(0);
-    // gPad->SetLogy(1);
-    // c->Print(Form("./plots/unfolded3d_initer%_ratio_sepyears_linearbinning_unfbinvarv2.pdf",niter));
+    gStyle->SetPaintTextFormat("4.2f");
+    hunfolded_ratio->Draw("col text");
+    hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
+    hunfolded_ratio->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
+    hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+    gPad->SetLogx(1);
+    gPad->SetLogy(1);
+    c->Print(Form("./plots/unfolded3d_initer%i_ratio_logbinning.pdf",niter));
 
+    hunfolded_ratio_l->Draw("col text");
+    hunfolded_ratio_l->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
+    hunfolded_ratio_l->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
+    hunfolded_ratio_l->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+    gPad->SetLogx(0);
+    gPad->SetLogy(1);
+    c->Print(Form("./plots/unfolded3d_initer%i_ratio_linbinning.pdf",niter));
+    
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
 
@@ -138,12 +146,12 @@ void macro_print_fullcorre2c(int niter = 20)
             if(purity_relerror>corr_rel_error) continue;
             if(efficiency<=0||efficiency>1) efficiency = 1;//continue;
             if(purity<=0||purity>1) purity = 1;//continue;
-            if(weight_pt>weight_pt_cut[bin]) continue;
+            // if(weight_pt>weight_pt_cut[bin]) continue;
             
-            double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
+            double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt));
             if(unfolding_weight<=0) unfolding_weight = 1;
 
-            double unfolding_weight_l = hunfolded_ratio_l->GetBinContent(hunfolded_ratio_l->FindBin(R_L,jet_pt,weight_pt));
+            double unfolding_weight_l = hunfolded_ratio_l->GetBinContent(hunfolded_ratio_l->FindBin(R_L,jet_pt));
             if(unfolding_weight_l<=0) unfolding_weight_l = 1;
 
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
@@ -183,10 +191,11 @@ void macro_print_fullcorre2c(int niter = 20)
     s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
     l_data->Draw("SAME");
     gPad->SetLogx(1);
+    gPad->SetLogy(0);
     
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/fullcorre2c_niter%i_logbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullpaircorre2c_niter%i_logbinning.pdf",niter));
     
     // Draw Linear binning distribution
     s_data = new THStack();
@@ -202,5 +211,5 @@ void macro_print_fullcorre2c(int niter = 20)
     
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/fullcorre2c_niter%i_linbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullpaircorre2c_niter%i_linbinning.pdf",niter));
 }

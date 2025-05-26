@@ -6,6 +6,7 @@
 // Names of the files
 std::string namef_ntuple_e2c                = "ntuple_e2c.root";
 std::string namef_ntuple_e2c_corr           = "ntuple_corre2c.root";
+std::string namef_ntuple_e2c_paircorr       = "ntuple_paircorre2c.root";
 std::string namef_ntuple_e2c_purity         = "ntuple_e2c_purity.root";
 std::string namef_ntuple_e2c_pairpurity     = "ntuple_e2c_pairpurity.root";
 std::string namef_ntuple_e2c_unfolding      = "ntuple_e2c_unfolding.root";
@@ -16,8 +17,10 @@ std::string namef_ntuple_mc_e2c             = "ntuple_mc_e2c.root";
 std::string namef_ntuple_mc_at_e2c          = "ntuple_mc_at_e2c.root";
 std::string namef_ntuple_hadron             = "ntuple_hadron.root";
 
-std::string namef_histos_corr_e2c        = "histos_corr_e2c.root";
-std::string namef_histos_corr_e2c_logbin = "histos_corr_e2c_logbin.root";
+std::string namef_histos_corr_e2c            = "histos_corr_e2c.root";
+std::string namef_histos_corr_e2c_logbin     = "histos_corr_e2c_logbin.root";
+std::string namef_histos_paircorr_e2c        = "histos_paircorr_e2c.root";
+std::string namef_histos_paircorr_e2c_logbin = "histos_paircorr_e2c_logbin.root";
 
 // Name of the ntuples
 std::string name_ntuple_unfold          = "ntuple_unfold";
@@ -42,11 +45,13 @@ const int Nvars_mcreco          = 21;
 const int Nvars_mc              = 21; 
 const int Nvars_data            = 17; 
 const int Nvars_corrdata        = 29; 
+const int Nvars_paircorrdata    = 25; 
 
-const char* ntuple_mcreco_vars   = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
-const char* ntuple_data_vars     = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e";
-const char* ntuple_corrdata_vars = "weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth";
-const char* ntuple_mc_vars       = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
+const char* ntuple_mcreco_vars       = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
+const char* ntuple_data_vars         = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e";
+const char* ntuple_corrdata_vars     = "weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth";
+const char* ntuple_paircorrdata_vars = "weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_reco_ok:n_reco:n_truth_ok:n_truth";
+const char* ntuple_mc_vars           = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_purity          = 16;

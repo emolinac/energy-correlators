@@ -6,10 +6,10 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_mc_comp(int niter = 20)
+void macro_print_fullcorre2c_mc_comp_paircorr(int niter = 20)
 {
     // Open the necessary files
-    TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
+    TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr).c_str()); 
     TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
     if(fcorr->IsZombie()) return;
     
@@ -30,9 +30,7 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
     ntuple_data->SetBranchAddress("efficiency_relerror",&efficiency_relerror);
     ntuple_data->SetBranchAddress("purity",&purity);
     ntuple_data->SetBranchAddress("purity_relerror",&purity_relerror);
-    ntuple_data->SetBranchAddress("n_h1_truth_ok",&n_h1_truth_ok);
-    ntuple_data->SetBranchAddress("n_h2_truth_ok",&n_h2_truth_ok);
-
+    
     // Set the branches of data
     float R_L_mc, jet_pt_mc, weight_pt_mc;
     ntuple_mc->SetBranchAddress("R_L",&R_L_mc);
@@ -155,23 +153,20 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
             ntuple_data->GetEntry(entry);
 
             if(jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
-            if(efficiency_relerror>max_relerror[bin]) efficiency = 1 ;
-            if(purity_relerror>max_relerror[bin]) purity = 1 ;
-            // if(efficiency<min_efficiency[bin]) continue;
-            if(efficiency<=0||efficiency>1) efficiency = 1 ;
-            if(purity<=0||purity>1) purity = 1 ;
-            if(weight_pt>weight_pt_cut[bin]) continue;
+            if(efficiency_relerror>corr_rel_error) continue;
+            if(purity_relerror>corr_rel_error) continue;
+            if(efficiency<=0||efficiency>1) efficiency = 1;//continue;
+            if(purity<=0||purity>1) purity = 1;//continue;
+            // if(weight_pt>weight_pt_cut[bin]) continue;
             
-            double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt,weight_pt));
+            double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt));
             if(unfolding_weight<=0) unfolding_weight = 1;
 
-            double unfolding_weight_l = hunfolded_ratio_l->GetBinContent(hunfolded_ratio_l->FindBin(R_L,jet_pt,weight_pt));
+            double unfolding_weight_l = hunfolded_ratio_l->GetBinContent(hunfolded_ratio_l->FindBin(R_L,jet_pt));
             if(unfolding_weight_l<=0) unfolding_weight_l = 1;
 
-            // hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
-            // hcorr_e2c_l[bin]->Fill(R_L,purity*unfolding_weight_l*weight_pt/efficiency);
-            hcorr_e2c[bin]->Fill(R_L,purity*weight_pt/efficiency);
-            hcorr_e2c_l[bin]->Fill(R_L,purity*weight_pt/efficiency);
+            hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+            hcorr_e2c_l[bin]->Fill(R_L,purity*unfolding_weight_l*weight_pt/efficiency);
         }
         
         ntuple_jet->Project(Form("hcorr_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
@@ -224,7 +219,7 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
         s_data[bin]->Add(hcorr_e2c[bin],"E");
         s_data[bin]->Draw("NOSTACK");
         s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
-        s_data[bin]->SetMaximum(1.7);
+        s_data[bin]->SetMaximum(1.2);
         s_data[bin]->SetMinimum(40E-03);
 
         l_data[bin]->AddEntry(hmc[bin]      ,"mc"    ,"p");
@@ -233,31 +228,31 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
         gPad->SetLogx(1);
         l_data[bin]->Draw("SAME");    
     }
-    c->Print(Form("./plots/fullcorre2c_niter%i_norejectjetptdeprelerrorleq%.2f_nomjetptbinning_mccomp_logbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullpaircorre2c_niter%i_mccomp_logbinning.pdf",niter,corr_rel_error));
     
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
         c->cd(bin+1);
-        s_data[bin]->SetMaximum(1.7);
+        s_data[bin]->SetMaximum(1.2);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
     }
-    c->Print(Form("./plots/fullcorre2c_niter%i_norejectjetptdeprelerrorleq%.2f_nomjetptbinning_mccomp_logbinning_logscale.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullpaircorre2c_niter%i_mccomp_logbinning_logscale.pdf",niter,corr_rel_error));
     
     // Draw the log binning histos
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
         c->cd(bin+1);
         s_data[bin] = new THStack();
-        l_data[bin] = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
+        l_data[bin] = new TLegend(0.5,gPad->GetBottomMargin()+0.01,0.7,0.15+gPad->GetBottomMargin()+0.01);
 
         s_data[bin]->Add(hmc_l[bin],"E");
         s_data[bin]->Add(hmcreco_l[bin],"E");
         s_data[bin]->Add(hcorr_e2c_l[bin],"E");
         s_data[bin]->Draw("NOSTACK");
         s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
-        s_data[bin]->SetMaximum(9E-02);
-        s_data[bin]->SetMinimum(1E-04);
+        s_data[bin]->SetMaximum(5E-02);
+        s_data[bin]->SetMinimum(1E-03);
 
         l_data[bin]->AddEntry(hmc_l[bin]      ,"mc"    ,"p");
         l_data[bin]->AddEntry(hmcreco_l[bin]  ,"mcreco","p");
@@ -267,5 +262,5 @@ void macro_print_fullcorre2c_mc_comp(int niter = 20)
         l_data[bin]->Draw("SAME");    
     }
     
-    c->Print(Form("./plots/fullcorre2c_niter%i_norejectjetptdeprelerrorleq%.2f_nomjetptbinning_mccomp_linbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullpaircorre2c_niter%i_mccomp_linbinning.pdf",niter,corr_rel_error));
 }

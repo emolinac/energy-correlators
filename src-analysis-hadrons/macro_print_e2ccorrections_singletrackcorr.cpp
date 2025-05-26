@@ -65,7 +65,7 @@ void macro_print_e2ccorrections_singletrackcorr()
     
     tex->DrawLatexNDC(0.2,0.85,"pair-by-pair corr.");
 
-    c->Print(Form("./plots/corr_e2cpurity_singletrackcorr_relerrorleq%.2f_3dcorr.pdf",corr_rel_error));
+    c->Print(Form("./plots/corr_e2cpurity_singletrackcorr_3dcorr.pdf",corr_rel_error));
 
     hefficiency->SetMaximum(1);
     hefficiency->SetMinimum(0);
@@ -76,5 +76,5 @@ void macro_print_e2ccorrections_singletrackcorr()
     
     tex->DrawLatexNDC(0.2,0.85,"pair-by-pair corr.");
 
-    c->Print(Form("./plots/corr_e2cefficiency_singletrackcorr_relerrorleq%.2f_3dcorr.pdf",corr_rel_error));
+    c->Print(Form("./plots/corr_e2cefficiency_singletrackcorr_3dcorr.pdf",corr_rel_error));
 }
