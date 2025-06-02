@@ -12,7 +12,6 @@ std::string namef_ntuple_e2c_pairpurity     = "ntuple_e2c_pairpurity.root";
 std::string namef_ntuple_e2c_unfolding      = "ntuple_e2c_unfolding.root";
 std::string namef_ntuple_e2c_efficiency     = "ntuple_e2c_efficiency.root";
 std::string namef_ntuple_e2c_pairefficiency = "ntuple_e2c_pairefficiency.root";
-std::string namef_ntuple_jetptpurity        = "ntuple_jetpurity.root";
 std::string namef_ntuple_mc_e2c             = "ntuple_mc_e2c.root";
 std::string namef_ntuple_mc_at_e2c          = "ntuple_mc_at_e2c.root";
 std::string namef_ntuple_hadron             = "ntuple_hadron.root";

@@ -22,7 +22,8 @@ void macro_print_responsematrices()
     
     TH2F* hresp_rl     = new TH2F("hresp_rl","",Nbin_R_L_logbin,rl_logbinning,Nbin_R_L_logbin,rl_logbinning);
     TH2F* hresp_jetpt  = new TH2F("hresp_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH2F* hresp_weight = new TH2F("hresp_weight","",Nbin_weight,weight_binning,Nbin_weight,weight_binning);
+    TH2F* hresp_weight = new TH2F("hresp_weight","",Nbin_weight_unfolding,weight_unfoldingbinning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    // TH2F* hresp_weight = new TH2F("hresp_weight","",Nbin_weight,weight_binning,Nbin_weight,weight_binning);
 
     for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
@@ -49,7 +50,7 @@ void macro_print_responsematrices()
     gPad->SetLogy(1);
     c->Print("./plots/responsematrix_weight.pdf");
     hresp_rl->GetXaxis()->SetRangeUser(0.01,1);
-    hresp_rl->GetYaxis()->SetRangeUser(0.01,1);
+    hresp_rl->GetYaxis()->SetRangeUser(0.01,1); 
     hresp_rl->Draw("col text");
     hresp_rl->SetTitle("Response matrix of R_{L};Reco;Truth");
     gPad->SetLogx(1);

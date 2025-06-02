@@ -14,7 +14,7 @@ void macro_determine_binning()
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_data.c_str());
     
     // Declare the histos to use
-    TH1F* h_weight = new TH1F("h_weight","",1000000,weight_min,weight_max);
+    TH1F* h_weight = new TH1F("h_weight","",100000000,weight_min,weight_max);
 
     // Put the data into the histos and get the cumulative distributions
     ntuple->Project("h_weight","weight_pt",pair_cut);
@@ -55,8 +55,11 @@ void macro_determine_binning()
     const int Nbin_log = Nbin_R_L_logbin;
     double binning_log[Nbin_log+1];
 
+    double binning_tau_log[Nbin_tau_logbin+1];
+
     determine_eqsizebinning(Nbin, R_L_min, R_L_max, binning);
     determine_log10binning(Nbin_log, R_L_logmin, R_L_logmax, binning_log);
+    determine_log10binning(Nbin_tau_logbin, tau_min, tau_max, binning_tau_log);
 
     std::cout<<"const double rl_binning[]              = {R_L_min";
     for(int i = 1 ; i < Nbin ; i++)
@@ -71,6 +74,13 @@ void macro_determine_binning()
         std::cout<<", "<<binning_log[i];
     }
     std::cout<<", R_L_logmax};"<<std::endl;
+
+    std::cout<<"const double tau_logbinning[]          = {tau_min";
+    for(int i = 1 ; i < Nbin_tau_logbin ; i++)
+    {
+        std::cout<<", "<<binning_tau_log[i];
+    }
+    std::cout<<", tau_max};"<<std::endl;
 
     return 0;
 }

@@ -42,7 +42,7 @@ const double track_pt_min          = 0.25;
 const double track_probnnghost_max = 0.5;
 
 // Jet pt dependent cuts
-const double weight_pt_cut[]  = {0.10,0.10,0.08};
+const double weight_pt_cut[]  = {0.12,0.10,0.085};
 const double min_efficiency[] = {0.14,0.10,0.05};
 const double max_relerror[]   = {0.50,0.35,0.45};
 

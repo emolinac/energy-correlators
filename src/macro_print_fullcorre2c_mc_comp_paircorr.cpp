@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_mc_comp_paircorr(int niter = 20)
+void macro_print_fullcorre2c_mc_comp_paircorr(int niter = 4)
 {
     // Open the necessary files
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr).c_str()); 
@@ -153,11 +153,8 @@ void macro_print_fullcorre2c_mc_comp_paircorr(int niter = 20)
             ntuple_data->GetEntry(entry);
 
             if(jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
-            if(efficiency_relerror>corr_rel_error) continue;
-            if(purity_relerror>corr_rel_error) continue;
             if(efficiency<=0||efficiency>1) efficiency = 1;//continue;
             if(purity<=0||purity>1) purity = 1;//continue;
-            // if(weight_pt>weight_pt_cut[bin]) continue;
             
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt));
             if(unfolding_weight<=0) unfolding_weight = 1;
@@ -180,7 +177,6 @@ void macro_print_fullcorre2c_mc_comp_paircorr(int niter = 20)
             ntuple_mc->GetEntry(entry);
 
             if(jet_pt_mc<jet_pt_binning[bin]||jet_pt_mc>jet_pt_binning[bin+1]) continue;
-            if(weight_pt_mc>weight_pt_cut[bin]) continue;
             
             hmc[bin]->Fill(R_L_mc,weight_pt_mc);
             hmc_l[bin]->Fill(R_L_mc,weight_pt_mc);
