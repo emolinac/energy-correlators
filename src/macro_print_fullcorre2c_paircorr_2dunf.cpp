@@ -151,9 +151,6 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
             if(jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
             if(efficiency<=0||efficiency>1) efficiency = 1;//continue;
             if(purity<=0||purity>1) purity = 1;//continue;
-            // if(efficiency<=0||efficiency>1) continue;
-            // if(purity<=0||purity>1) continue;
-            if(weight_pt>weight_pt_cut[bin]) continue;
             
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt));
             if(unfolding_weight<=0) unfolding_weight = 1;

@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4)
+void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print = true)
 {
     // Open the necessary files
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr).c_str()); 
@@ -70,7 +70,6 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        // if(jet_pt_reco<unfolding_jetpt_binning[0]||jet_pt_reco>unfolding_jetpt_binning[4]) continue;
         if(R_L_truth==-999) continue;
     
         response->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
@@ -220,7 +219,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4)
         gPad->SetLogx(1);
         l_data[bin]->Draw("SAME");    
     }
-    c->Print(Form("./plots/fullpaircorre2c_niter%i_mccomp_logbinning_2dunf.pdf",niter));
+    if(do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logbinning_2dunf.pdf",niter));
     
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
@@ -229,7 +228,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4)
         gPad->SetLogx(1);
         gPad->SetLogy(1);
     }
-    c->Print(Form("./plots/fullpaircorre2c_niter%i_mccomp_logbinning_logscale_2dunf.pdf",niter));
+    if(do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logbinning_logscale_2dunf.pdf",niter));
     
     // Draw the log binning histos
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
@@ -254,5 +253,5 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4)
         l_data[bin]->Draw("SAME");    
     }
     
-    c->Print(Form("./plots/fullpaircorre2c_niter%i_mccomp_linbinning_2dunf.pdf",niter));
+    if(do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_linbinning_2dunf.pdf",niter));
 }

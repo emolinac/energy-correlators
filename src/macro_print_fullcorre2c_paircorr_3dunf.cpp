@@ -88,7 +88,6 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     TH2D* hpuritycorrected2_rl_jetpt = (TH2D*) hpuritycorrected2->Project3D("yx");
     hunfolded_ratio_2d->Divide(hunfolded_bayes_rl_jetpt,hpuritycorrected2_rl_jetpt,1,1);
     
-
     RooUnfoldBayes unfold_l(response_l, hpuritycorrected_l, niter);
     TH3D* hunfolded_bayes_l = (TH3D*) unfold_l.Hunfold();
     hunfolded_ratio_3d_l->Divide(hunfolded_bayes_l,hpuritycorrected2_l,1,1);
