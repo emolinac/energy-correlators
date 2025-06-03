@@ -7,7 +7,8 @@
 #include "../include/utils-visual.h"
 
 // std::string systematic = "hadron-correction-scheme";
-std::string systematic = "syst-probnnghost";
+std::string systematic = "syst-corr-binning";
+// std::string systematic = "syst-probnnghost";
 // std::string systematic = "syst-min-track-pt";
 // std::string systematic = "syst-unfolding-dim";
 

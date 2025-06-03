@@ -2,7 +2,7 @@
 
 echo "Make sure to execute this code in the home folder."
 
-name_systematic=syst-probnnghost
+name_systematic=syst-corr-binning
 
 if [ ! -d "./systematics" ]; then
     echo "Systematics folder does not exist. Creating folder ..."

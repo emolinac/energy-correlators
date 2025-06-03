@@ -9,7 +9,7 @@ for line in $(cat ${mother_dir}/folder-list.txt); do
     if [ -d "${mother_dir}/systematics/${line}/include" ]; then
         echo "Include exists on ${line}. Copying binning settings into ${line}"
         cp ${mother_dir}/include/analysis-binning.h ${mother_dir}/systematics/${line}/include/
-        cp ${mother_dir}/include/analysis-constants.h ${mother_dir}/systematics/${line}/include/
+        # cp ${mother_dir}/include/analysis-constants.h ${mother_dir}/systematics/${line}/include/
 
         cd ${mother_dir}/systematics/${line}/
         make clean

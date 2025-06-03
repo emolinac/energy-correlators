@@ -58,6 +58,12 @@ const int Nbin_tau_logbin     = Nbin_R_L_logbin;
 const double tau_logbinning[] = {tau_min, 0.68799, 0.94666, 1.30259, 1.79233, 2.46621, 3.39346, 4.66933, 6.4249, 8.84054, 12.1644, 16.738, 23.0311, 31.6904, 43.6053, tau_max};
 
 // Alternative binnings
+const int Nbin_R_L_altlogbin           = 20; 
+const int Nbin_R_L_altlogbin_unfolding = Nbin_R_L_logbin + 2;
+
+const double rl_altlogbinning[]           = {R_L_logmin, 0.0234924, 0.0275946, 0.0324131, 0.0380731, 0.0447214, 0.0525306, 0.0617034, 0.072478, 0.085134, 0.1, 0.117462, 0.137973, 0.162066, 0.190365, 0.223607, 0.262653, 0.308517, 0.36239, 0.42567, R_L_logmax};
+const double unfolding_rl_altlogbinning[] = {R_L_absmin,R_L_logmin, 0.0234924, 0.0275946, 0.0324131, 0.0380731, 0.0447214, 0.0525306, 0.0617034, 0.072478, 0.085134, 0.1, 0.117462, 0.137973, 0.162066, 0.190365, 0.223607, 0.262653, 0.308517, 0.36239, 0.42567, R_L_logmax, R_L_absmax};
+
 const double sl_p_binning[]   = {4., 10., 16., 22., 28., 40., 52., 76., 100., 150., 250., 500., 1000.};
 const double ic_p_binning[]   = {4, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 250, 300, 500, 1000};
 const double sl_eta_binning[] = {2.,2.25,2.5,2.75,3.,3.25,3.5,3.75,4.,4.25,4.5};
