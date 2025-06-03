@@ -2,7 +2,7 @@
 
 echo "Make sure to execute this code in the home folder."
 
-name_systematic=syst-unfolding-dim
+name_systematic=syst-probnnghost
 
 if [ ! -d "./systematics" ]; then
     echo "Systematics folder does not exist. Creating folder ..."

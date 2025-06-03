@@ -7,9 +7,9 @@
 #include "../include/utils-visual.h"
 
 // std::string systematic = "hadron-correction-scheme";
-// std::string systematic = "probnnghost";
+std::string systematic = "syst-probnnghost";
 // std::string systematic = "syst-min-track-pt";
-std::string systematic = "syst-unfolding-dim";
+// std::string systematic = "syst-unfolding-dim";
 
 void macro_print_deviation_from_nominal_logbin()
 {
@@ -32,9 +32,9 @@ void macro_print_deviation_from_nominal_logbin()
         h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
         h_deviations[jet_pt_bin]->Divide(h_nominal[jet_pt_bin]);
 
-        set_histogram_style(h_deviations[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size);
+        set_histogram_style(h_deviations[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width-1, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size+1);
 
-        s->Add(h_deviations[jet_pt_bin],"E");
+        s->Add(h_deviations[jet_pt_bin],"E1 X0 L");
         l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lf");
     }
 
