@@ -11,8 +11,8 @@ std::string systematic = "probnnghost";
 
 void macro_print_deviation_from_nominal_logbin_npair()
 {
-    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_corr_e2c_logbin).c_str());
-    TFile* fsystematic = new TFile((systematic+"/output-files/"+namef_histos_corr_e2c_logbin).c_str());
+    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_e2c_logbin).c_str());
+    TFile* fsystematic = new TFile((systematic+"/output-files/"+namef_histos_paircorr_e2c_logbin).c_str());
 
     THStack* s = new THStack();
     TLegend* l = new TLegend();
@@ -23,8 +23,8 @@ void macro_print_deviation_from_nominal_logbin_npair()
 
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_npair[%i]",jet_pt_bin));
-        h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_npair[%i]",jet_pt_bin));
+        h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_npair%i",jet_pt_bin));
+        h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_npair%i",jet_pt_bin));
         h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",Nbin_R_L_logbin,rl_logbinning);
 
         h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
