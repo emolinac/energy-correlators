@@ -228,6 +228,7 @@ int main()
         vars[22] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
         vars[23] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
         vars[24] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+        vars[25] = mcrecotree->Jet_Dtr_ThreeCharge[h1_index]*mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
 
         // Fill the TNtuple
         ntuple_reco->Fill(vars);
@@ -276,6 +277,7 @@ int main()
         vars_mc[10] = Jet_4vector->Eta();
         vars_mc[11] = Jet_4vector->Pt();
         vars_mc[12] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+        vars_mc[13] = mcrecotree->Jet_mcjet_dtrThreeCharge[h1_index]*mcrecotree->Jet_mcjet_dtrThreeCharge[h2_index];
 
         // Fill the TNtuple
         ntuple_mc->Fill(vars_mc);

@@ -100,13 +100,6 @@ int main()
   TH2F* hden_eff    = new TH2F("hden_eff"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   TH2F* hefficiency = new TH2F("hefficiency","",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   
-  // TH2F* hnum_pur    = new TH2F("hnum_pur"   ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  // TH2F* hden_pur    = new TH2F("hden_pur"   ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  // TH2F* hpurity     = new TH2F("hpurity"    ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  // TH2F* hnum_eff    = new TH2F("hnum_eff"   ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  // TH2F* hden_eff    = new TH2F("hden_eff"   ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  // TH2F* hefficiency = new TH2F("hefficiency","",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
-  
   hnum_pur->Sumw2();
   hden_pur->Sumw2();
   hnum_eff->Sumw2();
@@ -119,6 +112,38 @@ int main()
 
   hpurity->Divide(hnum_pur,hden_pur,1,1,"B");
   hefficiency->Divide(hnum_eff,hden_eff,1,1,"B");
+
+  // DELETE LATER
+  // DELETE LATER
+  TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge","",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  
+  TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge","",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
+  
+  ntuple_purity->Project("hnum_pur_eqcharge","jet_pt:R_L","R_L_truth!=-999&&eq_charge>1");
+  ntuple_purity->Project("hden_pur_eqcharge","jet_pt:R_L","eq_charge>1");
+  ntuple_efficiency_reco->Project("hnum_eff_eqcharge","jet_pt_truth:R_L_truth","R_L_truth!=-999&&eq_charge>1");
+  ntuple_efficiency_mc->Project("hden_eff_eqcharge","jet_pt:R_L","eq_charge>1");
+
+  ntuple_purity->Project("hnum_pur_neqcharge","jet_pt:R_L","R_L_truth!=-999&&eq_charge<-1");
+  ntuple_purity->Project("hden_pur_neqcharge","jet_pt:R_L","eq_charge<-1");
+  ntuple_efficiency_reco->Project("hnum_eff_neqcharge","jet_pt_truth:R_L_truth","R_L_truth!=-999&&eq_charge<-1");
+  ntuple_efficiency_mc->Project("hden_eff_neqcharge","jet_pt:R_L","eq_charge<-1");
+
+  hpurity_eqcharge->Divide(hnum_pur_eqcharge,hden_pur_eqcharge,1,1,"B");
+  hefficiency_eqcharge->Divide(hnum_eff_eqcharge,hden_eff_eqcharge,1,1,"B");
+
+  hpurity_neqcharge->Divide(hnum_pur_neqcharge,hden_pur_neqcharge,1,1,"B");
+  hefficiency_neqcharge->Divide(hnum_eff_neqcharge,hden_eff_neqcharge,1,1,"B");
 
   TCanvas* c = new TCanvas("c","",1920,1080);
   c->Draw();
@@ -141,6 +166,39 @@ int main()
   gPad->SetLogy(1);
   c->Print("../src-analysis/plots/pair_efficiency_correction_logbin.pdf");
 
+  // DELETE LATER!!!!
+  hpurity_eqcharge->Draw("col text");
+  hpurity_eqcharge->SetTitle("Purity Correction;R_{L};p^{jet}_{T}(GeV)");
+  hpurity_eqcharge->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
+  hpurity_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+  gPad->SetLogx(1);
+  gPad->SetLogy(1);
+  c->Print("../src-analysis/plots/pair_purity_correction_eqcharge_logbin.pdf");
+
+  hefficiency_eqcharge->Draw("col text");
+  hefficiency_eqcharge->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
+  hefficiency_eqcharge->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
+  hefficiency_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+  gPad->SetLogx(1);
+  gPad->SetLogy(1);
+  c->Print("../src-analysis/plots/pair_efficiency_correction_eqcharge_logbin.pdf");
+
+  hpurity_neqcharge->Draw("col text");
+  hpurity_neqcharge->SetTitle("Purity Correction;R_{L};p^{jet}_{T}(GeV)");
+  hpurity_neqcharge->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
+  hpurity_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+  gPad->SetLogx(1);
+  gPad->SetLogy(1);
+  c->Print("../src-analysis/plots/pair_purity_correction_neqcharge_logbin.pdf");
+
+  hefficiency_neqcharge->Draw("col text");
+  hefficiency_neqcharge->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
+  hefficiency_neqcharge->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
+  hefficiency_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+  gPad->SetLogx(1);
+  gPad->SetLogy(1);
+  c->Print("../src-analysis/plots/pair_efficiency_correction_neqcharge_logbin.pdf");
+  
   // Create necessary 4vectors
   TLorentzVector* Jet_4vector = new TLorentzVector();
   TLorentzVector* Z0_4vector  = new TLorentzVector();
@@ -303,6 +361,7 @@ int main()
         vars[22] = nreco;
         vars[23] = ntruth_ok;
         vars[24] = ntruth;
+        vars[25] = datatree_2016->Jet_Dtr_ThreeCharge[h1_index]*datatree_2016->Jet_Dtr_ThreeCharge[h2_index];
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
@@ -457,6 +516,7 @@ int main()
         vars[22] = nreco;
         vars[23] = ntruth_ok;
         vars[24] = ntruth;
+        vars[25] = datatree_2017->Jet_Dtr_ThreeCharge[h1_index]*datatree_2017->Jet_Dtr_ThreeCharge[h2_index];
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
@@ -611,6 +671,7 @@ int main()
         vars[22] = nreco;
         vars[23] = ntruth_ok;
         vars[24] = ntruth;
+        vars[25] = datatree_2018->Jet_Dtr_ThreeCharge[h1_index]*datatree_2018->Jet_Dtr_ThreeCharge[h2_index];
         
         // Fill the TNtuple
         ntuple_data->Fill(vars);
