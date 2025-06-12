@@ -24,31 +24,26 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     TH2D* htrue_ref = new TH2D("htrue_ref","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     TH2D* hct       = new TH2D("hct"      ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
 
-    TRandom3* rndm = new TRandom3(0);
+    TRandom3* rndm = new TRandom3();
     for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
         if(R_L_truth==-999) continue;
-        if(rndm->Uniform(1)<=0.25) 
+        if(rndm->Uniform(1)<=0.5) 
         {
             htrue_ref->Fill(R_L_truth,jet_pt_truth);
             continue;
         }
-        else if(rndm->Uniform(1)<=0.5&&rndm->Uniform(1)>=0.25)
-        {
-            hmeas->Fill(R_L, jet_pt);
-            continue;
-        }
 
         response->Fill(R_L, jet_pt, R_L_truth, jet_pt_truth);
-        // hmeas->Fill(R_L, jet_pt);
+        hmeas->Fill(R_L, jet_pt);
     }
 
-    // TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c","",1920,1080);
     TCanvas* c2d = new TCanvas("c2d","",1920,1080);
-    // c->Draw();
-    // c->cd();
+    c->Draw();
+    c->cd();
 
     RooUnfoldBayes unfold(response, hmeas, Niter);
     TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
@@ -82,56 +77,38 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     set_histogram_style(hct_rl       , std_marker_color_jet_pt[1], std_line_width, std_marker_style, std_marker_size+1);
     set_histogram_style(hct_jetpt    , std_marker_color_jet_pt[1], std_line_width, std_marker_style, std_marker_size+1);
     
-    // TLegend* lrl = new TLegend();
-    // lrl->AddEntry(hct_rl,"RooUnfold","lpf");
-    // THStack* hs_rl = new THStack();
-    // hs_rl->Add(hct_rl);
-    // hs_rl->Draw("NOSTACK");
-    // hs_rl->SetTitle(";R_{L};Truth/Unfolded");
-    // // hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_R_L]);
-    // hs_rl->SetMinimum(0.89);
-    // hs_rl->SetMaximum(1.11);
-    // gPad->SetLogx(1);
-    // lrl->Draw("SAME");
-    // c->Print(Form("./plots/unfolded2d_closuretest_rl_niter%i.pdf",Niter));    
-    // gPad->SetLogx(0);
+    TLegend* lrl = new TLegend();
+    lrl->AddEntry(hct_rl,"RooUnfold","lpf");
+    THStack* hs_rl = new THStack();
+    hs_rl->Add(hct_rl);
+    hs_rl->Draw("NOSTACK");
+    hs_rl->SetTitle(";R_{L};Truth/Unfolded");
+    // hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_R_L]);
+    hs_rl->SetMinimum(0.89);
+    hs_rl->SetMaximum(1.11);
+    gPad->SetLogx(1);
+    lrl->Draw("SAME");
+    c->Print(Form("./plots/unfolded2d_closuretest_rl_niter%i.pdf",Niter));    
+    gPad->SetLogx(0);
 
-    // TLegend* ljetpt = new TLegend();
-    // ljetpt->AddEntry(hct_jetpt,"RooUnfold","lpf");
-    // THStack* hs_jetpt = new THStack();
-    // hs_jetpt->Add(hct_jetpt);
-    // hs_jetpt->Draw("NOSTACK");
-    // hs_jetpt->SetTitle(";p^{jet}_{t}(GeV);Truth/Unfolded");
-    // // hs_jetpt->GetXaxis()->SetRangeUser(20,100);
-    // hs_jetpt->SetMinimum(0.89);
-    // hs_jetpt->SetMaximum(1.11);
-    // ljetpt->Draw("SAME");
-    // c->Print(Form("./plots/unfolded2d_closuretest_jetpt_niter%i.pdf",Niter));    
+    TLegend* ljetpt = new TLegend();
+    ljetpt->AddEntry(hct_jetpt,"RooUnfold","lpf");
+    THStack* hs_jetpt = new THStack();
+    hs_jetpt->Add(hct_jetpt);
+    hs_jetpt->Draw("NOSTACK");
+    hs_jetpt->SetTitle(";p^{jet}_{t}(GeV);Truth/Unfolded");
+    // hs_jetpt->GetXaxis()->SetRangeUser(20,100);
+    hs_jetpt->SetMinimum(0.89);
+    hs_jetpt->SetMaximum(1.11);
+    ljetpt->Draw("SAME");
+    c->Print(Form("./plots/unfolded2d_closuretest_jetpt_niter%i.pdf",Niter));    
 
     c2d->Draw();
     c2d->cd();
-    hct_rl_jetpt->Draw("COL");
-
-    // Adding content with errors
-    TLatex latex;
-    latex.SetTextAlign(22); // center alignment
-    latex.SetTextSize(0.015);
-    latex.SetTextColor(kBlack);
-
-    for (int i = 1; i <= hct_rl_jetpt->GetNbinsX(); ++i) {
-        for (int j = 2; j <= hct_rl_jetpt->GetNbinsY(); ++j) {
-            double x = hct_rl_jetpt->GetXaxis()->GetBinCenter(i);
-            double y = hct_rl_jetpt->GetYaxis()->GetBinCenter(j);
-            double content = hct_rl_jetpt->GetBinContent(i, j);
-            double error = hct_rl_jetpt->GetBinError(i, j);
-            // Draw content and error in the format "content ± error"
-            latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-        }
-    }
-
+    hct_rl_jetpt->Draw("COL TEXT");
     hct_rl_jetpt->SetTitle(";R_{L};p^{jet}_{T} GeV");
     hct_rl_jetpt->GetYaxis()->SetRangeUser(20,100);
-    hct_rl_jetpt->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L]);
+    hct_rl_jetpt->GetYaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L]);
     gStyle->SetPaintTextFormat(".2f");
     gPad->SetLogx(1);
     gPad->SetLogy(1);

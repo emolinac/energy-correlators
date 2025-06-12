@@ -103,28 +103,10 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
     tex->SetTextAngle(26.15998);
     tex->SetLineWidth(2);
 
-    // Adding content with errors
-    TLatex latex;
-    latex.SetTextAlign(22); // center alignment
-    latex.SetTextSize(0.015);
-    latex.SetTextColor(kBlack);
-
     gStyle->SetPaintTextFormat("4.2f");
-    hunfolded_ratio->Draw("col");
-
-    for (int i = 2; i < hunfolded_ratio->GetNbinsX(); ++i) {
-        for (int j = 2; j < hunfolded_ratio->GetNbinsY(); ++j) {
-            double x = hunfolded_ratio->GetXaxis()->GetBinCenter(i);
-            double y = hunfolded_ratio->GetYaxis()->GetBinCenter(j);
-            double content = hunfolded_ratio->GetBinContent(i, j);
-            double error = hunfolded_ratio->GetBinError(i, j);
-            // Draw content and error in the format "content ± error"
-            latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-        }
-    }
-
+    hunfolded_ratio->Draw("col text");
     hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
-    hunfolded_ratio->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L_logbin]);
+    // hunfolded_ratio->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
     hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
     gPad->SetLogx(1);
     gPad->SetLogy(1);

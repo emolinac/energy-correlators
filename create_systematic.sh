@@ -2,7 +2,7 @@
 
 echo "Make sure to execute this code in the home folder."
 
-name_systematic=syst-corr-binning
+name_systematic=syst-corr-paradigm
 
 if [ ! -d "./systematics" ]; then
     echo "Systematics folder does not exist. Creating folder ..."
@@ -39,7 +39,8 @@ if [ ! -d "./systematics/"${name_systematic} ]; then
     rm src-analysis-jets/plots/*.pdf
 
     echo "Now set all the specs associated to "${name_systematic}
-    echo "1.- Start with changing the mother folder in the directories.h file"
+    echo "1.- In directories.h, at the include folder of the systematic, replace the line of the mother folder to:"
+    echo "    std::string mother_folder = \"${PWD}/\";"  
     echo "2.- Remember that our default method to do unfolding is 2d"
     
 fi
