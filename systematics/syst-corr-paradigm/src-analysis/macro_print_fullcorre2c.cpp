@@ -128,10 +128,14 @@ void macro_print_fullcorre2c(int niter = 4)
             ntuple_data->GetEntry(entry);
 
             if(jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
-            if(efficiency_relerror>corr_rel_error) continue;
-            if(purity_relerror>corr_rel_error) continue;
-            if(efficiency<=0||efficiency>1) continue;
-            if(purity<=0||purity>1) continue;
+            // if(efficiency_relerror>corr_rel_error) continue;
+            // if(purity_relerror>corr_rel_error) continue;
+            // if(efficiency<=0||efficiency>1) continue;
+            // if(purity<=0||purity>1) continue;
+            if(efficiency_relerror>corr_rel_error) efficiency = 1;
+            if(purity_relerror>corr_rel_error) purity = 1;
+            if(efficiency<=0||efficiency>1)  efficiency = 1;
+            if(purity<=0||purity>1) purity = 1;
             
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt));
             if(unfolding_weight<=0) unfolding_weight = 1;

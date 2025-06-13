@@ -6,14 +6,13 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-// std::string systematic = "hadron-correction-scheme";
 // std::string systematic = "syst-corr-binning";
-std::string systematic = "syst-corr-paradigm";
+// std::string systematic = "syst-corr-paradigm";
 // std::string systematic = "syst-probnnghost";
 // std::string systematic = "syst-min-track-pt";
-// std::string systematic = "syst-unfolding-dim";
+std::string systematic = "syst-unfolding-dim";
 
-void macro_print_deviation_from_nominal_logbin()
+void macro_print_deviation_from_nominal_logbin(bool normalize = false)
 {
     std::string syst_name = (systematic=="syst-corr-paradigm") ? namef_histos_corr_e2c_logbin : namef_histos_paircorr_e2c_logbin;
     TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_e2c_logbin).c_str());
@@ -31,6 +30,12 @@ void macro_print_deviation_from_nominal_logbin()
         h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_e2c%i",jet_pt_bin));
         h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_e2c%i",jet_pt_bin));
         h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",Nbin_R_L_logbin,rl_logbinning);
+
+        if(normalize)
+        {
+            h_nominal[jet_pt_bin]->Scale(1./h_nominal[jet_pt_bin]->Integral());
+            h_systematic[jet_pt_bin]->Scale(1./h_systematic[jet_pt_bin]->Integral());
+        }
 
         h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
         h_deviations[jet_pt_bin]->Divide(h_nominal[jet_pt_bin]);
@@ -52,5 +57,5 @@ void macro_print_deviation_from_nominal_logbin()
     s->SetMaximum(0.9);
     s->SetMinimum(-0.9);
 
-    c->Print(Form("./plots/dev_from_nominal_%s_logbin.pdf",systematic.c_str()));
+    c->Print(Form("./plots/dev_from_nominal_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 }
