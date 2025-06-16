@@ -79,35 +79,9 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     
     hct_rl_jetpt->Divide(htrue_ref,hunfolded_bayes,1,1);
     
-    set_histogram_style(hct_rl       , std_marker_color_jet_pt[1], std_line_width, std_marker_style, std_marker_size+1);
-    set_histogram_style(hct_jetpt    , std_marker_color_jet_pt[1], std_line_width, std_marker_style, std_marker_size+1);
+    set_histogram_style(hct_rl    , std_marker_color_jet_pt[1], std_line_width, std_marker_style, std_marker_size+1);
+    set_histogram_style(hct_jetpt , std_marker_color_jet_pt[1], std_line_width, std_marker_style, std_marker_size+1);
     
-    // TLegend* lrl = new TLegend();
-    // lrl->AddEntry(hct_rl,"RooUnfold","lpf");
-    // THStack* hs_rl = new THStack();
-    // hs_rl->Add(hct_rl);
-    // hs_rl->Draw("NOSTACK");
-    // hs_rl->SetTitle(";R_{L};Truth/Unfolded");
-    // // hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_R_L]);
-    // hs_rl->SetMinimum(0.89);
-    // hs_rl->SetMaximum(1.11);
-    // gPad->SetLogx(1);
-    // lrl->Draw("SAME");
-    // c->Print(Form("./plots/unfolded2d_closuretest_rl_niter%i.pdf",Niter));    
-    // gPad->SetLogx(0);
-
-    // TLegend* ljetpt = new TLegend();
-    // ljetpt->AddEntry(hct_jetpt,"RooUnfold","lpf");
-    // THStack* hs_jetpt = new THStack();
-    // hs_jetpt->Add(hct_jetpt);
-    // hs_jetpt->Draw("NOSTACK");
-    // hs_jetpt->SetTitle(";p^{jet}_{t}(GeV);Truth/Unfolded");
-    // // hs_jetpt->GetXaxis()->SetRangeUser(20,100);
-    // hs_jetpt->SetMinimum(0.89);
-    // hs_jetpt->SetMaximum(1.11);
-    // ljetpt->Draw("SAME");
-    // c->Print(Form("./plots/unfolded2d_closuretest_jetpt_niter%i.pdf",Niter));    
-
     c2d->Draw();
     c2d->cd();
     hct_rl_jetpt->Draw("COL");
