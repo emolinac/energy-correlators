@@ -3,8 +3,8 @@
 #include "TZJetsMC.C"
 #include "TZJetsMCReco.h"
 #include "TZJetsMCReco.C"
-#include "TZJets2016Data.h"
-#include "TZJets2016Data.C"
+#include "TZJets2016NewData.h"
+#include "TZJets2016NewData.C"
 #include "TROOT.h"
 #include "TNtuple.h"
 #include "TFile.h"
@@ -23,9 +23,9 @@ int main()
   TFile* fout = new TFile((output_folder+namef_ntuple_jes_jer).c_str(),"RECREATE");
   
   // Declare the TTrees to be used to build the ntuples
-  TZJetsMC*       mctree     = new TZJetsMC();
-  TZJetsMCReco*   mcrecotree = new TZJetsMCReco();
-  TZJets2016Data* datatree   = new TZJets2016Data();
+  TZJetsMC*       mctree      = new TZJetsMC();
+  TZJetsMCReco*   mcrecotree  = new TZJetsMCReco();
+  TZJets2016NewData* datatree = new TZJets2016NewData();
 
   // Create Ntuples
   TNtuple* ntuple_jes_data = new TNtuple(name_ntuple_jes_data.c_str(),"",ntuple_jes_data_vars);
@@ -53,7 +53,7 @@ int main()
   
   // Define array carrying the variables
   float vars_jes_data[Nvars_jes];
-  float vars_jes_reco[Nvars_jes_reco];
+  float vars_jes_reco[Nvars_jes];
   float vars_jes_mc[Nvars_jes];
   
   // Fill the reco ntuple
@@ -115,20 +115,110 @@ int main()
         if(Jet_4vector->Pt() > subleading_jet_pt) subleading_jet_pt = Jet_4vector->Pt();
       }
     }
-      
+
+    // Little activity condition  
     if(subleading_jet_pt>0.25*leading_jet_pt) continue;
 
     mcrecotree->GetEntry(evt);
     if(mcrecotree->Jet_PT/1000.!=leading_jet_pt) {std::cout<<"UPS"<<std::endl;return 0;}
-    vars_jes_reco[0] = mcrecotree->Jet_PT/1000.;
-    vars_jes_reco[1] = Z0_4vector->Pt();
-    vars_jes_reco[2] = mcrecotree->Jet_JEC_Cor;
+    vars_jes_reco[0] = Z0_4vector->Pt();
+    vars_jes_reco[1] = mcrecotree->Jet_PT/1000.;
+    vars_jes_reco[2] = mcrecotree->Jet_Eta;
+    vars_jes_reco[3] = mcrecotree->Jet_JEC_Cor;
+    vars_jes_reco[4] = mcrecotree->Jet_JEC_Error;
 
     // Fill the TNtuple
     ntuple_jes_reco->Fill(vars_jes_reco); 
   } 
 
   std::cout<<"Reco done"<<std::endl;
+
+  for(int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
+  {
+    // Access entry of tree
+    datatree->GetEntry(evt);
+    if(evt%10000==0)
+    {
+      double percentage = 100.*evt/datatree->fChain->GetEntries();
+      std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
+    }
+    // Access entry of tree
+    datatree->GetEntry(evt);
+
+    if (evt != 0)
+    {
+      if (datatree->eventNumber != last_eventNum) maxjetpT_found = false;
+      if (last_eventNum == datatree->eventNumber) continue;
+    }
+
+    last_eventNum = datatree->eventNumber;
+    if (maxjetpT_found) continue;
+
+    // Apply PV cut
+    if(datatree->nPV!=1) continue;
+
+    // Apply trigger cut
+    bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS==1&&datatree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+    bool mup_trigger = (datatree->mup_L0MuonEWDecision_TOS==1&&datatree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+
+    if(!mum_trigger&&!mup_trigger) continue;
+    
+    // Set Jet-associated 4 vectors and apply cuts
+    Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,datatree->Jet_PY/1000.,datatree->Jet_PZ/1000.,datatree->Jet_PE/1000.);
+    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    
+    mum_4vector->SetPxPyPzE(datatree->mum_PX/1000.,datatree->mum_PY/1000.,datatree->mum_PZ/1000.,datatree->mum_PE/1000.);
+    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    //if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
+    
+    mup_4vector->SetPxPyPzE(datatree->mup_PX/1000.,datatree->mup_PY/1000.,datatree->mup_PZ/1000.,datatree->mup_PE/1000.);
+    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    //if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
+    
+    Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
+    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+
+    double ncandidates = datatree->totCandidates;
+    double subleading_jet_pt = 0;
+    double leading_jet_pt    = datatree->Jet_PT/1000.;
+    if(ncandidates>1)
+    {
+      for(int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
+      {
+        datatree->GetEntry(cand);
+        
+        Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,datatree->Jet_PY/1000.,datatree->Jet_PZ/1000.,datatree->Jet_PE/1000.);
+        if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+        if(Jet_4vector->Pt() > subleading_jet_pt) subleading_jet_pt = Jet_4vector->Pt();
+      }
+    }
+      
+    if(subleading_jet_pt>0.25*leading_jet_pt) continue;
+    
+    datatree->GetEntry(evt);
+    if(datatree->Jet_PT/1000.!=leading_jet_pt) {std::cout<<"QTF"<<std::endl;return 0;}
+    vars_jes_data[0] = Z0_4vector->Pt();
+    vars_jes_data[1] = datatree->Jet_PT/1000.;
+    vars_jes_data[2] = datatree->Jet_Eta;
+    vars_jes_data[3] = datatree->Jet_JEC_Cor;
+    vars_jes_data[4] = datatree->Jet_JEC_Error;
+
+    // Fill the TNtuple
+    ntuple_jes_data->Fill(vars_jes_data); 
+  }
+
+  std::cout<<"Data done"<<std::endl;
+
+  fout->cd();
+  ntuple_jes_data->Write();
+  ntuple_jes_reco->Write();
+  // ntuple_jes_mc->Write();
+  fout->Close();
+  
+  return 0;
+}
+
+  // KEEP THIS HERE JUST IN CASE. When everything is done, delete this!
 
   // // Fill the mc tuple
   // for(int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
@@ -203,85 +293,3 @@ int main()
   // } 
 
   // std::cout<<"MC done"<<std::endl;
-  
-  for(int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
-  {
-    // Access entry of tree
-    datatree->GetEntry(evt);
-    if(evt%10000==0)
-    {
-      double percentage = 100.*evt/datatree->fChain->GetEntries();
-      std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
-    }
-    // Access entry of tree
-    datatree->GetEntry(evt);
-
-    if (evt != 0)
-    {
-      if (datatree->eventNumber != last_eventNum) maxjetpT_found = false;
-      if (last_eventNum == datatree->eventNumber) continue;
-    }
-
-    last_eventNum = datatree->eventNumber;
-    if (maxjetpT_found) continue;
-
-    // Apply PV cut
-    if(datatree->nPV!=1) continue;
-
-    // Apply trigger cut
-    bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS==1&&datatree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
-    bool mup_trigger = (datatree->mup_L0MuonEWDecision_TOS==1&&datatree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
-
-    if(!mum_trigger&&!mup_trigger) continue;
-    
-    // Set Jet-associated 4 vectors and apply cuts
-    Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,datatree->Jet_PY/1000.,datatree->Jet_PZ/1000.,datatree->Jet_PE/1000.);
-    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
-    
-    mum_4vector->SetPxPyPzE(datatree->mum_PX/1000.,datatree->mum_PY/1000.,datatree->mum_PZ/1000.,datatree->mum_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
-    //if(datatree->mum_TRACK_PCHI2<muon_trackprob_min) continue;
-    
-    mup_4vector->SetPxPyPzE(datatree->mup_PX/1000.,datatree->mup_PY/1000.,datatree->mup_PZ/1000.,datatree->mup_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
-    //if(datatree->mup_TRACK_PCHI2<muon_trackprob_min) continue;
-    
-    Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
-
-    double ncandidates = datatree->totCandidates;
-    double subleading_jet_pt = 0;
-    double leading_jet_pt    = datatree->Jet_PT/1000.;
-    if(ncandidates>1)
-    {
-      for(int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
-      {
-        datatree->GetEntry(cand);
-        
-        Jet_4vector->SetPxPyPzE(datatree->Jet_PX/1000.,datatree->Jet_PY/1000.,datatree->Jet_PZ/1000.,datatree->Jet_PE/1000.);
-        if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
-        if(Jet_4vector->Pt() > subleading_jet_pt) subleading_jet_pt = Jet_4vector->Pt();
-      }
-    }
-      
-    if(subleading_jet_pt>0.25*leading_jet_pt) continue;
-    
-    datatree->GetEntry(evt);
-    if(datatree->Jet_PT/1000.!=leading_jet_pt) {std::cout<<"QTF"<<std::endl;return 0;}
-    vars_jes_data[0] = datatree->Jet_PT/1000.;
-    vars_jes_data[1] = Z0_4vector->Pt();
-
-    // Fill the TNtuple
-    ntuple_jes_data->Fill(vars_jes_data); 
-  }
-
-  std::cout<<"Data done"<<std::endl;
-
-  fout->cd();
-  ntuple_jes_data->Write();
-  ntuple_jes_reco->Write();
-  // ntuple_jes_mc->Write();
-  fout->Close();
-  
-  return 0;
-}

@@ -18,6 +18,7 @@ void macro_makeclasses()
     TChain* chain9  = new TChain("mcjettuple/MCJetTree");
     TChain* chain10 = new TChain("mcjettuple/MCJetTree");
     TChain* chain11 = new TChain("mcjettuple/MCJetTree");
+    TChain* chain12 = new TChain("StdHltZJets/DecayTree");
     
     chain1->Add((input_folder+"Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
     chain1->Add((input_folder+"Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
@@ -77,6 +78,8 @@ void macro_makeclasses()
     chain11->Add((input_folder+"Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
     chain11->Add((input_folder+"Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
     chain11->Add((input_folder+"Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
+    chain12->Add((input_folder+"Zjet_Data_2016_MU_04212025.root").c_str());
+    chain12->Add((input_folder+"Zjet_Data_2016_MD_04212025.root").c_str());
     
     chain1->MakeClass("TZJetsMC");
     chain2->MakeClass("TZJetsMCReco");
@@ -89,4 +92,5 @@ void macro_makeclasses()
     chain9->MakeClass("TZJetsMCCTCorr");
     chain10->MakeClass("TZJetsMCCT");
     chain11->MakeClass("TZJetsMC2018");
+    chain12->MakeClass("TZJets2016NewData");
 }

@@ -13,6 +13,7 @@ std::string namef_ntuple_e2c_pairpurity        = "ntuple_e2c_pairpurity.root";
 std::string namef_ntuple_e2c_pairpurity_ct     = "ntuple_e2c_pairpurity_ct.root";
 std::string namef_ntuple_e2c_unfolding         = "ntuple_e2c_unfolding.root";
 std::string namef_ntuple_e2c_efficiency        = "ntuple_e2c_efficiency.root";
+std::string namef_ntuple_e2c_pairefficiency    = "ntuple_e2c_pairefficiency.root";
 std::string namef_ntuple_e2c_pairefficiency_ct = "ntuple_e2c_pairefficiency_ct.root";
 std::string namef_ntuple_mc_e2c                = "ntuple_mc_e2c.root";
 std::string namef_ntuple_mc_at_e2c             = "ntuple_mc_at_e2c.root";
@@ -105,11 +106,9 @@ const char* ntuple_jetpurity_vars     = "jet_pt:jet_e:jet_ndtr:jet_pt_truth:jet_
 const char* ntuple_jetefficiency_vars = "jet_pt_truth:jet_e_truth:jet_ndtr_truth:jet_pt:jet_e:jet_ndtr:jet_eta_truth";
 
 //--------------------------------------------------------------------------------------//
-const int Nvars_jes_reco      = 3;
-const int Nvars_jes           = 2;
-
-const char* ntuple_jes_reco_vars      = "jet_pt:z_pt:jet_jes_cor";
-const char* ntuple_jes_mc_vars        = "jet_pt:z_pt";
-const char* ntuple_jes_data_vars      = "jet_pt:z_pt";
+const int   Nvars_jes            = 5;
+const char* ntuple_jes_reco_vars = "z_pt:jet_pt:jet_eta:jet_jec_cor:jet_jec_err";
+const char* ntuple_jes_data_vars = "z_pt:jet_pt:jet_eta:jet_jec_cor:jet_jec_err";
+const char* ntuple_jes_mc_vars   = "z_pt:jet_pt:jet_eta:jet_jec_cor:jet_jec_err";
 
 #endif
