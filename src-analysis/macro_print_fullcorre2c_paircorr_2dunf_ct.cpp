@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = true)
+void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = true, bool compare_to_nominal = false)
 {
     // Open the necessary files
     TFile* fout        = new TFile((output_folder+namef_histos_paircorr_e2c_logbin_ct).c_str(),"RECREATE");
@@ -254,4 +254,49 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
     if(do_print) c->Print(Form("./plots/paircorre2c_niter%i_logbinning_2dunf_ct.pdf",niter));
+
+    if(compare_to_nominal)
+    {
+        TFile* fnominal = new TFile((output_folder+namef_histos_paircorr_e2c_logbin).c_str());
+        if(fnominal->IsZombie()) return;
+
+        TH2F* hct_ratio = new TH2F("hct_ratio","",Nbin_R_L_logbin,rl_logbinning,Nbin_jet_pt,jet_pt_binning);
+        TH1F* hnominal[Nbin_jet_pt]; 
+
+        for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+        {
+            hnominal[bin] = (TH1F*) fnominal->Get(Form("hcorr_e2c%i",bin));
+
+            // Normalize both to unity sucha that we can compare the shapes
+            hcorr_e2c[bin]->Scale(1./hcorr_e2c[bin]->Integral());
+            hnominal[bin]->Scale(1./hnominal[bin]->Integral());
+
+            hcorr_e2c[bin]->Divide(hnominal[bin]);
+            for(int bin_rl = 1 ; bin_rl <= hcorr_e2c[bin]->GetNbinsX() ; bin_rl++)
+            {
+                hct_ratio->SetBinContent(bin_rl, bin + 1, hcorr_e2c[bin]->GetBinContent(bin_rl));
+                hct_ratio->SetBinError(bin_rl, bin + 1, hcorr_e2c[bin]->GetBinError(bin_rl));
+            } 
+        }
+        
+        hct_ratio->Draw("col");
+
+        for (int i = 1; i <= hct_ratio->GetNbinsX(); ++i) {
+            for (int j = 1; j <= hct_ratio->GetNbinsY(); ++j) {
+                double x = hct_ratio->GetXaxis()->GetBinCenter(i);
+                double y = hct_ratio->GetYaxis()->GetBinCenter(j);
+                double content = hct_ratio->GetBinContent(i, j);
+                double error = hct_ratio->GetBinError(i, j);
+                // Draw content and error in the format "content ± error"
+                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+            }
+        }
+
+        hct_ratio->SetTitle("Corr. Pseudodata / Corr. Data ;R_{L};p^{jet}_{T}GeV");
+        hct_ratio->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L_logbin]);
+        hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        if(do_print) c->Print(Form("./plots/closuretest_initer%i_ratio_logbinning.pdf",niter));
+    }
 }
