@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptratio_max = 1.6)
+void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptratio_max = 1.6, bool do_print = false)
 {
     // Open the necessary files
     TFile* f = new TFile((output_folder+namef_ntuple_jes_jer).c_str());
@@ -55,7 +55,7 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
         l[bin]->Draw("SAME");
     }
 
-    c->Print(Form("./plots/jet_jes_ptratios.pdf"));
+    if(do_print) c->Print(Form("./plots/jet_jes_ptratios.pdf"));
 
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
@@ -72,5 +72,5 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
         l[bin]->Draw("SAME");
     }
 
-    c->Print(Form("./plots/jet_jes_datareco_ratio.pdf"));
+    if(do_print) c->Print(Form("./plots/jet_jes_datareco_ratio.pdf"));
 }
