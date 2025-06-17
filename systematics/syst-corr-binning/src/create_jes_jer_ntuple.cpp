@@ -28,9 +28,9 @@ int main()
   TZJets2016Data* datatree   = new TZJets2016Data();
 
   // Create Ntuples
-  TNtuple* ntuple_jes_data = new TNtuple(name_ntuple_jes_data.c_str(),"",ntuple_jes_data_vars);
-  TNtuple* ntuple_jes_reco = new TNtuple(name_ntuple_jes_reco.c_str(),"",ntuple_jes_reco_vars);
-  // TNtuple* ntuple_jes_mc   = new TNtuple(name_ntuple_jes_mc.c_str()  ,"",ntuple_jes_mc_vars);
+  TNtuple* ntuple_jes_data = new TNtuple(name_ntuple_jes_data.c_str(),"",ntuple_jec_data_vars);
+  TNtuple* ntuple_jes_reco = new TNtuple(name_ntuple_jes_reco.c_str(),"",ntuple_jec_reco_vars);
+  // TNtuple* ntuple_jes_mc   = new TNtuple(name_ntuple_jes_mc.c_str()  ,"",ntuple_jec_mc_vars);
   ntuple_jes_data->SetAutoSave(0);
   ntuple_jes_reco->SetAutoSave(0);
   // ntuple_jes_mc->SetAutoSave(0);

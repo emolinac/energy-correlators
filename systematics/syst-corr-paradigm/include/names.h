@@ -104,8 +104,8 @@ const char* ntuple_jetefficiency_vars = "jet_pt_truth:jet_e_truth:jet_ndtr_truth
 const int Nvars_jes_reco      = 3;
 const int Nvars_jes           = 2;
 
-const char* ntuple_jes_reco_vars      = "jet_pt:z_pt:jet_jes_cor";
-const char* ntuple_jes_mc_vars        = "jet_pt:z_pt";
-const char* ntuple_jes_data_vars      = "jet_pt:z_pt";
+const char* ntuple_jec_reco_vars      = "jet_pt:z_pt:jet_jes_cor";
+const char* ntuple_jec_mc_vars        = "jet_pt:z_pt";
+const char* ntuple_jec_data_vars      = "jet_pt:z_pt";
 
 #endif

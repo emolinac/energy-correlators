@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_jec_chisquare(const int nbin = 50, double ptratio_min = 0.4 , double ptratio_max = 1.6, bool do_print = true)
+void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , double ptratio_max = 1.6, bool do_print = true)
 {
     // Open the necessary files
     TFile* f = new TFile((output_folder+namef_ntuple_jes_jer).c_str());
@@ -40,7 +40,6 @@ void macro_print_jec_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         c->cd(bin+1);
         
         hs[bin] = new THStack();
-        // l[bin]  = new TLegend(0.3,0.8,0.45,0.9,Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]));
         l[bin]  = new TLegend(gPad->GetLeftMargin()+0.01,0.8,gPad->GetLeftMargin()+0.26,0.9,Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]));
         hdata_nojec[bin]         = new TH1F(Form("hdata_nojec[%i]",bin)        ,"", nbin           , ptratio_min    , ptratio_max); 
         hreco_nojec[bin]         = new TH1F(Form("hreco_nojec[%i]",bin)        ,"", nbin           , ptratio_min    , ptratio_max); 
@@ -51,6 +50,7 @@ void macro_print_jec_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         set_histogram_style(hbetastar_balance[bin]  , corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[0], std_marker_size);
         set_histogram_style(hbetastar_chisquare[bin], corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[0], std_marker_size);
         
+        // Undo the JEC
         ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jetpt_cut[bin]);
         ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jetpt_cut[bin]);
 
@@ -80,7 +80,7 @@ void macro_print_jec_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         l[bin]->Draw("SAME");
     }
 
-    if(do_print) c->Print(Form("./plots/beta_balance.pdf"));
+    if(do_print) c->Print(Form("./plots/jes_beta_balance.pdf"));
 
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
@@ -98,5 +98,5 @@ void macro_print_jec_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         l[bin]->Draw("SAME");
     }
 
-    if(do_print) c->Print(Form("./plots/beta_chisquare.pdf"));
+    if(do_print) c->Print(Form("./plots/jes_beta_chisquare.pdf"));
 }
