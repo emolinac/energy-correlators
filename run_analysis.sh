@@ -13,11 +13,8 @@ echo "Creating efficiency ntuple"
 echo "Efficiency ntuple ready!"
 
 echo "Creating pair purity ntuple"
-./create_e2c_pairpurityntuple
+./create_e2c_corrntuple_paircorr
 echo "Pair purity ntuple ready!"
-echo "Creating pair efficiency ntuple"
-./create_e2c_pairefficiencyntuple
-echo "Pair efficiency ntuple ready!"
 
 # echo "Creating jet purity ntuple"
 # ./create_jet_purityntuple

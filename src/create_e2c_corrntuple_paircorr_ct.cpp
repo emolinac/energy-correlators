@@ -19,11 +19,9 @@
 int main()
 {
   // Open correction files
-  TFile* fpurity         = new TFile((output_folder+namef_ntuple_e2c_pairpurity_ct).c_str());
-  TFile* fefficiency     = new TFile((output_folder+namef_ntuple_e2c_pairefficiency_ct).c_str());
-  
-  TFile* fpurity_jet     = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
-  TFile* fefficiency_jet = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
+  TFile* fcorrections_pair = new TFile((output_folder+namef_ntuple_e2c_paircorrections_ct).c_str());
+  TFile* fpurity_jet       = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
+  TFile* fefficiency_jet   = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
   
   TFile* fefficiency_muon_2017_id  = new TFile((muons_folder+"IDEff_Data_2017.root").c_str());
   TFile* fefficiency_muon_2017_trk = new TFile((muons_folder+"TRKEff_Data_2017.root").c_str());
@@ -37,9 +35,9 @@ int main()
   TZJetsTruth*      truthdata  = new TZJetsTruth();
   
   // Create Ntuples
-  TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity.c_str()));
-  TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_correction_mc.c_str()));
-  TNtuple* ntuple_efficiency_reco = (TNtuple*) fefficiency->Get((name_ntuple_correction_reco.c_str()));
+  TNtuple* ntuple_purity          = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
+  TNtuple* ntuple_efficiency_mc   = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_mc.c_str()));
+  TNtuple* ntuple_efficiency_reco = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
   TNtuple* ntuple_purity_jet      = (TNtuple*) fpurity_jet->Get((name_ntuple_jetpurity.c_str()));
   TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jetefficiency.c_str()));
   TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str()    ,"All Data",ntuple_paircorrdata_vars); 

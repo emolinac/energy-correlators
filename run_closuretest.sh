@@ -5,12 +5,9 @@ make clean
 make
 cd ./bin
 
-echo "Creating pair purity ntuple"
-./create_e2c_pairpurityntuple_ct
-echo "Pair purity ntuple ready!"
-echo "Creating pair efficiency ntuple"
-./create_e2c_pairefficiencyntuple_ct
-echo "Pair efficiency ntuple ready!"
+echo "Creating corrections ntuple"
+./create_e2c_paircorrectionsntuple_ct
+echo "Corrections ntuple ready!"
 
 echo "Creating corr data ntuple"
 ./create_e2c_corrntuple_paircorr_ct

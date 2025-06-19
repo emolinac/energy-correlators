@@ -22,8 +22,6 @@
 #include "directories.h"
 #include "names.h"
 
-// TESTING!!!!
-
 int main()
 {
   // Open correction files
