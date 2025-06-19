@@ -34,6 +34,7 @@ int main()
   
   // Declare the TTrees to be used to build the ntuples
   TZJetsMCRecoCT* pseudodata = new TZJetsMCRecoCT();
+  TZJetsMCCT*     truthdata  = new TZJetsMCCT();
   
   // Create Ntuples
   TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity.c_str()));
@@ -41,10 +42,13 @@ int main()
   TNtuple* ntuple_efficiency_reco = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_reco.c_str()));
   TNtuple* ntuple_purity_jet      = (TNtuple*) fpurity_jet->Get((name_ntuple_jetpurity.c_str()));
   TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jetefficiency.c_str()));
-  TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str(),"All Data",ntuple_paircorrdata_vars); 
-  TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str(),"All Data",ntuple_jet_vars); 
+  TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str()    ,"All Data",ntuple_paircorrdata_vars); 
+  TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str() ,"All Data",ntuple_jet_vars); 
+  TNtuple* ntuple_mc              = new TNtuple(name_ntuple_mc.c_str()      ,"MC Sim"  ,ntuple_mc_vars);
+  
   ntuple_data->SetAutoSave(0);
   ntuple_corrjet->SetAutoSave(0);
+  ntuple_mc->SetAutoSave(0);
 
   // Muon corrections
   TH2D* h2_muon_2017_ideff_data  = (TH2D*) fefficiency_muon_2017_id->Get("Hist_ALL_2017_ETA_PT_Eff");
@@ -352,9 +356,105 @@ int main()
     last_eventNum = pseudodata->eventNumber;
   }
 
+  // Fill the MC TNtuple
+  float vars_mc[Nvars_mc];
+  for(int evt = 0 ; evt < truthdata->fChain->GetEntries() ; evt++)
+  {
+    // Access entry of tree
+    truthdata->GetEntry(evt);
+
+    if(evt%10000==0)
+    {
+      double percentage = 100.*evt/truthdata->fChain->GetEntries();
+      std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
+    }
+    
+    if (evt != 0)
+    {
+      if (truthdata->eventNumber != last_eventNum) maxjetpT_found = false;
+      if (last_eventNum == truthdata->eventNumber) continue;
+    }
+    
+    // Apply PV cut
+    if(truthdata->nPVs!=1) continue;
+
+    // Set Jet-associated 4 vectors and apply cuts
+    Jet_4vector->SetPxPyPzE(truthdata->MCJet_PX/1000.,truthdata->MCJet_PY/1000.,truthdata->MCJet_PZ/1000.,truthdata->MCJet_PE/1000.);
+    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    
+    mum_4vector->SetPxPyPzE(truthdata->MCJet_truth_mum_PX/1000.,truthdata->MCJet_truth_mum_PY/1000.,truthdata->MCJet_truth_mum_PZ/1000.,truthdata->MCJet_truth_mum_PE/1000.);
+    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    
+    mup_4vector->SetPxPyPzE(truthdata->MCJet_truth_mup_PX/1000.,truthdata->MCJet_truth_mup_PY/1000.,truthdata->MCJet_truth_mup_PZ/1000.,truthdata->MCJet_truth_mup_PE/1000.);
+    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    
+    Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
+    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+
+    for(int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++)
+    {
+      // Skip non-hadronic particles
+      if(truthdata->MCJet_Dtr_IsMeson[h1_index]!=1&&truthdata->MCJet_Dtr_IsBaryon[h1_index]!=1) continue;
+
+      h1_4vector->SetPxPyPzE(truthdata->MCJet_Dtr_PX[h1_index]/1000.,
+                             truthdata->MCJet_Dtr_PY[h1_index]/1000.,
+                             truthdata->MCJet_Dtr_PZ[h1_index]/1000., 
+                             truthdata->MCJet_Dtr_E[h1_index]/1000.);
+
+      if(!apply_chargedtrack_momentum_cuts(truthdata->MCJet_Dtr_ThreeCharge[h1_index],
+                                           h1_4vector->P(),
+                                           h1_4vector->Pt(),
+                                           h1_4vector->Eta())) continue;
+
+      for(int h2_index = h1_index+1 ; h2_index < truthdata->MCJet_Dtr_nmcdtrs ; h2_index++)
+      {
+          // Skip non-hadronic particles
+          if(truthdata->MCJet_Dtr_IsMeson[h2_index]!=1&&truthdata->MCJet_Dtr_IsBaryon[h2_index]!=1) continue;
+
+          h2_4vector->SetPxPyPzE(truthdata->MCJet_Dtr_PX[h2_index]/1000.,
+                                 truthdata->MCJet_Dtr_PY[h2_index]/1000.,
+                                 truthdata->MCJet_Dtr_PZ[h2_index]/1000., 
+                                 truthdata->MCJet_Dtr_E[h2_index]/1000.);
+
+          if(!apply_chargedtrack_momentum_cuts(truthdata->MCJet_Dtr_ThreeCharge[h2_index],
+                                               h2_4vector->P(),
+                                               h2_4vector->Pt(),
+                                               h2_4vector->Eta())) continue;
+
+          vars_mc[0]  = weight(h1_4vector->E(), h2_4vector->E(),Jet_4vector->E());
+          vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
+          vars_mc[2]  = h1_4vector->Eta();
+          vars_mc[3]  = h2_4vector->Eta();
+          vars_mc[4]  = h1_4vector->Rapidity();
+          vars_mc[5]  = h2_4vector->Rapidity();
+          vars_mc[6]  = truthdata->MCJet_Dtr_ThreeCharge[h1_index];
+          vars_mc[7]  = truthdata->MCJet_Dtr_ThreeCharge[h2_index];
+          vars_mc[8]  = h1_4vector->P();
+          vars_mc[9]  = h2_4vector->P();
+          vars_mc[10] = h1_4vector->Pt();
+          vars_mc[11] = h2_4vector->Pt(); 
+          vars_mc[12] = Jet_4vector->Pt();
+          vars_mc[13] = Jet_4vector->Eta();
+          vars_mc[14] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+          vars_mc[15] = mum_4vector->Pt(); 
+          vars_mc[16] = mum_4vector->Eta();
+          vars_mc[17] = mup_4vector->Pt(); 
+          vars_mc[18] = mup_4vector->Eta();
+          vars_mc[19] = truthdata->MCJet_Dtr_ID[h1_index];
+          vars_mc[20] = truthdata->MCJet_Dtr_ID[h2_index];
+
+          // Fill the TNtuple
+          ntuple_mc->Fill(vars_mc);        
+      }   
+    }
+
+    last_eventNum = truthdata->eventNumber;
+  }
+
   fout->cd();
   ntuple_data->Write();
   ntuple_corrjet->Write();
+  ntuple_mc->Write();
   fout->Close();
   
   std::cout<<std::endl;
