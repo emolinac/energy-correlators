@@ -4,21 +4,22 @@
 // HADRONIC NTUPLES SPECS
 
 // Names of the files
-std::string namef_ntuple_e2c                   = "ntuple_e2c.root";
-std::string namef_ntuple_e2c_corr              = "ntuple_corre2c.root";
-std::string namef_ntuple_e2c_paircorr          = "ntuple_paircorre2c.root";
-std::string namef_ntuple_e2c_paircorr_ct       = "ntuple_paircorre2c_ct.root";
-std::string namef_ntuple_e2c_purity            = "ntuple_e2c_purity.root";
-std::string namef_ntuple_e2c_pairpurity        = "ntuple_e2c_pairpurity.root";
-std::string namef_ntuple_e2c_pairpurity_ct     = "ntuple_e2c_pairpurity_ct.root";
-std::string namef_ntuple_e2c_unfolding         = "ntuple_e2c_unfolding.root";
-std::string namef_ntuple_e2c_efficiency        = "ntuple_e2c_efficiency.root";
-std::string namef_ntuple_e2c_pairefficiency    = "ntuple_e2c_pairefficiency.root";
-std::string namef_ntuple_e2c_pairefficiency_ct = "ntuple_e2c_pairefficiency_ct.root";
-std::string namef_ntuple_e2c_paircorrections   = "ntuple_e2c_paircorrections.root";
-std::string namef_ntuple_mc_e2c                = "ntuple_mc_e2c.root";
-std::string namef_ntuple_mc_at_e2c             = "ntuple_mc_at_e2c.root";
-std::string namef_ntuple_hadron                = "ntuple_hadron.root";
+std::string namef_ntuple_e2c                    = "ntuple_e2c.root";
+std::string namef_ntuple_e2c_corr               = "ntuple_corre2c.root";
+std::string namef_ntuple_e2c_paircorr           = "ntuple_paircorre2c.root";
+std::string namef_ntuple_e2c_paircorr_ct        = "ntuple_paircorre2c_ct.root";
+std::string namef_ntuple_e2c_purity             = "ntuple_e2c_purity.root";
+std::string namef_ntuple_e2c_pairpurity         = "ntuple_e2c_pairpurity.root";
+std::string namef_ntuple_e2c_pairpurity_ct      = "ntuple_e2c_pairpurity_ct.root";
+std::string namef_ntuple_e2c_unfolding          = "ntuple_e2c_unfolding.root";
+std::string namef_ntuple_e2c_efficiency         = "ntuple_e2c_efficiency.root";
+std::string namef_ntuple_e2c_pairefficiency     = "ntuple_e2c_pairefficiency.root";
+std::string namef_ntuple_e2c_pairefficiency_ct  = "ntuple_e2c_pairefficiency_ct.root";
+std::string namef_ntuple_e2c_paircorrections    = "ntuple_e2c_paircorrections.root";
+std::string namef_ntuple_e2c_paircorrections_ct = "ntuple_e2c_paircorrections_ct.root";
+std::string namef_ntuple_mc_e2c                 = "ntuple_mc_e2c.root";
+std::string namef_ntuple_mc_at_e2c              = "ntuple_mc_at_e2c.root";
+std::string namef_ntuple_hadron                 = "ntuple_hadron.root";
 
 std::string namef_histos_corr_e2c               = "histos_corr_e2c.root";
 std::string namef_histos_corr_e2c_logbin        = "histos_corr_e2c_logbin.root";

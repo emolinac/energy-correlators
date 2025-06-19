@@ -35,8 +35,8 @@ int main()
   TLorentzVector* Z0_4vector    = new TLorentzVector();
   TLorentzVector* mum_4vector   = new TLorentzVector();
   TLorentzVector* mup_4vector   = new TLorentzVector();
-  TLorentzVector* h1_4vector     = new TLorentzVector();
-  TLorentzVector* h2_4vector     = new TLorentzVector();
+  TLorentzVector* h1_4vector    = new TLorentzVector();
+  TLorentzVector* h2_4vector    = new TLorentzVector();
 
   TLorentzVector* true_Jet_4vector = new TLorentzVector();
   TLorentzVector* true_Z0_4vector  = new TLorentzVector();
