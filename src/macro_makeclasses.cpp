@@ -17,7 +17,7 @@ void macro_makeclasses()
     TChain* sim_mc_ct     = new TChain("mcjettuple/MCJetTree");
     TChain* truth_ct      = new TChain("mcjettuple/MCJetTree");
     
-    TChain* data_201_new  = new TChain("StdHltZJets/DecayTree");
+    TChain* data_2016_new  = new TChain("StdHltZJets/DecayTree");
     
     sim_mc->Add((input_folder+"Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
     sim_mc->Add((input_folder+"Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
@@ -85,8 +85,8 @@ void macro_makeclasses()
     truth_ct->MakeClass("TZJetsTruth");
     
     // New format data for the JEC Syst
-    data_201_new->Add((input_folder+"Zjet_Data_2016_MU_04212025.root").c_str());
-    data_201_new->Add((input_folder+"Zjet_Data_2016_MD_04212025.root").c_str());
-    data_201_new->MakeClass("TZJets2016NewData");
+    data_2016_new->Add((input_folder+"Zjet_Data_2016_MU_04212025.root").c_str());
+    data_2016_new->Add((input_folder+"Zjet_Data_2016_MD_04212025.root").c_str());
+    data_2016_new->MakeClass("TZJets2016NewData");
 
 }
