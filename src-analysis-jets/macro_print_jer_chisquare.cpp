@@ -95,10 +95,12 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
 
     if(do_print) c->Print(Form("./plots/jer_alpha_balance.pdf"));
 
+    std::cout<<"COPY INTO sys-jes-jer.h ---> const double syst_jer_array[] = { ";
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         c->cd(bin+1);
         double alpha_star_min = halphastar_chisquare[bin]->GetBinCenter(halphastar_chisquare[bin]->GetMinimumBin());
+        std::cout<<alpha_star_min; if(bin<Nbin_jet_pt-1) std::cout<<", ";
 
         halphastar_chisquare[bin]->Draw("E");
         halphastar_chisquare[bin]->SetMinimum(20);
@@ -110,6 +112,8 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         l[bin]->AddEntry(halphastar_chisquare[bin],Form("#chi^{2}(p^{jet}_{t}/p^{Z}_{t}), #alpha^{*}=%.4f",alpha_star_min),"p");
         l[bin]->Draw("SAME");
     }
+
+    std::cout<<"};"<<std::endl;
 
     if(do_print) c->Print(Form("./plots/jer_alpha_chisquare.pdf"));
 }
