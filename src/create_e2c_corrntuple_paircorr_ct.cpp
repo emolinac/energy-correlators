@@ -1,8 +1,8 @@
 #include <iostream>
-#include "TZJetsMCCT.h"
-#include "TZJetsMCCT.C"
-#include "TZJetsMCRecoCT.h"
-#include "TZJetsMCRecoCT.C"
+#include "TZJetsTruth.h"
+#include "TZJetsTruth.C"
+#include "TZJetsPseudoData.h"
+#include "TZJetsPseudoData.C"
 #include "TROOT.h"
 #include "TNtuple.h"
 #include "TFile.h"
@@ -33,8 +33,8 @@ int main()
   TFile* fout = new TFile((output_folder+namef_ntuple_e2c_paircorr_ct).c_str(),"RECREATE");
   
   // Declare the TTrees to be used to build the ntuples
-  TZJetsMCRecoCT* pseudodata = new TZJetsMCRecoCT();
-  TZJetsMCCT*     truthdata  = new TZJetsMCCT();
+  TZJetsPseudoData* pseudodata = new TZJetsPseudoData();
+  TZJetsTruth*      truthdata  = new TZJetsTruth();
   
   // Create Ntuples
   TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity.c_str()));
