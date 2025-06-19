@@ -34,15 +34,15 @@ int main()
   ntuple_jes_reco->SetAutoSave(0);
   
   // Create necessary 4vectors
-  TLorentzVector* Jet_4vector   = new TLorentzVector();
-  TLorentzVector* Z0_4vector    = new TLorentzVector();
-  TLorentzVector* mum_4vector   = new TLorentzVector();
-  TLorentzVector* mup_4vector   = new TLorentzVector();
+  TLorentzVector* Jet_4vector = new TLorentzVector();
+  TLorentzVector* Z0_4vector  = new TLorentzVector();
+  TLorentzVector* mum_4vector = new TLorentzVector();
+  TLorentzVector* mup_4vector = new TLorentzVector();
   
-  TLorentzVector* true_Jet_4vector   = new TLorentzVector();
-  TLorentzVector* true_Z0_4vector    = new TLorentzVector();
-  TLorentzVector* true_mum_4vector   = new TLorentzVector();
-  TLorentzVector* true_mup_4vector   = new TLorentzVector();
+  TLorentzVector* true_Jet_4vector = new TLorentzVector();
+  TLorentzVector* true_Z0_4vector  = new TLorentzVector();
+  TLorentzVector* true_mum_4vector = new TLorentzVector();
+  TLorentzVector* true_mup_4vector = new TLorentzVector();
 
   int eventNum;
   unsigned long long last_eventNum = 0;
@@ -52,7 +52,6 @@ int main()
   // Define array carrying the variables
   float vars_jes_data[Nvars_jes];
   float vars_jes_reco[Nvars_jes];
-  float vars_jes_mc[Nvars_jes];
   
   // Fill the reco ntuple
   for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
@@ -218,7 +217,6 @@ int main()
   fout->cd();
   ntuple_jes_data->Write();
   ntuple_jes_reco->Write();
-  // ntuple_jes_mc->Write();
   fout->Close();
   
   return 0;

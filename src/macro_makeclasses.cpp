@@ -47,12 +47,20 @@ void macro_makeclasses()
     sim_mcreco->Add((input_folder+"Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
     sim_mcreco->MakeClass("TZJetsMCReco");
 
-    data_2016->Add((input_folder+"Zjet_Data_2016_MU_04062024.root").c_str());
-    data_2016->Add((input_folder+"Zjet_Data_2016_MD_04062024.root").c_str());
-    data_2017->Add((input_folder+"Zjet_Data_2017_MU_04062024.root").c_str());
-    data_2017->Add((input_folder+"Zjet_Data_2017_MD_04062024.root").c_str());
-    data_2018->Add((input_folder+"Zjet_Data_2018_MU_04062024.root").c_str());
-    data_2018->Add((input_folder+"Zjet_Data_2018_MD_04062024.root").c_str());
+    // Ibrahim data
+    // data_2016->Add((input_folder+"Zjet_Data_2016_MU_04062024.root").c_str());
+    // data_2016->Add((input_folder+"Zjet_Data_2016_MD_04062024.root").c_str());
+    // data_2017->Add((input_folder+"Zjet_Data_2017_MU_04062024.root").c_str());
+    // data_2017->Add((input_folder+"Zjet_Data_2017_MD_04062024.root").c_str());
+    // data_2018->Add((input_folder+"Zjet_Data_2018_MU_04062024.root").c_str());
+    // data_2018->Add((input_folder+"Zjet_Data_2018_MD_04062024.root").c_str());
+    // My data with JEC correction branches included
+    data_2016->Add((input_folder+"Zjet_Data_2016_MU_04212025.root").c_str());
+    data_2016->Add((input_folder+"Zjet_Data_2016_MD_04212025.root").c_str());
+    data_2017->Add((input_folder+"Zjet_Data_2017_MU_04222025.root").c_str());
+    data_2017->Add((input_folder+"Zjet_Data_2017_MD_04222025.root").c_str());
+    data_2018->Add((input_folder+"Zjet_Data_2018_MU_04232025.root").c_str());
+    data_2018->Add((input_folder+"Zjet_Data_2018_MD_04242025.root").c_str());
     data_2016->MakeClass("TZJets2016Data");
     data_2017->MakeClass("TZJets2017Data");
     data_2018->MakeClass("TZJets2018Data");
