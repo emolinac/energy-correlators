@@ -24,8 +24,8 @@ int main()
   TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
   // Create Ntuples
-  TNtuple* ntuple_reco = new TNtuple(name_ntuple_efficiency_reco.c_str(),"",ntuple_pairefficiency_reco_vars); 
-  TNtuple* ntuple_mc   = new TNtuple(name_ntuple_efficiency_mc.c_str()  ,"",ntuple_pairefficiency_mc_vars); 
+  TNtuple* ntuple_reco = new TNtuple(name_ntuple_correction_reco.c_str(),"",ntuple_corrections_reco_vars); 
+  TNtuple* ntuple_mc   = new TNtuple(name_ntuple_correction_mc.c_str()  ,"",ntuple_corrections_mc_vars); 
   
   ntuple_reco->SetAutoSave(0);
   ntuple_mc->SetAutoSave(0);
@@ -51,8 +51,8 @@ int main()
   bool maxjetpT_found = false;
   
   // Define array carrying the variables
-  float vars[Nvars_pairefficiency_mcreco];
-  float vars_mc[Nvars_pairefficiency_mc];
+  float vars[Nvars_corrections_mcreco];
+  float vars_mc[Nvars_corrections_mc];
 
   // Fill the matched jets Ntuple
   for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)

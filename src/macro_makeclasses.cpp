@@ -88,5 +88,4 @@ void macro_makeclasses()
     data_2016_new->Add((input_folder+"Zjet_Data_2016_MU_04212025.root").c_str());
     data_2016_new->Add((input_folder+"Zjet_Data_2016_MD_04212025.root").c_str());
     data_2016_new->MakeClass("TZJets2016NewData");
-
 }

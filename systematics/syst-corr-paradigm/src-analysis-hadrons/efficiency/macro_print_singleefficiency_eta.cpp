@@ -12,8 +12,8 @@ void macro_print_singleefficiency_eta()
     TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
 
     // Get the corresponding Ntuples
-    TNtuple* ntuple_mcreco = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_reco).c_str());
-    TNtuple* ntuple_mc     = (TNtuple*) fefficiency->Get((name_ntuple_efficiency_mc).c_str());
+    TNtuple* ntuple_mcreco = (TNtuple*) fefficiency->Get((name_ntuple_correction_reco).c_str());
+    TNtuple* ntuple_mc     = (TNtuple*) fefficiency->Get((name_ntuple_correction_mc).c_str());
 
     // Define the necessary histograms to calculate efficiency
     TH1F* hsig        = new TH1F("hsig"       ,"",ndim_corr,eta_min,eta_max);

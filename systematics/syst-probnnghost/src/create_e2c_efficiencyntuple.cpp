@@ -24,8 +24,8 @@ int main()
   TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
   // Create Ntuples
-  TNtuple* ntuple_reco = new TNtuple(name_ntuple_efficiency_reco.c_str(),"",ntuple_efficiency_reco_vars); 
-  TNtuple* ntuple_mc   = new TNtuple(name_ntuple_efficiency_mc.c_str()  ,"",ntuple_efficiency_mc_vars); 
+  TNtuple* ntuple_reco = new TNtuple(name_ntuple_correction_reco.c_str(),"",ntuple_efficiency_reco_vars); 
+  TNtuple* ntuple_mc   = new TNtuple(name_ntuple_correction_mc.c_str()  ,"",ntuple_efficiency_mc_vars); 
   
   ntuple_reco->SetAutoSave(0);
   ntuple_mc->SetAutoSave(0);

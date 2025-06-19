@@ -24,7 +24,7 @@ int main()
   TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
   // Create Ntuples
-  TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_purity.c_str(),"Reco jet&dtr matched 2 MC",ntuple_pairpurity_vars); 
+  TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_purity.c_str(),"Reco jet&dtr matched 2 MC",ntuple_corrections_reco_vars); 
   
   ntuple_jet_match->SetAutoSave(0);
   
@@ -49,7 +49,7 @@ int main()
   bool maxjetpT_found = false;
   
   // Define array carrying the variables
-  float vars[Nvars_pairpurity];
+  float vars[Nvars_corrections_mcreco];
 
   // Fill the matched jets Ntuple
   for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
