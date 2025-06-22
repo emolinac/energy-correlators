@@ -7,8 +7,8 @@
 
 void macro_print_roounfold_closuretest_2d(int Niter = 4)
 {
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
-    TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_purity.c_str());
+    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
+    TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L, R_L_truth, jet_pt, jet_pt_truth;
     ntuple->SetBranchAddress("jet_pt",&jet_pt);

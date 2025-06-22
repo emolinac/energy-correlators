@@ -6,8 +6,8 @@
 
 void macro_print_responsematrix_jetpt()
 {
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
-    TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_purity.c_str());
+    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
+    TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float jet_pt, jet_pt_truth;
     ntuple->SetBranchAddress("jet_pt",&jet_pt);

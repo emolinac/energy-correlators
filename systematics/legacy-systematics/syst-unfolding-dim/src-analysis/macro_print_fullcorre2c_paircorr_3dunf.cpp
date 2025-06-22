@@ -31,8 +31,8 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     ntuple_data->SetBranchAddress("purity_relerror",&purity_relerror);
 
     // UNFOLDING FIRST
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
-    TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_purity.c_str());
+    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
+    TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
     ntuple->SetBranchAddress("jet_pt",&jet_pt_reco);
