@@ -6,14 +6,12 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-// Check names.h to know about the available systematics
-std::string systematic = available_systematics[1];
-
-void macro_print_deviation_from_nominal_logbin(bool normalize = false)
+void macro_print_deviation_from_nominal_logbin(bool normalize = false, bool do_print = false, int index_syst = 0)
 {
-    std::string syst_name = (systematic=="corr-paradigm") ? namef_histos_corr_e2c_logbin : namef_histos_paircorr_e2c_logbin;
+    std::string systematic = available_systematics[index_syst];
+
     TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_e2c_logbin).c_str());
-    TFile* fsystematic = new TFile(("../output-files/"+syst_name).c_str());
+    TFile* fsystematic = new TFile(("../output-files/"+systematic_namef[systematic]).c_str());
 
     THStack* s = new THStack();
     TLegend* l = new TLegend();
@@ -34,8 +32,9 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = false)
             h_systematic[jet_pt_bin]->Scale(1./h_systematic[jet_pt_bin]->Integral());
         }
 
-        h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
-        h_deviations[jet_pt_bin]->Divide(h_nominal[jet_pt_bin]);
+        // h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
+        // h_deviations[jet_pt_bin]->Divide(h_nominal[jet_pt_bin]);
+        h_deviations[jet_pt_bin]->Divide(h_systematic[jet_pt_bin],h_nominal[jet_pt_bin],1,1);
 
         set_histogram_style(h_deviations[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width-1, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size+1);
 
@@ -51,8 +50,8 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = false)
     gPad->SetLogx(1);
     l->Draw("SAME");
 
-    s->SetMaximum(0.9);
-    s->SetMinimum(-0.9);
+    s->SetMaximum(1.5);
+    s->SetMinimum(0.5);
 
-    c->Print(Form("./plots/dev_from_nominal_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
+    if(do_print) c->Print(Form("./plots/dev_from_nominal_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 }

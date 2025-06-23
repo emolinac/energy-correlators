@@ -1,11 +1,6 @@
 #ifndef NAMES_H
 #define NAMES_H
 
-// About systematics
-std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes"};
-
-// HADRONIC NTUPLES SPECS
-
 // Names of the files
 std::string namef_ntuple_e2c                     = "ntuple_e2c.root";
 std::string namef_ntuple_e2c_corr                = "ntuple_corre2c.root";
@@ -49,6 +44,14 @@ std::string name_ntuple_correction_mc   = "ntuple_correction_mc";
 std::string name_ntuple_correction_reco = "ntuple_correction_reco";
 std::string name_ntuple_mc_jet          = "ntuple_mc_jet";
 std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
+
+// About systematics
+std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes"};
+map<std::string, std::string> systematic_namef = {{available_systematics[0],namef_histos_corr_e2c_logbin},
+                                                  {available_systematics[1],namef_histos_paircorr_e2c_logbin_ct},
+                                                  {available_systematics[2],namef_histos_paircorr_e2c_logbin_jer},
+                                                  {available_systematics[3],namef_histos_paircorr_e2c_logbin_jes}};
+
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_unfold = 26; 
