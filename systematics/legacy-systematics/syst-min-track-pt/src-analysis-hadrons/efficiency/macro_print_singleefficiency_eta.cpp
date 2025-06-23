@@ -9,7 +9,7 @@
 void macro_print_singleefficiency_eta()
 {
     // Open the necessary files
-    TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
+    TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_mcreco = (TNtuple*) fefficiency->Get((name_ntuple_correction_reco).c_str());

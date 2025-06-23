@@ -10,7 +10,7 @@ void macro_print_pairefficiency_rl()
 {
     // Open the necessary files
     TFile* fdata   = new TFile((output_folder+namef_ntuple_e2c).c_str());
-    TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
+    TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_data            = (TNtuple*) fdata->Get((name_ntuple_data).c_str());

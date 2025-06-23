@@ -25,8 +25,8 @@
 int main()
 {
   // Open correction files
-  TFile* fpurity         = new TFile((output_folder+namef_ntuple_e2c_purity).c_str());
-  TFile* fefficiency     = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str());
+  TFile* fpurity         = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
+  TFile* fefficiency     = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
   
   TFile* fpurity_jet     = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
   TFile* fefficiency_jet = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());

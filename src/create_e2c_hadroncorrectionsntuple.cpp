@@ -18,14 +18,14 @@
 int main()
 {
   // Create output file
-  TFile* fout = new TFile((output_folder+namef_ntuple_e2c_efficiency).c_str(),"RECREATE");
+  TFile* fout = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str(),"RECREATE");
   
   // Declare the TTrees to be used to build the ntuples
   TZJetsMCReco* mcrecotree = new TZJetsMCReco();
 
   // Create Ntuples
-  TNtuple* ntuple_reco = new TNtuple(name_ntuple_correction_reco.c_str(),"",ntuple_efficiency_reco_vars); 
-  TNtuple* ntuple_mc   = new TNtuple(name_ntuple_correction_mc.c_str()  ,"",ntuple_efficiency_mc_vars); 
+  TNtuple* ntuple_reco = new TNtuple(name_ntuple_correction_reco.c_str(),"",ntuple_hadroncorrections_reco_vars); 
+  TNtuple* ntuple_mc   = new TNtuple(name_ntuple_correction_mc.c_str()  ,"",ntuple_hadroncorrections_mc_vars); 
   
   ntuple_reco->SetAutoSave(0);
   ntuple_mc->SetAutoSave(0);
@@ -49,8 +49,8 @@ int main()
   bool maxjetpT_found = false;
   
       // Define array carrying the variables
-  float vars_reco[Nvars_efficiency_reco];
-  float vars_mc[Nvars_efficiency_mc];
+  float vars_reco[Nvars_hadroncorrections_reco];
+  float vars_mc[Nvars_hadroncorrections_mc];
 
   // Fill the matched jets Ntuple
   for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
@@ -133,7 +133,7 @@ int main()
       } 
 
       // If all good, fill Ntuple
-      vars_reco[0]  = mcrecotree->Jet_Dtr_ETA[h_index];
+      vars_reco[0]  = h_4vector->Eta();
       vars_reco[1]  = h_4vector->Rapidity();
       vars_reco[2]  = h_4vector->P();
       vars_reco[3]  = h_4vector->Pt();
@@ -142,12 +142,11 @@ int main()
       vars_reco[6]  = Jet_4vector->E();
       vars_reco[7]  = true_Jet_4vector->E();
       vars_reco[8]  = true_Jet_4vector->Pt();
-      vars_reco[9]  = mcrecotree->Jet_mcjet_nmcdtrs;
-      vars_reco[10] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
-      vars_reco[11] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Eta();
-      vars_reco[12] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->P();
-      vars_reco[13] = Jet_4vector->DeltaR(*h_4vector);            
-      vars_reco[14] = key_match;
+      vars_reco[9]  = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Rapidity();
+      vars_reco[10] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->Eta();
+      vars_reco[11] = (mcrecotree->Jet_Dtr_TRUE_ETA[h_index]==-999) ? -999 : true_h_4vector->P();
+      vars_reco[12] = Jet_4vector->DeltaR(*h_4vector);            
+      vars_reco[13] = key_match;
 
       // Fill the TNtuple
       ntuple_reco->Fill(vars_reco);
@@ -177,9 +176,8 @@ int main()
       vars_mc[4] = true_Jet_4vector->Pt();
       vars_mc[5] = true_Jet_4vector->Eta();
       vars_mc[6] = true_Jet_4vector->E();
-      vars_mc[7] = mcrecotree->Jet_mcjet_nmcdtrs;
-      vars_mc[8] = true_Jet_4vector->DeltaR(*true_h_4vector);
-
+      vars_mc[7] = true_Jet_4vector->DeltaR(*true_h_4vector);
+      
       // Fill the TNtuple
       ntuple_mc->Fill(vars_mc);
     }

@@ -6,21 +6,19 @@
 // Names of the files
 std::string namef_ntuple_e2c                     = "ntuple_e2c.root";
 std::string namef_ntuple_e2c_corr                = "ntuple_corre2c.root";
+
 std::string namef_ntuple_e2c_paircorr            = "ntuple_paircorre2c.root";
 std::string namef_ntuple_e2c_paircorr_ct         = "ntuple_paircorre2c_ct.root";
 std::string namef_ntuple_e2c_paircorr_jes        = "ntuple_paircorre2c_jes.root";
 std::string namef_ntuple_e2c_paircorr_jer        = "ntuple_paircorre2c_jer.root";
-std::string namef_ntuple_e2c_purity              = "ntuple_e2c_purity.root";
-std::string namef_ntuple_e2c_pairpurity          = "ntuple_e2c_pairpurity.root";
-std::string namef_ntuple_e2c_pairpurity_ct       = "ntuple_e2c_pairpurity_ct.root";
-std::string namef_ntuple_e2c_unfolding           = "ntuple_e2c_unfolding.root";
-std::string namef_ntuple_e2c_efficiency          = "ntuple_e2c_efficiency.root";
-std::string namef_ntuple_e2c_pairefficiency      = "ntuple_e2c_pairefficiency.root";
-std::string namef_ntuple_e2c_pairefficiency_ct   = "ntuple_e2c_pairefficiency_ct.root";
+
+std::string namef_ntuple_e2c_hadroncorrections   = "ntuple_e2c_hadroncorrections.root";
+
 std::string namef_ntuple_e2c_paircorrections     = "ntuple_e2c_paircorrections.root";
 std::string namef_ntuple_e2c_paircorrections_ct  = "ntuple_e2c_paircorrections_ct.root";
 std::string namef_ntuple_e2c_paircorrections_jes = "ntuple_e2c_paircorrections_jes.root";
 std::string namef_ntuple_e2c_paircorrections_jer = "ntuple_e2c_paircorrections_jer.root";
+
 std::string namef_ntuple_mc_e2c                  = "ntuple_mc_e2c.root";
 std::string namef_ntuple_mc_at_e2c               = "ntuple_mc_at_e2c.root";
 std::string namef_ntuple_hadron                  = "ntuple_hadron.root";
@@ -73,13 +71,13 @@ const char* ntuple_corrections_reco_vars = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h
 
 //--------------------------------------------------------------------------------------//
 // Deprecated vars
-const int   Nvars_efficiency_mc         = 9;
-const int   Nvars_efficiency_reco       = 15;
-const char* ntuple_efficiency_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:jet_e_truth:jet_pt_truth:ndtr:h_y_truth:h_eta_truth:h_p_truth:deltaR_jet_h:key_match";
-const char* ntuple_efficiency_mc_vars   = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:ndtr:deltaR_jet_h";
+const int   Nvars_hadroncorrections_mc         = 8;
+const char* ntuple_hadroncorrections_mc_vars   = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:deltaR_jet_h";
+const int   Nvars_hadroncorrections_reco       = 14;
+const char* ntuple_hadroncorrections_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:jet_e_truth:jet_pt_truth:h_y_truth:h_eta_truth:h_p_truth:deltaR_jet_h:key_match";
 
-const int   Nvars_purity       = 16;
-const char* ntuple_purity_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e:jet_e_truth:h_y_truth:h_eta_truth:deltaR_jet_h:key_match";
+// const int   Nvars_purity       = 16;
+// const char* ntuple_purity_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e:jet_e_truth:h_y_truth:h_eta_truth:deltaR_jet_h:key_match";
 
 const int   Nvars_corrdata       = 29; 
 const char* ntuple_corrdata_vars = "weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth";
