@@ -1,6 +1,9 @@
 #ifndef NAMES_H
 #define NAMES_H
 
+// About systematics
+std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes"};
+
 // HADRONIC NTUPLES SPECS
 
 // Names of the files

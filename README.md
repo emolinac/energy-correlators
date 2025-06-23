@@ -1,4 +1,5 @@
-# energy-correlations
+# Energy Correlators Framework
+This code can produce fully corrected energy correlator measurements. The final idea is to make it input independent such that it can process all type of jets.
 ## Code Details
 - In the DecayTree ntuples, the jets are organizes in events. Each event has a number of candidates and, almost always, the first candidate in the event
 is the hardest jet. Therefore, at the beginning of each jet loop, there is a block that makes sure to only check the first candidate in the event:
