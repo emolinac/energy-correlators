@@ -8,10 +8,14 @@
 
 void macro_print_deviation_from_nominal_logbin(bool normalize = false, bool do_print = false, int index_syst = 0)
 {
-    std::string systematic = available_systematics[index_syst];
+    if (index_syst==1) {std::cout<<"Remember CT dev from nominal is calculated inside macro_print_fullcorre2c_paircorr_2dunf_ct_niter.cpp !!!"; return;}
 
-    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_e2c_logbin).c_str());
-    TFile* fsystematic = new TFile(("../output-files/"+systematic_namef[systematic]).c_str());
+    std::string systematic = available_systematics[index_syst];
+    TFile* fout = new TFile((output_folder+devfromnom_namef[systematic]).c_str(),"RECREATE");
+    gROOT->cd();
+
+    TFile* fnominal    = new TFile((output_folder+namef_histos_paircorr_e2c_logbin).c_str());
+    TFile* fsystematic = new TFile((output_folder+systematic_namef[systematic]).c_str());
 
     THStack* s = new THStack();
     TLegend* l = new TLegend();
@@ -35,8 +39,11 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = false, bool do_p
         // h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
         // h_deviations[jet_pt_bin]->Divide(h_nominal[jet_pt_bin]);
         h_deviations[jet_pt_bin]->Divide(h_systematic[jet_pt_bin],h_nominal[jet_pt_bin],1,1);
-
         set_histogram_style(h_deviations[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width-1, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size+1);
+
+        fout->cd();
+        h_deviations[jet_pt_bin]->Write();
+        gROOT->cd();
 
         s->Add(h_deviations[jet_pt_bin],"E1 X0 L");
         l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lf");

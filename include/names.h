@@ -1,6 +1,20 @@
 #ifndef NAMES_H
 #define NAMES_H
 
+// Name of the ntuples
+std::string name_ntuple_unfold          = "ntuple_unfold";
+std::string name_ntuple_data            = "ntuple_hadron";
+std::string name_ntuple_mcjetmatch      = "ntuple_mcjetmatch";
+std::string name_ntuple_mcreco          = "ntuple_mcreco";
+std::string name_ntuple_mc              = "ntuple_mc";
+std::string name_ntuple_purity          = "ntuple_purity";
+std::string name_ntuple_unfolding       = "ntuple_unfolding";
+std::string name_ntuple_correction_mc   = "ntuple_correction_mc";
+std::string name_ntuple_correction_reco = "ntuple_correction_reco";
+std::string name_ntuple_mc_jet          = "ntuple_mc_jet";
+std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
+
+
 // Names of the files
 std::string namef_ntuple_e2c                     = "ntuple_e2c.root";
 std::string namef_ntuple_e2c_corr                = "ntuple_corre2c.root";
@@ -32,18 +46,10 @@ std::string namef_histos_paircorr_e2c_logbin_jes = "histos_paircorr_e2c_logbin_j
 std::string namef_histos_paircorr_e2c_jer        = "histos_paircorr_e2c_jer.root";
 std::string namef_histos_paircorr_e2c_logbin_jer = "histos_paircorr_e2c_logbin_jer.root";
 
-// Name of the ntuples
-std::string name_ntuple_unfold          = "ntuple_unfold";
-std::string name_ntuple_data            = "ntuple_hadron";
-std::string name_ntuple_mcjetmatch      = "ntuple_mcjetmatch";
-std::string name_ntuple_mcreco          = "ntuple_mcreco";
-std::string name_ntuple_mc              = "ntuple_mc";
-std::string name_ntuple_purity          = "ntuple_purity";
-std::string name_ntuple_unfolding       = "ntuple_unfolding";
-std::string name_ntuple_correction_mc   = "ntuple_correction_mc";
-std::string name_ntuple_correction_reco = "ntuple_correction_reco";
-std::string name_ntuple_mc_jet          = "ntuple_mc_jet";
-std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
+std::string namef_histos_devfromnom_e2c_logbin              = "histos_devfromnom_e2c_logbin.root";
+std::string namef_histos_paircorr_devfromnom_e2c_logbin_jes = "histos_paircorr_devfromnom_e2c_logbin_jes.root";
+std::string namef_histos_paircorr_devfromnom_e2c_logbin_jer = "histos_paircorr_devfromnom_e2c_logbin_jer.root";
+std::string namef_histos_paircorr_devfromnom_e2c_logbin_ct  = "histos_paircorr_devfromnom_e2c_logbin_ct.root";
 
 // About systematics
 std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes"};
@@ -51,6 +57,11 @@ map<std::string, std::string> systematic_namef = {{available_systematics[0],name
                                                   {available_systematics[1],namef_histos_paircorr_e2c_logbin_ct},
                                                   {available_systematics[2],namef_histos_paircorr_e2c_logbin_jer},
                                                   {available_systematics[3],namef_histos_paircorr_e2c_logbin_jes}};
+
+map<std::string, std::string> devfromnom_namef = {{available_systematics[0],namef_histos_devfromnom_e2c_logbin},
+                                                  {available_systematics[1],namef_histos_paircorr_devfromnom_e2c_logbin_ct},
+                                                  {available_systematics[2],namef_histos_paircorr_devfromnom_e2c_logbin_jer},
+                                                  {available_systematics[3],namef_histos_paircorr_devfromnom_e2c_logbin_jes}};
 
 
 //--------------------------------------------------------------------------------------//

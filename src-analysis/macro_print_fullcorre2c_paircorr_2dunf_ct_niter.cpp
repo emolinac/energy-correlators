@@ -10,6 +10,9 @@
 void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter = 1, bool do_print = true, bool compare_to_nominal = false, bool compare_to_truth = true)
 {
     // Open the necessary files
+    std::string systematic = available_systematics[1]; // choose CT systematic
+
+    TFile* fout_dev    = new TFile((output_folder+devfromnom_namef[systematic]).c_str(),"RECREATE");
     TFile* fout        = new TFile((output_folder+namef_histos_paircorr_e2c_logbin_ct).c_str(),"RECREATE");
     TFile* fout_linear = new TFile((output_folder+namef_histos_paircorr_e2c_ct).c_str(),"RECREATE");
     gROOT->cd();
@@ -151,7 +154,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
     TLegend* l_data     = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
     TLegend* l_data_tau = new TLegend(gPad->GetLeftMargin()+0.01,1-gPad->GetTopMargin()-0.01,gPad->GetLeftMargin()+0.21,1-gPad->GetTopMargin()-0.21);
 
-    // Construct the histograms you will use in order to not have memory leaks
+    // Construct the histograms you will use in order to avoid memory leaks
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"", 1  ,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
@@ -177,7 +180,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
 
     // Create a data histograma to know how much you have to vary its "content"
     TH2D* hdataunf_ref = new TH2D("hdataunf_ref","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hdatashift = new TH2D("hdatashift"  ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);    
+    TH2D* hdatashift   = new TH2D("hdatashift"  ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);    
     ntuple_data->Project("hdataunf_ref","jet_pt:R_L");
 
     TRandom3* rndm = new TRandom3();
@@ -191,14 +194,13 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
                 double shift_window = hdataunf_ref->GetBinError(hdataunf_ref->GetBin(xbin,ybin));
                 double refdata      = hdataunf_ref->GetBinContent(hdataunf_ref->GetBin(xbin,ybin));
                 double shift        = rndm->Gaus(1,abs(shift_window/refdata));
-                std::cout<<"Shift = "<<shift<<std::endl;
                 hdatashift->SetBinContent(xbin,ybin,shift);
             }
         }
 
         for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
         {
-            hcorr_e2c_ctcomp[Nbin_jet_pt][ct_niter] = new TH1F(Form("hcorr_e2c_ctcomp%i%i",bin,ct_iter),"", Nbin_R_L_logbin,rl_logbinning );
+            hcorr_e2c_ctcomp[bin][ct_iter] = new TH1F(Form("hcorr_e2c_ctcomp%i%i",bin,ct_iter),"", Nbin_R_L_logbin,rl_logbinning );
             
             double jet_pt_centroid = hcorr_jet_centroid[bin]->GetMean();
 
@@ -228,7 +230,6 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
             }
     
             // Normalize the distributions
-            
             // Log binning
             hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
             hcorr_e2c_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
@@ -251,13 +252,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         
         fout->cd();
         hcorr_e2c_nonorm[bin]->Write();
-        // hcorr_e2c[bin]->Write();
-        // hcorr_e2c_nounf[bin]->Write();
-        // hcorr_tau[bin]->Write();
-        // hcorr_tau_nounf[bin]->Write();
-        // fout_linear->cd();
-        // hcorr_e2c_l[bin]->Write();
-        // hcorr_e2c_nounf_l[bin]->Write();
+        hcorr_e2c[bin]->Write();
+        hcorr_e2c_nounf[bin]->Write();
         gROOT->cd();
     }
 
@@ -371,6 +367,10 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
                 hct_ratio->SetBinContent(bin_rl, bin + 1, hcorr_e2c_nonorm[bin]->GetBinContent(bin_rl));
                 hct_ratio->SetBinError(bin_rl, bin + 1, hcorr_e2c_nonorm[bin]->GetBinError(bin_rl));
             } 
+
+            fout_dev->cd();
+            hcorr_e2c_nonorm[bin]->Write(Form("h_deviations%i",bin));
+            gROOT->cd();
         }
         
         hct_ratio->Draw("col");
