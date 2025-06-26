@@ -40,13 +40,15 @@ int main()
   TNtuple* ntuple_efficiency_reco = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
   TNtuple* ntuple_purity_jet      = (TNtuple*) fpurity_jet->Get((name_ntuple_jetpurity.c_str()));
   TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jetefficiency.c_str()));
-  TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str()    ,"All Data",ntuple_paircorrdata_vars); 
-  TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str() ,"All Data",ntuple_jet_vars); 
-  TNtuple* ntuple_mc              = new TNtuple(name_ntuple_mc.c_str()      ,"MC Sim"  ,ntuple_mc_vars);
+  TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str()    ,"All Data"  ,ntuple_paircorrdata_vars); 
+  TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str() ,"All Data"  ,ntuple_jet_vars); 
+  TNtuple* ntuple_mc              = new TNtuple(name_ntuple_mc.c_str()      ,"MC Sim"    ,ntuple_mc_vars);
+  TNtuple* ntuple_mc_jet          = new TNtuple(name_ntuple_mc_jet.c_str()  ,"MC Jet Sim",ntuple_jetminimal_vars);
   
   ntuple_data->SetAutoSave(0);
   ntuple_corrjet->SetAutoSave(0);
   ntuple_mc->SetAutoSave(0);
+  ntuple_mc_jet->SetAutoSave(0);
 
   // Muon corrections
   TH2D* h2_muon_2017_ideff_data  = (TH2D*) fefficiency_muon_2017_id->Get("Hist_ALL_2017_ETA_PT_Eff");
@@ -356,6 +358,7 @@ int main()
 
   // Fill the MC TNtuple
   float vars_mc[Nvars_mc];
+  float vars_mc_jet[Nvars_jet_minimal];
   for(int evt = 0 ; evt < truthdata->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
@@ -389,6 +392,9 @@ int main()
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
+    vars_mc_jet[0] = Jet_4vector->Pt();
+    vars_mc_jet[1] = Jet_4vector->Eta();
+    
     for(int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++)
     {
       // Skip non-hadronic particles
@@ -446,6 +452,8 @@ int main()
       }   
     }
 
+    ntuple_mc_jet->Fill(vars_mc_jet);
+
     last_eventNum = truthdata->eventNumber;
   }
 
@@ -453,6 +461,7 @@ int main()
   ntuple_data->Write();
   ntuple_corrjet->Write();
   ntuple_mc->Write();
+  ntuple_mc_jet->Write();
   fout->Close();
   
   std::cout<<std::endl;

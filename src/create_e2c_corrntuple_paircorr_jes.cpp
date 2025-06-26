@@ -30,7 +30,8 @@ int main()
   std::cout<<"- The pair corrections are changed due to the JES"<<std::endl;
   
   // Open correction files
-  TFile* fcorrections_pair = new TFile((output_folder+namef_ntuple_e2c_paircorrections_jes).c_str());
+  // TFile* fcorrections_pair = new TFile((output_folder+namef_ntuple_e2c_paircorrections_jes).c_str());
+  TFile* fcorrections_pair = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
   TFile* fpurity_jet       = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
   TFile* fefficiency_jet   = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
   
@@ -257,7 +258,7 @@ int main()
     {
       if(Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) new_jes_cor = syst_jes_array[jet_pt_bin];
     }
-
+    
     Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
                             new_jes_cor*datatree_2016->Jet_PY/1000./datatree_2016->Jet_JEC_Cor,
                             new_jes_cor*datatree_2016->Jet_PZ/1000./datatree_2016->Jet_JEC_Cor,
@@ -604,7 +605,7 @@ int main()
                             new_jes_cor*datatree_2018->Jet_PE/1000./datatree_2018->Jet_JEC_Cor);
 
     if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
-    
+      
     mum_4vector->SetPxPyPzE(datatree_2018->mum_PX/1000.,datatree_2018->mum_PY/1000.,datatree_2018->mum_PZ/1000.,datatree_2018->mum_PE/1000.);
     if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
     

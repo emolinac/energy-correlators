@@ -59,6 +59,8 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         // Undo the JEC
         ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jetpt_cut[bin]);
         ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jetpt_cut[bin]);
+        // ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin+1]));
+        // ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin+1]));
 
         for(int alpha_star_bin = 0 ; alpha_star_bin < alpha_star_bins ; alpha_star_bin++)
         {
