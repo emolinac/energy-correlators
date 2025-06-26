@@ -65,6 +65,10 @@ std::map<std::string, std::string> devfromnom_namef = {{available_systematics[0]
                                                        {available_systematics[2],namef_histos_paircorr_devfromnom_e2c_logbin_jer},
                                                        {available_systematics[3],namef_histos_paircorr_devfromnom_e2c_logbin_jes}};
 
+std::map<std::string, std::string> systematic_errtype = {{available_systematics[0],"uniform"},
+                                                         {available_systematics[1],"normal"},
+                                                         {available_systematics[2],"uniform"},
+                                                         {available_systematics[3],"uniform"}};
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_unfold = 26; 

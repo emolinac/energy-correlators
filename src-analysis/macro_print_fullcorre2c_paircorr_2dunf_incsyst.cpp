@@ -21,27 +21,15 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
     TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
     
     // Set the branches of data
-    float R_L, jet_pt, weight_pt;
-    float efficiency, purity, efficiency_relerror, purity_relerror;
-    ntuple_data->SetBranchAddress("R_L",&R_L);
-    ntuple_data->SetBranchAddress("jet_pt",&jet_pt);
-    ntuple_data->SetBranchAddress("weight_pt",&weight_pt);
-    ntuple_data->SetBranchAddress("efficiency",&efficiency);
-    ntuple_data->SetBranchAddress("efficiency_relerror",&efficiency_relerror);
-    ntuple_data->SetBranchAddress("purity",&purity);
-    ntuple_data->SetBranchAddress("purity_relerror",&purity_relerror);
-
+    float R_L, jet_pt, weight_pt, efficiency, purity, efficiency_relerror, purity_relerror;
+    set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
+    
     // UNFOLDING FIRST
     TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
-    ntuple->SetBranchAddress("jet_pt",&jet_pt_reco);
-    ntuple->SetBranchAddress("jet_pt_truth",&jet_pt_truth);
-    ntuple->SetBranchAddress("R_L",&R_L_reco);
-    ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
-    ntuple->SetBranchAddress("weight_pt",&weight_pt_reco);
-    ntuple->SetBranchAddress("weight_pt_truth",&weight_pt_truth);
+    set_unfolding_ntuple_branches(ntuple, &R_L_reco, &R_L_truth, &jet_pt_reco, &jet_pt_truth, &weight_pt_reco, &weight_pt_truth);
     
     // Create histograms with different types of binning
     TH2D* hpurcorr = new TH2D("hpurcorr","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
@@ -230,10 +218,10 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
             hdev_tau[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations_tau%i",bin));
 
             // EEC
-            get_histo_with_systematics(hdev[bin], hcorr_e2c[bin], hcorr_e2c_syst[bin]);
+            get_histo_with_systematics(hdev[bin], hcorr_e2c[bin], hcorr_e2c_syst[bin], systematic_errtype[available_systematics[syst_index]]);
 
             // EEC TAU 
-            get_histo_with_systematics(hdev_tau[bin], hcorr_tau[bin], hcorr_tau_syst[bin]);
+            get_histo_with_systematics(hdev_tau[bin], hcorr_tau[bin], hcorr_tau_syst[bin], systematic_errtype[available_systematics[syst_index]]);
         }
 
         delete fsyst[syst_index];

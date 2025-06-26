@@ -85,11 +85,15 @@ void macro_makeclasses()
     // PseudoData
     pseudodata_ct->Add((input_folder+"Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
     pseudodata_ct->Add((input_folder+"Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
+    pseudodata_ct->Add((input_folder+"Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
+    pseudodata_ct->Add((input_folder+"Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
     pseudodata_ct->MakeClass("TZJetsPseudoData");
     
     //Truth 
     truth_ct->Add((input_folder+"Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
     truth_ct->Add((input_folder+"Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
+    truth_ct->Add((input_folder+"Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
+    truth_ct->Add((input_folder+"Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
     truth_ct->MakeClass("TZJetsTruth");
     
     // New format data for the JEC Syst
