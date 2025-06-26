@@ -23,9 +23,10 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
     TFile* fnominal = new TFile((output_folder+namef_histos_paircorr_e2c_logbin).c_str());
     if(fnominal->IsZombie()) return;
     
-    TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
-    TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
-    TNtuple* ntuple_mc   = (TNtuple*) fcorr->Get((name_ntuple_mc).c_str());
+    TNtuple* ntuple_data   = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
+    TNtuple* ntuple_jet    = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
+    TNtuple* ntuple_mc     = (TNtuple*) fcorr->Get((name_ntuple_mc).c_str());
+    TNtuple* ntuple_mc_jet = (TNtuple*) fcorr->Get((name_ntuple_mc_jet).c_str());
     
     // Set the branches of data
     float R_L, jet_pt, weight_pt;
@@ -254,6 +255,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         hcorr_e2c_nonorm[bin]->Write();
         hcorr_e2c[bin]->Write();
         hcorr_e2c_nounf[bin]->Write();
+        hcorr_tau[bin]->Scale(1./ct_niter);
+        hcorr_tau_nounf[bin]->Scale(1./ct_niter);
         gROOT->cd();
     }
 
@@ -350,18 +353,32 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
     if(compare_to_truth)
     {
         TH2F* hct_ratio = new TH2F("hct_ratio","",Nbin_R_L_logbin,rl_logbinning,Nbin_jet_pt,jet_pt_binning);
+        TH1F* hmc_jet_centroid[Nbin_jet_pt];
         TH1F* htruth[Nbin_jet_pt]; 
+        TH1F* htruth_tau[Nbin_jet_pt]; 
 
         for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
         {
-            htruth[bin] = new TH1F(Form("htruth%i",bin),"",Nbin_R_L_logbin,rl_logbinning);
+            htruth[bin]           = new TH1F(Form("htruth%i",bin)    ,"",Nbin_R_L_logbin,rl_logbinning);
+            htruth_tau[bin]       = new TH1F(Form("htruth_tau%i",bin),"",Nbin_R_L_logbin,tau_logbinning);
+            hmc_jet_centroid[bin] = new TH1F(Form("hmc_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
+            
+            ntuple_mc_jet->Project(Form("hmc_jet_centroid%i" ,bin),"jet_pt");
+            double mc_jet_pt_centroid = hmc_jet_centroid[bin]->GetMean();
+            
             ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jetpt_cut[bin]);
+            ntuple_mc->Project(Form("htruth_tau%i",bin),Form("R_L*%f",mc_jet_pt_centroid),e2c_jetpt_cut[bin]);
 
             // Normalize both to unity such that we can compare the shapes
             hcorr_e2c_nonorm[bin]->Scale(1./hcorr_e2c_nonorm[bin]->Integral(),"width");
+            hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");
+            
             htruth[bin]->Scale(1./htruth[bin]->Integral(),"width");
+            htruth_tau[bin]->Scale(1./htruth_tau[bin]->Integral(),"width");
 
             hcorr_e2c_nonorm[bin]->Divide(htruth[bin]);
+            hcorr_tau[bin]->Divide(htruth_tau[bin]);
+
             for(int bin_rl = 1 ; bin_rl <= hcorr_e2c_nonorm[bin]->GetNbinsX() ; bin_rl++)
             {
                 hct_ratio->SetBinContent(bin_rl, bin + 1, hcorr_e2c_nonorm[bin]->GetBinContent(bin_rl));
@@ -370,6 +387,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
 
             fout_dev->cd();
             hcorr_e2c_nonorm[bin]->Write(Form("h_deviations%i",bin));
+            hcorr_tau[bin]->Write(Form("h_deviations_tau%i",bin));
             gROOT->cd();
         }
         

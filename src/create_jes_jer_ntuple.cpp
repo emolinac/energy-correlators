@@ -67,12 +67,8 @@ int main()
 
     if (evt != 0)
     {
-      if (mcrecotree->eventNumber != last_eventNum) maxjetpT_found = false;
       if (last_eventNum == mcrecotree->eventNumber) continue;
     }
-
-    last_eventNum = mcrecotree->eventNumber;
-    if (maxjetpT_found) continue;
 
     // Apply PV cut
     if(mcrecotree->nPV!=1) continue;
@@ -119,6 +115,8 @@ int main()
       }
     }
 
+    last_eventNum = mcrecotree->eventNumber;
+
     // Little activity condition  
     if(subleading_jet_pt>0.25*leading_jet_pt) continue;
 
@@ -149,12 +147,8 @@ int main()
 
     if (evt != 0)
     {
-      if (datatree->eventNumber != last_eventNum) maxjetpT_found = false;
       if (last_eventNum == datatree->eventNumber) continue;
     }
-
-    last_eventNum = datatree->eventNumber;
-    if (maxjetpT_found) continue;
 
     // Apply PV cut
     if(datatree->nPV!=1) continue;
@@ -181,7 +175,7 @@ int main()
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
     if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
-    double ncandidates = datatree->totCandidates;
+    double ncandidates       = datatree->totCandidates;
     double subleading_jet_pt = 0;
     double leading_jet_pt    = Jet_4vector->Pt();
     if(ncandidates>1)
@@ -199,6 +193,8 @@ int main()
       }
     }
       
+    last_eventNum = datatree->eventNumber;
+    
     if(subleading_jet_pt>0.25*leading_jet_pt) continue;
     
     datatree->GetEntry(evt);

@@ -31,7 +31,8 @@ int main()
   std::cout<<"- The pair corrections are changed due to the JER"<<std::endl;
   
   // Open correction files
-  TFile* fcorrections_pair = new TFile((output_folder+namef_ntuple_e2c_paircorrections_jes).c_str());
+  // TFile* fcorrections_pair = new TFile((output_folder+namef_ntuple_e2c_paircorrections_jes).c_str());
+  TFile* fcorrections_pair = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
   TFile* fpurity_jet       = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
   TFile* fefficiency_jet   = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
   

@@ -91,10 +91,13 @@ void macro_print_fullcorre2c(int niter = 4)
     hunfolded_ratio_l->Divide(hunfolded_bayes_rl_jetpt_l,hpuritycorrected2_rl_jetpt_l,1,1);
 
     TH1F* hcorr_jet[Nbin_jet_pt];
+    TH1F* hcorr_jet_centroid[Nbin_jet_pt];
     TH1F* hcorr_e2c[Nbin_jet_pt]; 
     TH1F* hcorr_e2c_nounf[Nbin_jet_pt]; 
     TH1F* hcorr_e2c_l[Nbin_jet_pt]; 
     TH1F* hcorr_e2c_nounf_l[Nbin_jet_pt]; 
+    TH1F* hcorr_tau[Nbin_jet_pt]; 
+    TH1F* hcorr_tau_nounf[Nbin_jet_pt]; 
     
     TCanvas* c = new TCanvas("c","",1920,1080);
     c->Draw();
@@ -121,14 +124,22 @@ void macro_print_fullcorre2c(int niter = 4)
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)  ,"", 1,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-        
+        hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
+
         hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", Nbin_R_L_logbin,rl_logbinning);
         hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)   ,"", Nbin_R_L_logbin,rl_logbinning);
+        hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)         ,"", Nbin_R_L_logbin,tau_logbinning);
+        hcorr_tau_nounf[bin]    = new TH1F(Form("hcorr_tau_nounf%i",bin)   ,"", Nbin_R_L_logbin,tau_logbinning);
         hcorr_e2c_l[bin]        = new TH1F(Form("hcorr_e2c_l%i",bin)       ,"", Nbin_R_L       ,rl_binning   );
         hcorr_e2c_nounf_l[bin]  = new TH1F(Form("hcorr_e2c_nounf_l%i",bin) ,"", Nbin_R_L       ,rl_binning   );
         set_histogram_style(hcorr_e2c[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+        set_histogram_style(hcorr_tau[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
         set_histogram_style(hcorr_e2c_l[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
-    
+
+        ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         ,"jet_pt",jet_full_corr[bin]);
+        ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin),"jet_pt",jet_full_corr[bin]);
+        
+        double jet_pt_centroid = hcorr_jet_centroid[bin]->GetMean();    
         for(int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
         {
             ntuple_data->GetEntry(entry);
@@ -148,12 +159,11 @@ void macro_print_fullcorre2c(int niter = 4)
 
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
             hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
+            hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
+            hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,purity*weight_pt/efficiency);
             hcorr_e2c_l[bin]->Fill(R_L,purity*unfolding_weight_l*weight_pt/efficiency);
             hcorr_e2c_nounf_l[bin]->Fill(R_L,purity*weight_pt/efficiency);
         }
-
-        // Normalize the distributions
-        ntuple_jet->Project(Form("hcorr_jet%i" ,bin),"jet_pt",jet_full_corr[bin]);
 
         // Log binning
         hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
@@ -166,6 +176,8 @@ void macro_print_fullcorre2c(int niter = 4)
         fout->cd();
         hcorr_e2c[bin]->Write();
         hcorr_e2c_nounf[bin]->Write();
+        hcorr_tau[bin]->Write();
+        hcorr_tau_nounf[bin]->Write();
         fout_linear->cd();
         hcorr_e2c_l[bin]->Write();
         hcorr_e2c_nounf_l[bin]->Write();
