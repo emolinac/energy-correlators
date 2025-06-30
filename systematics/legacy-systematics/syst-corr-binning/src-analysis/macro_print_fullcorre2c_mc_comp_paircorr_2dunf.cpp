@@ -114,10 +114,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     c->Divide(3,1);
     
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
-    tex->SetLineWidth(2);
+    set_lhcb_watermark_properties(tex);
 
     THStack* s_data[3];
     TLegend* l_data[3];

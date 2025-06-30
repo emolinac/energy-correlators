@@ -107,10 +107,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     c->Draw();
 
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
-    tex->SetLineWidth(2);
+    set_lhcb_watermark_properties(tex);
 
     gStyle->SetPaintTextFormat("4.2f");
     hunfolded_ratio_2d->Draw("col text");

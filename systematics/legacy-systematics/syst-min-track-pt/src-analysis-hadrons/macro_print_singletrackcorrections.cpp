@@ -25,10 +25,7 @@ void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_e
     h->Draw("col");
 
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
-    tex->SetLineWidth(2);
+    set_lhcb_watermark_properties(tex);
 
     h->SetTitle(";efficiency;purity");
     h->Smooth();

@@ -5,4 +5,6 @@ void set_histogram_style(TH1* h, int color, int line_width, int marker, int mark
 
 void draw_lhcb_tag(TLatex* latex);
 
+void set_lhcb_watermark_properties(TLatex* latex);
+
 #endif

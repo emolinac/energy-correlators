@@ -45,8 +45,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
     TH2D* htrue    = new TH2D("htrue"   ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
     
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
-    {
+    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
         ntuple->GetEntry(evt);
         if (R_L_truth==-999) 
             continue;
@@ -79,14 +78,15 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
     TH1F* hcorr_delta_e2c_square_total[Nbin_jet_pt]; 
     TH1F* hnominal[Nbin_jet_pt];
 
+    TH1F* hmc_jet_centroid[Nbin_jet_pt];
+    TH1F* htruth[Nbin_jet_pt]; 
+    TH1F* htruth_tau[Nbin_jet_pt];     
+
     TCanvas* c = new TCanvas("c","",1920,1080);
     c->Draw();
 
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
-    tex->SetLineWidth(2);
+    set_lhcb_watermark_properties(tex);
 
     // Adding content with errors
     TLatex latex;
@@ -140,6 +140,17 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin),"jet_pt",jet_full_corr[bin]);
 
         hnominal[bin] = (TH1F*) fnominal->Get(Form("hcorr_e2c%i",bin));
+
+        htruth[bin]           = new TH1F(Form("htruth%i",bin)    ,"",Nbin_R_L_logbin,rl_logbinning);
+        htruth_tau[bin]       = new TH1F(Form("htruth_tau%i",bin),"",Nbin_R_L_logbin,tau_logbinning);
+        hmc_jet_centroid[bin] = new TH1F(Form("hmc_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin+1]);     
+
+        ntuple_mc_jet->Project(Form("hmc_jet_centroid%i" ,bin),"jet_pt");
+        double mc_jet_pt_centroid = hmc_jet_centroid[bin]->GetMean();
+
+        ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jetpt_cut[bin]);
+        ntuple_mc->Project(Form("htruth_tau%i",bin),Form("R_L*%f",mc_jet_pt_centroid),e2c_jetpt_cut[bin]);
+
     }
 
     // Create a data histograma to know how much you have to vary its "content"
@@ -256,64 +267,11 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
 
     if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_logbinning_2dunf_ctniter%i.pdf",niter,ct_niter));
 
-    if (compare_to_nominal)
-    {
-        TH2F* hct_ratio = new TH2F("hct_ratio","",Nbin_R_L_logbin,rl_logbinning,Nbin_jet_pt,jet_pt_binning);
-         
-        for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
-        {
-            // Normalize both to unity sucha that we can compare the shapes
-            hcorr_e2c[bin]->Scale(1./hcorr_e2c[bin]->Integral());
-            hnominal[bin]->Scale(1./hnominal[bin]->Integral());
-
-            hcorr_e2c[bin]->Divide(hnominal[bin]);
-            for(int bin_rl = 1 ; bin_rl <= hcorr_e2c[bin]->GetNbinsX() ; bin_rl++)
-            {
-                hct_ratio->SetBinContent(bin_rl, bin + 1, hcorr_e2c[bin]->GetBinContent(bin_rl));
-                hct_ratio->SetBinError(bin_rl, bin + 1, hcorr_e2c[bin]->GetBinError(bin_rl));
-            } 
-        }
-        
-        hct_ratio->Draw("col");
-
-        for (int i = 1; i <= hct_ratio->GetNbinsX(); ++i) {
-            for (int j = 1; j <= hct_ratio->GetNbinsY(); ++j) {
-                double x = hct_ratio->GetXaxis()->GetBinCenter(i);
-                double y = hct_ratio->GetYaxis()->GetBinCenter(j);
-                double content = hct_ratio->GetBinContent(i, j);
-                double error = hct_ratio->GetBinError(i, j);
-                // Draw content and error in the format "content ± error"
-                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-            }
-        }
-
-        hct_ratio->SetTitle("Norm. Corr. Pseudodata / Norm. Corr. Data ;R_{L};p^{jet}_{T}GeV");
-        hct_ratio->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L_logbin]);
-        hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
-        gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        if (do_print) c->Print(Form("./plots/corrpseudata_data_comp_initer%i_ratio_logbinning.pdf",niter));
-    }
-
     if (compare_to_truth)
     {
         TH2F* hct_ratio = new TH2F("hct_ratio","",Nbin_R_L_logbin,rl_logbinning,Nbin_jet_pt,jet_pt_binning);
-        TH1F* hmc_jet_centroid[Nbin_jet_pt];
-        TH1F* htruth[Nbin_jet_pt]; 
-        TH1F* htruth_tau[Nbin_jet_pt]; 
-
         for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
-        {
-            htruth[bin]           = new TH1F(Form("htruth%i",bin)    ,"",Nbin_R_L_logbin,rl_logbinning);
-            htruth_tau[bin]       = new TH1F(Form("htruth_tau%i",bin),"",Nbin_R_L_logbin,tau_logbinning);
-            hmc_jet_centroid[bin] = new TH1F(Form("hmc_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-            
-            ntuple_mc_jet->Project(Form("hmc_jet_centroid%i" ,bin),"jet_pt");
-            double mc_jet_pt_centroid = hmc_jet_centroid[bin]->GetMean();
-            
-            ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jetpt_cut[bin]);
-            ntuple_mc->Project(Form("htruth_tau%i",bin),Form("R_L*%f",mc_jet_pt_centroid),e2c_jetpt_cut[bin]);
-
+        {   
             // Normalize both to unity such that we can compare the shapes
             hcorr_e2c_nonorm[mjn bin]->Scale(1./hcorr_e2c_nonorm[bin]->Integral(),"width");
             hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");

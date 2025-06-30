@@ -88,10 +88,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
     c->Draw();
 
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
-    tex->SetLineWidth(2);
+    set_lhcb_watermark_properties(tex);
 
     // Adding content with errors
     TLatex latex;

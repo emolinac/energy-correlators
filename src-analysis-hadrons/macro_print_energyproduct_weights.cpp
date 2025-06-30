@@ -15,10 +15,7 @@ void macro_print_energyproduct_weights()
     TCanvas* c = new TCanvas("c","",1920,1080);
     c->Draw();
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
-    tex->SetLineWidth(2);
+    set_lhcb_watermark_properties(tex);
 
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend();

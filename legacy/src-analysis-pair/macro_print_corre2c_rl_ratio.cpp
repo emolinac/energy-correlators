@@ -58,10 +58,7 @@ void macro_print_corre2c_rl_ratio()
     c->Draw();
 
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
-    tex->SetLineWidth(2);
+    set_lhcb_watermark_properties(tex);
 
     set_histogram_style(hcorr_data, kViolet, std_line_width, std_marker_style, std_marker_size);
     set_histogram_style(h_mc      , kCyan  , std_line_width, std_marker_style, std_marker_size);

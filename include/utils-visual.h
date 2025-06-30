@@ -19,4 +19,12 @@ void draw_lhcb_tag(TLatex* latex)
     latex->DrawLatexNDC(0.75,0.70,"#font[22]{Z-Tagged Jets}");
 }
 
+void set_lhcb_watermark_properties(TLatex* latex)
+{
+    latex->SetTextColorAlpha(16,0.3);
+    latex->SetTextSize(0.1991525);
+    latex->SetTextAngle(26.15998);
+    latex->SetLineWidth(2);
+}
+
 #endif

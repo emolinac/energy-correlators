@@ -47,10 +47,7 @@ void macro_print_pairefficiency_rl()
     ntuple_data->Project("hall_data","R_L",pair_cut+"(h1_pt<7&&h2_pt<7)");
     
     TLatex* tex = new TLatex();
-    tex->SetTextColorAlpha(16,0.3);
-    tex->SetTextSize(0.1991525);
-    tex->SetTextAngle(26.15998);
-    tex->SetLineWidth(2);
+    set_lhcb_watermark_properties(tex);
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
