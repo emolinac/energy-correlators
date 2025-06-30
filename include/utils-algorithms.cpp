@@ -7,9 +7,9 @@ void determine_log10binning(int Nbins, double x_i, double x_f, double* binning);
 
 void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning);
 
-void get_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic);
+void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic);
 
-void get_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type);
+void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type);
 
 void set_data_ntuple_branches(TNtuple* ntuple, float* R_L, float* jet_pt, float* weight_pt, float* efficiency, float* purity, float* efficiency_relerror, float* purity_relerror);
 

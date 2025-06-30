@@ -41,7 +41,7 @@ void macro_print_singleefficiency_eta_momentum(double jet_pt_min_local = jet_pt_
         for(int bin_y = 1 ; bin_y <= ndim_corr ; bin_y++)
         {
             int bin = hefficiency->GetBin(bin_x,bin_y);
-            if(hefficiency->GetBinContent(bin)>1) hefficiency->SetBinContent(bin,0);
+            if (hefficiency->GetBinContent(bin)>1) hefficiency->SetBinContent(bin,0);
         }
     }
         

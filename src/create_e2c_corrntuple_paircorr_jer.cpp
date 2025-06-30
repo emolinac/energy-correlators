@@ -228,7 +228,7 @@ int main()
   {
     // Access entry of tree
     datatree_2016->GetEntry(evt);
-    if(evt%10000==0)
+    if (evt%10000==0)
     {
       double percentage = 100.*evt/datatree_2016->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -242,13 +242,13 @@ int main()
     }
 
     // Apply PV cut
-    if(datatree_2016->nPV!=1) continue;
+    if (datatree_2016->nPV!=1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS==1&&datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
     bool mup_trigger = (datatree_2016->mup_L0MuonEWDecision_TOS==1&&datatree_2016->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2016->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
 
-    if(!mum_trigger&&!mup_trigger) continue;
+    if (!mum_trigger&&!mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
@@ -259,26 +259,26 @@ int main()
     double new_jer_cor = -999;
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-      if(Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) new_jer_cor = syst_jer_array[jet_pt_bin];
+      if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) new_jer_cor = syst_jer_array[jet_pt_bin];
     }
 
-    if(new_jer_cor<0) continue;
+    if (new_jer_cor<0) continue;
     double smearing_factor = rndm->Gaus(1,new_jer_cor);
     Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
                             smearing_factor*datatree_2016->Jet_PY/1000./datatree_2016->Jet_JEC_Cor,
                             smearing_factor*datatree_2016->Jet_PZ/1000./datatree_2016->Jet_JEC_Cor,
                             smearing_factor*datatree_2016->Jet_PE/1000./datatree_2016->Jet_JEC_Cor);
 
-    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
     
     mum_4vector->SetPxPyPzE(datatree_2016->mum_PX/1000.,datatree_2016->mum_PY/1000.,datatree_2016->mum_PZ/1000.,datatree_2016->mum_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(datatree_2016->mup_PX/1000.,datatree_2016->mup_PY/1000.,datatree_2016->mup_PZ/1000.,datatree_2016->mup_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
     double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
     double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
@@ -324,10 +324,10 @@ int main()
     for(int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
-      if(datatree_2016->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2016->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (datatree_2016->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2016->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
       h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,datatree_2016->Jet_Dtr_PY[h1_index]/1000.,datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,datatree_2016->Jet_Dtr_E[h1_index]/1000.);
-      if(!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
+      if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
                                   h1_4vector->P(),
                                   h1_4vector->Pt(),
                                   datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
@@ -338,10 +338,10 @@ int main()
       for(int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
-        if(datatree_2016->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2016->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+        if (datatree_2016->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2016->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
         h2_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h2_index]/1000.,datatree_2016->Jet_Dtr_PY[h2_index]/1000.,datatree_2016->Jet_Dtr_PZ[h2_index]/1000.,datatree_2016->Jet_Dtr_E[h2_index]/1000.);
-        if(!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h2_index],
+        if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h2_index],
                                     h2_4vector->P(),
                                     h2_4vector->Pt(),
                                     datatree_2016->Jet_Dtr_TrackChi2[h2_index]/datatree_2016->Jet_Dtr_TrackNDF[h2_index],
@@ -400,7 +400,7 @@ int main()
   {
     // Access entry of tree
     datatree_2017->GetEntry(evt);
-    if(evt%10000==0)
+    if (evt%10000==0)
     {
       double percentage = 100.*evt/datatree_2017->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -414,13 +414,13 @@ int main()
     }
 
     // Apply PV cut
-    if(datatree_2017->nPV!=1) continue;
+    if (datatree_2017->nPV!=1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS==1&&datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
     bool mup_trigger = (datatree_2017->mup_L0MuonEWDecision_TOS==1&&datatree_2017->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2017->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
 
-    if(!mum_trigger&&!mup_trigger) continue;
+    if (!mum_trigger&&!mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000./datatree_2017->Jet_JEC_Cor,
@@ -431,26 +431,26 @@ int main()
     double new_jer_cor = -999;
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-      if(Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) new_jer_cor = syst_jer_array[jet_pt_bin];
+      if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) new_jer_cor = syst_jer_array[jet_pt_bin];
     }
 
-    if(new_jer_cor<0) continue;
+    if (new_jer_cor<0) continue;
     double smearing_factor = rndm->Gaus(1,new_jer_cor);
     Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000./datatree_2017->Jet_JEC_Cor,
                             smearing_factor*datatree_2017->Jet_PY/1000./datatree_2017->Jet_JEC_Cor,
                             smearing_factor*datatree_2017->Jet_PZ/1000./datatree_2017->Jet_JEC_Cor,
                             smearing_factor*datatree_2017->Jet_PE/1000./datatree_2017->Jet_JEC_Cor);
 
-    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
     
     mum_4vector->SetPxPyPzE(datatree_2017->mum_PX/1000.,datatree_2017->mum_PY/1000.,datatree_2017->mum_PZ/1000.,datatree_2017->mum_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(datatree_2017->mup_PX/1000.,datatree_2017->mup_PY/1000.,datatree_2017->mup_PZ/1000.,datatree_2017->mup_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
     double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
     double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
@@ -496,10 +496,10 @@ int main()
     for(int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
-      if(datatree_2017->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2017->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (datatree_2017->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2017->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
       h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,datatree_2017->Jet_Dtr_PY[h1_index]/1000.,datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,datatree_2017->Jet_Dtr_E[h1_index]/1000.);
-      if(!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
+      if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
                                   h1_4vector->P(),
                                   h1_4vector->Pt(),
                                   datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
@@ -510,10 +510,10 @@ int main()
       for(int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
-        if(datatree_2017->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2017->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+        if (datatree_2017->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2017->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
         h2_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h2_index]/1000.,datatree_2017->Jet_Dtr_PY[h2_index]/1000.,datatree_2017->Jet_Dtr_PZ[h2_index]/1000.,datatree_2017->Jet_Dtr_E[h2_index]/1000.);
-        if(!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h2_index],
+        if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h2_index],
                                     h2_4vector->P(),
                                     h2_4vector->Pt(),
                                     datatree_2017->Jet_Dtr_TrackChi2[h2_index]/datatree_2017->Jet_Dtr_TrackNDF[h2_index],
@@ -572,7 +572,7 @@ int main()
   {
     // Access entry of tree
     datatree_2018->GetEntry(evt);
-    if(evt%10000==0)
+    if (evt%10000==0)
     {
       double percentage = 100.*evt/datatree_2018->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -586,13 +586,13 @@ int main()
     }
 
     // Apply PV cut
-    if(datatree_2018->nPV!=1) continue;
+    if (datatree_2018->nPV!=1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (datatree_2018->mum_L0MuonEWDecision_TOS==1&&datatree_2018->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2018->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
     bool mup_trigger = (datatree_2018->mup_L0MuonEWDecision_TOS==1&&datatree_2018->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2018->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
 
-    if(!mum_trigger&&!mup_trigger) continue;
+    if (!mum_trigger&&!mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000./datatree_2018->Jet_JEC_Cor,
@@ -603,26 +603,26 @@ int main()
     double new_jer_cor = -999;
     for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-      if(Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) new_jer_cor = syst_jer_array[jet_pt_bin];
+      if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) new_jer_cor = syst_jer_array[jet_pt_bin];
     }
 
-    if(new_jer_cor<0) continue;
+    if (new_jer_cor<0) continue;
     double smearing_factor = rndm->Gaus(1,new_jer_cor);
     Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2018->Jet_PX/1000./datatree_2018->Jet_JEC_Cor,
                             smearing_factor*datatree_2018->Jet_PY/1000./datatree_2018->Jet_JEC_Cor,
                             smearing_factor*datatree_2018->Jet_PZ/1000./datatree_2018->Jet_JEC_Cor,
                             smearing_factor*datatree_2018->Jet_PE/1000./datatree_2018->Jet_JEC_Cor);
 
-    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
     
     mum_4vector->SetPxPyPzE(datatree_2018->mum_PX/1000.,datatree_2018->mum_PY/1000.,datatree_2018->mum_PZ/1000.,datatree_2018->mum_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(datatree_2018->mup_PX/1000.,datatree_2018->mup_PY/1000.,datatree_2018->mup_PZ/1000.,datatree_2018->mup_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
     double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
     double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
@@ -668,10 +668,10 @@ int main()
     for(int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
-      if(datatree_2018->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2018->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (datatree_2018->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2018->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
       h1_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h1_index]/1000.,datatree_2018->Jet_Dtr_PY[h1_index]/1000.,datatree_2018->Jet_Dtr_PZ[h1_index]/1000.,datatree_2018->Jet_Dtr_E[h1_index]/1000.);
-      if(!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h1_index],
+      if (!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h1_index],
                                   h1_4vector->P(),
                                   h1_4vector->Pt(),
                                   datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
@@ -682,10 +682,10 @@ int main()
       for(int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
-        if(datatree_2018->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2018->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+        if (datatree_2018->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2018->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
         h2_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h2_index]/1000.,datatree_2018->Jet_Dtr_PY[h2_index]/1000.,datatree_2018->Jet_Dtr_PZ[h2_index]/1000.,datatree_2018->Jet_Dtr_E[h2_index]/1000.);
-        if(!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h2_index],
+        if (!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h2_index],
                                     h2_4vector->P(),
                                     h2_4vector->Pt(),
                                     datatree_2018->Jet_Dtr_TrackChi2[h2_index]/datatree_2018->Jet_Dtr_TrackNDF[h2_index],

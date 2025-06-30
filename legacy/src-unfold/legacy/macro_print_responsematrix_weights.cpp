@@ -24,7 +24,7 @@ void macro_print_responsematrix_weights()
   {
     // Access entry of ntuple
     ntuple->GetEntry(evt);
-    if(weight_truth!=-999) hresp->Fill(weight, weight_truth);
+    if (weight_truth!=-999) hresp->Fill(weight, weight_truth);
   }
 
   // Draw response matrix

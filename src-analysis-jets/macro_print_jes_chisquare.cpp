@@ -74,7 +74,7 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         hbetastar_balance[bin]->Draw();
         hbetastar_balance[bin]->SetMinimum(0);
         hbetastar_balance[bin]->SetMaximum(0.1);
-        if(bin==0) hbetastar_balance[bin]->SetTitle(";#beta;");
+        if (bin==0) hbetastar_balance[bin]->SetTitle(";#beta;");
         else hbetastar_balance[bin]->SetTitle(";#beta;");
         l[bin]->Clear();
         l[bin]->SetHeader(Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]));
@@ -82,19 +82,19 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         l[bin]->Draw("SAME");
     }
 
-    if(do_print) c->Print(Form("./plots/jes_beta_balance.pdf"));
+    if (do_print) c->Print(Form("./plots/jes_beta_balance.pdf"));
 
     std::cout<<"COPY INTO sys-jes-jer.h ---> const double syst_jes_array[] = { ";
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         c->cd(bin+1);
         double beta_star_min = hbetastar_chisquare[bin]->GetBinCenter(hbetastar_chisquare[bin]->GetMinimumBin());
-        std::cout<<beta_star_min; if(bin<Nbin_jet_pt-1) std::cout<<", ";
+        std::cout<<beta_star_min; if (bin<Nbin_jet_pt-1) std::cout<<", ";
 
         hbetastar_chisquare[bin]->Draw("E");
         // hbetastar_chisquare[bin]->SetMinimum(0);
         // hbetastar_chisquare[bin]->SetMaximum(0.1);
-        if(bin==0) hbetastar_chisquare[bin]->SetTitle(";#beta;");
+        if (bin==0) hbetastar_chisquare[bin]->SetTitle(";#beta;");
         else hbetastar_chisquare[bin]->SetTitle(";#beta;");
         l[bin]->Clear();
         l[bin]->SetHeader(Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]));
@@ -104,5 +104,5 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
 
     std::cout<<"};"<<std::endl;
 
-    if(do_print) c->Print(Form("./plots/jes_beta_chisquare.pdf"));
+    if (do_print) c->Print(Form("./plots/jes_beta_chisquare.pdf"));
 }

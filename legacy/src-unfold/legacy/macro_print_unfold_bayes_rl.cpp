@@ -24,8 +24,8 @@ void macro_print_unfold_bayes_rl(int Niter = 1, double jet_pt_min_local = 20, do
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if(jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
-        if(R_L_truth!=-999) hresp->Fill(R_L, R_L_truth);
+        if (jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
+        if (R_L_truth!=-999) hresp->Fill(R_L, R_L_truth);
     }
 
     ntuple->Project("hmeas","R_L"      ,Form("jet_pt<%f&&jet_pt>%f",jet_pt_max_local,jet_pt_min_local));

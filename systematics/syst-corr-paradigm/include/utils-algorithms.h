@@ -35,7 +35,7 @@ double get_hwhm(TH1F* h)
     int halfwidth_bin;
     for(int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
     {
-        if(h->GetBinContent(bin)>=half_max){halfwidth_bin = bin; break;}
+        if (h->GetBinContent(bin)>=half_max){halfwidth_bin = bin; break;}
     }
     
     // Return the Half width at half maximum value

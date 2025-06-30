@@ -31,7 +31,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = false)
         h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_e2c%i",jet_pt_bin));
         h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",Nbin_R_L_logbin,rl_logbinning);
 
-        if(normalize)
+        if (normalize)
         {
             h_nominal[jet_pt_bin]->Scale(1./h_nominal[jet_pt_bin]->Integral());
             h_systematic[jet_pt_bin]->Scale(1./h_systematic[jet_pt_bin]->Integral());

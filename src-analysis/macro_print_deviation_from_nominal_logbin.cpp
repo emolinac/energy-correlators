@@ -40,7 +40,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
         h_systematic_tau[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_tau%i",jet_pt_bin));
         h_deviations_tau[jet_pt_bin] = new TH1F(Form("h_deviations_tau%i",jet_pt_bin),"",Nbin_R_L_logbin,tau_logbinning);
 
-        if(normalize)
+        if (normalize)
         {
             h_nominal[jet_pt_bin]->Scale(1./h_nominal[jet_pt_bin]->Integral());
             h_systematic[jet_pt_bin]->Scale(1./h_systematic[jet_pt_bin]->Integral());
@@ -80,7 +80,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
     s->SetMaximum(1.5);
     s->SetMinimum(0.5);
 
-    if(do_print) c->Print(Form("./plots/dev_from_nominal_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
+    if (do_print) c->Print(Form("./plots/dev_from_nominal_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 
     s_tau->Draw("NOSTACK");
     s_tau->SetTitle(";R_{L} #LT p^{jet}_{t} #GT(GeV);Frac. Dev. From Nominal");
@@ -89,5 +89,5 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
     s_tau->SetMaximum(1.5);
     s_tau->SetMinimum(0.5);
 
-    if(do_print) c->Print(Form("./plots/dev_from_nominal_tau_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
+    if (do_print) c->Print(Form("./plots/dev_from_nominal_tau_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 }

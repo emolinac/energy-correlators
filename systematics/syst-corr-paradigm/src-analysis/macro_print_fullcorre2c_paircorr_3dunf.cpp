@@ -14,7 +14,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     // gROOT->cd();
 
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr).c_str()); 
-    if(fcorr->IsZombie()) return;
+    if (fcorr->IsZombie()) return;
     
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
     TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
@@ -57,7 +57,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if(R_L_truth==-999) continue;
+        if (R_L_truth==-999) continue;
     
         response->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
         response_l->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
@@ -119,7 +119,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     hunfolded_ratio_2d->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
     gPad->SetLogx(1);
     gPad->SetLogy(1);
-    if(do_print) c->Print(Form("./plots/unfolded3d_initer%i_ratio_logbinning.pdf",niter));
+    if (do_print) c->Print(Form("./plots/unfolded3d_initer%i_ratio_logbinning.pdf",niter));
 
     hunfolded_ratio_2d_l->Draw("col text");
     hunfolded_ratio_2d_l->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
@@ -127,7 +127,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     hunfolded_ratio_2d_l->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
     gPad->SetLogx(0);
     gPad->SetLogy(1);
-    if(do_print) c->Print(Form("./plots/unfolded3d_initer%i_ratio_linbinning.pdf",niter));
+    if (do_print) c->Print(Form("./plots/unfolded3d_initer%i_ratio_linbinning.pdf",niter));
     
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
@@ -148,9 +148,9 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
         {
             ntuple_data->GetEntry(entry);
 
-            if(jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
-            if(efficiency<=0||efficiency>1) efficiency = 1;//continue;
-            if(purity<=0||purity>1) purity = 1;//continue;
+            if (jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
+            if (efficiency<=0||efficiency>1) efficiency = 1;//continue;
+            if (purity<=0||purity>1) purity = 1;//continue;
             
             double unfolding_weight   = (integrate_weight) ?  hunfolded_ratio_2d->GetBinContent(hunfolded_ratio_2d->FindBin(R_L,jet_pt)): 
                                                               hunfolded_ratio_3d->GetBinContent(hunfolded_ratio_3d->FindBin(R_L,jet_pt,weight_pt));
@@ -158,8 +158,8 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
             double unfolding_weight_l = (integrate_weight) ?  hunfolded_ratio_2d_l->GetBinContent(hunfolded_ratio_2d_l->FindBin(R_L,jet_pt)):
                                                               hunfolded_ratio_3d_l->GetBinContent(hunfolded_ratio_3d_l->FindBin(R_L,jet_pt,weight_pt));
             
-            if(unfolding_weight<=0) unfolding_weight = 1;
-            if(unfolding_weight_l<=0) unfolding_weight_l = 1;
+            if (unfolding_weight<=0) unfolding_weight = 1;
+            if (unfolding_weight_l<=0) unfolding_weight_l = 1;
 
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
             hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
@@ -202,7 +202,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    if(do_print) c->Print(Form("./plots/paircorre2c_niter%i_logbinning_3dunf_wintegrated%s.pdf",niter,integrate_weight?"true":"false"));
+    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_logbinning_3dunf_wintegrated%s.pdf",niter,integrate_weight?"true":"false"));
     
     // Draw Linear binning distribution
     s_data = new THStack();
@@ -218,5 +218,5 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = 4, bool do_print = true,
     
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    if(do_print) c->Print(Form("./plots/paircorre2c_niter%i_linbinning_3dunf_wintegrated%s.pdf",niter,integrate_weight?"true":"false"));
+    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_linbinning_3dunf_wintegrated%s.pdf",niter,integrate_weight?"true":"false"));
 }

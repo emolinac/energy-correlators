@@ -14,7 +14,7 @@ void macro_print_fullcorre2c(int niter = 4)
     gROOT->cd();
 
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
-    if(fcorr->IsZombie()) return;
+    if (fcorr->IsZombie()) return;
     
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
     TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
@@ -57,7 +57,7 @@ void macro_print_fullcorre2c(int niter = 4)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if(R_L_truth==-999) continue;
+        if (R_L_truth==-999) continue;
     
         response->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
         response_l->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
@@ -127,21 +127,21 @@ void macro_print_fullcorre2c(int niter = 4)
         {
             ntuple_data->GetEntry(entry);
 
-            if(jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
-            // if(efficiency_relerror>corr_rel_error) continue;
-            // if(purity_relerror>corr_rel_error) continue;
-            // if(efficiency<=0||efficiency>1) continue;
-            // if(purity<=0||purity>1) continue;
-            if(efficiency_relerror>corr_rel_error) efficiency = 1;
-            if(purity_relerror>corr_rel_error) purity = 1;
-            if(efficiency<=0||efficiency>1)  efficiency = 1;
-            if(purity<=0||purity>1) purity = 1;
+            if (jet_pt<jet_pt_binning[bin]||jet_pt>jet_pt_binning[bin+1]) continue;
+            // if (efficiency_relerror>corr_rel_error) continue;
+            // if (purity_relerror>corr_rel_error) continue;
+            // if (efficiency<=0||efficiency>1) continue;
+            // if (purity<=0||purity>1) continue;
+            if (efficiency_relerror>corr_rel_error) efficiency = 1;
+            if (purity_relerror>corr_rel_error) purity = 1;
+            if (efficiency<=0||efficiency>1)  efficiency = 1;
+            if (purity<=0||purity>1) purity = 1;
             
             double unfolding_weight = hunfolded_ratio->GetBinContent(hunfolded_ratio->FindBin(R_L,jet_pt));
-            if(unfolding_weight<=0) unfolding_weight = 1;
+            if (unfolding_weight<=0) unfolding_weight = 1;
 
             double unfolding_weight_l = hunfolded_ratio_l->GetBinContent(hunfolded_ratio_l->FindBin(R_L,jet_pt));
-            if(unfolding_weight_l<=0) unfolding_weight_l = 1;
+            if (unfolding_weight_l<=0) unfolding_weight_l = 1;
 
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
             hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);

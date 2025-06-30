@@ -206,7 +206,7 @@ int main()
   {
     // Access entry of tree
     pseudodata->GetEntry(evt);
-    if(evt%10000==0)
+    if (evt%10000==0)
     {
       double percentage = 100.*evt/pseudodata->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -220,26 +220,26 @@ int main()
     }
 
     // Apply PV cut
-    if(pseudodata->nPV!=1) continue;
+    if (pseudodata->nPV!=1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (pseudodata->mum_L0MuonEWDecision_TOS==1&&pseudodata->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&pseudodata->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
     bool mup_trigger = (pseudodata->mup_L0MuonEWDecision_TOS==1&&pseudodata->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&pseudodata->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
 
-    if(!mum_trigger&&!mup_trigger) continue;
+    if (!mum_trigger&&!mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(pseudodata->Jet_PX/1000.,pseudodata->Jet_PY/1000.,pseudodata->Jet_PZ/1000.,pseudodata->Jet_PE/1000.);
-    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
     
     mum_4vector->SetPxPyPzE(pseudodata->mum_PX/1000.,pseudodata->mum_PY/1000.,pseudodata->mum_PZ/1000.,pseudodata->mum_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(pseudodata->mup_PX/1000.,pseudodata->mup_PY/1000.,pseudodata->mup_PZ/1000.,pseudodata->mup_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
     double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
     double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
@@ -285,10 +285,10 @@ int main()
     for(int h1_index = 0 ; h1_index < pseudodata->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
-      if(pseudodata->Jet_Dtr_IsMeson[h1_index]!=1&&pseudodata->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (pseudodata->Jet_Dtr_IsMeson[h1_index]!=1&&pseudodata->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
 
       h1_4vector->SetPxPyPzE(pseudodata->Jet_Dtr_PX[h1_index]/1000.,pseudodata->Jet_Dtr_PY[h1_index]/1000.,pseudodata->Jet_Dtr_PZ[h1_index]/1000.,pseudodata->Jet_Dtr_E[h1_index]/1000.);
-      if(!apply_chargedtrack_cuts(pseudodata->Jet_Dtr_ThreeCharge[h1_index],
+      if (!apply_chargedtrack_cuts(pseudodata->Jet_Dtr_ThreeCharge[h1_index],
                                   h1_4vector->P(),
                                   h1_4vector->Pt(),
                                   pseudodata->Jet_Dtr_TrackChi2[h1_index]/pseudodata->Jet_Dtr_TrackNDF[h1_index],
@@ -299,10 +299,10 @@ int main()
       for(int h2_index = h1_index+1 ; h2_index < pseudodata->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
-        if(pseudodata->Jet_Dtr_IsMeson[h2_index]!=1&&pseudodata->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+        if (pseudodata->Jet_Dtr_IsMeson[h2_index]!=1&&pseudodata->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
 
         h2_4vector->SetPxPyPzE(pseudodata->Jet_Dtr_PX[h2_index]/1000.,pseudodata->Jet_Dtr_PY[h2_index]/1000.,pseudodata->Jet_Dtr_PZ[h2_index]/1000.,pseudodata->Jet_Dtr_E[h2_index]/1000.);
-        if(!apply_chargedtrack_cuts(pseudodata->Jet_Dtr_ThreeCharge[h2_index],
+        if (!apply_chargedtrack_cuts(pseudodata->Jet_Dtr_ThreeCharge[h2_index],
                                     h2_4vector->P(),
                                     h2_4vector->Pt(),
                                     pseudodata->Jet_Dtr_TrackChi2[h2_index]/pseudodata->Jet_Dtr_TrackNDF[h2_index],
@@ -364,7 +364,7 @@ int main()
     // Access entry of tree
     truthdata->GetEntry(evt);
 
-    if(evt%10000==0)
+    if (evt%10000==0)
     {
       double percentage = 100.*evt/truthdata->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -377,20 +377,20 @@ int main()
     }
     
     // Apply PV cut
-    if(truthdata->nPVs!=1) continue;
+    if (truthdata->nPVs!=1) continue;
 
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(truthdata->MCJet_PX/1000.,truthdata->MCJet_PY/1000.,truthdata->MCJet_PZ/1000.,truthdata->MCJet_PE/1000.);
-    if(!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
     
     mum_4vector->SetPxPyPzE(truthdata->MCJet_truth_mum_PX/1000.,truthdata->MCJet_truth_mum_PY/1000.,truthdata->MCJet_truth_mum_PZ/1000.,truthdata->MCJet_truth_mum_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(truthdata->MCJet_truth_mup_PX/1000.,truthdata->MCJet_truth_mup_PY/1000.,truthdata->MCJet_truth_mup_PZ/1000.,truthdata->MCJet_truth_mup_PE/1000.);
-    if(!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if(!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
 
     vars_mc_jet[0] = Jet_4vector->Pt();
     vars_mc_jet[1] = Jet_4vector->Eta();
@@ -398,14 +398,14 @@ int main()
     for(int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++)
     {
       // Skip non-hadronic particles
-      if(truthdata->MCJet_Dtr_IsMeson[h1_index]!=1&&truthdata->MCJet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (truthdata->MCJet_Dtr_IsMeson[h1_index]!=1&&truthdata->MCJet_Dtr_IsBaryon[h1_index]!=1) continue;
 
       h1_4vector->SetPxPyPzE(truthdata->MCJet_Dtr_PX[h1_index]/1000.,
                              truthdata->MCJet_Dtr_PY[h1_index]/1000.,
                              truthdata->MCJet_Dtr_PZ[h1_index]/1000., 
                              truthdata->MCJet_Dtr_E[h1_index]/1000.);
 
-      if(!apply_chargedtrack_momentum_cuts(truthdata->MCJet_Dtr_ThreeCharge[h1_index],
+      if (!apply_chargedtrack_momentum_cuts(truthdata->MCJet_Dtr_ThreeCharge[h1_index],
                                            h1_4vector->P(),
                                            h1_4vector->Pt(),
                                            h1_4vector->Eta())) continue;
@@ -413,14 +413,14 @@ int main()
       for(int h2_index = h1_index+1 ; h2_index < truthdata->MCJet_Dtr_nmcdtrs ; h2_index++)
       {
           // Skip non-hadronic particles
-          if(truthdata->MCJet_Dtr_IsMeson[h2_index]!=1&&truthdata->MCJet_Dtr_IsBaryon[h2_index]!=1) continue;
+          if (truthdata->MCJet_Dtr_IsMeson[h2_index]!=1&&truthdata->MCJet_Dtr_IsBaryon[h2_index]!=1) continue;
 
           h2_4vector->SetPxPyPzE(truthdata->MCJet_Dtr_PX[h2_index]/1000.,
                                  truthdata->MCJet_Dtr_PY[h2_index]/1000.,
                                  truthdata->MCJet_Dtr_PZ[h2_index]/1000., 
                                  truthdata->MCJet_Dtr_E[h2_index]/1000.);
 
-          if(!apply_chargedtrack_momentum_cuts(truthdata->MCJet_Dtr_ThreeCharge[h2_index],
+          if (!apply_chargedtrack_momentum_cuts(truthdata->MCJet_Dtr_ThreeCharge[h2_index],
                                                h2_4vector->P(),
                                                h2_4vector->Pt(),
                                                h2_4vector->Eta())) continue;

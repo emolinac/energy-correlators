@@ -27,9 +27,9 @@ void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfo
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        // if(jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
-        if(jet_pt_truth==-999) continue;
-        if(rndm->Uniform(1)<=0.5) 
+        // if (jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
+        if (jet_pt_truth==-999) continue;
+        if (rndm->Uniform(1)<=0.5) 
         {
             htrue_ref->Fill(jet_pt_truth);
             continue;

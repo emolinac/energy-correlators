@@ -193,57 +193,57 @@ TCut e2c_jetpt_cut_weightpt_nokaon[] =
 // FUNCTIONS TO APPLY CUTS
 bool apply_jet_cuts(double jet_eta, double jet_pt)
 {
-    if(jet_eta<jet_eta_min||jet_eta>jet_eta_max) return false;
-    if(jet_pt<unfolding_jetpt_binning[0]) return false;
+    if (jet_eta<jet_eta_min||jet_eta>jet_eta_max) return false;
+    if (jet_pt<unfolding_jetpt_binning[0]) return false;
 
     return true;    
 }
 
 bool apply_jet_id_cuts(double mpt, double nPVtrk, double cpf, double mpf)
 {
-    if(mpt < mpt_min) return false;
-    if(nPVtrk < nPVtrks_min) return false;
-    if(cpf < cpf_min) return false;
-    if(mpf > mpf_max) return false;
+    if (mpt < mpt_min) return false;
+    if (nPVtrk < nPVtrks_min) return false;
+    if (cpf < cpf_min) return false;
+    if (mpf > mpf_max) return false;
 
     return true;    
 }
 
 bool apply_muon_cuts(double deltaR_mu_jet, double mu_pt, double mu_eta)
 {
-    if(deltaR_mu_jet<jet_radius) return false; 
-    if(mu_pt<muon_pt_min) return false;
-    if(mu_eta<muon_eta_min||mu_eta>muon_eta_max) return false;
+    if (deltaR_mu_jet<jet_radius) return false; 
+    if (mu_pt<muon_pt_min) return false;
+    if (mu_eta<muon_eta_min||mu_eta>muon_eta_max) return false;
 
     return true;
 }
 
 bool apply_zboson_cuts(double deltaphi_zboson_jet, double zboson_mass)
 {
-    if(deltaphi_zboson_jet<deltaphi_z_jet_min) return false;
-    if(zboson_mass<muonmuon_mass_min||zboson_mass>muonmuon_mass_max) return false;
+    if (deltaphi_zboson_jet<deltaphi_z_jet_min) return false;
+    if (zboson_mass<muonmuon_mass_min||zboson_mass>muonmuon_mass_max) return false;
 
     return true;
 }
 
 bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta)
 {
-    if(charge==0) return false;
-    if(p<track_p_min||p>track_p_max) return false;
-    if(pt<track_pt_min) return false;
-    if(chi2ndf>track_chi2ndf_max) return false;
-    if(probnnghost>track_probnnghost_max) return false;
-    if(eta<muon_eta_min||eta>muon_eta_max) return false;
+    if (charge==0) return false;
+    if (p<track_p_min||p>track_p_max) return false;
+    if (pt<track_pt_min) return false;
+    if (chi2ndf>track_chi2ndf_max) return false;
+    if (probnnghost>track_probnnghost_max) return false;
+    if (eta<muon_eta_min||eta>muon_eta_max) return false;
 
     return true;
 }
 
 bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta)
 {
-    if(charge==0) return false;
-    if(p<track_p_min||p>track_p_max) return false;
-    if(pt<track_pt_min) return false;
-    if(eta<muon_eta_min||eta>muon_eta_max) return false;
+    if (charge==0) return false;
+    if (p<track_p_min||p>track_p_max) return false;
+    if (pt<track_pt_min) return false;
+    if (eta<muon_eta_min||eta>muon_eta_max) return false;
     
     return true;
 }

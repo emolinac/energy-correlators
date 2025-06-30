@@ -20,7 +20,7 @@ void macro_print_responsematrix_rl()
         // Access entry of ntuple
         ntuple->GetEntry(evt);
 
-        if(R_L_truth!=-999) hresp->Fill(R_L, R_L_truth);
+        if (R_L_truth!=-999) hresp->Fill(R_L, R_L_truth);
     }
 
     hresp->Draw("col text");

@@ -19,7 +19,7 @@ void macro_print_responsematrix_jetpt()
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if(jet_pt_truth!=-999) hresp->Fill(jet_pt, jet_pt_truth);
+        if (jet_pt_truth!=-999) hresp->Fill(jet_pt, jet_pt_truth);
     }
 
     hresp->Draw("COL TEXT");

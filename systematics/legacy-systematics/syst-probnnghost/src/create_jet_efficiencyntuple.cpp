@@ -50,7 +50,7 @@ int main()
   
   for(int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
   {
-    if(evt%10000==0)
+    if (evt%10000==0)
     {
       double percentage = 100*evt/mctree->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -58,26 +58,26 @@ int main()
     // Access entry of tree
     mctree->GetEntry(evt);
 
-    if(evt != 0){if(last_eventNum == mctree->eventNumber) continue;}
+    if (evt != 0){if (last_eventNum == mctree->eventNumber) continue;}
     
     // Apply PV cut
-    if(mctree->nPVs!=1) continue;
+    if (mctree->nPVs!=1) continue;
 
     // Set Jet-associated 4 vectors and apply cuts
     true_Jet_4vector->SetPxPyPzE(mctree->MCJet_PX/1000.,mctree->MCJet_PY/1000.,mctree->MCJet_PZ/1000.,mctree->MCJet_PE/1000.);
-    if(!apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) continue;
 
     true_mum_4vector->SetPxPyPzE(mctree->MCJet_truth_mum_PX/1000.,mctree->MCJet_truth_mum_PY/1000.,mctree->MCJet_truth_mum_PZ/1000.,mctree->MCJet_truth_mum_PE/1000.);
-    if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) continue;
     
     true_mup_4vector->SetPxPyPzE(mctree->MCJet_truth_mup_PX/1000.,mctree->MCJet_truth_mup_PY/1000.,mctree->MCJet_truth_mup_PZ/1000.,mctree->MCJet_truth_mup_PE/1000.);
-    if(!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) continue;
     
     true_Z0_4vector->SetPxPyPzE(true_mup_4vector->Px()+true_mum_4vector->Px(),true_mup_4vector->Py()+true_mum_4vector->Py(),true_mup_4vector->Pz()+true_mum_4vector->Pz(),true_mup_4vector->E() +true_mum_4vector->E());
-    if(!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) continue;
 
     bool reco_passed = false;
-    if(mctree->MCJet_recojet_PX!=-999)
+    if (mctree->MCJet_recojet_PX!=-999)
     {
       double mum_energy = sqrt(pow(mctree->MCJet_truth_match_mum_PX,2)+pow(mctree->MCJet_truth_match_mum_PY,2)+pow(mctree->MCJet_truth_match_mum_PZ,2));
       double mup_energy = sqrt(pow(mctree->MCJet_truth_match_mup_PX,2)+pow(mctree->MCJet_truth_match_mup_PY,2)+pow(mctree->MCJet_truth_match_mup_PZ,2));
@@ -86,11 +86,11 @@ int main()
       mum_4vector->SetPxPyPzE(mctree->MCJet_truth_match_mum_PX/1000.,mctree->MCJet_truth_match_mum_PY/1000.,mctree->MCJet_truth_match_mum_PZ/1000.,mum_energy/1000.);
       mup_4vector->SetPxPyPzE(mctree->MCJet_truth_match_mup_PX/1000.,mctree->MCJet_truth_match_mup_PY/1000.,mctree->MCJet_truth_match_mup_PZ/1000.,mup_energy/1000.);
       Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-      // if(apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())&&\
+      // if (apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())&&\
       //    apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())&&\
       //    apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())&&\
       //    apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) reco_passed = true;
-      if(apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) reco_passed = true; // Ibrahim condition
+      if (apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) reco_passed = true; // Ibrahim condition
     }
     
     vars[0] = true_Jet_4vector->Pt();

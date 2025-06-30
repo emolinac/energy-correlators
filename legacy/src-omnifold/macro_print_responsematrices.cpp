@@ -29,7 +29,7 @@ void macro_print_responsematrices()
         // Access entry of ntuple
         ntuple->GetEntry(evt);
 
-        if(R_L_truth!=-999) 
+        if (R_L_truth!=-999) 
         {
             hresp_jetpt->Fill(jet_pt, jet_pt_truth);
             hresp_rl->Fill(R_L, R_L_truth);

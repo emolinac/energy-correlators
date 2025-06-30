@@ -29,8 +29,8 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if(R_L_truth==-999) continue;
-        if(rndm->Uniform(1)<=0.5) 
+        if (R_L_truth==-999) continue;
+        if (rndm->Uniform(1)<=0.5) 
         {
             htrue_ref->Fill(R_L_truth,jet_pt_truth);
             continue;

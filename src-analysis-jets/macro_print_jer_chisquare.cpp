@@ -69,7 +69,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
             for(int entry = 0 ; entry < ntuple_jes_reco->GetEntries() ; entry++)
             {
                 ntuple_jes_reco->GetEntry(entry);
-                if(jet_pt_reco<jet_pt_binning[bin]||jet_pt_reco>jet_pt_binning[bin+1]) continue;
+                if (jet_pt_reco<jet_pt_binning[bin]||jet_pt_reco>jet_pt_binning[bin+1]) continue;
 
                 hreco_newjec[bin]->Fill(rndm->Gaus(1,alpha_star)*jet_pt_reco/z_pt_reco/jet_jec_cor_reco);
             }
@@ -87,7 +87,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         halphastar_balance[bin]->Draw();
         halphastar_balance[bin]->SetMinimum(-0.006);
         halphastar_balance[bin]->SetMaximum(0.036);
-        if(bin==0) halphastar_balance[bin]->SetTitle(";#alpha;");
+        if (bin==0) halphastar_balance[bin]->SetTitle(";#alpha;");
         else halphastar_balance[bin]->SetTitle(";#alpha;");
         l[bin]->Clear();
         l[bin]->SetHeader(Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]));
@@ -95,19 +95,19 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         l[bin]->Draw("SAME");
     }
 
-    if(do_print) c->Print(Form("./plots/jer_alpha_balance.pdf"));
+    if (do_print) c->Print(Form("./plots/jer_alpha_balance.pdf"));
 
     std::cout<<"COPY INTO sys-jes-jer.h ---> const double syst_jer_array[] = { ";
     for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         c->cd(bin+1);
         double alpha_star_min = halphastar_chisquare[bin]->GetBinCenter(halphastar_chisquare[bin]->GetMinimumBin());
-        std::cout<<alpha_star_min; if(bin<Nbin_jet_pt-1) std::cout<<", ";
+        std::cout<<alpha_star_min; if (bin<Nbin_jet_pt-1) std::cout<<", ";
 
         halphastar_chisquare[bin]->Draw("E");
         halphastar_chisquare[bin]->SetMinimum(20);
         halphastar_chisquare[bin]->SetMaximum(120);
-        if(bin==0) halphastar_chisquare[bin]->SetTitle(";#alpha;");
+        if (bin==0) halphastar_chisquare[bin]->SetTitle(";#alpha;");
         else halphastar_chisquare[bin]->SetTitle(";#alpha;");
         l[bin]->Clear();
         l[bin]->SetHeader(Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]));
@@ -117,5 +117,5 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
 
     std::cout<<"};"<<std::endl;
 
-    if(do_print) c->Print(Form("./plots/jer_alpha_chisquare.pdf"));
+    if (do_print) c->Print(Form("./plots/jer_alpha_chisquare.pdf"));
 }

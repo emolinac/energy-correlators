@@ -35,14 +35,14 @@ double get_hwhm(TH1F* h)
     int halfwidth_bin;
     for(int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
     {
-        if(h->GetBinContent(bin)>=half_max){halfwidth_bin = bin; break;}
+        if (h->GetBinContent(bin)>=half_max){halfwidth_bin = bin; break;}
     }
     
     // Return the Half width at half maximum value
     return abs(h->GetBinCenter(h->GetMaximumBin()) - h->GetBinCenter(halfwidth_bin));
 }
 
-void get_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic)
+void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic)
 {
     for(int hbin = 1 ; hbin <= hdeviations->GetNbinsX() ; hbin++)
     {
@@ -50,7 +50,7 @@ void get_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
         double dev_err = hdeviations->GetBinError(hbin);
 
         // Demand more than one sigma to be considered
-        if((dev+dev_err>1&&dev<1)||(dev-dev_err<1&&dev>1)) continue;
+        if ((dev+dev_err>1&&dev<1)||(dev-dev_err<1&&dev>1)) continue;
 
         double syst_error = abs(1. - dev)*hnominal->GetBinContent(hbin);
 
@@ -59,7 +59,7 @@ void get_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
     }
 }
 
-void get_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type = "normal")
+void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type = "normal")
 {
     for(int hbin = 1 ; hbin <= hdeviations->GetNbinsX() ; hbin++)
     {
@@ -67,7 +67,7 @@ void get_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
         double dev_err = hdeviations->GetBinError(hbin);
 
         // Demand more than one sigma to be considered
-        if((dev+dev_err>1&&dev<1)||(dev-dev_err<1&&dev>1)) continue;
+        if ((dev+dev_err>1&&dev<1)||(dev-dev_err<1&&dev>1)) continue;
 
         double syst_error;
         

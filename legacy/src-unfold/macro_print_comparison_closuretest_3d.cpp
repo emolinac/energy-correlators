@@ -8,7 +8,7 @@
 void macro_print_comparison_closuretest_3d(int Niter = 5, double jet_pt_min_local = unfolding_jetpt_binning[0], double jet_pt_max_local = unfolding_jetpt_binning[5])
 {
     TFile* fof = new TFile("../output-files/multifold_closuretest_3d.root");
-    if(fof->IsZombie()) return;
+    if (fof->IsZombie()) return;
     TH1D* hct_rl_of     = (TH1D*) fof->Get("hct_rl");
     TH1D* hct_jetpt_of  = (TH1D*) fof->Get("hct_jetpt");
     TH1D* hct_weight_of = (TH1D*) fof->Get("hct_weight");
@@ -37,9 +37,9 @@ void macro_print_comparison_closuretest_3d(int Niter = 5, double jet_pt_min_loca
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if(jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
-        if(R_L_truth==-999) continue;
-        if(rndm->Uniform(1)<=0.5) 
+        if (jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
+        if (R_L_truth==-999) continue;
+        if (rndm->Uniform(1)<=0.5) 
         {
             htrue_ref->Fill(R_L_truth,jet_pt_truth,weight_truth);
             continue;

@@ -31,13 +31,13 @@ void macro_determine_binning()
         double q = h_weight_cumul->GetBinContent(bin);
 
         // Exit when determined last bin
-        if(counter_weight==Nbin_weight) 
+        if (counter_weight==Nbin_weight) 
         {
             std::cout<<", "<<weight_max<<"};"<<std::endl;
             break;
         }
         // Condition to determine limit
-        if(q>entries_bin_weight*counter_weight) 
+        if (q>entries_bin_weight*counter_weight) 
         {
             counter_weight++;
 
