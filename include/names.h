@@ -49,34 +49,39 @@ std::string namef_histos_paircorr_e2c_jes              = "histos_paircorr_e2c_je
 std::string namef_histos_paircorr_e2c_logbin_jes       = "histos_paircorr_e2c_logbin_jes.root";
 std::string namef_histos_paircorr_e2c_inclusive        = "histos_paircorr_e2c_inclusive.root";
 std::string namef_histos_paircorr_e2c_logbin_inclusive = "histos_paircorr_e2c_logbin_inclusive.root";
+std::string namef_histos_paircorr_e2c_logbin_shapect   = "histos_paircorr_e2c_logbin_shapect.root";
 std::string namef_histos_paircorr_e2c_jer              = "histos_paircorr_e2c_jer.root";
 std::string namef_histos_paircorr_e2c_logbin_jer       = "histos_paircorr_e2c_logbin_jer.root";
 
 std::string namef_histos_devfromnom_e2c_logbin                    = "histos_devfromnom_e2c_logbin.root";
 std::string namef_histos_paircorr_devfromnom_e2c_logbin_inclusive = "histos_paircorr_devfromnom_e2c_logbin_inclusive.root";
+std::string namef_histos_paircorr_devfromnom_e2c_logbin_shapect   = "histos_paircorr_devfromnom_e2c_logbin_shapect.root";
 std::string namef_histos_paircorr_devfromnom_e2c_logbin_jes       = "histos_paircorr_devfromnom_e2c_logbin_jes.root";
 std::string namef_histos_paircorr_devfromnom_e2c_logbin_jer       = "histos_paircorr_devfromnom_e2c_logbin_jer.root";
 std::string namef_histos_paircorr_devfromnom_e2c_logbin_ct        = "histos_paircorr_devfromnom_e2c_logbin_ct.root";
 
 // About systematics
-std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes", "inclusive"};
+std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes", "inclusive", "shape-ct"};
 std::map<std::string, std::string> systematic_namef = {{available_systematics[0],namef_histos_corr_e2c_logbin},
                                                        {available_systematics[1],namef_histos_paircorr_e2c_logbin_ct},
                                                        {available_systematics[2],namef_histos_paircorr_e2c_logbin_jer},
                                                        {available_systematics[3],namef_histos_paircorr_e2c_logbin_jes},
-                                                       {available_systematics[4],namef_histos_paircorr_e2c_logbin_inclusive}};
+                                                       {available_systematics[4],namef_histos_paircorr_e2c_logbin_inclusive},
+                                                       {available_systematics[5],namef_histos_paircorr_e2c_logbin_shapect}};
 
 std::map<std::string, std::string> devfromnom_namef = {{available_systematics[0],namef_histos_devfromnom_e2c_logbin},
                                                        {available_systematics[1],namef_histos_paircorr_devfromnom_e2c_logbin_ct},
                                                        {available_systematics[2],namef_histos_paircorr_devfromnom_e2c_logbin_jer},
                                                        {available_systematics[3],namef_histos_paircorr_devfromnom_e2c_logbin_jes},
-                                                       {available_systematics[4],namef_histos_paircorr_devfromnom_e2c_logbin_inclusive}};
+                                                       {available_systematics[4],namef_histos_paircorr_devfromnom_e2c_logbin_inclusive},
+                                                       {available_systematics[5],namef_histos_paircorr_devfromnom_e2c_logbin_shapect}};
 
 std::map<std::string, std::string> systematic_errtype = {{available_systematics[0],"uniform"},
                                                          {available_systematics[1],"normal"},
                                                          {available_systematics[2],"uniform"},
                                                          {available_systematics[3],"uniform"},
-                                                         {available_systematics[4],"uniform"}};
+                                                         {available_systematics[4],"uniform"},
+                                                         {available_systematics[5],"uniform"}};
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_unfold = 26; 
