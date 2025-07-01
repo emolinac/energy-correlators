@@ -41,7 +41,7 @@ void macro_print_corre2c_rl_ratio_jet_pt()
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend();
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hsig_eff[jet_pt_bin]    = new TH1F(Form("hsig_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
         hall_eff[jet_pt_bin]    = new TH1F(Form("hall_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);

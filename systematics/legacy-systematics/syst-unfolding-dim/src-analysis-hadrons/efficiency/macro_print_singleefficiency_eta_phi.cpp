@@ -33,9 +33,9 @@ void macro_print_singleefficiency_eta_phi()
     // efficiency PLOTS
     hefficiency->Divide(hsig,hall,1,1,"B");
     
-    for(int bin_x = 1 ; bin_x <= ndim_corr ; bin_x++)
+    for (int bin_x = 1 ; bin_x <= ndim_corr ; bin_x++)
     {
-        for(int bin_y = 1 ; bin_y <= ndim_corr ; bin_y++)
+        for (int bin_y = 1 ; bin_y <= ndim_corr ; bin_y++)
         {
             int bin = hefficiency->GetBin(bin_x,bin_y);
             if (hefficiency->GetBinContent(bin)>1) hefficiency->SetBinContent(bin,0);

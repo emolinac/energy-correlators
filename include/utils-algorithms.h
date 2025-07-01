@@ -7,7 +7,7 @@ void determine_log10binning(int Nbins, double x_i, double x_f, double* binning)
     double log_x_f = log10(x_f);
     double delta = (log_x_f-log_x_i)/Nbins;
 
-    for(int i = 0 ; i <=Nbins ; i++)
+    for (int i = 0 ; i <=Nbins ; i++)
     {
         binning[i] = pow(10,log_x_i+delta*i);
     }
@@ -19,7 +19,7 @@ void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning)
 {
     double delta = (x_f - x_i)/Nbins;
 
-    for(int i = 0 ; i <=Nbins ; i++)
+    for (int i = 0 ; i <=Nbins ; i++)
     {
         binning[i] = x_i + delta*i;
     }
@@ -33,7 +33,7 @@ double get_hwhm(TH1F* h)
     double half_max = h->GetMaximum()/2.;
  
     int halfwidth_bin;
-    for(int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
+    for (int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
     {
         if (h->GetBinContent(bin)>=half_max){halfwidth_bin = bin; break;}
     }
@@ -44,7 +44,7 @@ double get_hwhm(TH1F* h)
 
 void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic)
 {
-    for(int hbin = 1 ; hbin <= hdeviations->GetNbinsX() ; hbin++)
+    for (int hbin = 1 ; hbin <= hdeviations->GetNbinsX() ; hbin++)
     {
         double dev     = hdeviations->GetBinContent(hbin);
         double dev_err = hdeviations->GetBinError(hbin);
@@ -61,7 +61,7 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
 
 void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type = "normal")
 {
-    for(int hbin = 1 ; hbin <= hdeviations->GetNbinsX() ; hbin++)
+    for (int hbin = 1 ; hbin <= hdeviations->GetNbinsX() ; hbin++)
     {
         double dev     = hdeviations->GetBinContent(hbin);
         double dev_err = hdeviations->GetBinError(hbin);
@@ -82,6 +82,44 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
         
         double total_error = sqrt(syst_error*syst_error + hnominal->GetBinError(hbin)*hnominal->GetBinError(hbin));
         hsystematic->SetBinError(hbin, total_error);
+    }
+}
+
+void set_histo_sqrt_content(TH1F* h)
+{
+    for (int i = 1 ; i <= h->GetNbinsX() ; i++) {
+        h->SetBinContent(i,sqrt(h->GetBinContent(i)));
+        h->SetBinError(i,sqrt(h->GetBinError(i)));
+    }
+}
+
+void set_histo_null_errors(TH1F* h)
+{
+    for (int i = 1 ; i <= h->GetNbinsX() ; i++)
+        h->SetBinError(i,0);
+}
+
+void set_shift_histo(TH2F* href, TH2F* hshift, TRandom3* rndm)
+{
+    for (int xbin = 1 ; xbin <= href->GetNbinsX() ; xbin++) {
+        for (int ybin = 1 ; ybin <= href->GetNbinsY() ; ybin++) {
+            double shift_window = href->GetBinError(href->GetBin(xbin,ybin));
+            double refdata      = href->GetBinContent(href->GetBin(xbin,ybin));
+            double shift        = rndm->Gaus(1,abs(shift_window/refdata));
+            hshift->SetBinContent(xbin,ybin,shift);
+        }
+    }
+}
+
+void set_shift_histo(TH2D* href, TH2D* hshift, TRandom3* rndm)
+{
+    for (int xbin = 1 ; xbin <= href->GetNbinsX() ; xbin++) {
+        for (int ybin = 1 ; ybin <= href->GetNbinsY() ; ybin++) {
+            double shift_window = href->GetBinError(href->GetBin(xbin,ybin));
+            double refdata      = href->GetBinContent(href->GetBin(xbin,ybin));
+            double shift        = rndm->Gaus(refdata,shift_window)/refdata; //rndm->Gaus(1,abs(shift_window/refdata));
+            hshift->SetBinContent(xbin,ybin,shift);
+        }
     }
 }
 

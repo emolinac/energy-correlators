@@ -35,7 +35,7 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
     const int    beta_star_bins = 60;
     double beta_star_step = (beta_star_end - beta_star_init)/beta_star_bins;
     
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         c->cd(bin+1);
         
@@ -56,7 +56,7 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         // ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin+1]));
         // ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin+1]));
 
-        for(int beta_star_bin = 0 ; beta_star_bin < beta_star_bins ; beta_star_bin++)
+        for (int beta_star_bin = 0 ; beta_star_bin < beta_star_bins ; beta_star_bin++)
         {
             double beta_star = beta_star_init + beta_star_bin*beta_star_step;
             ntuple_jes_reco->Project(Form("hreco_newjec[%i]",bin),Form("%f*(jet_pt/z_pt)/jet_jec_cor",beta_star),pair_jetpt_cut[bin]);
@@ -85,7 +85,7 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
     if (do_print) c->Print(Form("./plots/jes_beta_balance.pdf"));
 
     std::cout<<"COPY INTO sys-jes-jer.h ---> const double syst_jes_array[] = { ";
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         c->cd(bin+1);
         double beta_star_min = hbetastar_chisquare[bin]->GetBinCenter(hbetastar_chisquare[bin]->GetMinimumBin());

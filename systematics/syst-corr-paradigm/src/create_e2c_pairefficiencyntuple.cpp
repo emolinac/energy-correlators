@@ -55,7 +55,7 @@ int main()
   float vars_mc[Nvars_corrections_mc];
 
   // Fill the matched jets Ntuple
-  for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
   {
     if (evt%10000==0)
     {
@@ -136,7 +136,7 @@ int main()
     if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) continue;
     
     // Fill the mcreco ntuple
-    for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
+    for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
       if (mcrecotree->Jet_Dtr_IsMeson[h1_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
@@ -168,7 +168,7 @@ int main()
                                              true_h1_4vector->Eta())) key1_match = 0;
       } 
 
-      for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
         if (mcrecotree->Jet_Dtr_IsMeson[h2_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
@@ -236,7 +236,7 @@ int main()
     }
 
     // Fill the mc ntuple
-    for(int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++)
+    for (int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++)
     {
       // Skip non-hadronic particles
       if (mcrecotree->Jet_mcjet_dtrIsMeson[h1_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h1_index]!=1) continue;
@@ -250,7 +250,7 @@ int main()
                                            h1_4vector->Pt(),
                                            h1_4vector->Eta())) continue;
 
-      for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++)
       {
         // Skip non-hadronic particles
         if (mcrecotree->Jet_mcjet_dtrIsMeson[h2_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h2_index]!=1) continue;

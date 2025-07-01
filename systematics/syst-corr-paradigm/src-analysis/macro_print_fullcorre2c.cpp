@@ -53,7 +53,7 @@ void macro_print_fullcorre2c(int niter = 4)
     TH2D* htrue_l    = new TH2D("htrue_l"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     RooUnfoldResponse* response_l = new RooUnfoldResponse(hmeas_l, htrue_l, "response_l");
 
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
@@ -109,7 +109,7 @@ void macro_print_fullcorre2c(int niter = 4)
     TLegend* l_data = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
 
     // Fill the histograms
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)  ,"", 1,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
         
@@ -120,7 +120,7 @@ void macro_print_fullcorre2c(int niter = 4)
         set_histogram_style(hcorr_e2c[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
         set_histogram_style(hcorr_e2c_l[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
     
-        for(int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
+        for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
         {
             ntuple_data->GetEntry(entry);
 
@@ -167,7 +167,7 @@ void macro_print_fullcorre2c(int niter = 4)
     }
 
     // Draw Log binning distributions
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_e2c[bin],"E");
         l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
@@ -184,7 +184,7 @@ void macro_print_fullcorre2c(int niter = 4)
     
     // Draw Linear binning distribution
     s_data = new THStack();
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_e2c_l[bin],"E");
     }

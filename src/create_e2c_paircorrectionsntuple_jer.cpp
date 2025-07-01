@@ -60,7 +60,7 @@ int main()
   TRandom3* rndm = new TRandom3();
 
   std::cout<<"Processing events ..."<<std::endl;
-  for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
   {
     if (evt%10000==0)
     {
@@ -95,7 +95,7 @@ int main()
                             mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Cor);
 
     double new_jer_cor = -999;
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
       if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) new_jer_cor = syst_jer_array[jet_pt_bin];
     }
@@ -153,7 +153,7 @@ int main()
     
     
     // Loop over hadron 1
-    for(int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
+    for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
       if (mcrecotree->Jet_Dtr_IsMeson[h1_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
@@ -185,7 +185,7 @@ int main()
                                             true_h1_4vector->Eta())) key1_match = 0;
       } 
 
-      for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
         if (mcrecotree->Jet_Dtr_IsMeson[h2_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
@@ -253,7 +253,7 @@ int main()
     }
 
     // Fill the mc ntuple
-    for(int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++)
+    for (int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++)
     {
       // Skip non-hadronic particles
       if (mcrecotree->Jet_mcjet_dtrIsMeson[h1_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h1_index]!=1) continue;
@@ -267,7 +267,7 @@ int main()
                                            h1_4vector->Pt(),
                                            h1_4vector->Eta())) continue;
 
-      for(int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++)
       {
         // Skip non-hadronic particles
         if (mcrecotree->Jet_mcjet_dtrIsMeson[h2_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h2_index]!=1) continue;

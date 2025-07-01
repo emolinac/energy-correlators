@@ -33,7 +33,7 @@ void macro_print_comparison_closuretest_3d(int Niter = 5, double jet_pt_min_loca
     TH3D* hct       = new TH3D("hct"     ,"",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_weight,weight_binning);
 
     TRandom3* rndm = new TRandom3();
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);

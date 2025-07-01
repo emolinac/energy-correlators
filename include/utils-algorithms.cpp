@@ -11,6 +11,14 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
 
 void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type);
 
+void set_histo_sqrt_content(TH1F* h);
+
+void set_histo_null_errors(TH1F* h);
+
+void set_shift_histo(TH2F* href, TH2F* hshift, TRandom3* rndm);
+
+void set_shift_histo(TH2D* href, TH2D* hshift, TRandom3* rndm);
+
 void set_data_ntuple_branches(TNtuple* ntuple, float* R_L, float* jet_pt, float* weight_pt, float* efficiency, float* purity, float* efficiency_relerror, float* purity_relerror);
 
 void set_unfolding_ntuple_branches(TNtuple* ntuple, float* R_L_reco, float* R_L_truth, float* jet_pt_reco, float* jet_pt_truth, float* weight_pt_reco, float* weight_pt_truth);

@@ -57,7 +57,7 @@ int main()
   float vars_jes_mc[Nvars_jes];
   
   // Fill the reco ntuple
-  for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
   {
     if (evt%10000==0)
     {
@@ -106,7 +106,7 @@ int main()
     double leading_jet_pt    = mcrecotree->Jet_PT/1000.;
     if (ncandidates>1)
     {
-      for(int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
+      for (int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
       {
         mcrecotree->GetEntry(cand);
         
@@ -131,7 +131,7 @@ int main()
   std::cout<<"Reco done"<<std::endl;
 
   // // Fill the mc tuple
-  // for(int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
+  // for (int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
   // {
   //   if (evt%10000==0)
   //   {
@@ -177,7 +177,7 @@ int main()
   //   if (ncandidates>1)
   //   {
   //     std::cout<<"  Checking the other candidates..."<<std::endl;
-  //     for(int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
+  //     for (int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
   //     {
   //       mctree->GetEntry(cand);
         
@@ -204,7 +204,7 @@ int main()
 
   // std::cout<<"MC done"<<std::endl;
   
-  for(int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
     datatree->GetEntry(evt);
@@ -254,7 +254,7 @@ int main()
     double leading_jet_pt    = datatree->Jet_PT/1000.;
     if (ncandidates>1)
     {
-      for(int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
+      for (int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
       {
         datatree->GetEntry(cand);
         

@@ -23,7 +23,7 @@ void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfo
     TH1F* h_ct      = new TH1F("h_ct"     ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
 
     TRandom3* rndm = new TRandom3();
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);

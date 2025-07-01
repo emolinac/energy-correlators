@@ -202,7 +202,7 @@ int main()
   // Fill the data TNtuple
   
   std::cout<<"Working with 2017 data."<<std::endl;
-  for(int evt = 0 ; evt < pseudodata->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < pseudodata->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
     pseudodata->GetEntry(evt);
@@ -282,7 +282,7 @@ int main()
     ntuple_corrjet->Fill(vars_jet);
 
     // Loop over hadron 1
-    for(int h1_index = 0 ; h1_index < pseudodata->Jet_NDtr ; h1_index++)
+    for (int h1_index = 0 ; h1_index < pseudodata->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
       if (pseudodata->Jet_Dtr_IsMeson[h1_index]!=1&&pseudodata->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
@@ -296,7 +296,7 @@ int main()
                                   h1_4vector->Eta())) continue;
 
       // Loop over hadron 2
-      for(int h2_index = h1_index+1 ; h2_index < pseudodata->Jet_NDtr ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < pseudodata->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
         if (pseudodata->Jet_Dtr_IsMeson[h2_index]!=1&&pseudodata->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
@@ -359,7 +359,7 @@ int main()
   // Fill the MC TNtuple
   float vars_mc[Nvars_mc];
   float vars_mc_jet[Nvars_jet_minimal];
-  for(int evt = 0 ; evt < truthdata->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < truthdata->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
     truthdata->GetEntry(evt);
@@ -395,7 +395,7 @@ int main()
     vars_mc_jet[0] = Jet_4vector->Pt();
     vars_mc_jet[1] = Jet_4vector->Eta();
     
-    for(int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++)
+    for (int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++)
     {
       // Skip non-hadronic particles
       if (truthdata->MCJet_Dtr_IsMeson[h1_index]!=1&&truthdata->MCJet_Dtr_IsBaryon[h1_index]!=1) continue;
@@ -410,7 +410,7 @@ int main()
                                            h1_4vector->Pt(),
                                            h1_4vector->Eta())) continue;
 
-      for(int h2_index = h1_index+1 ; h2_index < truthdata->MCJet_Dtr_nmcdtrs ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < truthdata->MCJet_Dtr_nmcdtrs ; h2_index++)
       {
           // Skip non-hadronic particles
           if (truthdata->MCJet_Dtr_IsMeson[h2_index]!=1&&truthdata->MCJet_Dtr_IsBaryon[h2_index]!=1) continue;

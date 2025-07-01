@@ -25,7 +25,7 @@ void macro_print_pairpurity_rl_jet_pt()
     TH1F* hall[Nbin_jet_pt];
     TH1F* hpurity[Nbin_jet_pt];
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
         hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
@@ -43,7 +43,7 @@ void macro_print_pairpurity_rl_jet_pt()
     TH1F* hsig_data[Nbin_jet_pt];
     TH1F* hall_data[Nbin_jet_pt];
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hsig_data[jet_pt_bin] = new TH1F(Form("hsig_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
         hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
@@ -56,7 +56,7 @@ void macro_print_pairpurity_rl_jet_pt()
     }
 
     // Project into the histograms
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         ntuple_purity->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
         ntuple_purity->Project(Form("hall[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
@@ -77,7 +77,7 @@ void macro_print_pairpurity_rl_jet_pt()
     THStack* s = new THStack();
     TLegend* l = new TLegend();
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         s->Add(hsig[jet_pt_bin]);
         s->Add(hall[jet_pt_bin]);
@@ -100,7 +100,7 @@ void macro_print_pairpurity_rl_jet_pt()
     THStack* s_purity = new THStack();
     TLegend* l_purity = new TLegend();
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hpurity[jet_pt_bin]->Divide(hsig[jet_pt_bin],hall[jet_pt_bin],1,1,"B");
         set_histogram_style(hpurity[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width, std_marker_style_jet_pt[jet_pt_bin], std_marker_size);
@@ -123,7 +123,7 @@ void macro_print_pairpurity_rl_jet_pt()
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend();
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hsig_data[jet_pt_bin]->Multiply(hpurity[jet_pt_bin]);
 

@@ -66,7 +66,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
     TH3D* htrue_l    = new TH3D("htrue_l"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
     RooUnfoldResponse* response_l = new RooUnfoldResponse(hmeas_l, htrue_l, "response_l");
 
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
@@ -130,7 +130,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
     THStack* s_data[3];
     TLegend* l_data[3];
 
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         hcorr_e2c[bin]   = new TH1F(Form("hcorr_e2c[%i]",bin) ,"",Nbin_R_L_logbin,rl_logbinning);
         hmc[bin]         = new TH1F(Form("hmc[%i]" ,bin)      ,"",Nbin_R_L_logbin,rl_logbinning);
@@ -151,7 +151,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
         set_histogram_style(hmcreco_l[bin]  , corr_marker_color_jet_pt[2], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
     
         // Fill and normalize data
-        for(int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
+        for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
         {
             ntuple_data->GetEntry(entry);
 
@@ -178,7 +178,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
         hcorr_e2c_l[bin]->Scale(1./hcorr_jet[bin]->Integral());
 
         // Fill and normalize MC        
-        for(int entry = 0 ; entry < ntuple_mc->GetEntries() ; entry++)
+        for (int entry = 0 ; entry < ntuple_mc->GetEntries() ; entry++)
         {
             ntuple_mc->GetEntry(entry);
 
@@ -193,7 +193,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
         hmc_l[bin]->Scale(1./hmc_jet[bin]->Integral());
 
         // Fill and normalize MCReco
-        for(int entry = 0 ; entry < ntuple_mcreco->GetEntries() ; entry++)
+        for (int entry = 0 ; entry < ntuple_mcreco->GetEntries() ; entry++)
         {
             ntuple_mcreco->GetEntry(entry);
 
@@ -210,7 +210,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
     }
 
     // Draw the log binning histos
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
         c->cd(bin+1);
         s_data[bin] = new THStack();
@@ -232,7 +232,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
     }
     if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logbinning_3dunf_wintegrated%s.pdf",niter,integrate_weight?"true":"false"));
     
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
         c->cd(bin+1);
         s_data[bin]->SetMaximum(1.2);
@@ -242,7 +242,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
     if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logbinning_logscale_3dunf_wintegrated%s.pdf",niter,integrate_weight?"true":"false"));
     
     // Draw the log binning histos
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
         c->cd(bin+1);
         s_data[bin] = new THStack();

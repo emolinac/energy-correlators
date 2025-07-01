@@ -30,7 +30,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
     TH1F* h_systematic_tau[Nbin_jet_pt];
     TH1F* h_deviations_tau[Nbin_jet_pt];
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_e2c%i",jet_pt_bin));
         h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_e2c%i",jet_pt_bin));
@@ -65,7 +65,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
     TCanvas* c = new TCanvas("c","",1920,1080);
     c->Draw();
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         s->Add(h_deviations[jet_pt_bin],"E1 X0 L");
         l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lf");

@@ -24,7 +24,7 @@ void macro_print_responsematrices()
     TH2F* hresp_jetpt  = new TH2F("hresp_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
     TH2F* hresp_weight = new TH2F("hresp_weight","",Nbin_weight,weight_binning,Nbin_weight,weight_binning);
 
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);

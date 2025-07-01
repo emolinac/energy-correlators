@@ -34,18 +34,18 @@ void macro_print_resolution_weight()
     
     std::cout<<"There are "<<total<<" entries."<<std::endl;
     std::cout<<"For resolution:"<<std::endl;
-    for(int bin = 1 ; bin <= hres->GetNbinsX()/2. ; bin++)
+    for (int bin = 1 ; bin <= hres->GetNbinsX()/2. ; bin++)
     {
         double integral = hres->Integral(bin,hres->GetNbinsX()-bin);
         if (integral/total < 0.95) {std::cout<<"Between "<<hres->GetBinCenter(bin)<<" and "<<hres->GetBinCenter(hres->GetNbinsX()-bin)<<" is the 95%% of the sample"<<std::endl; break;}
     }
-    for(int bin = 1 ; bin <= hres->GetNbinsX()/2 ; bin++)
+    for (int bin = 1 ; bin <= hres->GetNbinsX()/2 ; bin++)
     {
         double integral = hres->Integral(bin,hres->GetNbinsX()-bin);
         if (integral/total < 0.68) {std::cout<<"Between "<<hres->GetBinCenter(bin)<<" and "<<hres->GetBinCenter(hres->GetNbinsX()-bin)<<" is the 68%% of the sample"<<std::endl; break;}
     }
     std::cout<<"For resolutionas a percentage:"<<std::endl;
-    for(int bin = 1 ; bin <= hratio->GetNbinsX()/2. ; bin++)
+    for (int bin = 1 ; bin <= hratio->GetNbinsX()/2. ; bin++)
     {
         double integral = hratio->Integral(bin,hratio->GetNbinsX()-bin);
         if (integral/total < 0.95) {std::cout<<"Between "<<hratio->GetBinCenter(bin)<<" and "<<hratio->GetBinCenter(hratio->GetNbinsX()-bin)<<" is the 95%% of the sample"<<std::endl; break;}

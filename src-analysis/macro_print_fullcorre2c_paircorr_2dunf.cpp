@@ -41,7 +41,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
     TH2D* htrue_l    = new TH2D("htrue_l"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     RooUnfoldResponse* response_l = new RooUnfoldResponse(hmeas_l, htrue_l, "response_l");
 
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
@@ -128,7 +128,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
     TLegend* l_data_tau = new TLegend(gPad->GetLeftMargin()+0.01,1-gPad->GetTopMargin()-0.01,gPad->GetLeftMargin()+0.21,1-gPad->GetTopMargin()-0.21);
 
     // Fill the histograms
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"", 1  ,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
         hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
@@ -147,7 +147,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
         ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin),"jet_pt",jet_full_corr[bin]);
 
         double jet_pt_centroid = hcorr_jet_centroid[bin]->GetMean();
-        for(int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
+        for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
         {
             ntuple_data->GetEntry(entry);
 
@@ -192,7 +192,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
     }
 
     // Draw Linear binning distribution
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_npair[bin],"E");
     }
@@ -208,7 +208,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
 
     // Draw Log binning distributions
     s_data = new THStack();
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_tau[bin],"E");
         l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
@@ -225,7 +225,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
     if (do_print) c->Print(Form("./plots/paircorrtau_niter%i_logbinning_2dunf.pdf",niter));
 
     s_data = new THStack();
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_e2c[bin],"E");
         l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");

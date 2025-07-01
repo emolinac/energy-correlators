@@ -8,10 +8,6 @@
 
 void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print = true)
 {
-    // Open the necessary files
-    // TFile* fout        = new TFile((output_folder+namef_histos_paircorr_e2c_logbin).c_str(),"RECREATE");
-    // TFile* fout_linear = new TFile((output_folder+namef_histos_paircorr_e2c).c_str(),"RECREATE");
-    // gROOT->cd();
     gStyle->SetPadTopMargin(0.08);
 
     TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr).c_str()); 
@@ -42,7 +38,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
     TH2D* htrue_l    = new TH2D("htrue_l"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     RooUnfoldResponse* response_l = new RooUnfoldResponse(hmeas_l, htrue_l, "response_l");
 
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
@@ -131,7 +127,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
     TLegend* l_data_tau = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
 
     // Fill the NOIMNAL histograms
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"", 1  ,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
         hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
@@ -160,7 +156,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
         ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin),"jet_pt",jet_full_corr[bin]);
 
         double jet_pt_centroid = hcorr_jet_centroid[bin]->GetMean();
-        for(int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
+        for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
         {
             ntuple_data->GetEntry(entry);
 
@@ -204,12 +200,12 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
     TFile* fsyst[nsyst];
     TH1F* hdev[Nbin_jet_pt];
     TH1F* hdev_tau[Nbin_jet_pt];
-    for(int syst_index = 0 ; syst_index < nsyst ; syst_index++)
+    for (int syst_index = 0 ; syst_index < nsyst ; syst_index++)
     {
         fsyst[syst_index] = new TFile((output_folder+devfromnom_namef[available_systematics[syst_index]]).c_str());
         if (fsyst[syst_index]->IsZombie()) continue;
 
-        for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+        for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
         {
             hdev[bin]     = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations%i",bin));
             hdev_tau[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations_tau%i",bin));
@@ -227,7 +223,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
     // Draw Log binning distributions
     TLatex* lhcbprint = new TLatex();
     s_data = new THStack();
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_tau[bin],"E X0");
         s_data->Add(hcorr_tau_syst[bin],"E2");
@@ -245,7 +241,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
     if (do_print) c->Print(Form("./plots/paircorrtau_niter%i_logbinning_2dunf_incsyst.pdf",niter));
 
     s_data = new THStack();
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_e2c[bin],"E X0");
         s_data->Add(hcorr_e2c_syst[bin],"E2");

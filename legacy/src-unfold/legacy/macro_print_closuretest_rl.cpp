@@ -24,7 +24,7 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
     TH1F* h_ct      = new TH1F("h_ct"     ,"",Nbin_R_L+2,unfolding_rl_binning);
 
     TRandom3* rndm = new TRandom3();
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);

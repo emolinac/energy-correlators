@@ -7,7 +7,7 @@ void determine_log10binning(int Nbins, double x_i, double x_f, double* binning)
     double log_x_f = log10(x_f);
     double delta = (log_x_f-log_x_i)/Nbins;
 
-    for(int i = 0 ; i <=Nbins ; i++)
+    for (int i = 0 ; i <=Nbins ; i++)
     {
         binning[i] = pow(10,log_x_i+delta*i);
     }
@@ -19,7 +19,7 @@ void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning)
 {
     double delta = (x_f - x_i)/Nbins;
 
-    for(int i = 0 ; i <=Nbins ; i++)
+    for (int i = 0 ; i <=Nbins ; i++)
     {
         binning[i] = x_i + delta*i;
     }
@@ -33,7 +33,7 @@ double get_hwhm(TH1F* h)
     double half_max = h->GetMaximum()/2.;
  
     int halfwidth_bin;
-    for(int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
+    for (int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
     {
         if (h->GetBinContent(bin)>=half_max){halfwidth_bin = bin; break;}
     }

@@ -48,7 +48,7 @@ int main()
   float vars[Nvars_jetpurity];
 
   // Fill the matched jets Ntuple
-  for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
   {
     if (evt%10000==0)
     {

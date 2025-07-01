@@ -18,7 +18,8 @@ all: ${BIN}/create_jet_purityntuple ${BIN}/create_jet_efficiencyntuple \
 	 ${BIN}/create_e2c_paircorrectionsntuple ${BIN}/create_e2c_paircorrectionsntuple_ct \
 	 ${BIN}/create_e2c_paircorrectionsntuple_jes ${BIN}/create_e2c_paircorrectionsntuple_jer \
 	 ${BIN}/create_e2c_corrntuple ${BIN}/create_e2c_hadroncorrectionsntuple \
-	 
+	 ${BIN}/create_e2c_paircorrectionsntuple_inclusive ${BIN}/create_e2c_corrntuple_paircorr_inclusive
+
 ${BIN}/create_jet_purityntuple: ${SRC}/create_jet_purityntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_jet_purityntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_jet_purityntuple
 
@@ -37,6 +38,9 @@ ${BIN}/create_e2c_paircorrectionsntuple_jes: ${SRC}/create_e2c_paircorrectionsnt
 ${BIN}/create_e2c_paircorrectionsntuple_jer: ${SRC}/create_e2c_paircorrectionsntuple_jer.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_paircorrectionsntuple_jer.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_paircorrectionsntuple_jer
 
+${BIN}/create_e2c_paircorrectionsntuple_inclusive: ${SRC}/create_e2c_paircorrectionsntuple_inclusive.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_paircorrectionsntuple_inclusive.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_paircorrectionsntuple_inclusive
+
 ${BIN}/create_e2c_corrntuple: ${SRC}/create_e2c_corrntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_corrntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_corrntuple
 
@@ -54,6 +58,9 @@ ${BIN}/create_e2c_corrntuple_paircorr_jes: ${SRC}/create_e2c_corrntuple_paircorr
 
 ${BIN}/create_e2c_corrntuple_paircorr_jer: ${SRC}/create_e2c_corrntuple_paircorr_jer.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_corrntuple_paircorr_jer.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_corrntuple_paircorr_jer
+
+${BIN}/create_e2c_corrntuple_paircorr_inclusive: ${SRC}/create_e2c_corrntuple_paircorr_inclusive.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_corrntuple_paircorr_inclusive.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_corrntuple_paircorr_inclusive
 
 ${BIN}/create_e2c_mc_ntuple: ${SRC}/create_e2c_mc_ntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_mc_ntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_mc_ntuple

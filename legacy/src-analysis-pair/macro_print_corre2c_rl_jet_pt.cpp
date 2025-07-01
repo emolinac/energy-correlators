@@ -31,7 +31,7 @@ void macro_print_corre2c_rl_jet_pt()
     TH1F* hall_pur[Nbin_jet_pt];
     TH1F* hpurity[Nbin_jet_pt];
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hsig_eff[jet_pt_bin]    = new TH1F(Form("hsig_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
         hall_eff[jet_pt_bin]    = new TH1F(Form("hall_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
@@ -50,7 +50,7 @@ void macro_print_corre2c_rl_jet_pt()
     TH1F* hcorr_data[Nbin_jet_pt];
     TH1F* hall_data[Nbin_jet_pt];
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
         hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
@@ -80,7 +80,7 @@ void macro_print_corre2c_rl_jet_pt()
     gPad->SetLogy(1);
 
     // Calculate corrections
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hefficiency[jet_pt_bin]->Divide(hsig_eff[jet_pt_bin],hall_eff[jet_pt_bin],1,1,"B");
         hpurity[jet_pt_bin]->Divide(hsig_pur[jet_pt_bin],hall_pur[jet_pt_bin],1,1,"B");
@@ -90,7 +90,7 @@ void macro_print_corre2c_rl_jet_pt()
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend(0.4,0.35);
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         hcorr_data[jet_pt_bin]->Divide(hefficiency[jet_pt_bin]);
         hcorr_data[jet_pt_bin]->Multiply(hpurity[jet_pt_bin]);

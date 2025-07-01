@@ -33,12 +33,12 @@ void macro_print_resolution_rl()
     double total = hres->Integral();
     
     // std::cout<<"There are "<<total<<" entries."<<std::endl;
-    // for(int bin = 1 ; bin <= hres->GetNbinsX()/2. ; bin++)
+    // for (int bin = 1 ; bin <= hres->GetNbinsX()/2. ; bin++)
     // {
     //     double integral = hres->Integral(bin,hres->GetNbinsX()-bin);
     //     if (integral/total < 0.95) {std::cout<<"Between "<<hres->GetBinCenter(bin)<<" and "<<hres->GetBinCenter(hres->GetNbinsX()-bin)<<" is the 95%% of the sample"<<std::endl; resolution = hres->GetBinCenter(hres->GetNbinsX()-bin);break;}
     // }
-    // for(int bin = 1 ; bin <= hres->GetNbinsX()/2 ; bin++)
+    // for (int bin = 1 ; bin <= hres->GetNbinsX()/2 ; bin++)
     // {
     //     double integral = hres->Integral(bin,hres->GetNbinsX()-bin);
     //     if (integral/total < 0.68) {std::cout<<"Between "<<hres->GetBinCenter(bin)<<" and "<<hres->GetBinCenter(hres->GetNbinsX()-bin)<<" is the 68%% of the sample"<<std::endl; break;}

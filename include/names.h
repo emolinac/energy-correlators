@@ -25,50 +25,58 @@ std::string namef_ntuple_e2c_paircorr            = "ntuple_paircorre2c.root";
 std::string namef_ntuple_e2c_paircorr_ct         = "ntuple_paircorre2c_ct.root";
 std::string namef_ntuple_e2c_paircorr_jes        = "ntuple_paircorre2c_jes.root";
 std::string namef_ntuple_e2c_paircorr_jer        = "ntuple_paircorre2c_jer.root";
+std::string namef_ntuple_e2c_paircorr_inclusive  = "ntuple_paircorre2c_inclusive.root";
 
 std::string namef_ntuple_e2c_hadroncorrections   = "ntuple_e2c_hadroncorrections.root";
 
-std::string namef_ntuple_e2c_paircorrections     = "ntuple_e2c_paircorrections.root";
-std::string namef_ntuple_e2c_paircorrections_ct  = "ntuple_e2c_paircorrections_ct.root";
-std::string namef_ntuple_e2c_paircorrections_jes = "ntuple_e2c_paircorrections_jes.root";
-std::string namef_ntuple_e2c_paircorrections_jer = "ntuple_e2c_paircorrections_jer.root";
+std::string namef_ntuple_e2c_paircorrections           = "ntuple_e2c_paircorrections.root";
+std::string namef_ntuple_e2c_paircorrections_ct        = "ntuple_e2c_paircorrections_ct.root";
+std::string namef_ntuple_e2c_paircorrections_jes       = "ntuple_e2c_paircorrections_jes.root";
+std::string namef_ntuple_e2c_paircorrections_jer       = "ntuple_e2c_paircorrections_jer.root";
+std::string namef_ntuple_e2c_paircorrections_inclusive = "ntuple_e2c_paircorrections_inclusive.root";
 
 std::string namef_ntuple_mc_e2c                  = "ntuple_mc_e2c.root";
 std::string namef_ntuple_mc_at_e2c               = "ntuple_mc_at_e2c.root";
 std::string namef_ntuple_hadron                  = "ntuple_hadron.root";
 
-std::string namef_histos_corr_e2c                = "histos_corr_e2c.root";
-std::string namef_histos_corr_e2c_logbin         = "histos_corr_e2c_logbin.root";
-std::string namef_histos_paircorr_e2c            = "histos_paircorr_e2c.root";
-std::string namef_histos_paircorr_e2c_logbin     = "histos_paircorr_e2c_logbin.root";
-std::string namef_histos_paircorr_e2c_ct         = "histos_paircorr_e2c_ct.root";
-std::string namef_histos_paircorr_e2c_logbin_ct  = "histos_paircorr_e2c_logbin_ct.root";
-std::string namef_histos_paircorr_e2c_jes        = "histos_paircorr_e2c_jes.root";
-std::string namef_histos_paircorr_e2c_logbin_jes = "histos_paircorr_e2c_logbin_jes.root";
-std::string namef_histos_paircorr_e2c_jer        = "histos_paircorr_e2c_jer.root";
-std::string namef_histos_paircorr_e2c_logbin_jer = "histos_paircorr_e2c_logbin_jer.root";
+std::string namef_histos_corr_e2c                      = "histos_corr_e2c.root";
+std::string namef_histos_corr_e2c_logbin               = "histos_corr_e2c_logbin.root";
+std::string namef_histos_paircorr_e2c                  = "histos_paircorr_e2c.root";
+std::string namef_histos_paircorr_e2c_logbin           = "histos_paircorr_e2c_logbin.root";
+std::string namef_histos_paircorr_e2c_ct               = "histos_paircorr_e2c_ct.root";
+std::string namef_histos_paircorr_e2c_logbin_ct        = "histos_paircorr_e2c_logbin_ct.root";
+std::string namef_histos_paircorr_e2c_jes              = "histos_paircorr_e2c_jes.root";
+std::string namef_histos_paircorr_e2c_logbin_jes       = "histos_paircorr_e2c_logbin_jes.root";
+std::string namef_histos_paircorr_e2c_inclusive        = "histos_paircorr_e2c_inclusive.root";
+std::string namef_histos_paircorr_e2c_logbin_inclusive = "histos_paircorr_e2c_logbin_inclusive.root";
+std::string namef_histos_paircorr_e2c_jer              = "histos_paircorr_e2c_jer.root";
+std::string namef_histos_paircorr_e2c_logbin_jer       = "histos_paircorr_e2c_logbin_jer.root";
 
-std::string namef_histos_devfromnom_e2c_logbin              = "histos_devfromnom_e2c_logbin.root";
-std::string namef_histos_paircorr_devfromnom_e2c_logbin_jes = "histos_paircorr_devfromnom_e2c_logbin_jes.root";
-std::string namef_histos_paircorr_devfromnom_e2c_logbin_jer = "histos_paircorr_devfromnom_e2c_logbin_jer.root";
-std::string namef_histos_paircorr_devfromnom_e2c_logbin_ct  = "histos_paircorr_devfromnom_e2c_logbin_ct.root";
+std::string namef_histos_devfromnom_e2c_logbin                    = "histos_devfromnom_e2c_logbin.root";
+std::string namef_histos_paircorr_devfromnom_e2c_logbin_inclusive = "histos_paircorr_devfromnom_e2c_logbin_inclusive.root";
+std::string namef_histos_paircorr_devfromnom_e2c_logbin_jes       = "histos_paircorr_devfromnom_e2c_logbin_jes.root";
+std::string namef_histos_paircorr_devfromnom_e2c_logbin_jer       = "histos_paircorr_devfromnom_e2c_logbin_jer.root";
+std::string namef_histos_paircorr_devfromnom_e2c_logbin_ct        = "histos_paircorr_devfromnom_e2c_logbin_ct.root";
 
 // About systematics
-std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes"};
+std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes", "inclusive"};
 std::map<std::string, std::string> systematic_namef = {{available_systematics[0],namef_histos_corr_e2c_logbin},
                                                        {available_systematics[1],namef_histos_paircorr_e2c_logbin_ct},
                                                        {available_systematics[2],namef_histos_paircorr_e2c_logbin_jer},
-                                                       {available_systematics[3],namef_histos_paircorr_e2c_logbin_jes}};
+                                                       {available_systematics[3],namef_histos_paircorr_e2c_logbin_jes},
+                                                       {available_systematics[4],namef_histos_paircorr_e2c_logbin_inclusive}};
 
 std::map<std::string, std::string> devfromnom_namef = {{available_systematics[0],namef_histos_devfromnom_e2c_logbin},
                                                        {available_systematics[1],namef_histos_paircorr_devfromnom_e2c_logbin_ct},
                                                        {available_systematics[2],namef_histos_paircorr_devfromnom_e2c_logbin_jer},
-                                                       {available_systematics[3],namef_histos_paircorr_devfromnom_e2c_logbin_jes}};
+                                                       {available_systematics[3],namef_histos_paircorr_devfromnom_e2c_logbin_jes},
+                                                       {available_systematics[4],namef_histos_paircorr_devfromnom_e2c_logbin_inclusive}};
 
 std::map<std::string, std::string> systematic_errtype = {{available_systematics[0],"uniform"},
                                                          {available_systematics[1],"normal"},
                                                          {available_systematics[2],"uniform"},
-                                                         {available_systematics[3],"uniform"}};
+                                                         {available_systematics[3],"uniform"},
+                                                         {available_systematics[4],"uniform"}};
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_unfold = 26; 

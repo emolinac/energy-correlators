@@ -41,7 +41,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
     double alpha_star_step = (alpha_star_end - alpha_star_init)/alpha_star_bins;
     TRandom3* rndm = new TRandom3();
     
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         c->cd(bin+1);
         
@@ -62,11 +62,11 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         // ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin+1]));
         // ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin+1]));
 
-        for(int alpha_star_bin = 0 ; alpha_star_bin < alpha_star_bins ; alpha_star_bin++)
+        for (int alpha_star_bin = 0 ; alpha_star_bin < alpha_star_bins ; alpha_star_bin++)
         {
             double alpha_star = alpha_star_init + alpha_star_bin*alpha_star_step;
 
-            for(int entry = 0 ; entry < ntuple_jes_reco->GetEntries() ; entry++)
+            for (int entry = 0 ; entry < ntuple_jes_reco->GetEntries() ; entry++)
             {
                 ntuple_jes_reco->GetEntry(entry);
                 if (jet_pt_reco<jet_pt_binning[bin]||jet_pt_reco>jet_pt_binning[bin+1]) continue;
@@ -98,7 +98,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
     if (do_print) c->Print(Form("./plots/jer_alpha_balance.pdf"));
 
     std::cout<<"COPY INTO sys-jes-jer.h ---> const double syst_jer_array[] = { ";
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         c->cd(bin+1);
         double alpha_star_min = halphastar_chisquare[bin]->GetBinCenter(halphastar_chisquare[bin]->GetMinimumBin());

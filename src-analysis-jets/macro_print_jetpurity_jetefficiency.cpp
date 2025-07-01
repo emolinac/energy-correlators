@@ -67,7 +67,7 @@ void macro_print_jetpurity_jetefficiency()
 
     c->Print(Form("./plots/jet_purity_efficiency_ibrahimcuts.pdf"));
 
-    for(int bin = 1 ; bin <= hpurity->GetNbinsX() ; bin++)
+    for (int bin = 1 ; bin <= hpurity->GetNbinsX() ; bin++)
     {
         double jet_total_correction = hpurity->GetBinContent(bin)/hefficiency->GetBinContent(bin);
         std::cout<<"Total correction between "<<unfolding_jetpt_binning[bin-1]<<" and "<<unfolding_jetpt_binning[bin]<<" is "<<jet_total_correction<<std::endl;

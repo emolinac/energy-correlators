@@ -17,7 +17,7 @@ void macro_print_recondtrs()
     TH1F* h[Nbin_jet_pt];
     THStack* hs = new THStack();
     TLegend* l = new TLegend();
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         h[bin] = new TH1F(Form("h[%i]",bin),"",50,0,50);
         ntuple->Project(Form("h[%i]",bin),"jet_ndtr",pair_jetpt_cut[bin]);

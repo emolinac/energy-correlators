@@ -20,7 +20,7 @@ void macro_print_unfold_bayes_rl(int Niter = 1, double jet_pt_min_local = 20, do
     TH1F* htrue = new TH1F("htrue","",Nbin_R_L+2,unfolding_rl_binning);
     TH2F* hresp = new TH2F("hresp","",Nbin_R_L+2,unfolding_rl_binning,Nbin_R_L+2,unfolding_rl_binning);
 
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);

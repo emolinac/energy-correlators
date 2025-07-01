@@ -31,7 +31,7 @@ void macro_print_matching_fraction_jetpt()
     THStack* s = new THStack();
     
     // Define the necessary histograms to calculate purity
-    for(int i = 0 ; i < Nbin_jet_pt ; i++)
+    for (int i = 0 ; i < Nbin_jet_pt ; i++)
     {
         hall[i]           = new TH1F(Form("hall[%i]",i)          ,"",Nbin_R_L,R_L_min,R_L_max);
         hmatched[i]       = new TH1F(Form("hmatched[%i]",i)      ,"",Nbin_R_L,R_L_min,R_L_max);

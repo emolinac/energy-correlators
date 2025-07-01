@@ -54,7 +54,7 @@ int main()
   float vars_jes_reco[Nvars_jes];
   
   // Fill the reco ntuple
-  for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
   {
     if (evt%10000==0)
     {
@@ -101,7 +101,7 @@ int main()
     double leading_jet_pt    = Jet_4vector->Pt();
     if (ncandidates>1)
     {
-      for(int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
+      for (int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
       {
         mcrecotree->GetEntry(cand);
         
@@ -133,7 +133,7 @@ int main()
 
   std::cout<<"Reco done"<<std::endl;
 
-  for(int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < datatree->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
     datatree->GetEntry(evt);
@@ -180,7 +180,7 @@ int main()
     double leading_jet_pt    = Jet_4vector->Pt();
     if (ncandidates>1)
     {
-      for(int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
+      for (int cand = evt+1 ; cand < (evt+ncandidates) ; cand++)
       {
         datatree->GetEntry(cand);
         

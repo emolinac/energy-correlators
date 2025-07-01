@@ -159,7 +159,7 @@ int main()
 
   // Fill the data TNtuple
   std::cout<<"Working with 2016 data."<<std::endl;
-  for(int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
     datatree_2016->GetEntry(evt);
@@ -239,7 +239,7 @@ int main()
     ntuple_corrjet->Fill(vars_jet);
 
     // Loop over hadron 1
-    for(int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++)
+    for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
       if (datatree_2016->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2016->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
@@ -253,7 +253,7 @@ int main()
                                   h1_4vector->Eta())) continue;
 
       // Loop over hadron 2
-      for(int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
         if (datatree_2016->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2016->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
@@ -313,7 +313,7 @@ int main()
   }
 
   std::cout<<"Working with 2017 data."<<std::endl;
-  for(int evt = 0 ; evt < datatree_2017->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < datatree_2017->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
     datatree_2017->GetEntry(evt);
@@ -393,7 +393,7 @@ int main()
     ntuple_corrjet->Fill(vars_jet);
 
     // Loop over hadron 1
-    for(int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++)
+    for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
       if (datatree_2017->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2017->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
@@ -407,7 +407,7 @@ int main()
                                   h1_4vector->Eta())) continue;
 
       // Loop over hadron 2
-      for(int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
         if (datatree_2017->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2017->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
@@ -467,7 +467,7 @@ int main()
   }
 
   std::cout<<"Working with 2018 data."<<std::endl;
-  for(int evt = 0 ; evt < datatree_2018->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < datatree_2018->fChain->GetEntries() ; evt++)
   {
     // Access entry of tree
     datatree_2018->GetEntry(evt);
@@ -547,7 +547,7 @@ int main()
     ntuple_corrjet->Fill(vars_jet);
 
     // Loop over hadron 1
-    for(int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++)
+    for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
       if (datatree_2018->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2018->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
@@ -561,7 +561,7 @@ int main()
                                   h1_4vector->Eta())) continue;
 
       // Loop over hadron 2
-      for(int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++)
+      for (int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
         if (datatree_2018->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2018->Jet_Dtr_IsBaryon[h2_index]!=1) continue;

@@ -28,7 +28,7 @@ void macro_print_resolution_jetpt()
     ntuple->Project("hratio" ,"jet_pt/jet_pt_truth");
     ntuple->Project("hdirres","deltaR_matchedjets");
 
-    for(int bin = 1 ; bin <= hdirres->GetNbinsX() ; bin++)
+    for (int bin = 1 ; bin <= hdirres->GetNbinsX() ; bin++)
     {
         double total = hdirres->Integral();
         double percentage = 100.*hdirres->Integral(1,bin)/total;
@@ -36,7 +36,7 @@ void macro_print_resolution_jetpt()
         std::cout<<percentage<<"\% at "<<hdirres->GetBinCenter(bin)<<std::endl;
     }
 
-    for(int bin = 1 ; bin <= hratio->GetNbinsX() ; bin++)
+    for (int bin = 1 ; bin <= hratio->GetNbinsX() ; bin++)
     {
         double total = hratio->Integral();
         double percentage = 100.*hratio->Integral(bin,hratio->GetNbinsX()-bin+1)/total;

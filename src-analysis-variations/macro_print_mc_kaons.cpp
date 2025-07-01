@@ -34,7 +34,7 @@ void macro_print_mc_kaons()
     THStack* s_data[3];
     TLegend* l_data[3];
     
-    for(int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
         c->cd(bin+1);
 

@@ -25,7 +25,7 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     TH2D* hct       = new TH2D("hct"      ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
 
     TRandom3* rndm = new TRandom3();
-    for(int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
+    for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);

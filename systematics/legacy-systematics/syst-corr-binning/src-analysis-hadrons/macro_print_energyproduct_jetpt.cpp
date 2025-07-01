@@ -24,7 +24,7 @@ void macro_print_energyproduct_jetpt()
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend();
     
-    for(int bin = 1 ; bin <= Nbin_jet_pt ; bin++)
+    for (int bin = 1 ; bin <= Nbin_jet_pt ; bin++)
     {
         hcorr_data[bin-1] = new TH1F(Form("hcorr_data[%i]",bin-1),"",100,0,3E4);
         set_histogram_style(hcorr_data[bin-1], corr_marker_color_jet_pt[bin-1], std_line_width, corr_marker_style_jet_pt[bin-1], std_marker_size+1);

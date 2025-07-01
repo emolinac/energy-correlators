@@ -21,7 +21,7 @@ void macro_print_deviation_from_nominal_logbin_npair()
     TH1F* h_systematic[Nbin_jet_pt];
     TH1F* h_deviations[Nbin_jet_pt];
 
-    for(int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
         h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_npair%i",jet_pt_bin));
         h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_npair%i",jet_pt_bin));

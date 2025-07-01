@@ -21,7 +21,7 @@ void macro_print_energyproduct_weights()
     TLegend* l_data = new TLegend();
     
     TH1F* hcorr_data[5]; 
-    for(int bin = 0 ; bin < Nbin_weight ; bin++)
+    for (int bin = 0 ; bin < Nbin_weight ; bin++)
     {
         hcorr_data[bin] = new TH1F(Form("hcorr_data[%i]",bin),"",100,0,2E4);
         // hcorr_data[bin] = new TH1F(Form("hcorr_data[%i]",bin),"",5,energyproduct_binning);

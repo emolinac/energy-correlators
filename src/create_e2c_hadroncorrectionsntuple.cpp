@@ -53,7 +53,7 @@ int main()
   float vars_mc[Nvars_hadroncorrections_mc];
 
   // Fill the matched jets Ntuple
-  for(int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
+  for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
   {
     if (evt%10000==0)
     {
@@ -103,7 +103,7 @@ int main()
     // if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) continue;
     
     // Loop over reco
-    for(int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++)
+    for (int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++)
     {
       // Skip non-hadronic particles
       if (mcrecotree->Jet_Dtr_IsMeson[h_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h_index]!=1) continue;
@@ -153,7 +153,7 @@ int main()
     }
 
     // Loop over mc
-    for(int h_index = 0 ; h_index < mcrecotree->Jet_mcjet_nmcdtrs ; h_index++)
+    for (int h_index = 0 ; h_index < mcrecotree->Jet_mcjet_nmcdtrs ; h_index++)
     {
       /// Skip non-hadronic particles
       if (mcrecotree->Jet_mcjet_dtrIsMeson[h_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h_index]!=1) continue;
