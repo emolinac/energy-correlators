@@ -200,22 +200,55 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
     TFile* fsyst[nsyst];
     TH1F* hdev[Nbin_jet_pt];
     TH1F* hdev_tau[Nbin_jet_pt];
+
+    std::cout<<"Source & $20<p_T(jet)<30$ & $30<p_T(jet)<50$ & $50<p_T(jet)<100$ \\\\"<<std::endl;
+    std::cout<<"\\hline"<<std::endl;
     for (int syst_index = 0 ; syst_index < nsyst ; syst_index++)
     {
         fsyst[syst_index] = new TFile((output_folder+devfromnom_namef[available_systematics[syst_index]]).c_str());
-        if (fsyst[syst_index]->IsZombie()) continue;
-
+        if (fsyst[syst_index]->IsZombie()) 
+            continue;
+        
+        std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
         for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
         {
-            hdev[bin]     = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations%i",bin));
-            hdev_tau[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations_tau%i",bin));
+            hdev[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations%i",bin));
 
-            // EEC
             set_histo_with_systematics(hdev[bin], hcorr_e2c[bin], hcorr_e2c_syst[bin], systematic_errtype[available_systematics[syst_index]]);
 
-            // EEC TAU 
-            set_histo_with_systematics(hdev_tau[bin], hcorr_tau[bin], hcorr_tau_syst[bin], systematic_errtype[available_systematics[syst_index]]);
+            if (bin!=Nbin_jet_pt-1) 
+                std::cout<<" & ";
+            else
+                std::cout<<" \\\\ ";
         }
+
+        std::cout<<std::endl;
+
+        delete fsyst[syst_index];
+    }
+
+    std::cout<<"Source & $20<p_T(jet)<30$ & $30<p_T(jet)<50$ & $50<p_T(jet)<100$ \\\\"<<std::endl;
+    std::cout<<"\\hline"<<std::endl;
+    for (int syst_index = 0 ; syst_index < nsyst ; syst_index++)
+    {
+        fsyst[syst_index] = new TFile((output_folder+devfromnom_namef[available_systematics[syst_index]]).c_str());
+        if (fsyst[syst_index]->IsZombie()) 
+            continue;
+
+        std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
+        for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+        {
+            hdev_tau[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations_tau%i",bin));
+
+            set_histo_with_systematics(hdev_tau[bin], hcorr_tau[bin], hcorr_tau_syst[bin], systematic_errtype[available_systematics[syst_index]]);
+
+            if (bin!=Nbin_jet_pt-1) 
+                std::cout<<" & ";
+            else
+                std::cout<<" \\\\ ";
+        }
+
+        std::cout<<std::endl;
 
         delete fsyst[syst_index];
     }

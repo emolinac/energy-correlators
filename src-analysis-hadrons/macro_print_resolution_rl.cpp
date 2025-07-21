@@ -11,10 +11,10 @@ void macro_print_resolution_rl()
     gStyle->SetOptStat(1110);
 
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
+    TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
 
     // Get the corresponding Ntuples
-    TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
+    TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_correction_reco).c_str());
 
     // Define the necessary histograms to calculate purity
     // TH1F* hres = new TH1F("hres","",200,-.06,.06);
