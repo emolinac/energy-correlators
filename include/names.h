@@ -61,34 +61,45 @@ std::string namef_histos_paircorr_devfromnom_e2c_logbin_jer       = "histos_pair
 std::string namef_histos_paircorr_devfromnom_e2c_logbin_ct        = "histos_paircorr_devfromnom_e2c_logbin_ct.root";
 
 // About systematics
-std::string available_systematics[] = {"corr-paradigm", "ct", "jer", "jes", "inclusive", "shape-ct"};
-std::map<std::string, std::string> systematic_name  = {{available_systematics[0],"Correction Paradigm"},
-                                                       {available_systematics[1],"Closure Test"},
-                                                       {available_systematics[2],"JER"},
-                                                       {available_systematics[3],"JES"},
-                                                       {available_systematics[4],"Inclusive Final State"},
-                                                       {available_systematics[5],"Shape Closure Test"}};
+std::string available_systematics[] = {
+                "corr-paradigm", "ct", "jer", "jes", "inclusive", "shape-ct"
+};
 
-std::map<std::string, std::string> systematic_namef = {{available_systematics[0],namef_histos_corr_e2c_logbin},
-                                                       {available_systematics[1],namef_histos_paircorr_e2c_logbin_ct},
-                                                       {available_systematics[2],namef_histos_paircorr_e2c_logbin_jer},
-                                                       {available_systematics[3],namef_histos_paircorr_e2c_logbin_jes},
-                                                       {available_systematics[4],namef_histos_paircorr_e2c_logbin_inclusive},
-                                                       {available_systematics[5],namef_histos_paircorr_e2c_logbin_shapect}};
+std::map<std::string, std::string> systematic_name  = {
+        {available_systematics[0],"Correction Paradigm"},
+        {available_systematics[1],"Closure Test"},
+        {available_systematics[2],"JER"},
+        {available_systematics[3],"JES"},
+        {available_systematics[4],"Inclusive Final State"},
+        {available_systematics[5],"Shape Closure Test"}
+};
 
-std::map<std::string, std::string> devfromnom_namef = {{available_systematics[0],namef_histos_devfromnom_e2c_logbin},
-                                                       {available_systematics[1],namef_histos_paircorr_devfromnom_e2c_logbin_ct},
-                                                       {available_systematics[2],namef_histos_paircorr_devfromnom_e2c_logbin_jer},
-                                                       {available_systematics[3],namef_histos_paircorr_devfromnom_e2c_logbin_jes},
-                                                       {available_systematics[4],namef_histos_paircorr_devfromnom_e2c_logbin_inclusive},
-                                                       {available_systematics[5],namef_histos_paircorr_devfromnom_e2c_logbin_shapect}};
+std::map<std::string, std::string> systematic_namef = {
+        {available_systematics[0],namef_histos_corr_e2c_logbin},
+        {available_systematics[1],namef_histos_paircorr_e2c_logbin_ct},
+        {available_systematics[2],namef_histos_paircorr_e2c_logbin_jer},
+        {available_systematics[3],namef_histos_paircorr_e2c_logbin_jes},
+        {available_systematics[4],namef_histos_paircorr_e2c_logbin_inclusive},
+        {available_systematics[5],namef_histos_paircorr_e2c_logbin_shapect}
+};
 
-std::map<std::string, std::string> systematic_errtype = {{available_systematics[0],"uniform"},
-                                                         {available_systematics[1],"normal"},
-                                                         {available_systematics[2],"uniform"},
-                                                         {available_systematics[3],"uniform"},
-                                                         {available_systematics[4],"uniform"},
-                                                         {available_systematics[5],"uniform"}};
+std::map<std::string, std::string> devfromnom_namef = {
+        {available_systematics[0],namef_histos_devfromnom_e2c_logbin},
+        {available_systematics[1],namef_histos_paircorr_devfromnom_e2c_logbin_ct},
+        {available_systematics[2],namef_histos_paircorr_devfromnom_e2c_logbin_jer},
+        {available_systematics[3],namef_histos_paircorr_devfromnom_e2c_logbin_jes},
+        {available_systematics[4],namef_histos_paircorr_devfromnom_e2c_logbin_inclusive},
+        {available_systematics[5],namef_histos_paircorr_devfromnom_e2c_logbin_shapect}
+};
+
+std::map<std::string, std::string> systematic_errtype = {
+        {available_systematics[0],"uniform"},
+        {available_systematics[1],"normal"},
+        {available_systematics[2],"uniform"},
+        {available_systematics[3],"uniform"},
+        {available_systematics[4],"uniform"},
+        {available_systematics[5],"uniform"}
+};
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_unfold = 26; 
