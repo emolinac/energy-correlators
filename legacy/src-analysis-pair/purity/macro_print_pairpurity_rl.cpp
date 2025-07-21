@@ -9,8 +9,8 @@
 void macro_print_pairpurity_rl()
 {
     // Open the necessary files
-    TFile* fdata   = new TFile((output_folder+namef_ntuple_e2c).c_str());
-    TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_pairpurity).c_str());
+    TFile* fdata   = new TFile((output_folder + namef_ntuple_e2c).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_e2c_pairpurity).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_data     = (TNtuple*) fdata->Get((name_ntuple_data).c_str());
@@ -21,9 +21,9 @@ void macro_print_pairpurity_rl()
     determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_R_L,R_L_min,R_L_max);
-    TH1F* hall    = new TH1F("hall"   ,"",Nbin_R_L,R_L_min,R_L_max);
-    TH1F* hpurity = new TH1F("hpurity","",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hall    = new TH1F("hall"   ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hpurity = new TH1F("hpurity","",Nbin_R_L,R_L_min, R_L_max);
     hsig->Sumw2();
     hall->Sumw2();
     hpurity->Sumw2();
@@ -32,8 +32,8 @@ void macro_print_pairpurity_rl()
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hsig_data = new TH1F("hsig_data","",Nbin_R_L,R_L_min,R_L_max);
-    TH1F* hall_data = new TH1F("hall_data","",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hsig_data = new TH1F("hsig_data","",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hall_data = new TH1F("hall_data","",Nbin_R_L,R_L_min, R_L_max);
     hsig_data->Sumw2();
     hall_data->Sumw2();
 

@@ -8,7 +8,7 @@
 void macro_determine_binning()
 {
     // Open data file 
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_corr).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_e2c_corr).c_str());
     
     // Get TNtuple from file
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_data.c_str());

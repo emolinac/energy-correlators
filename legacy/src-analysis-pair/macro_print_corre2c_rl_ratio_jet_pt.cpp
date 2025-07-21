@@ -9,9 +9,9 @@
 void macro_print_corre2c_rl_ratio_jet_pt()
 {
     // Open the necessary files
-    TFile* fdata       = new TFile((output_folder+namef_ntuple_e2c).c_str());
-    TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
-    TFile* fpurity     = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fdata       = new TFile((output_folder + namef_ntuple_e2c).c_str());
+    TFile* fefficiency = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fpurity     = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_data            = (TNtuple*) fdata->Get((name_ntuple_data).c_str());
@@ -43,22 +43,22 @@ void macro_print_corre2c_rl_ratio_jet_pt()
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig_eff[jet_pt_bin]    = new TH1F(Form("hsig_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
-        hall_eff[jet_pt_bin]    = new TH1F(Form("hall_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
-        hsig_pur[jet_pt_bin]    = new TH1F(Form("hsig_pur[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
-        hall_pur[jet_pt_bin]    = new TH1F(Form("hall_pur[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min,R_L_max);
-        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
-        hpurity[jet_pt_bin]     = new TH1F(Form("hpurity[%i]",jet_pt_bin)    ,"",Nbin_R_L,R_L_min,R_L_max);
+        hsig_eff[jet_pt_bin]    = new TH1F(Form("hsig_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
+        hall_eff[jet_pt_bin]    = new TH1F(Form("hall_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
+        hsig_pur[jet_pt_bin]    = new TH1F(Form("hsig_pur[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
+        hall_pur[jet_pt_bin]    = new TH1F(Form("hall_pur[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
+        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
+        hpurity[jet_pt_bin]     = new TH1F(Form("hpurity[%i]",jet_pt_bin)    ,"",Nbin_R_L,R_L_min, R_L_max);
 
         hsig_eff[jet_pt_bin]->Sumw2();
         hall_eff[jet_pt_bin]->Sumw2();
         hsig_pur[jet_pt_bin]->Sumw2();
         hall_pur[jet_pt_bin]->Sumw2();
     
-        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
+        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
 
-        hmc[jet_pt_bin] = new TH1F(Form("hmc[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min,R_L_max);
+        hmc[jet_pt_bin] = new TH1F(Form("hmc[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
 
         hcorr_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();

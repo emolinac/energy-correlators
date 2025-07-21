@@ -9,7 +9,7 @@
 void macro_print_singlepurity_eta_momentum(double jet_pt_min_local = jet_pt_min_nom, double jet_pt_max_local = jet_pt_max)
 {
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());

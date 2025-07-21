@@ -36,7 +36,7 @@ void macro_print_deviation_from_nominal_logbin_shapect(bool normalize = true, bo
         set_histogram_style(h_deviations_tau[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width-1, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size+1);
     }
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)

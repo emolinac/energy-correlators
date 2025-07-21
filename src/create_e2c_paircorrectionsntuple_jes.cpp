@@ -22,7 +22,7 @@ int main()
   if (syst_jes_array[0]==-999){std::cout<<"You need to set the beta values on the jes systematic."<<std::endl; return 0;}
 
   // Create output file
-  TFile* fout = new TFile((output_folder+namef_ntuple_e2c_paircorrections_jes).c_str(),"RECREATE");
+  TFile* fout = new TFile((output_folder + namef_ntuple_e2c_paircorrections_jes).c_str(),"RECREATE");
   
   // Declare the TTrees to be used to build the ntuples
   TZJetsMCReco* mcrecotree = new TZJetsMCReco();
@@ -80,8 +80,8 @@ int main()
     if (mcrecotree->nPV!=1) continue;
 
     // Apply trigger cut
-    bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS==1&&mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
-    bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS==1&&mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+    bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+    bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS == 1 && mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
     if (!mum_trigger&&!mup_trigger) continue;
 
@@ -102,7 +102,7 @@ int main()
                             new_jes_cor*mcrecotree->Jet_PZ/1000./mcrecotree->Jet_JEC_Cor,
                             new_jes_cor*mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Cor);
 
-    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) continue;
     
     true_Jet_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_PX/1000.,
                                  mcrecotree->Jet_mcjet_PY/1000.,
@@ -114,13 +114,13 @@ int main()
                             mcrecotree->mum_PY/1000.,
                             mcrecotree->mum_PZ/1000.,
                             mcrecotree->mum_PE/1000.);
-    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,
                             mcrecotree->mup_PY/1000.,
                             mcrecotree->mup_PZ/1000.,
                             mcrecotree->mup_PE/1000.);
-    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) continue;
     
     true_mum_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mum_PX/1000.,
                                  mcrecotree->Jet_mcjet_mum_PY/1000.,
@@ -138,7 +138,7 @@ int main()
                            mup_4vector->Py()+mum_4vector->Py(),
                            mup_4vector->Pz()+mum_4vector->Pz(),
                            mup_4vector->E() +mum_4vector->E());
-    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) continue;
     
     true_Z0_4vector->SetPxPyPzE(true_mup_4vector->Px()+true_mum_4vector->Px(),
                                 true_mup_4vector->Py()+true_mum_4vector->Py(),
@@ -151,7 +151,7 @@ int main()
     for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
-      if (mcrecotree->Jet_Dtr_IsMeson[h1_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (mcrecotree->Jet_Dtr_IsMeson[h1_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h1_index] != 1) continue;
 
       h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,
                              mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
@@ -183,7 +183,7 @@ int main()
       for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
-        if (mcrecotree->Jet_Dtr_IsMeson[h2_index]!=1&&mcrecotree->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+        if (mcrecotree->Jet_Dtr_IsMeson[h2_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h2_index] != 1) continue;
 
         h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,
                                mcrecotree->Jet_Dtr_PY[h2_index]/1000.,
@@ -251,7 +251,7 @@ int main()
     for (int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++)
     {
       // Skip non-hadronic particles
-      if (mcrecotree->Jet_mcjet_dtrIsMeson[h1_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h1_index]!=1) continue;
+      if (mcrecotree->Jet_mcjet_dtrIsMeson[h1_index] != 1 && mcrecotree->Jet_mcjet_dtrIsBaryon[h1_index] != 1) continue;
 
       h1_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h1_index]/1000.,
                              mcrecotree->Jet_mcjet_dtrPY[h1_index]/1000.,
@@ -265,7 +265,7 @@ int main()
       for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++)
       {
         // Skip non-hadronic particles
-        if (mcrecotree->Jet_mcjet_dtrIsMeson[h2_index]!=1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h2_index]!=1) continue;
+        if (mcrecotree->Jet_mcjet_dtrIsMeson[h2_index] != 1 && mcrecotree->Jet_mcjet_dtrIsBaryon[h2_index] != 1) continue;
 
         h2_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h2_index]/1000.,
                                mcrecotree->Jet_mcjet_dtrPY[h2_index]/1000.,

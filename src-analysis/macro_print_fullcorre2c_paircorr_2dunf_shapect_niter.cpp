@@ -14,10 +14,10 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
     if (systematic != "shape-ct") {std::cout<<"Make sure to set the SHAPE-CT systematic"<<std::endl; return;}
 
     TFile* fout_dev = new TFile((output_folder+devfromnom_namef[systematic]).c_str(),"RECREATE");
-    TFile* fout     = new TFile((output_folder+namef_histos_paircorr_e2c_logbin_shapect).c_str(),"RECREATE");
+    TFile* fout     = new TFile((output_folder + namef_histos_paircorr_e2c_logbin_shapect).c_str(),"RECREATE");
     gROOT->cd();
 
-    TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr_ct).c_str()); 
+    TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr_ct).c_str()); 
     if (fcorr->IsZombie()) return;
 
     TNtuple* ntuple_data   = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
@@ -30,8 +30,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
     set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
     
     // Necessary for the shape ct
-    TFile* fmcreco   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
-    TFile* frealdata = new TFile((output_folder+namef_ntuple_e2c_paircorr).c_str());
+    TFile* fmcreco   = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
+    TFile* frealdata = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str());
     if (fmcreco->IsZombie()||frealdata->IsZombie()) return;
     
     TNtuple* ntuple_mcreco   = (TNtuple*) fmcreco->Get((name_ntuple_mcreco).c_str());
@@ -40,8 +40,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
     TH2D* hmcreco   = new TH2D("hmcreco"  ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     TH2D* hrealdata = new TH2D("hrealdata","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
 
-    ntuple_mcreco->Project("hmcreco","jet_pt:R_L");
-    ntuple_realdata->Project("hrealdata","jet_pt:R_L");
+    ntuple_mcreco->Project("hmcreco", "jet_pt:R_L");
+    ntuple_realdata->Project("hrealdata", "jet_pt:R_L");
 
     hmcreco->Scale(1./hmcreco->Integral());
     hrealdata->Scale(1./hrealdata->Integral());
@@ -49,7 +49,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
     hmcreco->Divide(hrealdata);
 
     // UNFOLDING FIRST
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections_ct).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections_ct).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
@@ -79,8 +79,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
     TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     
-    ntuple_data->Project("hpuritycorrected" ,"jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-    ntuple_data->Project("hpuritycorrected2","jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     
     // Unfold the purity corrected pairs
     RooUnfoldBayes unfold(response, hpuritycorrected, niter);
@@ -104,7 +104,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
     TH1F* htruth[Nbin_jet_pt]; 
     TH1F* htruth_tau[Nbin_jet_pt];     
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     TLatex* tex = new TLatex();
@@ -132,7 +132,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
 
     hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
     hunfolded_ratio->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L_logbin]);
-    hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+    hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
     gPad->SetLogx(1);
     gPad->SetLogy(1);
     if (do_print) c->Print(Form("./plots/unfolded2d_shapect_initer%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
@@ -151,7 +151,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
 
     hmcreco->SetTitle("Reweight Distribution;R_{L};p^{jet}_{T}GeV");
     hmcreco->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L_logbin]);
-    hmcreco->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+    hmcreco->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
     gPad->SetLogx(1);
     gPad->SetLogy(1);
     if (do_print) c->Print(Form("./plots/reweight_shapect_initer%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
@@ -173,8 +173,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
         // set_histogram_style(hcorr_e2c[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
         // set_histogram_style(hcorr_tau[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
     
-        ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         ,"jet_pt",jet_full_corr[bin]);
-        ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin),"jet_pt",jet_full_corr[bin]);
+        ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         , "jet_pt",jet_full_corr[bin]);
+        ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin), "jet_pt",jet_full_corr[bin]);
 
         hcorr_ratio_e2c_total[bin] = new TH1F(Form("hcorr_ratio_e2c_total%i",bin),"",Nbin_R_L_logbin,rl_logbinning);
         htruth[bin]                = new TH1F(Form("htruth%i",bin)               ,"",Nbin_R_L_logbin,rl_logbinning);
@@ -184,7 +184,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
 
         htruth_jet[bin]            = new TH1F(Form("htruth_jet%i" ,bin)          ,"",200,jet_pt_binning[bin],jet_pt_binning[bin+1]);     
 
-        ntuple_mc_jet->Project(Form("htruth_jet%i" ,bin),"jet_pt");
+        ntuple_mc_jet->Project(Form("htruth_jet%i" ,bin), "jet_pt");
         ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jetpt_cut[bin]);
         ntuple_mc->Project(Form("htruth_tau%i",bin),Form("R_L*%f",htruth_jet[bin]->GetMean()),e2c_jetpt_cut[bin]);
 
@@ -196,7 +196,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
     // Create a data histograma to know how much you have to vary its "content"
     TH2D* hdataunf_ref = new TH2D("hdataunf_ref","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     TH2D* hdatashift   = new TH2D("hdatashift"  ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);    
-    ntuple_data->Project("hdataunf_ref","jet_pt:R_L");
+    ntuple_data->Project("hdataunf_ref", "jet_pt:R_L");
 
     TRandom3* rndm = new TRandom3();
     for (int ct_iter = 0 ; ct_iter < ct_niter ; ct_iter++)
@@ -300,7 +300,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
 
         hct_ratio->SetTitle("Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p^{jet}_{T}GeV");
         hct_ratio->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L_logbin]);
-        hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+        hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         if (do_print) c->Print(Form("./plots/closuretest_shapect_initer%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));

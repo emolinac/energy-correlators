@@ -25,22 +25,22 @@
 int main()
 {
   // Open correction files
-  TFile* fcorrections    = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
-  TFile* fpurity_jet     = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
-  TFile* fefficiency_jet = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
+  TFile* fcorrections    = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+  TFile* fpurity_jet     = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
+  TFile* fefficiency_jet = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
   
-  TFile* fefficiency_muon_2016_id  = new TFile((muons_folder+"IDEff_Data_2016.root").c_str());
-  TFile* fefficiency_muon_2016_trk = new TFile((muons_folder+"TRKEff_Data_2016.root").c_str());
-  TFile* fefficiency_muon_2016_trg = new TFile((muons_folder+"TRGEff_Data_2016.root").c_str());
-  TFile* fefficiency_muon_2017_id  = new TFile((muons_folder+"IDEff_Data_2017.root").c_str());
-  TFile* fefficiency_muon_2017_trk = new TFile((muons_folder+"TRKEff_Data_2017.root").c_str());
-  TFile* fefficiency_muon_2017_trg = new TFile((muons_folder+"TRGEff_Data_2017.root").c_str());
-  TFile* fefficiency_muon_2018_id  = new TFile((muons_folder+"IDEff_Data_2018.root").c_str());
-  TFile* fefficiency_muon_2018_trk = new TFile((muons_folder+"TRKEff_Data_2018.root").c_str());
-  TFile* fefficiency_muon_2018_trg = new TFile((muons_folder+"TRGEff_Data_2018.root").c_str());
+  TFile* fefficiency_muon_2016_id  = new TFile((muons_folder + "IDEff_Data_2016.root").c_str());
+  TFile* fefficiency_muon_2016_trk = new TFile((muons_folder + "TRKEff_Data_2016.root").c_str());
+  TFile* fefficiency_muon_2016_trg = new TFile((muons_folder + "TRGEff_Data_2016.root").c_str());
+  TFile* fefficiency_muon_2017_id  = new TFile((muons_folder + "IDEff_Data_2017.root").c_str());
+  TFile* fefficiency_muon_2017_trk = new TFile((muons_folder + "TRKEff_Data_2017.root").c_str());
+  TFile* fefficiency_muon_2017_trg = new TFile((muons_folder + "TRGEff_Data_2017.root").c_str());
+  TFile* fefficiency_muon_2018_id  = new TFile((muons_folder + "IDEff_Data_2018.root").c_str());
+  TFile* fefficiency_muon_2018_trk = new TFile((muons_folder + "TRKEff_Data_2018.root").c_str());
+  TFile* fefficiency_muon_2018_trg = new TFile((muons_folder + "TRGEff_Data_2018.root").c_str());
   
   // Create output file
-  TFile* fout = new TFile((output_folder+namef_ntuple_e2c_corr).c_str(),"RECREATE");
+  TFile* fout = new TFile((output_folder + namef_ntuple_e2c_corr).c_str(),"RECREATE");
   
   // Declare the TTrees to be used to build the ntuples
   TZJets2016Data* datatree_2016 = new TZJets2016Data();
@@ -70,25 +70,25 @@ int main()
   TH2D* h2_muon_2018_trgeff_data = (TH2D*) fefficiency_muon_2018_trg->Get("Hist_ALL_2018_ETA_PT_Eff");
 
   // Jet corrections
-  TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet","",Nbin_jetpt_corrections,corrections_jetpt_binning);
-  TH1F* hden_pur_jet = new TH1F("hden_pur_jet","",Nbin_jetpt_corrections,corrections_jetpt_binning);
-  TH1F* hpurity_jet  = new TH1F("hpurity_jet" ,"",Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", Nbin_jetpt_corrections, corrections_jetpt_binning);
   hnum_pur_jet->Sumw2();
   hden_pur_jet->Sumw2();
 
-  TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   ,"",Nbin_jetpt_corrections,corrections_jetpt_binning);
-  TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   ,"",Nbin_jetpt_corrections,corrections_jetpt_binning);
-  TH1F* hefficiency_jet = new TH1F("hefficiency_jet","",Nbin_jetpt_corrections,corrections_jetpt_binning);
+  TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", Nbin_jetpt_corrections, corrections_jetpt_binning);
   hnum_eff_jet->Sumw2();
   hden_eff_jet->Sumw2();
 
-  ntuple_purity_jet->Project("hnum_pur_jet","jet_pt","jet_pt_truth!=-999");
-  ntuple_purity_jet->Project("hden_pur_jet","jet_pt");
-  ntuple_efficiency_jet->Project("hnum_eff_jet","jet_pt_truth","jet_pt!=-999");
-  ntuple_efficiency_jet->Project("hden_eff_jet","jet_pt_truth");
+  ntuple_purity_jet->Project("hnum_pur_jet", "jet_pt", "jet_pt_truth!=-999");
+  ntuple_purity_jet->Project("hden_pur_jet", "jet_pt");
+  ntuple_efficiency_jet->Project("hnum_eff_jet", "jet_pt_truth", "jet_pt!=-999");
+  ntuple_efficiency_jet->Project("hden_eff_jet", "jet_pt_truth");
 
-  hpurity_jet->Divide(hnum_pur_jet,hden_pur_jet,1,1,"B");
-  hefficiency_jet->Divide(hnum_eff_jet,hden_eff_jet,1,1,"B");
+  hpurity_jet->Divide(hnum_pur_jet, hden_pur_jet, 1, 1, "B");
+  hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
   // Hadron corrections
   TH3F* hnum_pur    = new TH3F("hnum_pur"   ,"",ic_p_nbins,ic_p_binning,sl_eta_nbins,sl_eta_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
@@ -108,8 +108,8 @@ int main()
   ntuple_efficiency_reco->Project("hnum_eff","jet_pt_truth:h_eta_truth:h_p_truth",single_signal_cut);
   ntuple_efficiency_mc->Project("hden_eff","jet_pt:h_eta:h_p",pair_cut);
 
-  hpurity->Divide(hnum_pur,hden_pur,1,1,"B");
-  hefficiency->Divide(hnum_eff,hden_eff,1,1,"B");
+  hpurity->Divide(hnum_pur, hden_pur, 1, 1, "B");
+  hefficiency->Divide(hnum_eff, hden_eff, 1, 1, "B");
 
   // Create necessary 4vectors
   TLorentzVector* Jet_4vector = new TLorentzVector();
@@ -150,36 +150,36 @@ int main()
     if (datatree_2016->nPV!=1) continue;
 
     // Apply trigger cut
-    bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS==1&&datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
-    bool mup_trigger = (datatree_2016->mup_L0MuonEWDecision_TOS==1&&datatree_2016->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2016->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+    bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS == 1 && datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+    bool mup_trigger = (datatree_2016->mup_L0MuonEWDecision_TOS == 1 && datatree_2016->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2016->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
     if (!mum_trigger&&!mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,datatree_2016->Jet_PY/1000.,datatree_2016->Jet_PZ/1000.,datatree_2016->Jet_PE/1000.);
-    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) continue;
     
     mum_4vector->SetPxPyPzE(datatree_2016->mum_PX/1000.,datatree_2016->mum_PY/1000.,datatree_2016->mum_PZ/1000.,datatree_2016->mum_PE/1000.);
-    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(datatree_2016->mup_PX/1000.,datatree_2016->mup_PY/1000.,datatree_2016->mup_PZ/1000.,datatree_2016->mup_PE/1000.);
-    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) continue;
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) continue;
 
     double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
     double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
     double mup_eta = mup_4vector->Eta();
     double mum_eta = mum_4vector->Eta();
 
-    double mup_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mup_eta,mup_pt));
-    double mup_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mup_eta,mup_pt));
-    double mup_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mup_eta, mup_pt));
+    double mup_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mup_eta, mup_pt));
+    double mup_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mup_eta, mup_pt));
 
-    double mum_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mum_eta,mum_pt));
-    double mum_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mum_eta,mum_pt));
-    double mum_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mum_eta, mum_pt));
+    double mum_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mum_eta, mum_pt));
+    double mum_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mum_eta, mum_pt));
 
     double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
     double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
@@ -212,7 +212,7 @@ int main()
     for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
-      if (datatree_2016->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2016->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1) continue;
 
       h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,datatree_2016->Jet_Dtr_PY[h1_index]/1000.,datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,datatree_2016->Jet_Dtr_E[h1_index]/1000.);
       if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
@@ -222,15 +222,15 @@ int main()
                                   datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
                                   h1_4vector->Eta())) continue;
 
-      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
       if (h1_purity>1.||h1_efficiency>1.) continue;
 
       // Loop over hadron 2
       for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
-        if (datatree_2016->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2016->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+        if (datatree_2016->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h2_index] != 1) continue;
 
         h2_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h2_index]/1000.,datatree_2016->Jet_Dtr_PY[h2_index]/1000.,datatree_2016->Jet_Dtr_PZ[h2_index]/1000.,datatree_2016->Jet_Dtr_E[h2_index]/1000.);
         if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h2_index],
@@ -240,30 +240,30 @@ int main()
                                     datatree_2016->Jet_Dtr_ProbNNghost[h2_index],
                                     h2_4vector->Eta())) continue;
 
-        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         if (h2_purity>1.||h2_efficiency>1.) continue;
 
         double purity_correction = (h1_purity)*(h2_purity);
 
-        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
 
         double efficiency_correction = (h1_efficiency)*(h2_efficiency);
 
-        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
-        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
         vars[1 ] = efficiency_correction;
@@ -325,36 +325,36 @@ int main()
     if (datatree_2017->nPV!=1) continue;
 
     // Apply trigger cut
-    bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS==1&&datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
-    bool mup_trigger = (datatree_2017->mup_L0MuonEWDecision_TOS==1&&datatree_2017->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2017->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+    bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS == 1 && datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+    bool mup_trigger = (datatree_2017->mup_L0MuonEWDecision_TOS == 1 && datatree_2017->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2017->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
     if (!mum_trigger&&!mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,datatree_2017->Jet_PY/1000.,datatree_2017->Jet_PZ/1000.,datatree_2017->Jet_PE/1000.);
-    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) continue;
     
     mum_4vector->SetPxPyPzE(datatree_2017->mum_PX/1000.,datatree_2017->mum_PY/1000.,datatree_2017->mum_PZ/1000.,datatree_2017->mum_PE/1000.);
-    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(datatree_2017->mup_PX/1000.,datatree_2017->mup_PY/1000.,datatree_2017->mup_PZ/1000.,datatree_2017->mup_PE/1000.);
-    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) continue;
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) continue;
 
     double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
     double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
     double mup_eta = mup_4vector->Eta();
     double mum_eta = mum_4vector->Eta();
 
-    double mup_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mup_eta,mup_pt));
-    double mup_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mup_eta,mup_pt));
-    double mup_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mup_eta, mup_pt));
+    double mup_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mup_eta, mup_pt));
+    double mup_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mup_eta, mup_pt));
 
-    double mum_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mum_eta,mum_pt));
-    double mum_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mum_eta,mum_pt));
-    double mum_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mum_eta, mum_pt));
+    double mum_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mum_eta, mum_pt));
+    double mum_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mum_eta, mum_pt));
 
     double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
     double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
@@ -387,7 +387,7 @@ int main()
     for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
-      if (datatree_2017->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2017->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (datatree_2017->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h1_index] != 1) continue;
 
       h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,datatree_2017->Jet_Dtr_PY[h1_index]/1000.,datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,datatree_2017->Jet_Dtr_E[h1_index]/1000.);
       if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
@@ -397,15 +397,15 @@ int main()
                                   datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
                                   h1_4vector->Eta())) continue;
 
-      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
       if (h1_purity>1.||h1_efficiency>1.) continue;
 
       // Loop over hadron 2
       for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
-        if (datatree_2017->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2017->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+        if (datatree_2017->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h2_index] != 1) continue;
 
         h2_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h2_index]/1000.,datatree_2017->Jet_Dtr_PY[h2_index]/1000.,datatree_2017->Jet_Dtr_PZ[h2_index]/1000.,datatree_2017->Jet_Dtr_E[h2_index]/1000.);
         if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h2_index],
@@ -415,30 +415,30 @@ int main()
                                     datatree_2017->Jet_Dtr_ProbNNghost[h2_index],
                                     h2_4vector->Eta())) continue;
 
-        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         if (h2_purity>1.||h2_efficiency>1.) continue;
 
         double purity_correction = (h1_purity)*(h2_purity);
 
-        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
 
         double efficiency_correction = (h1_efficiency)*(h2_efficiency);
 
-        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
-        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
 
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
         vars[1 ] = efficiency_correction;
@@ -500,36 +500,36 @@ int main()
     if (datatree_2018->nPV!=1) continue;
 
     // Apply trigger cut
-    bool mum_trigger = (datatree_2018->mum_L0MuonEWDecision_TOS==1&&datatree_2018->mum_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2018->mum_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
-    bool mup_trigger = (datatree_2018->mup_L0MuonEWDecision_TOS==1&&datatree_2018->mup_Hlt1SingleMuonHighPTDecision_TOS==1&&datatree_2018->mup_Hlt2EWSingleMuonVHighPtDecision_TOS==1);
+    bool mum_trigger = (datatree_2018->mum_L0MuonEWDecision_TOS == 1 && datatree_2018->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2018->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+    bool mup_trigger = (datatree_2018->mup_L0MuonEWDecision_TOS == 1 && datatree_2018->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2018->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
     if (!mum_trigger&&!mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000.,datatree_2018->Jet_PY/1000.,datatree_2018->Jet_PZ/1000.,datatree_2018->Jet_PE/1000.);
-    if (!apply_jet_cuts(Jet_4vector->Eta(),Jet_4vector->Pt())) continue;
+    if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) continue;
     
     mum_4vector->SetPxPyPzE(datatree_2018->mum_PX/1000.,datatree_2018->mum_PY/1000.,datatree_2018->mum_PZ/1000.,datatree_2018->mum_PE/1000.);
-    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector),mum_4vector->Pt(),mum_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) continue;
     
     mup_4vector->SetPxPyPzE(datatree_2018->mup_PX/1000.,datatree_2018->mup_PY/1000.,datatree_2018->mup_PZ/1000.,datatree_2018->mup_PE/1000.);
-    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector),mup_4vector->Pt(),mup_4vector->Eta())) continue;
+    if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) continue;
     
     Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),mup_4vector->Py()+mum_4vector->Py(),mup_4vector->Pz()+mum_4vector->Pz(),mup_4vector->E() +mum_4vector->E());
-    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)),Z0_4vector->M())) continue;
+    if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) continue;
 
     double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
     double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
     double mup_eta = mup_4vector->Eta();
     double mum_eta = mum_4vector->Eta();
 
-    double mup_eff_id  = h2_muon_2018_ideff_data->GetBinContent(h2_muon_2018_ideff_data->FindBin(mup_eta,mup_pt));
-    double mup_eff_trk = h2_muon_2018_trkeff_data->GetBinContent(h2_muon_2018_trkeff_data->FindBin(mup_eta,mup_pt));
-    double mup_eff_trg = h2_muon_2018_trgeff_data->GetBinContent(h2_muon_2018_trgeff_data->FindBin(mup_eta,mup_pt));
+    double mup_eff_id  = h2_muon_2018_ideff_data->GetBinContent(h2_muon_2018_ideff_data->FindBin(mup_eta, mup_pt));
+    double mup_eff_trk = h2_muon_2018_trkeff_data->GetBinContent(h2_muon_2018_trkeff_data->FindBin(mup_eta, mup_pt));
+    double mup_eff_trg = h2_muon_2018_trgeff_data->GetBinContent(h2_muon_2018_trgeff_data->FindBin(mup_eta, mup_pt));
 
-    double mum_eff_id  = h2_muon_2018_ideff_data->GetBinContent(h2_muon_2018_ideff_data->FindBin(mum_eta,mum_pt));
-    double mum_eff_trk = h2_muon_2018_trkeff_data->GetBinContent(h2_muon_2018_trkeff_data->FindBin(mum_eta,mum_pt));
-    double mum_eff_trg = h2_muon_2018_trgeff_data->GetBinContent(h2_muon_2018_trgeff_data->FindBin(mum_eta,mum_pt));
+    double mum_eff_id  = h2_muon_2018_ideff_data->GetBinContent(h2_muon_2018_ideff_data->FindBin(mum_eta, mum_pt));
+    double mum_eff_trk = h2_muon_2018_trkeff_data->GetBinContent(h2_muon_2018_trkeff_data->FindBin(mum_eta, mum_pt));
+    double mum_eff_trg = h2_muon_2018_trgeff_data->GetBinContent(h2_muon_2018_trgeff_data->FindBin(mum_eta, mum_pt));
 
     double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
     double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
@@ -562,7 +562,7 @@ int main()
     for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++)
     {
       // Skip non-hadronic particles
-      if (datatree_2018->Jet_Dtr_IsMeson[h1_index]!=1&&datatree_2018->Jet_Dtr_IsBaryon[h1_index]!=1) continue;
+      if (datatree_2018->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2018->Jet_Dtr_IsBaryon[h1_index] != 1) continue;
 
       h1_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h1_index]/1000.,datatree_2018->Jet_Dtr_PY[h1_index]/1000.,datatree_2018->Jet_Dtr_PZ[h1_index]/1000.,datatree_2018->Jet_Dtr_E[h1_index]/1000.);
       if (!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h1_index],
@@ -572,15 +572,15 @@ int main()
                                   datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
                                   h1_4vector->Eta())) continue;
 
-      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
+      double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+      double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
       if (h1_purity>1.||h1_efficiency>1.) continue;
 
       // Loop over hadron 2
       for (int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++)
       {
         // Skip non-hadronic particles
-        if (datatree_2018->Jet_Dtr_IsMeson[h2_index]!=1&&datatree_2018->Jet_Dtr_IsBaryon[h2_index]!=1) continue;
+        if (datatree_2018->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2018->Jet_Dtr_IsBaryon[h2_index] != 1) continue;
 
         h2_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h2_index]/1000.,datatree_2018->Jet_Dtr_PY[h2_index]/1000.,datatree_2018->Jet_Dtr_PZ[h2_index]/1000.,datatree_2018->Jet_Dtr_E[h2_index]/1000.);
         if (!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h2_index],
@@ -590,30 +590,30 @@ int main()
                                     datatree_2018->Jet_Dtr_ProbNNghost[h2_index],
                                     h2_4vector->Eta())) continue;
 
-        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         if (h2_purity>1.||h2_efficiency>1.) continue;
 
         double purity_correction = (h1_purity)*(h2_purity);
 
-        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
 
         double efficiency_correction = (h1_efficiency)*(h2_efficiency);
 
-        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
         double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
-        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
-        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(),Jet_4vector->Pt()));
+        double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
 
         vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
         vars[1 ] = efficiency_correction;

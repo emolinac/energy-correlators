@@ -9,8 +9,8 @@
 void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print = true)
 {
     // Open the necessary files
-    TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr).c_str()); 
-    TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+    TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str()); 
+    TFile* fmc   = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
     if (fcorr->IsZombie()) return;
     
     TNtuple* ntuple_data       = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
@@ -44,7 +44,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     ntuple_mcreco->SetBranchAddress("weight_pt",&weight_pt_mcreco);
     
     // UNFOLDING FIRST
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_reco, weight_truth;
@@ -84,10 +84,10 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     TH2D* hpuritycorrected_l  = new TH2D("hpuritycorrected_l" ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     TH2D* hpuritycorrected2_l = new TH2D("hpuritycorrected2_l","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     
-    ntuple_data->Project("hpuritycorrected" ,"jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-    ntuple_data->Project("hpuritycorrected2","jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-    ntuple_data->Project("hpuritycorrected_l" ,"jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-    ntuple_data->Project("hpuritycorrected2_l","jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected_l" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected2_l", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     
     // Unfold the purity corrected pairs
     RooUnfoldBayes unfold(response, hpuritycorrected, niter);
@@ -158,7 +158,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
             hcorr_e2c_l[bin]->Fill(R_L,purity*unfolding_weight_l*weight_pt/efficiency);
         }
         
-        ntuple_jet->Project(Form("hcorr_jet[%i]" ,bin),"jet_pt",jet_full_corr[bin]);
+        ntuple_jet->Project(Form("hcorr_jet[%i]" ,bin), "jet_pt",jet_full_corr[bin]);
         
         hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
         hcorr_e2c_l[bin]->Scale(1./hcorr_jet[bin]->Integral());
@@ -174,7 +174,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
             hmc_l[bin]->Fill(R_L_mc,weight_pt_mc);
         }
         
-        ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
+        ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin), "jet_pt",pair_jetpt_cut[bin]);
         hmc[bin]->Scale(1./hmc_jet[bin]->Integral(),"width");
         hmc_l[bin]->Scale(1./hmc_jet[bin]->Integral());
 
@@ -190,7 +190,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
             hmcreco_l[bin]->Fill(R_L_mcreco,weight_pt_mcreco);
         }
 
-        ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
+        ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin), "jet_pt",pair_jetpt_cut[bin]);
         hmcreco[bin]->Scale(1./hmcreco_jet[bin]->Integral(),"width");
         hmcreco_l[bin]->Scale(1./hmcreco_jet[bin]->Integral());
     }

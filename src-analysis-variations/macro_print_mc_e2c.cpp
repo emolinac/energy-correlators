@@ -9,7 +9,7 @@
 void macro_print_mc_e2c()
 {
     // Open the necessary files
-    TFile* fmc = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+    TFile* fmc = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
     
     TNtuple* ntuple_mcreco     = (TNtuple*) fmc->Get((name_ntuple_mcreco).c_str());
     TNtuple* ntuple_mcreco_jet = (TNtuple*) fmc->Get((name_ntuple_mcreco_jet).c_str());
@@ -52,8 +52,8 @@ void macro_print_mc_e2c()
         ntuple_mcreco->Project(Form("hmcreco[%i]",bin),"R_L",e2c_jetpt_cut_weightpt[bin]);
         ntuple_mc->Project(Form("hmc[%i]" ,bin),"R_L",e2c_jetpt_cut_weightpt[bin]);
         
-        ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
-        ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jetpt_cut[bin]);
+        ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin), "jet_pt",pair_jetpt_cut[bin]);
+        ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin), "jet_pt",pair_jetpt_cut[bin]);
         
         hmcreco[bin]->Scale(1./hmcreco_jet[bin]->Integral());
         hmc[bin]->Scale(1./hmc_jet[bin]->Integral());

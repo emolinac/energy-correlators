@@ -9,7 +9,7 @@
 void macro_print_singleefficiency_eta_momentum(double jet_pt_min_local = jet_pt_min_nom, double jet_pt_max_local = jet_pt_max)
 {
 // Open the necessary files
-    TFile* fefficiency = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fefficiency = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_mcreco = (TNtuple*) fefficiency->Get((name_ntuple_correction_reco).c_str());

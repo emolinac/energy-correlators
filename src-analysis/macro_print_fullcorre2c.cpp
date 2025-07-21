@@ -9,11 +9,11 @@
 void macro_print_fullcorre2c(int niter = 4)
 {
     // Open the necessary files
-    TFile* fout        = new TFile((output_folder+namef_histos_corr_e2c_logbin).c_str(),"RECREATE");
-    TFile* fout_linear = new TFile((output_folder+namef_histos_corr_e2c).c_str(),"RECREATE");
+    TFile* fout        = new TFile((output_folder + namef_histos_corr_e2c_logbin).c_str(),"RECREATE");
+    TFile* fout_linear = new TFile((output_folder + namef_histos_corr_e2c).c_str(),"RECREATE");
     gROOT->cd();
 
-    TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
+    TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
     if (fcorr->IsZombie()) return;
     
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
@@ -31,7 +31,7 @@ void macro_print_fullcorre2c(int niter = 4)
     ntuple_data->SetBranchAddress("purity_relerror",&purity_relerror);
 
     // UNFOLDING FIRST
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
@@ -99,7 +99,7 @@ void macro_print_fullcorre2c(int niter = 4)
     TH1F* hcorr_tau[Nbin_jet_pt]; 
     TH1F* hcorr_tau_nounf[Nbin_jet_pt]; 
     
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     TLatex* tex = new TLatex();
@@ -108,8 +108,8 @@ void macro_print_fullcorre2c(int niter = 4)
     // gStyle->SetPaintTextFormat("4.2f");
     // hunfolded_ratio->Draw("col text");
     // hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
-    // hunfolded_ratio->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
-    // hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+    // hunfolded_ratio->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+    // hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
     // gPad->SetLogx(0);
     // gPad->SetLogy(1);
     // c->Print(Form("./plots/unfolded3d_initer%_ratio_sepyears_linearbinning_unfbinvarv2.pdf",niter));
@@ -133,8 +133,8 @@ void macro_print_fullcorre2c(int niter = 4)
         set_histogram_style(hcorr_tau[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
         set_histogram_style(hcorr_e2c_l[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
 
-        ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         ,"jet_pt",jet_full_corr[bin]);
-        ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin),"jet_pt",jet_full_corr[bin]);
+        ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         , "jet_pt",jet_full_corr[bin]);
+        ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin), "jet_pt",jet_full_corr[bin]);
         
         double jet_pt_centroid = hcorr_jet_centroid[bin]->GetMean();    
         for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)

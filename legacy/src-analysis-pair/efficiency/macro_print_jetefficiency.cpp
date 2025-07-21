@@ -9,7 +9,7 @@
 void macro_print_jetefficiency()
 {
     // Open the necessary files
-    TFile* fefficiency = new TFile((output_folder+namef_ntuple_jet_efficiency).c_str());
+    TFile* fefficiency = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple = (TNtuple*) fefficiency->Get((name_ntuple_jetefficiency).c_str());
@@ -25,8 +25,8 @@ void macro_print_jetefficiency()
     set_histogram_style(hefficiency, kCyan  , std_line_width, std_marker_style, std_marker_size);
     
     // Project into the histograms
-    ntuple->Project("hsig","jet_pt_truth","jet_pt!=-999");
-    ntuple->Project("hall","jet_pt_truth");
+    ntuple->Project("hsig", "jet_pt_truth","jet_pt!=-999");
+    ntuple->Project("hall", "jet_pt_truth");
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();

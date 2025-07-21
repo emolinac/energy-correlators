@@ -9,13 +9,13 @@
 void macro_print_energyproduct_jete()
 {
     // Open the necessary files
-    TFile*   fcorr       = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
+    TFile*   fcorr       = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
     
     TH1F* hcorr_data[Nbin_jet_pt]; 
     // TH1F* hall_data[Nbin_jet_pt];  
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     TLatex* tex = new TLatex();

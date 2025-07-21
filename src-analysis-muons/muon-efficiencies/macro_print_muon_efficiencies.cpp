@@ -8,9 +8,9 @@
 
 void macro_print_muon_efficiencies()
 {
-    TFile* fefficiency_muon_2016_id  = new TFile((muons_folder+"IDEff_Data_2016.root").c_str());
-    TFile* fefficiency_muon_2016_trk = new TFile((muons_folder+"TRKEff_Data_2016.root").c_str());
-    TFile* fefficiency_muon_2016_trg = new TFile((muons_folder+"TRGEff_Data_2016.root").c_str());
+    TFile* fefficiency_muon_2016_id  = new TFile((muons_folder + "IDEff_Data_2016.root").c_str());
+    TFile* fefficiency_muon_2016_trk = new TFile((muons_folder + "TRKEff_Data_2016.root").c_str());
+    TFile* fefficiency_muon_2016_trg = new TFile((muons_folder + "TRGEff_Data_2016.root").c_str());
   
     TH2D* h2_muon_2016_ideff_data  = (TH2D*) fefficiency_muon_2016_id->Get("Hist_ALL_2016_ETA_PT_Eff");
     TH2D* h2_muon_2016_trkeff_data = (TH2D*) fefficiency_muon_2016_trk->Get("Hist_ALL_2016_ETA_PT_Eff");
@@ -20,7 +20,7 @@ void macro_print_muon_efficiencies()
     h2_muon_2016_trkeff_data->SetTitle("Muon Tracking Efficiency;#eta;p_{T}(#mu)");
     h2_muon_2016_trgeff_data->SetTitle("Muon Trigger Efficiency;#eta;p_{T}(#mu)");
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
     
     // Adding content with errors

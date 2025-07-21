@@ -14,7 +14,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
     TFile* fout = new TFile((output_folder+devfromnom_namef[systematic]).c_str(),"RECREATE");
     gROOT->cd();
 
-    TFile* fnominal    = new TFile((output_folder+namef_histos_paircorr_e2c_logbin).c_str());
+    TFile* fnominal    = new TFile((output_folder + namef_histos_paircorr_e2c_logbin).c_str());
     TFile* fsystematic = new TFile((output_folder+systematic_namef[systematic]).c_str());
 
     THStack* s     = new THStack();
@@ -62,7 +62,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
 
     }
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)

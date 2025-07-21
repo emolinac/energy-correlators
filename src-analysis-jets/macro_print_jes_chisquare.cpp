@@ -9,7 +9,7 @@
 void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , double ptratio_max = 1.6, bool do_print = true)
 {
     // Open the necessary files
-    TFile* f = new TFile((output_folder+namef_ntuple_jes_jer).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_jes_jer).c_str());
     
     // Get the corresponding Ntuples
     TNtuple* ntuple_jes_data = (TNtuple*) f->Get((name_ntuple_jes_data).c_str());

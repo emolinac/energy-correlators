@@ -9,7 +9,7 @@
 void macro_print_singlepurity_momentum()
 {
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());

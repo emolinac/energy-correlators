@@ -7,7 +7,7 @@
 
 void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, double jet_pt_max_local = 120)
 {
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L, R_L_truth, jet_pt;
@@ -48,7 +48,7 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
     // TH2F* hresponse = (TH2F*) response->Hresponse();
     // hresponse->Draw("col text");
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     RooUnfoldBayes unfold(response, hmeas, Niter);
@@ -69,7 +69,7 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
     // hs->Add(h_ct);
     // hs->Add(hmeas);
     h_ct->Draw("");
-    h_ct->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
+    h_ct->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
     h_ct->GetYaxis()->SetNdivisions(505);
     h_ct->SetTitle(";R_{L};Unfolded/True");
     h_ct->GetYaxis()->SetLimits(0.8,1.2);

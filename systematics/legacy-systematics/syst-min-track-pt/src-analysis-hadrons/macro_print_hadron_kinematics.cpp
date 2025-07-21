@@ -8,7 +8,7 @@
 
 void macro_print_hadron_kinematics()
 {
-    TFile* fin     = new TFile((output_folder+namef_ntuple_hadron).c_str());
+    TFile* fin     = new TFile((output_folder + namef_ntuple_hadron).c_str());
     
     TNtuple* ntuple_data   = (TNtuple*) fin->Get(name_ntuple_data.c_str());
     TNtuple* ntuple_mc     = (TNtuple*) fin->Get(name_ntuple_mc.c_str());

@@ -9,7 +9,7 @@
 void macro_print_mc_chargede2c()
 {
     // Open the necessary files
-    TFile* fmc = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+    TFile* fmc = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
     
     TNtuple* ntuple_mcreco     = (TNtuple*) fmc->Get((name_ntuple_mcreco).c_str());
     TNtuple* ntuple_mcreco_jet = (TNtuple*) fmc->Get((name_ntuple_mcreco_jet).c_str());

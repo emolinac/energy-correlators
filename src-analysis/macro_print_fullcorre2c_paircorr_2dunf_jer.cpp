@@ -9,11 +9,11 @@
 void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = true, bool compare_to_nominal = false)
 {
     // Open the necessary files
-    TFile* fout        = new TFile((output_folder+namef_histos_paircorr_e2c_logbin_jer).c_str(),"RECREATE");
-    TFile* fout_linear = new TFile((output_folder+namef_histos_paircorr_e2c_jer).c_str(),"RECREATE");
+    TFile* fout        = new TFile((output_folder + namef_histos_paircorr_e2c_logbin_jer).c_str(),"RECREATE");
+    TFile* fout_linear = new TFile((output_folder + namef_histos_paircorr_e2c_jer).c_str(),"RECREATE");
     gROOT->cd();
 
-    TFile* fcorr = new TFile((output_folder+namef_ntuple_e2c_paircorr_jer).c_str()); 
+    TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr_jer).c_str()); 
     if (fcorr->IsZombie()) return;
     
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
@@ -24,7 +24,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
     set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
     
     // UNFOLDING FIRST
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections_jer).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections_jer).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
@@ -59,10 +59,10 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
     TH2D* hpuritycorrected_l  = new TH2D("hpuritycorrected_l" ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     TH2D* hpuritycorrected2_l = new TH2D("hpuritycorrected2_l","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     
-    ntuple_data->Project("hpuritycorrected" ,"jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-    ntuple_data->Project("hpuritycorrected2","jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-    ntuple_data->Project("hpuritycorrected_l" ,"jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-    ntuple_data->Project("hpuritycorrected2_l","jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected_l" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+    ntuple_data->Project("hpuritycorrected2_l", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     
     // Unfold the purity corrected pairs
     RooUnfoldBayes unfold(response, hpuritycorrected, niter);
@@ -83,7 +83,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
     TH1F* hcorr_tau[Nbin_jet_pt]; 
     TH1F* hcorr_tau_nounf[Nbin_jet_pt]; 
     
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     TLatex* tex = new TLatex();
@@ -111,15 +111,15 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
 
     hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
     hunfolded_ratio->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L_logbin]);
-    hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+    hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
     gPad->SetLogx(1);
     gPad->SetLogy(1);
     if (do_print) c->Print(Form("./plots/unfolded2d_initer%i_ratio_logbinning_jer.pdf",niter));
 
     hunfolded_ratio_l->Draw("col text");
     hunfolded_ratio_l->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
-    hunfolded_ratio_l->GetXaxis()->SetRangeUser(R_L_min,R_L_max);
-    hunfolded_ratio_l->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+    hunfolded_ratio_l->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+    hunfolded_ratio_l->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
     gPad->SetLogx(0);
     gPad->SetLogy(1);
     if (do_print) c->Print(Form("./plots/unfolded2d_initer%i_ratio_linbinning_jer.pdf",niter));
@@ -145,8 +145,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
         set_histogram_style(hcorr_tau[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
         set_histogram_style(hcorr_e2c_l[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
     
-        ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         ,"jet_pt",jet_full_corr[bin]);
-        ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin),"jet_pt",jet_full_corr[bin]);
+        ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         , "jet_pt",jet_full_corr[bin]);
+        ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin), "jet_pt",jet_full_corr[bin]);
 
         double jet_pt_centroid = hcorr_jet_centroid[bin]->GetMean();
         for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++)
@@ -245,7 +245,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
 
     if (compare_to_nominal)
     {
-        TFile* fnominal = new TFile((output_folder+namef_histos_paircorr_e2c_logbin).c_str());
+        TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_e2c_logbin).c_str());
         if (fnominal->IsZombie()) return;
 
         TH2F* hct_ratio = new TH2F("hct_ratio","",Nbin_R_L_logbin,rl_logbinning,Nbin_jet_pt,jet_pt_binning);
@@ -282,7 +282,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
 
         hct_ratio->SetTitle("Norm. Corr. Pseudodata / Norm. Corr. Data ;R_{L};p^{jet}_{T}GeV");
         hct_ratio->GetXaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L_logbin]);
-        hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0],jet_pt_binning[3]);
+        hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         if (do_print) c->Print(Form("./plots/nom_jer_comp_initer%i_ratio_logbinning.pdf",niter));

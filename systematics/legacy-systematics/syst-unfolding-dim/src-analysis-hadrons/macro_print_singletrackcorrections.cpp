@@ -10,7 +10,7 @@ void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_e
 {
     gStyle->SetOptStat(1110);
     // Open the necessary files
-    TFile*   fcorr       = new TFile((output_folder+namef_ntuple_e2c_corr).c_str()); 
+    TFile*   fcorr       = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
     
     TH2F* h = new TH2F("h","",100,0.2,1,100,0.2,1);

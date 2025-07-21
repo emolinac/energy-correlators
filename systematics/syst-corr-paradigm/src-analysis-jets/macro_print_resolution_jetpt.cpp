@@ -9,7 +9,7 @@
 void macro_print_resolution_jetpt()
 {
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
     gStyle->SetOptStat(1110);
 
     // Get the corresponding Ntuples

@@ -8,7 +8,7 @@
 
 void macro_print_weightpt_rl_jetpt()
 {
-    TFile* fin = new TFile((output_folder+namef_ntuple_e2c_corr).c_str());
+    TFile* fin = new TFile((output_folder + namef_ntuple_e2c_corr).c_str());
 
     TNtuple* ntuple = (TNtuple*) fin->Get(name_ntuple_data.c_str());
 

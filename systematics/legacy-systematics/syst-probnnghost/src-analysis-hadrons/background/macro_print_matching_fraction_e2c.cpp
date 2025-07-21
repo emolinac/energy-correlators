@@ -9,7 +9,7 @@
 void macro_print_matching_fraction_e2c()
 {
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder+namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
@@ -19,10 +19,10 @@ void macro_print_matching_fraction_e2c()
     determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
 
     // Define the necessary histograms to calculate purity
-    TH1F* hall           = new TH1F("hall"      ,"",Nbin_R_L,R_L_min,R_L_max);
-    TH1F* hmatched       = new TH1F("hmatched"  ,"",Nbin_R_L,R_L_min,R_L_max);
-    TH1F* hunmatched     = new TH1F("hunmatched","",Nbin_R_L,R_L_min,R_L_max);
-    TH1F* hhalfunmatched = new TH1F("hhalfunmatched","",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hall           = new TH1F("hall"      ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hmatched       = new TH1F("hmatched"  ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hunmatched     = new TH1F("hunmatched","",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hhalfunmatched = new TH1F("hhalfunmatched","",Nbin_R_L,R_L_min, R_L_max);
     hall->Sumw2();
     hmatched->Sumw2();
     hunmatched->Sumw2();
@@ -34,9 +34,9 @@ void macro_print_matching_fraction_e2c()
     ntuple_dtrmatch->Project("hunmatched"    ,"R_L",e2c_pairbg_cut);
     ntuple_dtrmatch->Project("hhalfunmatched","R_L",e2c_singlebg_cut);
 
-    TH1F* hratio_matched       = new TH1F("hratio_matched"  ,"",Nbin_R_L,R_L_min,R_L_max);
-    TH1F* hratio_unmatched     = new TH1F("hratio_unmatched","",Nbin_R_L,R_L_min,R_L_max);
-    TH1F* hratio_halfunmatched = new TH1F("hratio_halfunmatched","",Nbin_R_L,R_L_min,R_L_max);
+    TH1F* hratio_matched       = new TH1F("hratio_matched"  ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hratio_unmatched     = new TH1F("hratio_unmatched","",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hratio_halfunmatched = new TH1F("hratio_halfunmatched","",Nbin_R_L,R_L_min, R_L_max);
     
     hratio_matched->Divide(hmatched,hall,1,1,"B");
     hratio_unmatched->Divide(hunmatched,hall,1,1,"B");

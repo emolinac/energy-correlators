@@ -9,7 +9,7 @@
 void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptratio_max = 1.6, bool do_print = false)
 {
     // Open the necessary files
-    TFile* f = new TFile((output_folder+namef_ntuple_jes_jer).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_jes_jer).c_str());
     
     // Get the corresponding Ntuples
     TNtuple* ntuple_jes_data = (TNtuple*) f->Get((name_ntuple_jes_data).c_str());

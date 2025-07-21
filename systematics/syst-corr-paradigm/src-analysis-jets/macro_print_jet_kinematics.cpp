@@ -8,8 +8,8 @@
 
 void macro_print_jet_kinematics()
 {
-    TFile* fin     = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
-    TFile* findata = new TFile((output_folder+namef_ntuple_e2c_corr).c_str());
+    TFile* fin     = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
+    TFile* findata = new TFile((output_folder + namef_ntuple_e2c_corr).c_str());
     
     TNtuple* ntuple_jet_data   = (TNtuple*) findata->Get(name_ntuple_corrjet.c_str());
     TNtuple* ntuple_jet_mc     = (TNtuple*) fin->Get(name_ntuple_mc_jet.c_str());
@@ -45,9 +45,9 @@ void macro_print_jet_kinematics()
     set_histogram_style(h_z_y_mc    , 797 , std_line_width, std_marker_style, std_marker_size);
     set_histogram_style(h_z_y_mcreco, 868 , std_line_width, std_marker_style, std_marker_size);
 
-    ntuple_jet_data->Project("h_pt_data","jet_pt","");
-    ntuple_jet_mc->Project("h_pt_mc","jet_pt","");
-    ntuple_jet_mcreco->Project("h_pt_mcreco","jet_pt","");
+    ntuple_jet_data->Project("h_pt_data", "jet_pt","");
+    ntuple_jet_mc->Project("h_pt_mc", "jet_pt","");
+    ntuple_jet_mcreco->Project("h_pt_mcreco", "jet_pt","");
     
     ntuple_jet_data->Project("h_eta_data","jet_eta","");
     ntuple_jet_mc->Project("h_eta_mc","jet_eta","");

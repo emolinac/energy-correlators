@@ -7,7 +7,7 @@
 
 void macro_print_unfold_bayes_rl(int Niter = 1, double jet_pt_min_local = 20, double jet_pt_max_local = 100)
 {
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L, R_L_truth, jet_pt;
@@ -48,7 +48,7 @@ void macro_print_unfold_bayes_rl(int Niter = 1, double jet_pt_min_local = 20, do
     hmeas->Scale(1./hmeas->Integral());
     hunfolded_bayes->Scale(1./hunfolded_bayes->Integral());
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     THStack* s = new THStack();

@@ -9,7 +9,7 @@
 void macro_print_jetpurity()
 {
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder+namef_ntuple_jet_purity).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple = (TNtuple*) fpurity->Get((name_ntuple_jetpurity).c_str());
@@ -25,8 +25,8 @@ void macro_print_jetpurity()
     set_histogram_style(hpurity, kCyan  , std_line_width, std_marker_style, std_marker_size);
     
     // Project into the histograms
-    ntuple->Project("hsig","jet_pt","jet_pt_truth!=-999");
-    ntuple->Project("hall","jet_pt");
+    ntuple->Project("hsig", "jet_pt","jet_pt_truth!=-999");
+    ntuple->Project("hall", "jet_pt");
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();

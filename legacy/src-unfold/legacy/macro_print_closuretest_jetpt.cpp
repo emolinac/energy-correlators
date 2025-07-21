@@ -7,7 +7,7 @@
 
 void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfolding_jetpt_binning[0], double jet_pt_max_local = unfolding_jetpt_binning[5])
 {
-    TFile* f = new TFile((output_folder+namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float jet_pt, jet_pt_truth;
@@ -47,7 +47,7 @@ void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfo
     // TH2F* hresponse = (TH2F*) response->Hresponse();
     // hresponse->Draw("col text");
 
-    TCanvas* c = new TCanvas("c","",1920,1080);
+    TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
 
     RooUnfoldBayes unfold(response, hmeas, Niter);
