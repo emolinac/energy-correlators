@@ -112,9 +112,9 @@ int main()
   hnum_eff->Sumw2();
   hden_eff->Sumw2();
   
-  ntuple_purity->Project("hnum_pur","jet_pt:R_L","R_L_truth!=-999");
+  ntuple_purity->Project("hnum_pur","jet_pt:R_L",pair_matching_cut);
   ntuple_purity->Project("hden_pur","jet_pt:R_L");
-  ntuple_efficiency_reco->Project("hnum_eff","jet_pt_truth:R_L_truth","R_L_truth!=-999");
+  ntuple_efficiency_reco->Project("hnum_eff","jet_pt_truth:R_L_truth",pair_matching_cut);
   ntuple_efficiency_mc->Project("hden_eff","jet_pt:R_L");
 
   hpurity->Divide(hnum_pur,hden_pur,1,1,"B");

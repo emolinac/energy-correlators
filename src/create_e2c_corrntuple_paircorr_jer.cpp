@@ -110,9 +110,9 @@ int main()
   hnum_eff->Sumw2();
   hden_eff->Sumw2();
   
-  ntuple_purity->Project("hnum_pur","jet_pt:R_L","R_L_truth!=-999");
+  ntuple_purity->Project("hnum_pur","jet_pt:R_L",pair_matching_cut);
   ntuple_purity->Project("hden_pur","jet_pt:R_L");
-  ntuple_efficiency_reco->Project("hnum_eff","jet_pt_truth:R_L_truth","R_L_truth!=-999");
+  ntuple_efficiency_reco->Project("hnum_eff","jet_pt_truth:R_L_truth",pair_matching_cut);
   ntuple_efficiency_mc->Project("hden_eff","jet_pt:R_L");
 
   hpurity->Divide(hnum_pur,hden_pur,1,1,"B");
@@ -134,14 +134,14 @@ int main()
   TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   ,"",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge","",Nbin_R_L_logbin,rl_logbinning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   
-  ntuple_purity->Project("hnum_pur_eqcharge","jet_pt:R_L","R_L_truth!=-999&&eq_charge>1");
+  ntuple_purity->Project("hnum_pur_eqcharge","jet_pt:R_L",pair_matching_cut+"eq_charge>1");
   ntuple_purity->Project("hden_pur_eqcharge","jet_pt:R_L","eq_charge>1");
-  ntuple_efficiency_reco->Project("hnum_eff_eqcharge","jet_pt_truth:R_L_truth","R_L_truth!=-999&&eq_charge>1");
+  ntuple_efficiency_reco->Project("hnum_eff_eqcharge","jet_pt_truth:R_L_truth",pair_matching_cut+"eq_charge>1");
   ntuple_efficiency_mc->Project("hden_eff_eqcharge","jet_pt:R_L","eq_charge>1");
 
-  ntuple_purity->Project("hnum_pur_neqcharge","jet_pt:R_L","R_L_truth!=-999&&eq_charge<-1");
+  ntuple_purity->Project("hnum_pur_neqcharge","jet_pt:R_L",pair_matching_cut+"eq_charge<-1");
   ntuple_purity->Project("hden_pur_neqcharge","jet_pt:R_L","eq_charge<-1");
-  ntuple_efficiency_reco->Project("hnum_eff_neqcharge","jet_pt_truth:R_L_truth","R_L_truth!=-999&&eq_charge<-1");
+  ntuple_efficiency_reco->Project("hnum_eff_neqcharge","jet_pt_truth:R_L_truth",pair_matching_cut+"eq_charge<-1");
   ntuple_efficiency_mc->Project("hden_eff_neqcharge","jet_pt:R_L","eq_charge<-1");
 
   hpurity_eqcharge->Divide(hnum_pur_eqcharge,hden_pur_eqcharge,1,1,"B");

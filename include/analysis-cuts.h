@@ -46,6 +46,10 @@ const double weight_pt_cut[]  = {0.12,0.10,0.085};
 const double min_efficiency[] = {0.14,0.10,0.05};
 const double max_relerror[]   = {0.50,0.35,0.45};
 
+// _______________________________ Misc analysis cuts ______________________________ //
+// TCut pair_matching_cut = "R_L_truth!=-999";
+TCut pair_matching_cut = "TMath::Abs(R_L-R_L_truth)<0.015";
+
 // _______________________________ Nominal Analysis Cuts _______________________________ //
 
 TCut e2c_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
