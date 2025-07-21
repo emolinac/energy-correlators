@@ -38,7 +38,7 @@ void macro_print_comparison_closuretest_3d(int Niter = 5, double jet_pt_min_loca
         // Access entry of ntuple
         ntuple->GetEntry(evt);
         if (jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
-        if (R_L_truth==-999) continue;
+        if (abs(R_L_truth-R_L_reco)>0.015) continue;
         if (rndm->Uniform(1)<=0.5) 
         {
             htrue_ref->Fill(R_L_truth,jet_pt_truth,weight_truth);

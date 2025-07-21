@@ -45,7 +45,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if (R_L_truth==-999) continue;
+        if (abs(R_L_truth-R_L_reco)>0.015) continue;
     
         response->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
         response_l->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
@@ -162,6 +162,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = 4, bool do_print = true)
             if (unfolding_weight_l<=0) unfolding_weight_l = 1;
 
             hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+            // hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt);
             hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
             hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
             hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,purity*weight_pt/efficiency);

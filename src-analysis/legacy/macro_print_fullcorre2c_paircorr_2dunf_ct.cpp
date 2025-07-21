@@ -46,7 +46,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if (R_L_truth==-999) continue;
+        if (abs(R_L_truth-R_L_reco)>0.015) continue;
     
         response->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
         response_l->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);

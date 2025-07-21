@@ -29,7 +29,7 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
         // Access entry of ntuple
         ntuple->GetEntry(evt);
         if (jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
-        if (R_L_truth==-999) continue;
+        if (abs(R_L_truth-R_L_reco)>0.015) continue;
         if (rndm->Uniform(1)<=0.5) 
         {
             htrue_ref->Fill(R_L_truth);

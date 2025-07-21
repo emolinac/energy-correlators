@@ -70,7 +70,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if (R_L_truth==-999) continue;
+        if (abs(R_L_truth-R_L_reco)>0.015) continue;
     
         response->Fill(R_L_reco, jet_pt_reco, weight_reco, R_L_truth, jet_pt_truth, weight_truth);
         response_l->Fill(R_L_reco, jet_pt_reco, weight_reco, R_L_truth, jet_pt_truth, weight_truth);
