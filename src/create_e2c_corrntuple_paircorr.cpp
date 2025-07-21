@@ -239,7 +239,7 @@ int main()
     bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS == 1 && datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
     bool mup_trigger = (datatree_2016->mup_L0MuonEWDecision_TOS == 1 && datatree_2016->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2016->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
-    if (!mum_trigger&&!mup_trigger) continue;
+    if (!mum_trigger && !mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,datatree_2016->Jet_PY/1000.,datatree_2016->Jet_PZ/1000.,datatree_2016->Jet_PE/1000.);
@@ -394,7 +394,7 @@ int main()
     bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS == 1 && datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
     bool mup_trigger = (datatree_2017->mup_L0MuonEWDecision_TOS == 1 && datatree_2017->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2017->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
-    if (!mum_trigger&&!mup_trigger) continue;
+    if (!mum_trigger && !mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,datatree_2017->Jet_PY/1000.,datatree_2017->Jet_PZ/1000.,datatree_2017->Jet_PE/1000.);
@@ -549,7 +549,7 @@ int main()
     bool mum_trigger = (datatree_2018->mum_L0MuonEWDecision_TOS == 1 && datatree_2018->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2018->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
     bool mup_trigger = (datatree_2018->mup_L0MuonEWDecision_TOS == 1 && datatree_2018->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2018->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
-    if (!mum_trigger&&!mup_trigger) continue;
+    if (!mum_trigger && !mup_trigger) continue;
     
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000.,datatree_2018->Jet_PY/1000.,datatree_2018->Jet_PZ/1000.,datatree_2018->Jet_PE/1000.);

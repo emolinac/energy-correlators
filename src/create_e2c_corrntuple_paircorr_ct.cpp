@@ -414,28 +414,32 @@ int main()
                                         truthdata->MCJet_PZ/1000.,
                                         truthdata->MCJet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) continue;
+                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                        continue;
 
                 mum_4vector->SetPxPyPzE(truthdata->MCJet_truth_mum_PX/1000.,
                                         truthdata->MCJet_truth_mum_PY/1000.,
                                         truthdata->MCJet_truth_mum_PZ/1000.,
                                         truthdata->MCJet_truth_mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) continue;
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                        continue;
 
                 mup_4vector->SetPxPyPzE(truthdata->MCJet_truth_mup_PX/1000.,
                                         truthdata->MCJet_truth_mup_PY/1000.,
                                         truthdata->MCJet_truth_mup_PZ/1000.,
                                         truthdata->MCJet_truth_mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) continue;
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                        continue;
 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
                                        mup_4vector->Py()+mum_4vector->Py(),
                                        mup_4vector->Pz()+mum_4vector->Pz(),
                                        mup_4vector->E() +mum_4vector->E());
 
-                if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) continue;
+                if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
+                        continue;
 
                 vars_mc_jet[0] = Jet_4vector->Pt();
                 vars_mc_jet[1] = Jet_4vector->Eta();

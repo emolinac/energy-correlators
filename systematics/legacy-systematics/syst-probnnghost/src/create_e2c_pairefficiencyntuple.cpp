@@ -81,7 +81,7 @@ int main()
     bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
     bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS == 1 && mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
-    if (!mum_trigger&&!mup_trigger) continue;
+    if (!mum_trigger && !mup_trigger) continue;
 
     // Set Jet-associated 4 vectors and apply cuts
     Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,
