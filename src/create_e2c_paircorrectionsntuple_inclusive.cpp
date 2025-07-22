@@ -245,9 +245,6 @@ int main()
 
                 // Fill the mc ntuple
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++) {
-                        // Skip non-hadronic particles
-                        if (mcrecotree->Jet_mcjet_dtrIsMeson[h1_index] != 1 && mcrecotree->Jet_mcjet_dtrIsBaryon[h1_index] != 1) continue;
-
                         h1_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h1_index]/1000.,
                                                mcrecotree->Jet_mcjet_dtrPY[h1_index]/1000.,
                                                mcrecotree->Jet_mcjet_dtrPZ[h1_index]/1000.,
@@ -259,9 +256,6 @@ int main()
                                 continue;
 
                         for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++) {
-                                // Skip non-hadronic particles
-                                if (mcrecotree->Jet_mcjet_dtrIsMeson[h2_index] != 1 && mcrecotree->Jet_mcjet_dtrIsBaryon[h2_index] != 1) continue;
-
                                 h2_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h2_index]/1000.,
                                                        mcrecotree->Jet_mcjet_dtrPY[h2_index]/1000.,
                                                        mcrecotree->Jet_mcjet_dtrPZ[h2_index]/1000.,
