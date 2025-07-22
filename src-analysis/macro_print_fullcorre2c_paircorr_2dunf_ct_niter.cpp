@@ -17,7 +17,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
                 return;
         }
 
-        TFile* fout_dev = new TFile((output_folder+devfromnom_namef[systematic]).c_str(),"RECREATE");
+        TFile* fout_dev = new TFile((output_folder + devfromnom_namef[systematic]).c_str(),"RECREATE");
         TFile* fout     = new TFile((output_folder + namef_histos_paircorr_e2c_logbin_ct).c_str(),"RECREATE");
         gROOT->cd();
 

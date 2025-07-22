@@ -14,7 +14,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
         }
 
         std::string systematic = available_systematics[index_syst];
-        TFile* fout = new TFile((output_folder+devfromnom_namef[systematic]).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + devfromnom_namef[systematic]).c_str(),"RECREATE");
         gROOT->cd();
 
         TFile* fnominal    = new TFile((output_folder + namef_histos_paircorr_e2c_logbin).c_str());

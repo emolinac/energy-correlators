@@ -170,7 +170,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
         std::cout<<"Source & $20<p_T(jet)<30$ & $30<p_T(jet)<50$ & $50<p_T(jet)<100$ \\\\"<<std::endl;
         std::cout<<"\\hline"<<std::endl;
         for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
-                fsyst[syst_index] = new TFile((output_folder+devfromnom_namef[available_systematics[syst_index]]).c_str());
+                fsyst[syst_index] = new TFile((output_folder + devfromnom_namef[available_systematics[syst_index]]).c_str());
                 
                 if (fsyst[syst_index]->IsZombie()) 
                         continue;
@@ -196,7 +196,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
         std::cout<<"Source & $20<p_T(jet)<30$ & $30<p_T(jet)<50$ & $50<p_T(jet)<100$ \\\\"<<std::endl;
         std::cout<<"\\hline"<<std::endl;
         for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
-                fsyst[syst_index] = new TFile((output_folder+devfromnom_namef[available_systematics[syst_index]]).c_str());
+                fsyst[syst_index] = new TFile((output_folder + devfromnom_namef[available_systematics[syst_index]]).c_str());
                 
                 if (fsyst[syst_index]->IsZombie()) 
                         continue;

@@ -15,7 +15,7 @@ void macro_print_deviation_from_nominal_logbin_ct(bool normalize = true, bool do
 
         std::string systematic = available_systematics[index_syst];
         
-        TFile* fout_dev = new TFile((output_folder+devfromnom_namef[systematic]).c_str());
+        TFile* fout_dev = new TFile((output_folder + devfromnom_namef[systematic]).c_str());
         
         THStack* s     = new THStack();
         THStack* s_tau = new THStack();
