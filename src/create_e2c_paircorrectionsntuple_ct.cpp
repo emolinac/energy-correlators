@@ -54,7 +54,7 @@ int main()
 
         std::cout<<"Processing events ..."<<std::endl;
         for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++) {
-                if (evt%10000==0) {
+                if (evt%10000 == 0) {
                         double percentage = 100*evt/mcrecotree->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\%"<< std::flush;
                 }

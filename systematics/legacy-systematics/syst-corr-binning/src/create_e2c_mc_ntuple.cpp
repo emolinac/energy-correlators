@@ -55,7 +55,7 @@ int main()
     // Access entry of tree
     mctree->GetEntry(evt);
 
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100.*evt/mctree->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -152,7 +152,7 @@ int main()
     // Access entry of tree
     mcrecotree->GetEntry(evt);
 
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100.*evt/mcrecotree->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -161,10 +161,10 @@ int main()
     if (evt != 0){if (last_eventNum == mcrecotree->eventNumber) continue;}
 
     // -999 means there is not matched jet
-    if (mcrecotree->Jet_mcjet_nmcdtrs==-999) continue;
+    if (mcrecotree->Jet_mcjet_nmcdtrs == -999) continue;
 
     // Apply PV cut
-    if (mcrecotree->nPV!=1) continue;
+    if (mcrecotree->nPV != 1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);

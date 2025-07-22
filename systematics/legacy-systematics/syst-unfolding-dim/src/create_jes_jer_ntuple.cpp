@@ -59,7 +59,7 @@ int main()
   // Fill the reco ntuple
   for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
   {
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100*evt/mcrecotree->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -78,7 +78,7 @@ int main()
     if (maxjetpT_found) continue;
 
     // Apply PV cut
-    if (mcrecotree->nPV!=1) continue;
+    if (mcrecotree->nPV != 1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
@@ -133,7 +133,7 @@ int main()
   // // Fill the mc tuple
   // for (int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
   // {
-  //   if (evt%10000==0)
+  //   if (evt%10000 == 0)
   //   {
   //     double percentage = 100*evt/mctree->fChain->GetEntries();
   //     std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -208,7 +208,7 @@ int main()
   {
     // Access entry of tree
     datatree->GetEntry(evt);
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100.*evt/datatree->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -226,7 +226,7 @@ int main()
     if (maxjetpT_found) continue;
 
     // Apply PV cut
-    if (datatree->nPV!=1) continue;
+    if (datatree->nPV != 1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS == 1 && datatree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);

@@ -50,7 +50,7 @@ int main()
   
   for (int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
   {
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100*evt/mctree->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;

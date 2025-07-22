@@ -225,7 +225,7 @@ int main()
                 // Access entry of tree
                 datatree_2016->GetEntry(evt);
 
-                if (evt%10000==0) {
+                if (evt%10000 == 0) {
                         double percentage = 100.*evt/datatree_2016->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
@@ -421,7 +421,7 @@ int main()
                 // Access entry of tree
                 datatree_2017->GetEntry(evt);
 
-                if (evt%10000==0) {
+                if (evt%10000 == 0) {
                         double percentage = 100.*evt/datatree_2017->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
@@ -617,7 +617,7 @@ int main()
                 // Access entry of tree
                 datatree_2018->GetEntry(evt);
 
-                if (evt%10000==0) {
+                if (evt%10000 == 0) {
                 double percentage = 100.*evt/datatree_2018->fChain->GetEntries();
                 std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }

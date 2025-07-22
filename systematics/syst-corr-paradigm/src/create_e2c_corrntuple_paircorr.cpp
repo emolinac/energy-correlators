@@ -221,7 +221,7 @@ int main()
   {
     // Access entry of tree
     datatree_2016->GetEntry(evt);
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100.*evt/datatree_2016->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -235,7 +235,7 @@ int main()
     }
 
     // Apply PV cut
-    if (datatree_2016->nPV!=1) continue;
+    if (datatree_2016->nPV != 1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS == 1 && datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
@@ -376,7 +376,7 @@ int main()
   {
     // Access entry of tree
     datatree_2017->GetEntry(evt);
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100.*evt/datatree_2017->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -390,7 +390,7 @@ int main()
     }
 
     // Apply PV cut
-    if (datatree_2017->nPV!=1) continue;
+    if (datatree_2017->nPV != 1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS == 1 && datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
@@ -531,7 +531,7 @@ int main()
   {
     // Access entry of tree
     datatree_2018->GetEntry(evt);
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100.*evt/datatree_2018->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -545,7 +545,7 @@ int main()
     }
 
     // Apply PV cut
-    if (datatree_2018->nPV!=1) continue;
+    if (datatree_2018->nPV != 1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (datatree_2018->mum_L0MuonEWDecision_TOS == 1 && datatree_2018->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2018->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);

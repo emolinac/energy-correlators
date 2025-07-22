@@ -54,7 +54,7 @@ int main()
                 // Access entry of tree
                 mctree->GetEntry(evt);
 
-                if (evt%10000==0) {
+                if (evt%10000 == 0) {
                         double percentage = 100.*evt/mctree->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
@@ -170,7 +170,7 @@ int main()
                 // Access entry of tree
                 mcrecotree->GetEntry(evt);
 
-                if (evt%10000==0) {
+                if (evt%10000 == 0) {
                         double percentage = 100.*evt/mcrecotree->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
@@ -180,7 +180,7 @@ int main()
                                 continue;
 
                 // -999 means there is not matched jet
-                if (mcrecotree->Jet_mcjet_nmcdtrs==-999) 
+                if (mcrecotree->Jet_mcjet_nmcdtrs == -999) 
                         continue;
 
                 // Apply PV cut

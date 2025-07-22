@@ -205,7 +205,7 @@ int main()
                 // Access entry of tree
                 pseudodata->GetEntry(evt);
 
-                if (evt%10000==0) {
+                if (evt%10000 == 0) {
                         double percentage = 100.*evt/pseudodata->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
@@ -393,7 +393,7 @@ int main()
                 // Access entry of tree
                 truthdata->GetEntry(evt);
 
-                if (evt%10000==0) {
+                if (evt%10000 == 0) {
                         double percentage = 100.*evt/truthdata->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }

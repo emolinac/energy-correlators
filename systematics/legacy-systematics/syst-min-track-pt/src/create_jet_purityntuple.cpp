@@ -50,7 +50,7 @@ int main()
   // Fill the matched jets Ntuple
   for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++)
   {
-    if (evt%10000==0)
+    if (evt%10000 == 0)
     {
       double percentage = 100*evt/mcrecotree->fChain->GetEntries();
       std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -67,7 +67,7 @@ int main()
     if (maxjetpT_found) continue;
 
     // Apply PV cut
-    if (mcrecotree->nPV!=1) continue;
+    if (mcrecotree->nPV != 1) continue;
 
     // Apply trigger cut
     bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
