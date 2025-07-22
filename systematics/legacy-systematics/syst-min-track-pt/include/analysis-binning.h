@@ -46,20 +46,20 @@ const double unfolding_jetpt_binning[]   = {15,20,30,50,100,150};
 // const int Nbin_R_L    = 10; // Golden binning
 const int Nbin_R_L                  = 15;
 const int Nbin_R_L_unfolding        = Nbin_R_L + 2;
-const int Nbin_R_L_logbin           = 15; 
-const int Nbin_R_L_logbin_unfolding = Nbin_R_L_logbin + 2;
+const int Nbin_R_L_nominal           = 15; 
+const int Nbin_R_L_nominal_unfolding = Nbin_R_L_nominal + 2;
 
 const double rl_binning[]              = {R_L_min, 0.0408, 0.0736, 0.1064, 0.1392, 0.172, 0.2048, 0.2376, 0.2704, 0.3032, 0.336, 0.3688, 0.4016, 0.4344, 0.4672, R_L_max};
 const double unfolding_rl_binning[]    = {R_L_absmin,R_L_min, 0.0408, 0.0736, 0.1064, 0.1392, 0.172, 0.2048, 0.2376, 0.2704, 0.3032, 0.336, 0.3688, 0.4016, 0.4344, 0.4672, R_L_max, R_L_absmax};
-const double rl_logbinning[]           = {R_L_logmin, 0.0247871, 0.0307201, 0.0380731, 0.0471861, 0.0584804, 0.072478, 0.089826, 0.111326, 0.137973, 0.170998, 0.211927, 0.262653, 0.32552, 0.403435, R_L_logmax};
-const double unfolding_rl_logbinning[] = {R_L_absmin,R_L_logmin, 0.0247871, 0.0307201, 0.0380731, 0.0471861, 0.0584804, 0.072478, 0.089826, 0.111326, 0.137973, 0.170998, 0.211927, 0.262653, 0.32552, 0.403435, R_L_logmax, R_L_absmax};
+const double rl_nominal_binning[]           = {R_L_logmin, 0.0247871, 0.0307201, 0.0380731, 0.0471861, 0.0584804, 0.072478, 0.089826, 0.111326, 0.137973, 0.170998, 0.211927, 0.262653, 0.32552, 0.403435, R_L_logmax};
+const double unfolding_rl_nominal_binning[] = {R_L_absmin,R_L_logmin, 0.0247871, 0.0307201, 0.0380731, 0.0471861, 0.0584804, 0.072478, 0.089826, 0.111326, 0.137973, 0.170998, 0.211927, 0.262653, 0.32552, 0.403435, R_L_logmax, R_L_absmax};
 
-const int Nbin_tau_logbin     = Nbin_R_L_logbin;
-const double tau_logbinning[] = {tau_min, 0.68799, 0.94666, 1.30259, 1.79233, 2.46621, 3.39346, 4.66933, 6.4249, 8.84054, 12.1644, 16.738, 23.0311, 31.6904, 43.6053, tau_max};
+const int Nbin_tau_logbin     = Nbin_R_L_nominal;
+const double tau_nominal_binning[] = {tau_min, 0.68799, 0.94666, 1.30259, 1.79233, 2.46621, 3.39346, 4.66933, 6.4249, 8.84054, 12.1644, 16.738, 23.0311, 31.6904, 43.6053, tau_max};
 
 // Alternative binnings
 const int Nbin_R_L_altlogbin           = 20; 
-const int Nbin_R_L_altlogbin_unfolding = Nbin_R_L_logbin + 2;
+const int Nbin_R_L_altlogbin_unfolding = Nbin_R_L_nominal + 2;
 
 const double rl_altlogbinning[]           = {R_L_logmin, 0.0234924, 0.0275946, 0.0324131, 0.0380731, 0.0447214, 0.0525306, 0.0617034, 0.072478, 0.085134, 0.1, 0.117462, 0.137973, 0.162066, 0.190365, 0.223607, 0.262653, 0.308517, 0.36239, 0.42567, R_L_logmax};
 const double unfolding_rl_altlogbinning[] = {R_L_absmin,R_L_logmin, 0.0234924, 0.0275946, 0.0324131, 0.0380731, 0.0447214, 0.0525306, 0.0617034, 0.072478, 0.085134, 0.1, 0.117462, 0.137973, 0.162066, 0.190365, 0.223607, 0.262653, 0.308517, 0.36239, 0.42567, R_L_logmax, R_L_absmax};

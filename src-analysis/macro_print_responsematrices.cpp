@@ -15,7 +15,7 @@ void macro_print_responsematrices()
         float jet_pt, jet_pt_truth, R_L, R_L_truth, weight, weight_truth;
         set_unfolding_ntuple_branches(ntuple, &R_L, &R_L_truth, &jet_pt, &jet_pt_truth, &weight_pt, &weight_pt_truth);
         
-        TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",Nbin_R_L_logbin      ,rl_logbinning          ,Nbin_R_L_logbin      ,rl_logbinning          );
+        TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",Nbin_R_L_nominal      ,rl_nominal_binning          ,Nbin_R_L_nominal      ,rl_nominal_binning          );
         TH2F* hresp_jetpt  = new TH2F("hresp_jetpt" ,"",Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
         TH2F* hresp_weight = new TH2F("hresp_weight","",Nbin_weight_unfolding,weight_unfoldingbinning,Nbin_weight_unfolding,weight_unfoldingbinning);
         

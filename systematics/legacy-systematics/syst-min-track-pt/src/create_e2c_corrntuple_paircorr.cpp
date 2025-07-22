@@ -93,12 +93,12 @@ int main()
   hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
   // Hadron corrections
-  TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", Nbin_R_L_logbin, rl_logbinning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-  TH2F* hden_pur    = new TH2F("hden_pur"   , "", Nbin_R_L_logbin, rl_logbinning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-  TH2F* hpurity     = new TH2F("hpurity"    , "", Nbin_R_L_logbin, rl_logbinning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-  TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", Nbin_R_L_logbin, rl_logbinning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-  TH2F* hden_eff    = new TH2F("hden_eff"   , "", Nbin_R_L_logbin, rl_logbinning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-  TH2F* hefficiency = new TH2F("hefficiency", "", Nbin_R_L_logbin, rl_logbinning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH2F* hden_pur    = new TH2F("hden_pur"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH2F* hpurity     = new TH2F("hpurity"    , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH2F* hden_eff    = new TH2F("hden_eff"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+  TH2F* hefficiency = new TH2F("hefficiency", "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
   
   // TH2F* hnum_pur    = new TH2F("hnum_pur"   ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);
   // TH2F* hden_pur    = new TH2F("hden_pur"   ,"",Nbin_R_L,rl_binning,Nbin_jetpt_corrections,corrections_jetpt_binning);

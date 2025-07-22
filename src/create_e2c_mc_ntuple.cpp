@@ -267,9 +267,6 @@ int main()
                                                              h2_4vector->Eta())) 
                                         continue;
 
-                                double h1_y = rapidity(mcrecotree->Jet_Dtr_E[h1_index],mcrecotree->Jet_Dtr_PZ[h1_index]); 
-                                double h2_y = rapidity(mcrecotree->Jet_Dtr_E[h2_index],mcrecotree->Jet_Dtr_PZ[h2_index]);
-
                                 // If all good, fille Ntuple
                                 vars[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
                                 vars[1]  = h1_4vector->DeltaR(*h2_4vector);

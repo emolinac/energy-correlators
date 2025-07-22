@@ -19,12 +19,12 @@ void macro_print_roounfold_closuretest_3d(int Niter = 4)
     ntuple->SetBranchAddress("weight_pt_truth",&weight_pt_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH3D* hmeas    = new TH3D("hmeas","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* htrue    = new TH3D("htrue","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hmeas    = new TH3D("hmeas","",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* htrue    = new TH3D("htrue","",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
 
-    TH3D* htrue_ref = new TH3D("htrue_ref","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hct       = new TH3D("hct"      ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* htrue_ref = new TH3D("htrue_ref","",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hct       = new TH3D("hct"      ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
 
     TRandom3* rndm = new TRandom3();
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -52,16 +52,16 @@ void macro_print_roounfold_closuretest_3d(int Niter = 4)
     htrue_ref->Scale(1./htrue_ref->Integral());
     hunfolded_bayes->Scale(1./hunfolded_bayes->Integral());
 
-    TH1D* htrue_ref_rl          = new TH1D("htrue_ref_rl"         ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning);
+    TH1D* htrue_ref_rl          = new TH1D("htrue_ref_rl"         ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning);
     TH1D* htrue_ref_jetpt       = new TH1D("htrue_ref_jetpt"      ,"",Nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
-    TH1D* hunfolded_bayes_rl    = new TH1D("hunfolded_bayes_rl"   ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning);
+    TH1D* hunfolded_bayes_rl    = new TH1D("hunfolded_bayes_rl"   ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning);
     TH1D* hunfolded_bayes_jetpt = new TH1D("hunfolded_bayes_jetpt","",Nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
-    TH1D* hct_rl                = new TH1D("hct_rl"               ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning);
+    TH1D* hct_rl                = new TH1D("hct_rl"               ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning);
     TH1D* hct_jetpt             = new TH1D("hct_jetpt"            ,"",Nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
     
-    TH2D* hct_rl_jetpt            = new TH2D("hct_rl_jetpt"            ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* htrue_ref_rl_jetpt      = new TH2D("htrue_ref_rl_jetpt"      ,"",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hunfolded_bayes_rl_jetpt= new TH2D("hunfolded_bayes_rl_jetpt","",Nbin_R_L_logbin_unfolding,unfolding_rl_logbinning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hct_rl_jetpt            = new TH2D("hct_rl_jetpt"            ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* htrue_ref_rl_jetpt      = new TH2D("htrue_ref_rl_jetpt"      ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hunfolded_bayes_rl_jetpt= new TH2D("hunfolded_bayes_rl_jetpt","",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     
     htrue_ref_rl->Sumw2();
     htrue_ref_jetpt->Sumw2();
@@ -114,7 +114,7 @@ void macro_print_roounfold_closuretest_3d(int Niter = 4)
     hct_rl_jetpt->Draw("COL TEXT");
     hct_rl_jetpt->SetTitle(";R_{L};p^{jet}_{T} GeV");
     hct_rl_jetpt->GetYaxis()->SetRangeUser(20,100);
-    hct_rl_jetpt->GetYaxis()->SetRangeUser(rl_logbinning[0],rl_logbinning[Nbin_R_L]);
+    hct_rl_jetpt->GetYaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[Nbin_R_L]);
     gStyle->SetPaintTextFormat(".2f");
     gPad->SetLogx(1);
     gPad->SetLogy(1);

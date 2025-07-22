@@ -36,11 +36,11 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
         for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++) {
                 h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_e2c%i",jet_pt_bin));
                 h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_e2c%i",jet_pt_bin));
-                h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",Nbin_R_L_logbin,rl_logbinning);
+                h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",Nbin_R_L_nominal,rl_nominal_binning);
 
                 h_nominal_tau[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_tau%i",jet_pt_bin));
                 h_systematic_tau[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_tau%i",jet_pt_bin));
-                h_deviations_tau[jet_pt_bin] = new TH1F(Form("h_deviations_tau%i",jet_pt_bin),"",Nbin_R_L_logbin,tau_logbinning);
+                h_deviations_tau[jet_pt_bin] = new TH1F(Form("h_deviations_tau%i",jet_pt_bin),"",Nbin_R_L_nominal,tau_nominal_binning);
 
                 if (normalize) {
                         h_nominal[jet_pt_bin]->Scale(1./h_nominal[jet_pt_bin]->Integral());
