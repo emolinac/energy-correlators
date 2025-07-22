@@ -217,10 +217,10 @@ int main()
 
         // Fill the data TNtuple
         std::cout<<"Working with 2016 data."<<std::endl;
-        for (int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++)
-        {
+        for (int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++) {
                 // Access entry of tree
                 datatree_2016->GetEntry(evt);
+
                 if (evt%10000==0) {
                         double percentage = 100.*evt/datatree_2016->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -328,8 +328,7 @@ int main()
                 ntuple_corrjet->Fill(vars_jet);
 
                 // Loop over hadron 1
-                for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++)
-                {
+                for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
                         h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
                                                datatree_2016->Jet_Dtr_PY[h1_index]/1000.,
                                                datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,
@@ -344,8 +343,7 @@ int main()
                                 continue;
 
                         // Loop over hadron 2
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++)
-                        {
+                        for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
                                 h2_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h2_index]/1000.,
                                                        datatree_2016->Jet_Dtr_PY[h2_index]/1000.,
                                                        datatree_2016->Jet_Dtr_PZ[h2_index]/1000.,
@@ -407,10 +405,10 @@ int main()
         }
 
         std::cout<<"Working with 2017 data."<<std::endl;
-        for (int evt = 0 ; evt < datatree_2017->fChain->GetEntries() ; evt++)
-        {
+        for (int evt = 0 ; evt < datatree_2017->fChain->GetEntries() ; evt++) {
                 // Access entry of tree
                 datatree_2017->GetEntry(evt);
+
                 if (evt%10000==0) {
                         double percentage = 100.*evt/datatree_2017->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
@@ -518,8 +516,7 @@ int main()
                 ntuple_corrjet->Fill(vars_jet);
 
                 // Loop over hadron 1
-                for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++)
-                {
+                for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
                         h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
                                                datatree_2017->Jet_Dtr_PY[h1_index]/1000.,
                                                datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,
@@ -534,8 +531,7 @@ int main()
                                 continue;
 
                         // Loop over hadron 2
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++)
-                        {
+                        for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
                                 h2_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h2_index]/1000.,
                                                        datatree_2017->Jet_Dtr_PY[h2_index]/1000.,
                                                        datatree_2017->Jet_Dtr_PZ[h2_index]/1000.,
@@ -597,8 +593,7 @@ int main()
         }
 
         std::cout<<"Working with 2018 data."<<std::endl;
-        for (int evt = 0 ; evt < datatree_2018->fChain->GetEntries() ; evt++)
-        {
+        for (int evt = 0 ; evt < datatree_2018->fChain->GetEntries() ; evt++) {
                 // Access entry of tree
                 datatree_2018->GetEntry(evt);
                 if (evt%10000==0) {
@@ -708,8 +703,7 @@ int main()
                 ntuple_corrjet->Fill(vars_jet);
 
                 // Loop over hadron 1
-                for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++)
-                {
+                for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
                         h1_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h1_index]/1000.,
                                                datatree_2018->Jet_Dtr_PY[h1_index]/1000.,
                                                datatree_2018->Jet_Dtr_PZ[h1_index]/1000.,
@@ -724,8 +718,7 @@ int main()
                                 continue;
 
                         // Loop over hadron 2
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++)
-                        {
+                        for (int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++) {
                                 h2_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h2_index]/1000.,
                                                        datatree_2018->Jet_Dtr_PY[h2_index]/1000.,
                                                        datatree_2018->Jet_Dtr_PZ[h2_index]/1000.,

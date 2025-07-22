@@ -123,7 +123,7 @@ int main()
                                   h1_4vector->Eta())) continue;
 
       int key1_match = 0;
-      if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index]!=-999)
+      if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index] != -999)
       {
         key1_match++;
 
@@ -152,7 +152,7 @@ int main()
                                     h2_4vector->Eta())) continue;
 
         int key2_match = 0;
-        if (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index]!=-999)
+        if (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index] != -999)
         {
           key2_match++;
 
