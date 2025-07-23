@@ -65,6 +65,34 @@ void regularize_correction_factors(TH2D* h)
         }
 }
 
+void regularize_correction_factors(TH3F* h)
+{
+        for (int i = 1 ; i <= h->GetNbinsX() ; i++) {
+                for (int j = 1 ; j <= h->GetNbinsY() ; j++) {
+                        for (int k = 1 ; k <= h->GetNbinsZ() ; k++){
+                                double bin_content = h->GetBinContent(i, j, k);
+
+                                if (bin_content > 1)
+                                        h->SetBinContent(i, j, k, 1.);
+                        }
+                }
+        }
+}
+
+void regularize_correction_factors(TH3D* h)
+{
+        for (int i = 1 ; i <= h->GetNbinsX() ; i++) {
+                for (int j = 1 ; j <= h->GetNbinsY() ; j++) {
+                        for (int k = 1 ; k <= h->GetNbinsZ() ; k++){
+                                double bin_content = h->GetBinContent(i, j, k);
+
+                                if (bin_content > 1)
+                                        h->SetBinContent(i, j, k, 1.);
+                        }
+                }
+        }
+}
+
 void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type = "normal")
 {
         double total_err = 0, total = 0;

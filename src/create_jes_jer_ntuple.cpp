@@ -72,8 +72,13 @@ int main()
                         continue;
 
                 // Apply trigger cut
-                bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
-                bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS == 1 && mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+                bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && 
+                                    mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+
+                bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS == 1 && 
+                                    mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);                                    
 
                 if (!mum_trigger && !mup_trigger) 
                         continue;
@@ -169,8 +174,13 @@ int main()
                         continue;
 
                 // Apply trigger cut
-                bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS == 1 && datatree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
-                bool mup_trigger = (datatree->mup_L0MuonEWDecision_TOS == 1 && datatree->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+                bool mum_trigger = (datatree->mum_L0MuonEWDecision_TOS == 1 && 
+                                    datatree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    datatree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+
+                bool mup_trigger = (datatree->mup_L0MuonEWDecision_TOS == 1 && 
+                                    datatree->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    datatree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
                 if (!mum_trigger && !mup_trigger) 
                         continue;

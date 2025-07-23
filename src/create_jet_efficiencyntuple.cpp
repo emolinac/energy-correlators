@@ -101,8 +101,13 @@ int main()
 
                 bool reco_passed = false;
                 if (mctree->MCJet_recojet_PX!=-999) {
-                        double mum_energy = sqrt(pow(mctree->MCJet_truth_match_mum_PX,2)+pow(mctree->MCJet_truth_match_mum_PY,2)+pow(mctree->MCJet_truth_match_mum_PZ,2));
-                        double mup_energy = sqrt(pow(mctree->MCJet_truth_match_mup_PX,2)+pow(mctree->MCJet_truth_match_mup_PY,2)+pow(mctree->MCJet_truth_match_mup_PZ,2));
+                        double mum_energy = sqrt(pow(mctree->MCJet_truth_match_mum_PX,2) + 
+                                                 pow(mctree->MCJet_truth_match_mum_PY,2) +
+                                                 pow(mctree->MCJet_truth_match_mum_PZ,2));
+
+                        double mup_energy = sqrt(pow(mctree->MCJet_truth_match_mup_PX,2) + 
+                                                 pow(mctree->MCJet_truth_match_mup_PY,2) +
+                                                 pow(mctree->MCJet_truth_match_mup_PZ,2));
                         
                         Jet_4vector->SetPxPyPzE(mctree->MCJet_recojet_PX/1000.,
                                                 mctree->MCJet_recojet_PY/1000.,

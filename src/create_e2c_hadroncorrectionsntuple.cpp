@@ -75,8 +75,13 @@ int main()
                         continue;
 
                 // Apply trigger cut
-                bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
-                bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS == 1 && mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+                bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && 
+                                    mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+
+                bool mup_trigger = (mcrecotree->mup_L0MuonEWDecision_TOS == 1 && 
+                                    mcrecotree->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    mcrecotree->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);                                    
 
                 if (!mum_trigger && !mup_trigger) 
                         continue;
@@ -207,14 +212,14 @@ int main()
                                 continue;
                         
                         true_h_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h_index]/1000.,
-                                                mcrecotree->Jet_mcjet_dtrPY[h_index]/1000.,
-                                                mcrecotree->Jet_mcjet_dtrPZ[h_index]/1000., 
-                                                mcrecotree->Jet_mcjet_dtrE[h_index]/1000.);
+                                                   mcrecotree->Jet_mcjet_dtrPY[h_index]/1000.,
+                                                   mcrecotree->Jet_mcjet_dtrPZ[h_index]/1000., 
+                                                   mcrecotree->Jet_mcjet_dtrE[h_index]/1000.);
 
                         if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h_index],
-                                                        true_h_4vector->P(),
-                                                        true_h_4vector->Pt(),
-                                                        true_h_4vector->Eta())) 
+                                                              true_h_4vector->P(),
+                                                              true_h_4vector->Pt(),
+                                                              true_h_4vector->Eta())) 
                                 continue;
 
                         // If all good, fill Ntuple
