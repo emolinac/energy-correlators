@@ -81,8 +81,8 @@ void macro_print_pairpurity_rl_jet_pt()
     {
         s->Add(hsig[jet_pt_bin]);
         s->Add(hall[jet_pt_bin]);
-        l->AddEntry(hsig[jet_pt_bin],Form("MCReco Signal : %.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lpf");
-        l->AddEntry(hall[jet_pt_bin],Form("MCReco All : %.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1])   ,"lpf");
+        l->AddEntry(hsig[jet_pt_bin],Form("MCReco Signal : %.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lpf");
+        l->AddEntry(hall[jet_pt_bin],Form("MCReco All : %.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1])   ,"lpf");
     }
 
     s->Draw("NOSTACK");
@@ -106,7 +106,7 @@ void macro_print_pairpurity_rl_jet_pt()
         set_histogram_style(hpurity[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width, std_marker_style_jet_pt[jet_pt_bin], std_marker_size);
 
         s_purity->Add(hpurity[jet_pt_bin]);
-        l_purity->AddEntry(hpurity[jet_pt_bin],Form("%.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lpf");
+        l_purity->AddEntry(hpurity[jet_pt_bin],Form("%.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lpf");
     }
     
     s_purity->Draw("NOSTACK");
@@ -130,8 +130,8 @@ void macro_print_pairpurity_rl_jet_pt()
         s_data->Add(hsig_data[jet_pt_bin]);
         s_data->Add(hall_data[jet_pt_bin]);
 
-        l_data->AddEntry(hsig_data[jet_pt_bin],Form("Data w/ Purity : %.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1]),"lpf");
-        l_data->AddEntry(hall_data[jet_pt_bin],Form("Data All : %.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin+1])      ,"lpf");
+        l_data->AddEntry(hsig_data[jet_pt_bin],Form("Data w/ Purity : %.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lpf");
+        l_data->AddEntry(hall_data[jet_pt_bin],Form("Data All : %.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1])      ,"lpf");
     }
     
     s_data->Draw("NOSTACK");

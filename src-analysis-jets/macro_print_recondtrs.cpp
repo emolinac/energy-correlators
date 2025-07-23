@@ -24,7 +24,7 @@ void macro_print_recondtrs()
                 ntuple->Project(Form("h[%i]",bin),"jet_ndtr",pair_jetpt_cut[bin]);
                 
                 hs->Add(h[bin]);
-                l->AddEntry(h[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV  <Dtr> = %.0f",jet_pt_binning[bin],jet_pt_binning[bin+1],h[bin]->GetMean()),"lpf");
+                l->AddEntry(h[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV  <Dtr> = %.0f",jet_pt_binning[bin],jet_pt_binning[bin + 1],h[bin]->GetMean()),"lpf");
                 
                 set_histogram_style(h[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
         }

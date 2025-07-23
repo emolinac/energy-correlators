@@ -128,9 +128,9 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         hmc_l[bin]       = new TH1F(Form("hmc_l[%i]" ,bin)      ,"",Nbin_R_L,rl_binning);
         hmcreco_l[bin]   = new TH1F(Form("hmcreco_l[%i]" ,bin)  ,"",Nbin_R_L,rl_binning);
         
-        hcorr_jet[bin]   = new TH1F(Form("hcorr_jet[%i]" ,bin)   ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-        hmc_jet[bin]     = new TH1F(Form("hmc_jet[%i]" ,bin)     ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]);
-        hmcreco_jet[bin] = new TH1F(Form("hmcreco_jet[%i]" ,bin) ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]);
+        hcorr_jet[bin]   = new TH1F(Form("hcorr_jet[%i]" ,bin)   ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
+        hmc_jet[bin]     = new TH1F(Form("hmc_jet[%i]" ,bin)     ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]);
+        hmcreco_jet[bin] = new TH1F(Form("hmcreco_jet[%i]" ,bin) ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]);
         
         set_histogram_style(hcorr_e2c[bin]  , corr_marker_color_jet_pt[0], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
         set_histogram_style(hmc[bin]        , corr_marker_color_jet_pt[1], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
@@ -144,7 +144,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         {
             ntuple_data->GetEntry(entry);
 
-            if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin+1]) continue;
+            if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin + 1]) continue;
             if (efficiency <= 0 || efficiency > 1) efficiency = 1;//continue;
             if (purity <= 0 || purity > 1) purity = 1;//continue;
             
@@ -168,7 +168,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         {
             ntuple_mc->GetEntry(entry);
 
-            if (jet_pt_mc<jet_pt_binning[bin]||jet_pt_mc>jet_pt_binning[bin+1]) continue;
+            if (jet_pt_mc<jet_pt_binning[bin]||jet_pt_mc>jet_pt_binning[bin + 1]) continue;
             
             hmc[bin]->Fill(R_L_mc,weight_pt_mc);
             hmc_l[bin]->Fill(R_L_mc,weight_pt_mc);
@@ -183,7 +183,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         {
             ntuple_mcreco->GetEntry(entry);
 
-            if (jet_pt_mcreco<jet_pt_binning[bin]||jet_pt_mcreco>jet_pt_binning[bin+1]) continue;
+            if (jet_pt_mcreco<jet_pt_binning[bin]||jet_pt_mcreco>jet_pt_binning[bin + 1]) continue;
             if (weight_pt_mcreco>weight_pt_cut[bin]) continue;
 
             hmcreco[bin]->Fill(R_L_mcreco,weight_pt_mcreco);
@@ -198,7 +198,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     // Draw the log binning histos
     for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
-        c->cd(bin+1);
+        c->cd(bin + 1);
         s_data[bin] = new THStack();
         l_data[bin] = new TLegend(1-gPad->GetRightMargin()-0.21,1-gPad->GetTopMargin()-0.15,1-gPad->GetRightMargin()-0.01,1-gPad->GetTopMargin()-0.01);
 
@@ -206,7 +206,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         s_data[bin]->Add(hmcreco[bin],"E");
         s_data[bin]->Add(hcorr_e2c[bin],"E");
         s_data[bin]->Draw("NOSTACK");
-        s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
+        s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         s_data[bin]->SetMaximum(1.2);
         s_data[bin]->SetMinimum(40E-03);
 
@@ -220,7 +220,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     
     for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
-        c->cd(bin+1);
+        c->cd(bin + 1);
         s_data[bin]->SetMaximum(1.2);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
@@ -230,7 +230,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     // Draw the log binning histos
     for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
     {
-        c->cd(bin+1);
+        c->cd(bin + 1);
         s_data[bin] = new THStack();
         l_data[bin] = new TLegend(0.5,gPad->GetBottomMargin()+0.01,0.7,0.15+gPad->GetBottomMargin()+0.01);
 
@@ -238,7 +238,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         s_data[bin]->Add(hmcreco_l[bin],"E");
         s_data[bin]->Add(hcorr_e2c_l[bin],"E");
         s_data[bin]->Draw("NOSTACK");
-        s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
+        s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         s_data[bin]->SetMaximum(5E-02);
         s_data[bin]->SetMinimum(1E-03);
 

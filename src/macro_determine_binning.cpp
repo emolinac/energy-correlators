@@ -48,13 +48,13 @@ void macro_determine_binning()
         f->Close();
 
         const int Nbin = Nbin_R_L;
-        double binning[Nbin+1];
+        double binning[Nbin + 1];
         
         const int Nbin_log = Nbin_R_L_nominal;
         double binning_log[Nbin_log+1];
-        double binning_corr_log[Nbin_R_L_altlogbin+1];
+        double binning_corr_log[Nbin_R_L_altlogbin + 1];
 
-        double binning_tau_log[Nbin_tau_logbin+1];
+        double binning_tau_log[Nbin_tau_logbin + 1];
 
         determine_eqsizebinning(Nbin, R_L_min, R_L_max, binning);
         determine_log10binning(Nbin_log, R_L_logmin, R_L_logmax, binning_log);

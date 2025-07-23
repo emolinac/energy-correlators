@@ -82,12 +82,12 @@ void macro_print_fullcorre2c(int niter = 4)
         // hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         // gPad->SetLogx(0);
         // gPad->SetLogy(1);
-        // c->Print(Form("./plots/unfolded3d_initer%_ratio_sepyears_linearbinning_unfbinvarv2.pdf",niter));
+        // c->Print(Form("./plots/unfolded3d_niter%_ratio_sepyears_linearbinning_unfbinvarv2.pdf",niter));
 
         // Fill the histograms
         for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
-                hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)  ,"", 1,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-                hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
+                hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)  ,"", 1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
+                hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
 
                 hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", Nbin_R_L_nominal,rl_nominal_binning);
                 hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)   ,"", Nbin_R_L_nominal,rl_nominal_binning);
@@ -104,7 +104,7 @@ void macro_print_fullcorre2c(int niter = 4)
                 for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++) {
                         ntuple_data->GetEntry(entry);
 
-                        if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin+1]) 
+                        if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin + 1]) 
                                 continue;
                         
                         if (efficiency_relerror>corr_rel_error) 
@@ -145,7 +145,7 @@ void macro_print_fullcorre2c(int niter = 4)
 
         for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c[bin],"E");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
+                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");

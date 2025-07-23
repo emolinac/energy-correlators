@@ -97,6 +97,9 @@ int main()
         hpurity->Divide(hnum_pur, hden_pur, 1, 1, "B");
         hefficiency->Divide(hnum_eff, hden_eff, 1, 1, "B");
 
+        regularize_correction_factors(hpurity);
+        regularize_correction_factors(hefficiency);
+
         // DELETE LATER
         // DELETE LATER
         TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
@@ -126,8 +129,14 @@ int main()
         hpurity_eqcharge->Divide(hnum_pur_eqcharge, hden_pur_eqcharge, 1, 1, "B");
         hefficiency_eqcharge->Divide(hnum_eff_eqcharge, hden_eff_eqcharge, 1, 1, "B");
 
+        regularize_correction_factors(hpurity_eqcharge);
+        regularize_correction_factors(hefficiency_eqcharge);
+
         hpurity_neqcharge->Divide(hnum_pur_neqcharge, hden_pur_neqcharge, 1, 1, "B");
         hefficiency_neqcharge->Divide(hnum_eff_neqcharge, hden_eff_neqcharge, 1, 1, "B");
+
+        regularize_correction_factors(hpurity_neqcharge);
+        regularize_correction_factors(hefficiency_neqcharge);
 
         TCanvas* c = new TCanvas("c", "", 1920, 1080);
         c->Draw();
@@ -222,8 +231,13 @@ int main()
                         continue;
 
                 // Apply trigger cut
-                bool mum_trigger = (pseudodata->mum_L0MuonEWDecision_TOS == 1 && pseudodata->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && pseudodata->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
-                bool mup_trigger = (pseudodata->mup_L0MuonEWDecision_TOS == 1 && pseudodata->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && pseudodata->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+                bool mum_trigger = (pseudodata->mum_L0MuonEWDecision_TOS == 1 && 
+                                    pseudodata->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    pseudodata->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+
+                bool mup_trigger = (pseudodata->mup_L0MuonEWDecision_TOS == 1 && 
+                                    pseudodata->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    pseudodata->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
                 if (!mum_trigger && !mup_trigger)
                         continue;
@@ -332,11 +346,11 @@ int main()
                                                        pseudodata->Jet_Dtr_E[h2_index]/1000.);
 
                                 if (!apply_chargedtrack_cuts(pseudodata->Jet_Dtr_ThreeCharge[h2_index],
-                                                        h2_4vector->P(),
-                                                        h2_4vector->Pt(),
-                                                        pseudodata->Jet_Dtr_TrackChi2[h2_index]/pseudodata->Jet_Dtr_TrackNDF[h2_index],
-                                                        pseudodata->Jet_Dtr_ProbNNghost[h2_index],
-                                                        h2_4vector->Eta()))
+                                                             h2_4vector->P(),
+                                                             h2_4vector->Pt(),
+                                                             pseudodata->Jet_Dtr_TrackChi2[h2_index]/pseudodata->Jet_Dtr_TrackNDF[h2_index],
+                                                             pseudodata->Jet_Dtr_ProbNNghost[h2_index],
+                                                             h2_4vector->Eta()))
                                         continue;
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);

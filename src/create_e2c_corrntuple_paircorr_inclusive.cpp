@@ -113,6 +113,9 @@ int main()
         hpurity->Divide(hnum_pur, hden_pur, 1, 1, "B");
         hefficiency->Divide(hnum_eff, hden_eff, 1, 1, "B");
 
+        regularize_correction_factors(hpurity);
+        regularize_correction_factors(hefficiency);
+
         // DELETE LATER
         // DELETE LATER
         TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
@@ -142,8 +145,14 @@ int main()
         hpurity_eqcharge->Divide(hnum_pur_eqcharge, hden_pur_eqcharge, 1, 1, "B");
         hefficiency_eqcharge->Divide(hnum_eff_eqcharge, hden_eff_eqcharge, 1, 1, "B");
 
+        regularize_correction_factors(hpurity_eqcharge);
+        regularize_correction_factors(hefficiency_eqcharge);
+
         hpurity_neqcharge->Divide(hnum_pur_neqcharge, hden_pur_neqcharge, 1, 1, "B");
         hefficiency_neqcharge->Divide(hnum_eff_neqcharge, hden_eff_neqcharge, 1, 1, "B");
+
+        regularize_correction_factors(hpurity_neqcharge);
+        regularize_correction_factors(hefficiency_neqcharge);
 
         TCanvas* c = new TCanvas("c", "", 1920, 1080);
         c->Draw();
@@ -238,27 +247,22 @@ int main()
                         continue;
 
                 // Apply trigger cut
-                bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS == 1 && datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
-                bool mup_trigger = (datatree_2016->mup_L0MuonEWDecision_TOS == 1 && datatree_2016->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2016->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+                bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS == 1 && 
+                                    datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
+                bool mup_trigger = (datatree_2016->mup_L0MuonEWDecision_TOS == 1 && 
+                                    datatree_2016->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    datatree_2016->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+                                    
                 if (!mum_trigger && !mup_trigger)
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PY/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PZ/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PE/1000./datatree_2016->Jet_JEC_Cor);
-
-                double new_jes_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1])
-                                new_jes_cor = syst_jes_array[jet_pt_bin];
-                
-                Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2016->Jet_PY/1000./datatree_2016->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2016->Jet_PZ/1000./datatree_2016->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2016->Jet_PE/1000./datatree_2016->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,
+                                        datatree_2016->Jet_PY/1000.,
+                                        datatree_2016->Jet_PZ/1000.,
+                                        datatree_2016->Jet_PE/1000.);
 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
@@ -426,27 +430,22 @@ int main()
                         continue;
 
                 // Apply trigger cut
-                bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS == 1 && datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
-                bool mup_trigger = (datatree_2017->mup_L0MuonEWDecision_TOS == 1 && datatree_2017->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2017->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+                bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS == 1 && 
+                                    datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+
+                bool mup_trigger = (datatree_2017->mup_L0MuonEWDecision_TOS == 1 && 
+                                    datatree_2017->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    datatree_2017->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);                                    
 
                 if (!mum_trigger && !mup_trigger) 
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PY/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PZ/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PE/1000./datatree_2017->Jet_JEC_Cor);
-
-                double new_jes_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1])
-                                new_jes_cor = syst_jes_array[jet_pt_bin];
-
-                Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2017->Jet_PX/1000./datatree_2017->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2017->Jet_PY/1000./datatree_2017->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2017->Jet_PZ/1000./datatree_2017->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2017->Jet_PE/1000./datatree_2017->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,
+                                        datatree_2017->Jet_PY/1000.,
+                                        datatree_2017->Jet_PZ/1000.,
+                                        datatree_2017->Jet_PE/1000.);
 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
@@ -613,27 +612,22 @@ int main()
                         continue;
 
                 // Apply trigger cut
-                bool mum_trigger = (datatree_2018->mum_L0MuonEWDecision_TOS == 1 && datatree_2018->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2018->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
-                bool mup_trigger = (datatree_2018->mup_L0MuonEWDecision_TOS == 1 && datatree_2018->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && datatree_2018->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+                bool mum_trigger = (datatree_2018->mum_L0MuonEWDecision_TOS == 1 && 
+                                    datatree_2018->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    datatree_2018->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+
+                bool mup_trigger = (datatree_2018->mup_L0MuonEWDecision_TOS == 1 && 
+                                    datatree_2018->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+                                    datatree_2018->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
                 if (!mum_trigger && !mup_trigger)
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PY/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PZ/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PE/1000./datatree_2018->Jet_JEC_Cor);
-
-                double new_jes_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1])
-                                new_jes_cor = syst_jes_array[jet_pt_bin];
-
-                Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2018->Jet_PX/1000./datatree_2018->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2018->Jet_PY/1000./datatree_2018->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2018->Jet_PZ/1000./datatree_2018->Jet_JEC_Cor,
-                                        new_jes_cor*datatree_2018->Jet_PE/1000./datatree_2018->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000.,
+                                        datatree_2018->Jet_PY/1000.,
+                                        datatree_2018->Jet_PZ/1000.,
+                                        datatree_2018->Jet_PE/1000.);
 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;

@@ -100,12 +100,12 @@ void macro_print_fullcorre2c_paircorr_2dunf_jes(int niter = 4, bool do_print = t
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_initer%i_ratio_logbinning_jes.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_niter%i_ratio_logbinning_jes.pdf",niter));
 
         // Fill the histograms
         for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
-                hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"", 1  ,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-                hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
+                hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"", 1  ,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
+                hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
 
                 hcorr_e2c_nonorm[bin]   = new TH1F(Form("hcorr_e2c_nonorm%i",bin)       ,"", Nbin_R_L_nominal,rl_nominal_binning );
                 hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", Nbin_R_L_nominal,rl_nominal_binning );
@@ -123,7 +123,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_jes(int niter = 4, bool do_print = t
                 for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++) {
                         ntuple_data->GetEntry(entry);
 
-                        if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin+1]) 
+                        if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin + 1]) 
                                 continue;
                         
                         if (efficiency <= 0 || efficiency > 1) 
@@ -160,7 +160,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_jes(int niter = 4, bool do_print = t
 
         for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_tau[bin],"E");
-                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
+                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
@@ -178,7 +178,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_jes(int niter = 4, bool do_print = t
         
         for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c[bin],"E");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]),"lf");
+                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
@@ -233,6 +233,6 @@ void macro_print_fullcorre2c_paircorr_2dunf_jes(int niter = 4, bool do_print = t
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/nom_jes_comp_initer%i_ratio_logbinning.pdf",niter));
+                if (do_print) c->Print(Form("./plots/nom_jes_comp_niter%i_ratio_logbinning.pdf",niter));
         }
 }

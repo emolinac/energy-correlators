@@ -96,7 +96,7 @@ int main()
 
                 double new_jer_cor = -999;
                 for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin+1]) 
+                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
                                 new_jer_cor = syst_jer_array[jet_pt_bin];
 
                 if (new_jer_cor < 0) 

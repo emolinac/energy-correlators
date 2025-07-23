@@ -20,11 +20,11 @@ void macro_print_weightpt_rl_jetpt()
         
         for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
                 h[bin] = new TH2D(Form("h%i",bin),"",300,0.01,1.2,70000,10E-7,.3);
-                h[bin]->SetTitle(Form("%.0f<p^{jet}_{t}<%.0f;R_{L};w",jet_pt_binning[bin],jet_pt_binning[bin+1]));
+                h[bin]->SetTitle(Form("%.0f<p^{jet}_{t}<%.0f;R_{L};w",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
                 
                 ntuple->Project(Form("h%i",bin),"weight_pt:R_L",pair_jetpt_cut[bin]);
 
-                c->cd(bin+1);
+                c->cd(bin + 1);
                 
                 h[bin]->Draw("col");
                 gPad->SetLogx(1);

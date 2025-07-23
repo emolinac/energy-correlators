@@ -7,7 +7,7 @@
 #include "../include/utils-visual.h"
 #include "TRandom3.h"
 
-void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter = 1, bool do_print = true, bool compare_to_truth = true)
+void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter = 10, bool do_print = true, bool compare_to_truth = true)
 {
         // Open the necessary files
         std::string systematic = available_systematics[1]; // choose CT systematic
@@ -122,7 +122,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        if (do_print) c->Print(Form("./plots/unfolded2d_initer%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
+        if (do_print) c->Print(Form("./plots/unfolded2d_niter%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
 
         THStack* s_data     = new THStack();
         TLegend* l_data     = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
@@ -130,8 +130,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
 
         // Construct the histograms you will use in order to avoid memory leaks
         for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
-                hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"",1  ,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
-                hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"",200,jet_pt_binning[bin],jet_pt_binning[bin+1]); 
+                hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"",1  ,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
+                hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"",200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
                 hcorr_e2c_nonorm[bin]   = new TH1F(Form("hcorr_e2c_nonorm%i",bin)   ,"",Nbin_R_L_nominal,rl_nominal_binning );
                 hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)          ,"",Nbin_R_L_nominal,rl_nominal_binning );
                 hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)    ,"",Nbin_R_L_nominal,rl_nominal_binning );
@@ -153,7 +153,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
                 htruth_tau[bin]            = new TH1F(Form("htruth_tau%i",bin)           ,"",Nbin_R_L_nominal,tau_nominal_binning);
                 hcorr_ratio_tau_total[bin] = new TH1F(Form("hcorr_ratio_tau_total%i",bin),"",Nbin_R_L_nominal,tau_nominal_binning);
 
-                htruth_jet[bin]            = new TH1F(Form("htruth_jet%i" ,bin)          ,"",200,jet_pt_binning[bin],jet_pt_binning[bin+1]);     
+                htruth_jet[bin]            = new TH1F(Form("htruth_jet%i" ,bin)          ,"",200,jet_pt_binning[bin],jet_pt_binning[bin + 1]);     
 
                 ntuple_mc_jet->Project(Form("htruth_jet%i" ,bin), "jet_pt");
                 ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jetpt_cut[bin]);
@@ -184,7 +184,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
                         for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++) {
                                 ntuple_data->GetEntry(entry);
                 
-                                if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin+1]) 
+                                if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin + 1]) 
                                         continue;
                                 
                                 if (efficiency <= 0 || efficiency > 1) 
@@ -279,6 +279,6 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/closuretest_initer%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
+                if (do_print) c->Print(Form("./plots/closuretest_niter%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
         }
 }

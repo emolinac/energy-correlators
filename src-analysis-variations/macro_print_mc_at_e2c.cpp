@@ -34,12 +34,12 @@ void macro_print_mc_at_e2c()
     
     for (int bin = 0 ; bin < Nbin_z_pt ; bin++)
     {
-        c->cd(bin+1);
+        c->cd(bin + 1);
 
         s_data[bin] = new THStack();
         l_data[bin] = new TLegend();
 
-        hmc_jet[bin] = new TH1F(Form("hmc_jet[%i]" ,bin),"",1,z_pt_binning[bin],z_pt_binning[bin+1]); 
+        hmc_jet[bin] = new TH1F(Form("hmc_jet[%i]" ,bin),"",1,z_pt_binning[bin],z_pt_binning[bin + 1]); 
         hmc[bin]     = new TH1F(Form("hmc[%i]" ,bin)    ,"",Nbin_R_L,rl_binning_at);
         
         set_histogram_style(hmc[bin], std_marker_color_jet_pt[bin] , std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
@@ -52,7 +52,7 @@ void macro_print_mc_at_e2c()
 
         // s_data[bin]->Add(hmcreco[bin],"E");
         s_data[bin]->Add(hmc[bin],"E");
-        l_data[bin]->SetHeader(Form("%.1f<p^{Z}_{t}<%.1f GeV",z_pt_binning[bin],z_pt_binning[bin+1]));
+        l_data[bin]->SetHeader(Form("%.1f<p^{Z}_{t}<%.1f GeV",z_pt_binning[bin],z_pt_binning[bin + 1]));
         l_data[bin]->AddEntry(hmc[bin]    ,"MC","lpf");
         s_data[bin]->Draw("NOSTACK");
         s_data[bin]->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");

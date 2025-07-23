@@ -36,7 +36,7 @@ void macro_print_mc_kaons()
     
     for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
-        c->cd(bin+1);
+        c->cd(bin + 1);
 
         s_data[bin] = new THStack();
         l_data[bin] = new TLegend();
@@ -72,7 +72,7 @@ void macro_print_mc_kaons()
         s_data[bin]->Add(hmcreco_nokaon[bin],"E");
         // s_data[bin]->Add(hmc_kaon[bin],"E");
         // s_data[bin]->Add(hmc_nokaon[bin],"E");
-        l_data[bin]->SetHeader(Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin+1]));
+        l_data[bin]->SetHeader(Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         l_data[bin]->AddEntry(hmcreco_kaon[bin]  ,"MCReco Kaon","lpf");
         l_data[bin]->AddEntry(hmcreco_nokaon[bin],"MCReco No Kaons","lpf");
         // l_data[bin]->AddEntry(hmc_kaon[bin]  ,"MC Kaon","lpf");

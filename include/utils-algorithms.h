@@ -1,6 +1,23 @@
 #ifndef UTILS_ALGORITHMS_H
 #define UTILS_ALGORITHMS_H
 
+double get_hwhm(TH1F* h)
+{
+        // As written, this function works for single peak distributions
+        double half_max = h->GetMaximum()/2.;
+    
+        int halfwidth_bin;
+        for (int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
+                if (h->GetBinContent(bin) >= half_max) {
+                        halfwidth_bin = bin; 
+                        break;
+                }
+        
+        
+        // Return the Half width at half maximum value
+        return abs(h->GetBinCenter(h->GetMaximumBin()) - h->GetBinCenter(halfwidth_bin));
+}
+
 void determine_log10binning(int Nbins, double x_i, double x_f, double* binning)
 {
         double log_x_i = log10(x_i);
@@ -23,21 +40,29 @@ void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning)
         return;
 }
 
-double get_hwhm(TH1F* h)
+
+void regularize_correction_factors(TH2F* h)
 {
-        // As written, this function works for single peak distributions
-        double half_max = h->GetMaximum()/2.;
-    
-        int halfwidth_bin;
-        for (int bin = 1 ; bin <= h->GetNbinsX() ; bin++)
-                if (h->GetBinContent(bin) >= half_max) {
-                        halfwidth_bin = bin; 
-                        break;
+        for (int i = 1 ; i <= h->GetNbinsX() ; i++) {
+                for (int j = 1 ; j <= h->GetNbinsY() ; j++) {
+                        double bin_content = h->GetBinContent(i, j);
+
+                        if (bin_content > 1)
+                                h->SetBinContent(i, j, 1.);
                 }
-        
-        
-        // Return the Half width at half maximum value
-        return abs(h->GetBinCenter(h->GetMaximumBin()) - h->GetBinCenter(halfwidth_bin));
+        }
+}
+
+void regularize_correction_factors(TH2D* h)
+{
+        for (int i = 1 ; i <= h->GetNbinsX() ; i++) {
+                for (int j = 1 ; j <= h->GetNbinsY() ; j++) {
+                        double bin_content = h->GetBinContent(i, j);
+
+                        if (bin_content > 1)
+                                h->SetBinContent(i, j, 1.);
+                }
+        }
 }
 
 void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type = "normal")

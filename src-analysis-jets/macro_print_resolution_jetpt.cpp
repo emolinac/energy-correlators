@@ -37,9 +37,9 @@ void macro_print_resolution_jetpt()
 
         for (int bin = 1 ; bin <= hratio->GetNbinsX() ; bin++) {
                 double total = hratio->Integral();
-                double percentage = 100.*hratio->Integral(bin,hratio->GetNbinsX()-bin+1)/total;
+                double percentage = 100.*hratio->Integral(bin,hratio->GetNbinsX()-bin + 1)/total;
 
-                std::cout<<percentage<<"\% between "<<hratio->GetBinCenter(bin)<<" and "<<hratio->GetBinCenter(hratio->GetNbinsX()-bin+1)<<std::endl;
+                std::cout<<percentage<<"\% between "<<hratio->GetBinCenter(bin)<<" and "<<hratio->GetBinCenter(hratio->GetNbinsX()-bin + 1)<<std::endl;
         }
 
         TCanvas* c = new TCanvas("c","",800,600);
