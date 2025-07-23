@@ -6,7 +6,7 @@
 #include "../../include/utils-algorithms.h"
 #include "../../include/utils-visual.h"
 
-void macro_print_resolution_jetpt()
+void macro_print_resolution_jet_pt()
 {
     // Open the necessary files
     TFile* fpurity = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
@@ -44,7 +44,7 @@ void macro_print_resolution_jetpt()
 
     gPad->SetLogy(1);
     
-    c->Print("./plots/resolution_jetpt.pdf");
+    c->Print("./plots/resolution_jet_pt.pdf");
 
     hratio->Draw();
     hratio->SetTitle(";p^{jet}_{t}(Reco)/p^{jet}_{t}(Truth);");
@@ -53,6 +53,6 @@ void macro_print_resolution_jetpt()
 
     gPad->SetLogy(0);
     
-    c->Print("./plots/resolution_jetpt_ratio.pdf");
+    c->Print("./plots/resolution_jet_pt_ratio.pdf");
 
 }

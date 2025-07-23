@@ -70,7 +70,7 @@ ax22.set(xlabel="$p^{jet}_{T}$", ylabel="$N_{pair}$")
 ax11.legend(frameon=False,loc='upper left')
 ax22.legend(frameon=False,loc='upper right')
 
-plt.savefig("./plots/{}-iterations_{}-hlayers_{}-nodes_rl_jetpt.pdf".format(niterations, 3, nnodes), format="pdf", bbox_inches="tight")
+plt.savefig("./plots/{}-iterations_{}-hlayers_{}-nodes_rl_jet_pt.pdf".format(niterations, 3, nnodes), format="pdf", bbox_inches="tight")
 plt.show()
 # for ax in (ax21, ax22):
 #     for i in range(2):

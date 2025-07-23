@@ -50,16 +50,16 @@ void macro_print_mc_kaons()
         hmc_all[bin]    = new TH1F(Form("hmc_all[%i]" ,bin)   ,"",nbin_rl,rl_binning);
         
         // Project into the histograms
-        ntuple_mcreco->Project(Form("hmcreco_kaon[%i]",bin),"R_L",e2c_jetpt_cut_weightpt_kaon[bin]);
-        ntuple_mcreco->Project(Form("hmcreco_nokaon[%i]",bin),"R_L",e2c_jetpt_cut_weightpt_nokaon[bin]);
-        ntuple_mcreco->Project(Form("hmcreco_all[%i]",bin),"R_L",e2c_jetpt_cut_weightpt[bin]);
+        ntuple_mcreco->Project(Form("hmcreco_kaon[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt_kaon[bin]);
+        ntuple_mcreco->Project(Form("hmcreco_nokaon[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt_nokaon[bin]);
+        ntuple_mcreco->Project(Form("hmcreco_all[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt[bin]);
     
         // hmcreco_kaon[bin]->Divide(hmcreco_all[bin]);
         // hmcreco_nokaon[bin]->Divide(hmcreco_all[bin]);
 
-        ntuple_mc->Project(Form("hmc_kaon[%i]" ,bin)  ,"R_L",e2c_jetpt_cut_weightpt_kaon[bin]);
-        ntuple_mc->Project(Form("hmc_nokaon[%i]" ,bin),"R_L",e2c_jetpt_cut_weightpt_nokaon[bin]);
-        ntuple_mc->Project(Form("hmc_all[%i]" ,bin)   ,"R_L",e2c_jetpt_cut_weightpt[bin]);
+        ntuple_mc->Project(Form("hmc_kaon[%i]" ,bin)  ,"R_L",e2c_jet_pt_cut_weightpt_kaon[bin]);
+        ntuple_mc->Project(Form("hmc_nokaon[%i]" ,bin),"R_L",e2c_jet_pt_cut_weightpt_nokaon[bin]);
+        ntuple_mc->Project(Form("hmc_all[%i]" ,bin)   ,"R_L",e2c_jet_pt_cut_weightpt[bin]);
         // hmc_kaon[bin]->Divide(hmc_all[bin]);
         // hmc_nokaon[bin]->Divide(hmc_all[bin]);
 

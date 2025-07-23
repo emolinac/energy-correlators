@@ -49,11 +49,11 @@ void macro_print_mc_e2c()
         set_histogram_style(hmc[bin]         , std_marker_color_jet_pt[bin] , std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
 
         // Project into the histograms
-        ntuple_mcreco->Project(Form("hmcreco[%i]",bin),"R_L",e2c_jetpt_cut_weightpt[bin]);
-        ntuple_mc->Project(Form("hmc[%i]" ,bin),"R_L",e2c_jetpt_cut_weightpt[bin]);
+        ntuple_mcreco->Project(Form("hmcreco[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt[bin]);
+        ntuple_mc->Project(Form("hmc[%i]" ,bin),"R_L",e2c_jet_pt_cut_weightpt[bin]);
         
-        ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin), "jet_pt",pair_jetpt_cut[bin]);
-        ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin), "jet_pt",pair_jetpt_cut[bin]);
+        ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin), "jet_pt",pair_jet_pt_cut[bin]);
+        ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin), "jet_pt",pair_jet_pt_cut[bin]);
         
         hmcreco[bin]->Scale(1./hmcreco_jet[bin]->Integral());
         hmc[bin]->Scale(1./hmc_jet[bin]->Integral());

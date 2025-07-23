@@ -63,13 +63,13 @@ void macro_print_corre2c_rl_ratio_jet_pt()
         hcorr_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();
 
-        ntuple_efficiency_reco->Project(Form("hsig_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
-        ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
-        ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
-        ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", e2c_jetpt_cut[jet_pt_bin]);
-        ntuple_mc->Project(Form("hmc[%i]",jet_pt_bin),"R_L", e2c_jetpt_cut[jet_pt_bin]);
+        ntuple_efficiency_reco->Project(Form("hsig_eff[%i]",jet_pt_bin),"R_L",pair_jet_pt_signal_cut[jet_pt_bin]);
+        ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jet_pt_signal_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jet_pt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", e2c_jet_pt_cut[jet_pt_bin]);
+        ntuple_mc->Project(Form("hmc[%i]",jet_pt_bin),"R_L", e2c_jet_pt_cut[jet_pt_bin]);
 
         // Normalize reference
         hmc[jet_pt_bin]->Scale(1./hmc[jet_pt_bin]->Integral());
@@ -111,5 +111,5 @@ void macro_print_corre2c_rl_ratio_jet_pt()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
     
-    c->Print(Form("./plots/corr_e2c_ratio_jetpt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/corr_e2c_ratio_jet_pt_deltarleq%.3f.pdf",rl_resolution));
 }

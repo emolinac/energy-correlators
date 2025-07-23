@@ -61,12 +61,12 @@ void macro_print_corre2c_rl_jet_pt()
         set_histogram_style(hcorr_data[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size);
         set_histogram_style(hall_data[jet_pt_bin], std_marker_color_jet_pt[jet_pt_bin] , std_line_width, std_marker_style_jet_pt[jet_pt_bin], std_marker_size);
     
-        ntuple_efficiency_reco->Project(Form("hsig_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
-        ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
-        ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
-        ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", e2c_jetpt_cut[jet_pt_bin]);
+        ntuple_efficiency_reco->Project(Form("hsig_eff[%i]",jet_pt_bin),"R_L",pair_jet_pt_signal_cut[jet_pt_bin]);
+        ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jet_pt_signal_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jet_pt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", e2c_jet_pt_cut[jet_pt_bin]);
     }
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -110,5 +110,5 @@ void macro_print_corre2c_rl_jet_pt()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_jetpt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/corr_e2c_jet_pt_deltarleq%.3f.pdf",rl_resolution));
 }

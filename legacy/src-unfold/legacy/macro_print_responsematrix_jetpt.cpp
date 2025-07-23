@@ -4,7 +4,7 @@
 #include "../include/names.h"
 #include "../include/utils-algorithms.h"
 
-void macro_print_responsematrix_jetpt()
+void macro_print_responsematrix_jet_pt()
 {
     TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
@@ -13,7 +13,7 @@ void macro_print_responsematrix_jetpt()
     ntuple->SetBranchAddress("jet_pt",&jet_pt);
     ntuple->SetBranchAddress("jet_pt_truth",&jet_pt_truth);
     
-    TH2F* hresp = new TH2F("hresp","",nbin_jet_pt+2,unfolding_jetpt_binning,nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2F* hresp = new TH2F("hresp","",nbin_jet_pt+2,unfolding_jet_pt_binning,nbin_jet_pt+2,unfolding_jet_pt_binning);
 
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {

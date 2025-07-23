@@ -56,15 +56,15 @@ rl_max = 0.49
 unfolding_rl_binning = array('d',[rl_min-0.005,rl_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933,
                                           0.20194, 0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 
                                           0.39398, 0.425987, 0.457993, rl_max, rl_max + 0.04])
-unfolding_jetpt_binning = array('d',[15,20,30,50,100,150])
+unfolding_jet_pt_binning = array('d',[15,20,30,50,100,150])
 unfolding_weight_binning = array('d',[1e-05, 0.000370882, 0.000689666, 0.00108385, 0.00159442, 0.00228839, 0.00327794, 0.00482046, 0.00751032, 0.0135402, 0.2])
 # Visualize
 htruth_rl     = ROOT.TH1F("htruth_rl"    ,"",unfolding_rl_nbins,unfolding_rl_binning)
 hunfol_rl     = ROOT.TH1F("hunfol_rl"    ,"",unfolding_rl_nbins,unfolding_rl_binning)
 hct_rl        = ROOT.TH1F("hct_rl"       ,"",unfolding_rl_nbins,unfolding_rl_binning)
-htruth_jetpt  = ROOT.TH1F("htruth_jetpt" ,"",5,unfolding_jetpt_binning)
-hunfol_jetpt  = ROOT.TH1F("hunfol_jetpt" ,"",5,unfolding_jetpt_binning)
-hct_jetpt     = ROOT.TH1F("hct_jetpt"    ,"",5,unfolding_jetpt_binning)
+htruth_jet_pt  = ROOT.TH1F("htruth_jet_pt" ,"",5,unfolding_jet_pt_binning)
+hunfol_jet_pt  = ROOT.TH1F("hunfol_jet_pt" ,"",5,unfolding_jet_pt_binning)
+hct_jet_pt     = ROOT.TH1F("hct_jet_pt"    ,"",5,unfolding_jet_pt_binning)
 htruth_weight = ROOT.TH1F("htruth_weight","",10,unfolding_weight_binning)
 hunfol_weight = ROOT.TH1F("hunfol_weight","",10,unfolding_weight_binning)
 hct_weight    = ROOT.TH1F("hct_weight"   ,"",10,unfolding_weight_binning)
@@ -73,21 +73,21 @@ for entry in range(len(of_weights)-1):
     htruth_rl.Fill(mc_set_ofinput[entry,0])
     hunfol_rl.Fill(mc_set_validate[entry,0],of_weights[entry])
 
-    htruth_jetpt.Fill(mc_set_ofinput[entry,1])
-    hunfol_jetpt.Fill(mc_set_validate[entry,1],of_weights[entry])
+    htruth_jet_pt.Fill(mc_set_ofinput[entry,1])
+    hunfol_jet_pt.Fill(mc_set_validate[entry,1],of_weights[entry])
 
     htruth_weight.Fill(mc_set_ofinput[entry,2])
     hunfol_weight.Fill(mc_set_validate[entry,2],of_weights[entry])
     
 
 hct_rl.Divide(htruth_rl,hunfol_rl,1,1)
-hct_jetpt.Divide(htruth_jetpt,hunfol_jetpt,1,1)
+hct_jet_pt.Divide(htruth_jet_pt,hunfol_jet_pt,1,1)
 hct_weight.Divide(htruth_weight,hunfol_weight,1,1)
 
 fout = ROOT.TFile("../output-files/multifold_closuretest_3d_newof_{}Iter.root".format(Niter),"RECREATE")
 fout.cd()
 hct_rl.Write()
-hct_jetpt.Write()
+hct_jet_pt.Write()
 hct_weight.Write()
 fout.Close()
 

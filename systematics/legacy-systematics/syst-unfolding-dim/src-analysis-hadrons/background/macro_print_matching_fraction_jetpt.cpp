@@ -6,7 +6,7 @@
 #include "../../include/utils-algorithms.h"
 #include "../../include/utils-visual.h"
 
-void macro_print_matching_fraction_jetpt()
+void macro_print_matching_fraction_jet_pt()
 {
     // Open the necessary files
     TFile* fpurity = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
@@ -43,10 +43,10 @@ void macro_print_matching_fraction_jetpt()
         hhalfunmatched[i]->Sumw2();
     
         // Project into the histograms
-        ntuple_dtrmatch->Project(Form("hall[%i]",i)          ,"R_L",pair_jetpt_cut[i]         );
-        ntuple_dtrmatch->Project(Form("hmatched[%i]",i)      ,"R_L",pair_jetpt_signal_cut[i]  );
-        ntuple_dtrmatch->Project(Form("hunmatched[%i]",i)    ,"R_L",pair_jetpt_pairbg_cut[i]  );
-        ntuple_dtrmatch->Project(Form("hhalfunmatched[%i]",i),"R_L",pair_jetpt_singlebg_cut[i]);
+        ntuple_dtrmatch->Project(Form("hall[%i]",i)          ,"R_L",pair_jet_pt_cut[i]         );
+        ntuple_dtrmatch->Project(Form("hmatched[%i]",i)      ,"R_L",pair_jet_pt_signal_cut[i]  );
+        ntuple_dtrmatch->Project(Form("hunmatched[%i]",i)    ,"R_L",pair_jet_pt_pairbg_cut[i]  );
+        ntuple_dtrmatch->Project(Form("hhalfunmatched[%i]",i),"R_L",pair_jet_pt_singlebg_cut[i]);
 
         hratio_matched[i]       = new TH1F(Form("hratio_matched[%i]",i)  ,"",nbin_rl,rl_min, rl_max);
         hratio_unmatched[i]     = new TH1F(Form("hratio_unmatched[%i]",i),"",nbin_rl,rl_min, rl_max);
@@ -92,5 +92,5 @@ void macro_print_matching_fraction_jetpt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/matched_unmatched_jetpt_npair_deltarleq%.3f.pdf",rl_resolution));    
+    c->Print(Form("./plots/matched_unmatched_jet_pt_npair_deltarleq%.3f.pdf",rl_resolution));    
 }

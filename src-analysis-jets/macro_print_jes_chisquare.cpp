@@ -51,15 +51,15 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                 set_histogram_style(hbetastar_chisquare[bin], corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[0], std_marker_size);
                 
                 // Undo the JEC
-                ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jetpt_cut[bin]);
-                ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jetpt_cut[bin]);
+                ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jet_pt_cut[bin]);
+                ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jet_pt_cut[bin]);
                 // ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
                 // ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
 
                 for (int beta_star_bin = 0 ; beta_star_bin < beta_star_bins ; beta_star_bin++) {
                         double beta_star = beta_star_init + beta_star_bin*beta_star_step;
 
-                        ntuple_jes_reco->Project(Form("hreco_newjec[%i]",bin),Form("%f*(jet_pt/z_pt)/jet_jec_cor",beta_star),pair_jetpt_cut[bin]);
+                        ntuple_jes_reco->Project(Form("hreco_newjec[%i]",bin),Form("%f*(jet_pt/z_pt)/jet_jec_cor",beta_star),pair_jet_pt_cut[bin]);
                         
                         double delta_mean = abs(hreco_newjec[bin]->GetMean() - hdata_nojec[bin]->GetMean());
                         double chisquare  = hreco_newjec[bin]->Chi2Test(hdata_nojec[bin],"CHI2");

@@ -31,7 +31,7 @@ const int nbin_weight            = 10;
 const int nbin_weight_unfolding  = nbin_weight+2;
 const int nbin_jet_e             = 3;
 const int nbin_z_pt              = 3;
-const int nbin_jetpt_corrections = 3;
+const int nbin_jet_pt_corrections = 3;
 const int nbin_jet_pt_unfolding  = nbin_jet_pt+2;
 
 const double z_pt_binning[]   = {15,20,30,75};
@@ -39,8 +39,8 @@ const double jet_pt_binning[] = {jet_pt_min_nom, 30., 50., jet_pt_max};
 const double weight_binning[]            = {0.0001, 0.000396231, 0.000714927, 0.00111206, 0.00163222, 0.0023315, 0.00332664, 0.00485622, 0.00753926, 0.0136004, 0.1};
 const double weight_unfoldingbinning[]   = {weight_absmin,0.0001, 0.000396231, 0.000714927, 0.00111206, 0.00163222, 0.0023315, 0.00332664, 0.00485622, 0.00753926, 0.0136004, 0.1,weight_absmax};
 const double jet_e_binning[]             = {jet_e_min,350,560,jet_e_max};
-const double jetpt_corrections_binning[] = {20,30,50,100};
-const double unfolding_jetpt_binning[]   = {15,20,30,50,100,150};
+const double jet_pt_corrections_binning[] = {20,30,50,100};
+const double unfolding_jet_pt_binning[]   = {15,20,30,50,100,150};
 
 // Angular distance binning
 // const int nbin_rl    = 10; // Golden binning

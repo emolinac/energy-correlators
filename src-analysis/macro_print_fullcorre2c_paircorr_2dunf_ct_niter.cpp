@@ -9,7 +9,6 @@
 
 void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter = 10, bool do_print = true, bool compare_to_truth = true)
 {
-        // Open the necessary files
         std::string systematic = available_systematics[1]; // choose CT systematic
         
         if (systematic != "ct") {
@@ -46,9 +45,9 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         set_unfolding_ntuple_branches(ntuple, &R_L_reco, &R_L_truth, &jet_pt_reco, &jet_pt_truth, &weight_pt_reco, &weight_pt_truth);
         
         // Create histograms with different types of binning
-        TH2D* hpurcorr = new TH2D("hpurcorr","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-        TH2D* hmeas    = new TH2D("hmeas"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-        TH2D* htrue    = new TH2D("htrue"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+        TH2D* hpurcorr = new TH2D("hpurcorr","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hmeas    = new TH2D("hmeas"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* htrue    = new TH2D("htrue"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
         
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
@@ -59,9 +58,9 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         }
 
         // Fill the purity corrected distributions
-        TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-        TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-        TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+        TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         
         ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
         ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
@@ -154,8 +153,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
                 htruth_jet[bin]            = new TH1F(Form("htruth_jet%i" ,bin)          ,"",200,jet_pt_binning[bin],jet_pt_binning[bin + 1]);     
 
                 ntuple_mc_jet->Project(Form("htruth_jet%i" ,bin), "jet_pt");
-                ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jetpt_cut[bin]);
-                ntuple_mc->Project(Form("htruth_tau%i",bin),Form("R_L*%f",htruth_jet[bin]->GetMean()),e2c_jetpt_cut[bin]);
+                ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jet_pt_cut[bin]);
+                ntuple_mc->Project(Form("htruth_tau%i",bin),Form("R_L*%f",htruth_jet[bin]->GetMean()),e2c_jet_pt_cut[bin]);
 
                 // Normalize the truth distributions to unity for further comparison with corr pseudodata
                 htruth[bin]->Scale(1./htruth[bin]->Integral(),"width");
@@ -163,8 +162,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         }
 
         // Create a data histograma to know how much you have to vary its "content"
-        TH2D* hdataunf_ref = new TH2D("hdataunf_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-        TH2D* hdatashift   = new TH2D("hdatashift"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);    
+        TH2D* hdataunf_ref = new TH2D("hdataunf_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hdatashift   = new TH2D("hdatashift"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);    
         ntuple_data->Project("hdataunf_ref", "jet_pt:R_L");
 
         TRandom3* rndm = new TRandom3();

@@ -77,11 +77,11 @@ void macro_print_jet_kinematics()
         TCanvas* c = new TCanvas("c","",800,600);
         c->Draw();
 
-        THStack* hjetpt  = new THStack();
-        hjetpt->Add(h_pt_data);
-        hjetpt->Add(h_pt_mc);
-        hjetpt->Add(h_pt_mcreco);
-        hjetpt->SetTitle(";p^{jet}_{t}(GeV);Normalized Distributions");
+        THStack* hjet_pt  = new THStack();
+        hjet_pt->Add(h_pt_data);
+        hjet_pt->Add(h_pt_mc);
+        hjet_pt->Add(h_pt_mcreco);
+        hjet_pt->SetTitle(";p^{jet}_{t}(GeV);Normalized Distributions");
         
         THStack* hjeteta = new THStack();
         hjeteta->Add(h_eta_data);
@@ -101,24 +101,24 @@ void macro_print_jet_kinematics()
         hzeta->Add(h_z_y_mcreco);
         hzeta->SetTitle(";y^{Z};Normalized Distributions");
 
-        TLegend* ljetpt = new TLegend();
-        ljetpt->AddEntry(h_pt_data,"data","lpf");
-        ljetpt->AddEntry(h_pt_mc,"mc","lpf");
-        ljetpt->AddEntry(h_pt_mcreco,"mcreco","lpf");
+        TLegend* ljet_pt = new TLegend();
+        ljet_pt->AddEntry(h_pt_data,"data","lpf");
+        ljet_pt->AddEntry(h_pt_mc,"mc","lpf");
+        ljet_pt->AddEntry(h_pt_mcreco,"mcreco","lpf");
 
         TLegend* ljeteta = new TLegend();
         ljeteta->AddEntry(h_eta_data,"data","lpf");
         ljeteta->AddEntry(h_eta_mc,"mc","lpf");
         ljeteta->AddEntry(h_eta_mcreco,"mcreco","lpf");
 
-        hjetpt->Draw("NOSTACK");
+        hjet_pt->Draw("NOSTACK");
         gPad->SetLogy(1);
-        ljetpt->Draw("SAME");
+        ljet_pt->Draw("SAME");
         c->Print("./plots/jet_pt_kinematics.pdf");
 
         hzpt->Draw("NOSTACK");
         gPad->SetLogy(1);
-        ljetpt->Draw("SAME");
+        ljet_pt->Draw("SAME");
         c->Print("./plots/z_pt_kinematics.pdf");
 
         hjeteta->Draw("NOSTACK");

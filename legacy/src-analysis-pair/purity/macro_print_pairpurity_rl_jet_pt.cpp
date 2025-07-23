@@ -58,10 +58,10 @@ void macro_print_pairpurity_rl_jet_pt()
     // Project into the histograms
     for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        ntuple_purity->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]);
-        ntuple_purity->Project(Form("hall[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hsig_data[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L",pair_jetpt_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jet_pt_signal_cut[jet_pt_bin]);
+        ntuple_purity->Project(Form("hall[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hsig_data[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
     }
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -92,7 +92,7 @@ void macro_print_pairpurity_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_rl_signalvsall_jetpt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/npair_rl_signalvsall_jet_pt_deltarleq%.3f.pdf",rl_resolution));
     
     gPad->SetLogy(0);
 
@@ -117,7 +117,7 @@ void macro_print_pairpurity_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_purity_rl_jetpt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/npair_purity_rl_jet_pt_deltarleq%.3f.pdf",rl_resolution));
     
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -144,5 +144,5 @@ void macro_print_pairpurity_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_wpurity_rl_data_jetpt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/npair_wpurity_rl_data_jet_pt_deltarleq%.3f.pdf",rl_resolution));
 }

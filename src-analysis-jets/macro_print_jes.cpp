@@ -38,8 +38,8 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
                 set_histogram_style(hjes_data[bin],1, std_line_width, corr_marker_style_jet_pt[0], std_marker_size);
                 set_histogram_style(hjes_reco[bin],2, std_line_width, corr_marker_style_jet_pt[0], std_marker_size);
 
-                ntuple_jes_data->Project(Form("hjes_data[%i]",bin) ,"jet_pt/z_pt",pair_jetpt_cut[bin]);
-                ntuple_jes_reco->Project(Form("hjes_reco[%i]" ,bin),"jet_pt/z_pt",pair_jetpt_cut[bin]);
+                ntuple_jes_data->Project(Form("hjes_data[%i]",bin) ,"jet_pt/z_pt",pair_jet_pt_cut[bin]);
+                ntuple_jes_reco->Project(Form("hjes_reco[%i]" ,bin),"jet_pt/z_pt",pair_jet_pt_cut[bin]);
 
                 hjes_data[bin]->Scale(1./hjes_data[bin]->Integral());   
                 hjes_reco[bin]->Scale(1./hjes_reco[bin]->Integral());

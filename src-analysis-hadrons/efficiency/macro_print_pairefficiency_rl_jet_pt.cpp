@@ -59,10 +59,10 @@ void macro_print_pairefficiency_rl_jet_pt()
     // Project into the histograms
     for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        ntuple_efficiency_reco->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
-        ntuple_efficiency_mc->Project(Form("hall[%i]",jet_pt_bin),"R_L"  ,pair_jetpt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
-        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L"     ,pair_jetpt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
-        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L"      ,pair_jetpt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
+        ntuple_efficiency_reco->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jet_pt_signal_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
+        ntuple_efficiency_mc->Project(Form("hall[%i]",jet_pt_bin),"R_L"  ,pair_jet_pt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
+        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L"     ,pair_jet_pt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L"      ,pair_jet_pt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
     }
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -93,7 +93,7 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/npair_rl_recovsmc_jet_pt_deltarleq%.3f.pdf",rl_resolution));
     gPad->SetLogy(0);
 
     // efficiency PLOTS
@@ -118,7 +118,7 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/npair_efficiency_rl_jet_pt_deltarleq%.3f.pdf",rl_resolution));
     
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -145,5 +145,5 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/npair_wefficiency_rl_data_jet_pt_deltarleq%.3f.pdf",rl_resolution));
 }

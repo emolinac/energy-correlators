@@ -21,7 +21,7 @@ void macro_print_recondtrs()
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 h[bin] = new TH1F(Form("h[%i]",bin),"",50,0,50);
 
-                ntuple->Project(Form("h[%i]",bin),"jet_ndtr",pair_jetpt_cut[bin]);
+                ntuple->Project(Form("h[%i]",bin),"jet_ndtr",pair_jet_pt_cut[bin]);
                 
                 hs->Add(h[bin]);
                 l->AddEntry(h[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV  <Dtr> = %.0f",jet_pt_binning[bin],jet_pt_binning[bin + 1],h[bin]->GetMean()),"lpf");

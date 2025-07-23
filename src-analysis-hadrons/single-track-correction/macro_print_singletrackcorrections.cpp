@@ -30,5 +30,5 @@ void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_e
     h->SetTitle(";efficiency;purity");
     h->Smooth();
 
-    c->Print(Form("./plots/eff_purity_distribution_jetpt%.0fto%.0f.pdf",corr_rel_error_local,jet_pt_min_local,jet_pt_max_local));
+    c->Print(Form("./plots/eff_purity_distribution_jet_pt%.0fto%.0f.pdf",corr_rel_error_local,jet_pt_min_local,jet_pt_max_local));
 }

@@ -67,16 +67,16 @@ myweights = of.omnifold(theta0_G_train, theta0_S_train, theta_unknown_S_train, n
 rl_nbins = 16
 
 rl_binning     = array('d',np.linspace(0.00999,0.5,rl_nbins))
-jetpt_binnning = array('d',[20,30,50,100])
+jet_pt_binnning = array('d',[20,30,50,100])
 weight_binning = array('d',[1e-05, 0.000370882, 0.000689666, 0.00108385, 0.00159442, 0.00228839, 0.00327794, 0.00482046, 0.00751032, 0.0135402, 0.2])
 
 # Visualize
 htruth_rl     = ROOT.TH1F("htruth_rl"    ,"",rl_nbins-1,rl_binning)
 hunfol_rl     = ROOT.TH1F("hunfol_rl"    ,"",rl_nbins-1,rl_binning)
 hct_rl        = ROOT.TH1F("hct_rl"       ,"",rl_nbins-1,rl_binning)
-htruth_jetpt  = ROOT.TH1F("htruth_jetpt" ,"",3,jetpt_binnning)
-hunfol_jetpt  = ROOT.TH1F("hunfol_jetpt" ,"",3,jetpt_binnning)
-hct_jetpt     = ROOT.TH1F("hct_jetpt"    ,"",3,jetpt_binnning)
+htruth_jet_pt  = ROOT.TH1F("htruth_jet_pt" ,"",3,jet_pt_binnning)
+hunfol_jet_pt  = ROOT.TH1F("hunfol_jet_pt" ,"",3,jet_pt_binnning)
+hct_jet_pt     = ROOT.TH1F("hct_jet_pt"    ,"",3,jet_pt_binnning)
 htruth_weight = ROOT.TH1F("htruth_weight","",10,weight_binning)
 hunfol_weight = ROOT.TH1F("hunfol_weight","",10,weight_binning)
 hct_weight    = ROOT.TH1F("hct_weight"   ,"",10,weight_binning)
@@ -85,14 +85,14 @@ for entry in range(len(myweights[niterations-1, 1, :])-1):
     htruth_rl.Fill(theta0_G_validate[entry,0])
     hunfol_rl.Fill(theta0_G_train[entry,0],myweights[niterations-1, 1,entry])
     
-    htruth_jetpt.Fill(theta0_G_validate[entry,1])
-    hunfol_jetpt.Fill(theta0_G_train[entry,1],myweights[niterations-1, 1,entry])
+    htruth_jet_pt.Fill(theta0_G_validate[entry,1])
+    hunfol_jet_pt.Fill(theta0_G_train[entry,1],myweights[niterations-1, 1,entry])
 
     htruth_weight.Fill(theta0_G_validate[entry,2])
     hunfol_weight.Fill(theta0_G_train[entry,2],myweights[niterations-1, 1,entry])
 
 hct_rl.Divide(htruth_rl,hunfol_rl,1,1)
-hct_jetpt.Divide(htruth_jetpt,hunfol_jetpt,1,1)
+hct_jet_pt.Divide(htruth_jet_pt,hunfol_jet_pt,1,1)
 hct_weight.Divide(htruth_weight,hunfol_weight,1,1)
 
 # c = ROOT.TCanvas()
@@ -100,7 +100,7 @@ hct_weight.Divide(htruth_weight,hunfol_weight,1,1)
 # c.cd(1)
 # hct_rl.Draw()
 # c.cd(2)
-# hct_jetpt.Draw()
+# hct_jet_pt.Draw()
 # c.cd(3)
 # hct_weight.Draw()
 
@@ -109,7 +109,7 @@ hct_weight.Divide(htruth_weight,hunfol_weight,1,1)
 fout = ROOT.TFile("../output-files/multifold_closuretest_3d.root","RECREATE")
 fout.cd()
 hct_rl.Write()
-hct_jetpt.Write()
+hct_jet_pt.Write()
 hct_weight.Write()
 fout.Close()
 # plt.savefig("./plots/closuretest-3d-multifold-{}iterations-{}nodes-{}epochs-{}nbatchsize.pdf".format(niterations, nnodes, nepochs, nbatch_size), format="pdf", bbox_inches="tight")

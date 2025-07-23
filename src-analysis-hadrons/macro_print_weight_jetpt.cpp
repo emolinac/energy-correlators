@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_weight_jetpt()
+void macro_print_weight_jet_pt()
 {
         // Open the necessary files
         TFile*   fcorr       = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
@@ -29,7 +29,7 @@ void macro_print_weight_jetpt()
                 
                 set_histogram_style(hcorr_data[bin-1], corr_marker_color_jet_pt[bin-1], std_line_width, corr_marker_style_jet_pt[bin-1], std_marker_size+1);
                 
-                ntuple_data->Project(Form("hcorr_data[%i]",bin-1),"weight",pair_jetpt_cut[bin-1]);
+                ntuple_data->Project(Form("hcorr_data[%i]",bin-1),"weight",pair_jet_pt_cut[bin-1]);
                 
                 s_data->Add(hcorr_data[bin-1]);
                 l_data->AddEntry(hcorr_data[bin-1],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin-1],jet_pt_binning[bin]),"lpf");
@@ -43,5 +43,5 @@ void macro_print_weight_jetpt()
 
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-        c->Print("./plots/weight_jetpt.pdf");
+        c->Print("./plots/weight_jet_pt.pdf");
 }

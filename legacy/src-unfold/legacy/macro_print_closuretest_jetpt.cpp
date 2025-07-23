@@ -5,7 +5,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfolding_jetpt_binning[0], double jet_pt_max_local = unfolding_jetpt_binning[5])
+void macro_print_closuretest_jet_pt(int Niter = 1, double jet_pt_min_local = unfolding_jet_pt_binning[0], double jet_pt_max_local = unfolding_jet_pt_binning[5])
 {
     TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
@@ -15,12 +15,12 @@ void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfo
     ntuple->SetBranchAddress("jet_pt_truth",&jet_pt_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH1F* hmeas = new TH1F("hmeas","",nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* htrue = new TH1F("htrue","",nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH2F* hresp = new TH2F("hresp","",nbin_jet_pt+2,unfolding_jetpt_binning,nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hmeas = new TH1F("hmeas","",nbin_jet_pt+2,unfolding_jet_pt_binning);
+    TH1F* htrue = new TH1F("htrue","",nbin_jet_pt+2,unfolding_jet_pt_binning);
+    TH2F* hresp = new TH2F("hresp","",nbin_jet_pt+2,unfolding_jet_pt_binning,nbin_jet_pt+2,unfolding_jet_pt_binning);
 
-    TH1F* htrue_ref = new TH1F("htrue_ref","",nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* h_ct      = new TH1F("h_ct"     ,"",nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* htrue_ref = new TH1F("htrue_ref","",nbin_jet_pt+2,unfolding_jet_pt_binning);
+    TH1F* h_ct      = new TH1F("h_ct"     ,"",nbin_jet_pt+2,unfolding_jet_pt_binning);
 
     TRandom3* rndm = new TRandom3();
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -71,5 +71,5 @@ void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfo
 
     // gPad->SetLogx(1);
     gPad->SetGridy(1);
-    // c->Print(Form("./plots/closuretest_roounfold_jetpt_bayes_iter%i_jetptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
+    // c->Print(Form("./plots/closuretest_roounfold_jet_pt_bayes_iter%i_jet_ptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
 }

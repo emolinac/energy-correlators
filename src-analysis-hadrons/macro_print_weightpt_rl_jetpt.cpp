@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_weightpt_rl_jetpt()
+void macro_print_weightpt_rl_jet_pt()
 {
         TFile* fin = new TFile((output_folder + namef_ntuple_e2c_corr).c_str());
 
@@ -22,7 +22,7 @@ void macro_print_weightpt_rl_jetpt()
                 h[bin] = new TH2D(Form("h%i",bin),"",300,0.01,1.2,70000,10E-7,.3);
                 h[bin]->SetTitle(Form("%.0f<p^{jet}_{t}<%.0f;R_{L};w",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
                 
-                ntuple->Project(Form("h%i",bin),"weight_pt:R_L",pair_jetpt_cut[bin]);
+                ntuple->Project(Form("h%i",bin),"weight_pt:R_L",pair_jet_pt_cut[bin]);
 
                 c->cd(bin + 1);
                 
@@ -32,5 +32,5 @@ void macro_print_weightpt_rl_jetpt()
                 h[bin]->Smooth();
         }
 
-        c->Print("./plots/weightpt_rl_jetpt_distributions.pdf");
+        c->Print("./plots/weightpt_rl_jet_pt_distributions.pdf");
 }

@@ -76,5 +76,5 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
     
     // gPad->SetLogx(1);
     gPad->SetGridy(1);
-    // c->Print(Form("./plots/closuretest_roounfold_rl_bayes_iter%i_jetptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
+    // c->Print(Form("./plots/closuretest_roounfold_rl_bayes_iter%i_jet_ptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
 }

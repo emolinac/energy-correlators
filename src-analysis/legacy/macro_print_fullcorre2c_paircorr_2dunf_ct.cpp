@@ -32,14 +32,14 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
     set_unfolding_ntuple_branches(ntuple, &R_L_reco, &R_L_truth, &jet_pt_reco, &jet_pt_truth, &weight_pt_reco, &weight_pt_truth);
 
     // Create histograms with different types of binning
-    TH2D* hpurcorr = new TH2D("hpurcorr","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hmeas    = new TH2D("hmeas"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* htrue    = new TH2D("htrue"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hpurcorr = new TH2D("hpurcorr","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* hmeas    = new TH2D("hmeas"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* htrue    = new TH2D("htrue"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
     
-    TH2D* hpurcorr_l = new TH2D("hpurcorr_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hmeas_l    = new TH2D("hmeas_l"   ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* htrue_l    = new TH2D("htrue_l"   ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hpurcorr_l = new TH2D("hpurcorr_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* hmeas_l    = new TH2D("hmeas_l"   ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* htrue_l    = new TH2D("htrue_l"   ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
     RooUnfoldResponse* response_l = new RooUnfoldResponse(hmeas_l, htrue_l, "response_l");
 
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -53,12 +53,12 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
     }
 
     // Fill the purity corrected distributions
-    TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hunfolded_ratio_l   = new TH2D("hunfolded_ratio_l"  ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hpuritycorrected_l  = new TH2D("hpuritycorrected_l" ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hpuritycorrected2_l = new TH2D("hpuritycorrected2_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* hunfolded_ratio_l   = new TH2D("hunfolded_ratio_l"  ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* hpuritycorrected_l  = new TH2D("hpuritycorrected_l" ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH2D* hpuritycorrected2_l = new TH2D("hpuritycorrected2_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
     
     ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
@@ -297,7 +297,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
         {
             htruth[bin] = new TH1F(Form("htruth%i",bin),"",nbin_rl_nominal,rl_nominal_binning);
-            ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jetpt_cut[bin]);
+            ntuple_mc->Project(Form("htruth%i",bin),"R_L",e2c_jet_pt_cut[bin]);
 
             // Normalize both to unity such that we can compare the shapes
             hcorr_e2c_nonorm[bin]->Scale(1./hcorr_e2c_nonorm[bin]->Integral(),"width");
