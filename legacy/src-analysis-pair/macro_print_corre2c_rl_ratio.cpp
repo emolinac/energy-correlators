@@ -22,17 +22,17 @@ void macro_print_corre2c_rl_ratio()
     TNtuple* ntuple_mc              = (TNtuple*) fdata->Get((name_ntuple_mc).c_str());
 
     // Determine log binnning
-    double binning[Nbin_R_L+1];
-    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    double binning[Nbin_rl+1];
+    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* h_mc        = new TH1F("h_mc"       ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hsig_eff    = new TH1F("hsig_eff"   ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hall_eff    = new TH1F("hall_eff"   ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hsig_pur    = new TH1F("hsig_pur"   ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hall_pur    = new TH1F("hall_pur"   ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hpurity     = new TH1F("hpurity"    ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* h_mc        = new TH1F("h_mc"       ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hsig_eff    = new TH1F("hsig_eff"   ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hall_eff    = new TH1F("hall_eff"   ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hsig_pur    = new TH1F("hsig_pur"   ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hall_pur    = new TH1F("hall_pur"   ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_rl,rl_min, rl_max);
+    TH1F* hpurity     = new TH1F("hpurity"    ,"",Nbin_rl,rl_min, rl_max);
     hsig_eff->Sumw2();
     hall_eff->Sumw2();
     hsig_pur->Sumw2();
@@ -40,8 +40,8 @@ void macro_print_corre2c_rl_ratio()
     h_mc->Sumw2();
     
     // Define the necessary histograms to show data and corrected data
-    TH1F* hcorr_data = new TH1F("hcorr_data","",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hall_data  = new TH1F("hall_data" ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hcorr_data = new TH1F("hcorr_data","",Nbin_rl,rl_min, rl_max);
+    TH1F* hall_data  = new TH1F("hall_data" ,"",Nbin_rl,rl_min, rl_max);
     hcorr_data->Sumw2();
     hall_data->Sumw2();
 
@@ -84,8 +84,8 @@ void macro_print_corre2c_rl_ratio()
     rp->GetLowerRefYaxis()->SetLabelSize(0.03);
     rp->GetUpperRefYaxis()->SetLabelSize(0.03);
     
-    rp->GetLowerRefXaxis()->SetRangeUser(R_L_min, 1);
-    rp->GetUpperRefXaxis()->SetRangeUser(R_L_min, 1);
+    rp->GetLowerRefXaxis()->SetRangeUser(rl_min, 1);
+    rp->GetUpperRefXaxis()->SetRangeUser(rl_min, 1);
     
     rp->GetLowerRefGraph()->SetMaximum(1.2);
     rp->GetLowerRefGraph()->SetMinimum(0.8);
@@ -100,5 +100,5 @@ void macro_print_corre2c_rl_ratio()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/ratio_corr_e2c_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/ratio_corr_e2c_deltarleq%.3f.pdf",rl_resolution));
 }

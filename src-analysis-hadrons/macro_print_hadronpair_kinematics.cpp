@@ -15,9 +15,9 @@ void macro_print_hadronpair_kinematics()
         TNtuple* ntuple_mc     = (TNtuple*) fin->Get(name_ntuple_mc.c_str());
         TNtuple* ntuple_mcreco = (TNtuple*) fin->Get(name_ntuple_mcreco.c_str());
 
-        TH1F* h_rl_data   = new TH1F("h_rl_data"   ,"",50,R_L_absmin,R_L_absmax);
-        TH1F* h_rl_mc     = new TH1F("h_rl_mc"     ,"",50,R_L_absmin,R_L_absmax);
-        TH1F* h_rl_mcreco = new TH1F("h_rl_mcreco" ,"",50,R_L_absmin,R_L_absmax);
+        TH1F* h_rl_data   = new TH1F("h_rl_data"   ,"",50,rl_absmin,rl_absmax);
+        TH1F* h_rl_mc     = new TH1F("h_rl_mc"     ,"",50,rl_absmin,rl_absmax);
+        TH1F* h_rl_mcreco = new TH1F("h_rl_mcreco" ,"",50,rl_absmin,rl_absmax);
         
         TH1F* h_weight_data   = new TH1F("h_weight_data"   ,"",50,weight_min,weight_max);
         TH1F* h_weight_mc     = new TH1F("h_weight_mc"     ,"",50,weight_min,weight_max);

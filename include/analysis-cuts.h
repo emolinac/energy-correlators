@@ -48,7 +48,7 @@ const double max_relerror[]   = {0.50,0.35,0.45};
 
 // Misc analysis cuts
 // TCut pair_matching_cut = "R_L_truth!=-999";
-TCut pair_matching_cut = "TMath::Abs(R_L-R_L_truth)<0.015";
+TCut pair_matching_cut = "TMath::Abs(R_L-R_L_truth)<rl_resolution";
 
 // Nominal Analysis Cuts
 
@@ -87,7 +87,7 @@ TCut pair_zpt_cut[] = {
 };
 
 // _______________________________ Purity Analysis Cuts _______________________________ //
-TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_min_nom,jet_pt_max);
+TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution,jet_pt_min_nom,jet_pt_max);
 TCut single_signal_cut = Form("key_match==1&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max); // This was designed for single particle tuples
 
 TCut purity_corr_singletrack     = Form("purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
@@ -109,9 +109,9 @@ TCut jet_full_corr[] = {
 };
 
 TCut pair_jetpt_signal_cut[] = {
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res, jet_pt_binning[0], jet_pt_binning[1]),
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res, jet_pt_binning[1], jet_pt_binning[2]),
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res, jet_pt_binning[2], jet_pt_binning[3])
+        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[0], jet_pt_binning[1]),
+        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[1], jet_pt_binning[2]),
+        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[2], jet_pt_binning[3])
 };
 
 // ANALYSIS VARIATIONS CUTS

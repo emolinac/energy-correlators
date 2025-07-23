@@ -78,12 +78,12 @@ Form("z_pt>%f&&z_pt<%f",z_pt_binning[0],z_pt_binning[1]),
  Form("z_pt>%f&&z_pt<%f",z_pt_binning[2],z_pt_binning[3])};
 
 // _______________________________ Purity Analysis Cuts _______________________________ //
-TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_min_nom,jet_pt_max);
+TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution,jet_pt_min_nom,jet_pt_max);
 TCut pair_pairbg_cut   = Form("(h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 TCut pair_singlebg_cut = Form("((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 TCut single_signal_cut = Form("key_match==1&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max); // This was designed for single particle tuples
 
-TCut e2c_signal_cut   = Form("weight*(TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f)",R_L_res,jet_pt_min_nom,jet_pt_max);
+TCut e2c_signal_cut   = Form("weight*(TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f)",rl_resolution,jet_pt_min_nom,jet_pt_max);
 TCut e2c_pairbg_cut   = Form("weight*((h1truth_y==-999&&h2truth_y==-999)&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 TCut e2c_singlebg_cut = Form("weight*(((h1truth_y==-999&&h2truth_y!=-999)||(h1truth_y!=-999&&h2truth_y==-999))&&jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 
@@ -143,9 +143,9 @@ Form("weight_pt*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_erro
 
 TCut pair_jetpt_signal_cut[] = {
 
-Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[0],jet_pt_binning[1]),
-Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[1],jet_pt_binning[2]),
-Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",R_L_res,jet_pt_binning[2],jet_pt_binning[3])
+Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution,jet_pt_binning[0],jet_pt_binning[1]),
+Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution,jet_pt_binning[1],jet_pt_binning[2]),
+Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution,jet_pt_binning[2],jet_pt_binning[3])
 };
 
 TCut pair_jetpt_pairbg_cut[] = {

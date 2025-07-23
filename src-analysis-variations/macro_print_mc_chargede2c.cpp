@@ -43,15 +43,15 @@ void macro_print_mc_chargede2c()
         s_data[bin] = new THStack();
         l_data[bin] = new TLegend();
 
-        hmcreco_pp[bin] = new TH1F(Form("hmcreco_pp[%i]",bin)  ,"",Nbin_R_L,rl_binning);
-        hmcreco_pm[bin] = new TH1F(Form("hmcreco_pm[%i]",bin)  ,"",Nbin_R_L,rl_binning);
-        hmcreco_mm[bin] = new TH1F(Form("hmcreco_mm[%i]",bin)  ,"",Nbin_R_L,rl_binning);
-        hmcreco_all[bin] = new TH1F(Form("hmcreco_all[%i]",bin),"",Nbin_R_L,rl_binning);
+        hmcreco_pp[bin] = new TH1F(Form("hmcreco_pp[%i]",bin)  ,"",Nbin_rl,rl_binning);
+        hmcreco_pm[bin] = new TH1F(Form("hmcreco_pm[%i]",bin)  ,"",Nbin_rl,rl_binning);
+        hmcreco_mm[bin] = new TH1F(Form("hmcreco_mm[%i]",bin)  ,"",Nbin_rl,rl_binning);
+        hmcreco_all[bin] = new TH1F(Form("hmcreco_all[%i]",bin),"",Nbin_rl,rl_binning);
         
-        hmc_pp[bin] = new TH1F(Form("hmc_pp[%i]" ,bin)  ,"",Nbin_R_L,rl_binning);
-        hmc_pm[bin] = new TH1F(Form("hmc_pm[%i]" ,bin)  ,"",Nbin_R_L,rl_binning);
-        hmc_mm[bin] = new TH1F(Form("hmc_mm[%i]" ,bin)  ,"",Nbin_R_L,rl_binning);
-        hmc_all[bin] = new TH1F(Form("hmc_all[%i]" ,bin),"",Nbin_R_L,rl_binning);
+        hmc_pp[bin] = new TH1F(Form("hmc_pp[%i]" ,bin)  ,"",Nbin_rl,rl_binning);
+        hmc_pm[bin] = new TH1F(Form("hmc_pm[%i]" ,bin)  ,"",Nbin_rl,rl_binning);
+        hmc_mm[bin] = new TH1F(Form("hmc_mm[%i]" ,bin)  ,"",Nbin_rl,rl_binning);
+        hmc_all[bin] = new TH1F(Form("hmc_all[%i]" ,bin),"",Nbin_rl,rl_binning);
         
         // Project into the histograms
         ntuple_mcreco->Project(Form("hmcreco_pp[%i]",bin),"R_L",e2c_jetpt_cut_weightpt_pp[bin]);

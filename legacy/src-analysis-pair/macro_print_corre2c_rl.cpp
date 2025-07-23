@@ -21,24 +21,24 @@ void macro_print_corre2c_rl()
     TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_R_L+1];
-    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    double binning[Nbin_rl+1];
+    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig_eff    = new TH1F("hsig_eff"   ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hall_eff    = new TH1F("hall_eff"   ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hsig_pur    = new TH1F("hsig_pur"   ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hall_pur    = new TH1F("hall_pur"   ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hpurity     = new TH1F("hpurity"    ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hsig_eff    = new TH1F("hsig_eff"   ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hall_eff    = new TH1F("hall_eff"   ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hsig_pur    = new TH1F("hsig_pur"   ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hall_pur    = new TH1F("hall_pur"   ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_rl,rl_min, rl_max);
+    TH1F* hpurity     = new TH1F("hpurity"    ,"",Nbin_rl,rl_min, rl_max);
     hsig_eff->Sumw2();
     hall_eff->Sumw2();
     hsig_pur->Sumw2();
     hall_pur->Sumw2();
     
     // Define the necessary histograms to show data and corrected data
-    TH1F* hcorr_data = new TH1F("hcorr_data","",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hall_data  = new TH1F("hall_data" ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hcorr_data = new TH1F("hcorr_data","",Nbin_rl,rl_min, rl_max);
+    TH1F* hall_data  = new TH1F("hall_data" ,"",Nbin_rl,rl_min, rl_max);
     hcorr_data->Sumw2();
     hall_data->Sumw2();
 
@@ -75,7 +75,7 @@ void macro_print_corre2c_rl()
     s_data->Add(hall_data);
     s_data->Draw("NOSTACK");
 
-    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};E2C",R_L_res));
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};E2C",rl_resolution));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -87,5 +87,5 @@ void macro_print_corre2c_rl()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/corr_e2c_deltarleq%.3f.pdf",rl_resolution));
 }

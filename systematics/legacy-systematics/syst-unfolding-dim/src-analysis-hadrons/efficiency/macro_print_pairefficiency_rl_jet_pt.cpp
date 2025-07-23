@@ -18,8 +18,8 @@ void macro_print_pairefficiency_rl_jet_pt()
     TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_correction_mc).c_str());
 
     // Determine log binnning
-    double binning[Nbin_R_L+1];
-    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    double binning[Nbin_rl+1];
+    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
     TH1F* hsig[Nbin_jet_pt];
@@ -28,9 +28,9 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
-        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
-        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
+        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
+        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
+        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
 
         hsig[jet_pt_bin]->Sumw2();
         hall[jet_pt_bin]->Sumw2();
@@ -46,8 +46,8 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
+        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
 
         hcorr_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();
@@ -87,13 +87,13 @@ void macro_print_pairefficiency_rl_jet_pt()
     }
 
     s->Draw("NOSTACK");
-    s->GetXaxis()->SetRangeUser(R_L_min,1);
-    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
+    s->GetXaxis()->SetRangeUser(rl_min,1);
+    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",rl_resolution));
     l->Draw("SAME");
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_rl_recovsmc_jetpt_deltarleq%.3f.pdf",rl_resolution));
     gPad->SetLogy(0);
 
     // efficiency PLOTS
@@ -111,14 +111,14 @@ void macro_print_pairefficiency_rl_jet_pt()
     
     
     s_efficiency->Draw("NOSTACK");
-    s_efficiency->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_efficiency->GetXaxis()->SetRangeUser(rl_min,1);
     s_efficiency->SetMaximum(0.6);
-    s_efficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",R_L_res));
+    s_efficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",rl_resolution));
     l_efficiency->Draw("SAME");
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_efficiency_rl_jetpt_deltarleq%.3f.pdf",rl_resolution));
     
     // DATA PLOTS
     THStack* s_data = new THStack();
@@ -136,8 +136,8 @@ void macro_print_pairefficiency_rl_jet_pt()
     }
     
     s_data->Draw("NOSTACK");
-    s_data->GetXaxis()->SetRangeUser(R_L_min,1);
-    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
+    s_data->GetXaxis()->SetRangeUser(rl_min,1);
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",rl_resolution));
     l_data->Draw("SAME");
 
     gPad->SetLogx(1);
@@ -145,5 +145,5 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_wefficiency_rl_data_jetpt_deltarleq%.3f.pdf",rl_resolution));
 }

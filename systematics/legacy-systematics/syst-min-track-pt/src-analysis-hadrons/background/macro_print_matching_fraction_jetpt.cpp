@@ -15,8 +15,8 @@ void macro_print_matching_fraction_jetpt()
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_R_L+1];
-    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    double binning[Nbin_rl+1];
+    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
 
     TH1F* hall[Nbin_jet_pt];           
     TH1F* hmatched[Nbin_jet_pt];       
@@ -33,10 +33,10 @@ void macro_print_matching_fraction_jetpt()
     // Define the necessary histograms to calculate purity
     for (int i = 0 ; i < Nbin_jet_pt ; i++)
     {
-        hall[i]           = new TH1F(Form("hall[%i]",i)          ,"",Nbin_R_L,R_L_min, R_L_max);
-        hmatched[i]       = new TH1F(Form("hmatched[%i]",i)      ,"",Nbin_R_L,R_L_min, R_L_max);
-        hunmatched[i]     = new TH1F(Form("hunmatched[%i]",i)    ,"",Nbin_R_L,R_L_min, R_L_max);
-        hhalfunmatched[i] = new TH1F(Form("hhalfunmatched[%i]",i),"",Nbin_R_L,R_L_min, R_L_max);
+        hall[i]           = new TH1F(Form("hall[%i]",i)          ,"",Nbin_rl,rl_min, rl_max);
+        hmatched[i]       = new TH1F(Form("hmatched[%i]",i)      ,"",Nbin_rl,rl_min, rl_max);
+        hunmatched[i]     = new TH1F(Form("hunmatched[%i]",i)    ,"",Nbin_rl,rl_min, rl_max);
+        hhalfunmatched[i] = new TH1F(Form("hhalfunmatched[%i]",i),"",Nbin_rl,rl_min, rl_max);
         hall[i]->Sumw2();
         hmatched[i]->Sumw2();
         hunmatched[i]->Sumw2();
@@ -48,9 +48,9 @@ void macro_print_matching_fraction_jetpt()
         ntuple_dtrmatch->Project(Form("hunmatched[%i]",i)    ,"R_L",pair_jetpt_pairbg_cut[i]  );
         ntuple_dtrmatch->Project(Form("hhalfunmatched[%i]",i),"R_L",pair_jetpt_singlebg_cut[i]);
 
-        hratio_matched[i]       = new TH1F(Form("hratio_matched[%i]",i)  ,"",Nbin_R_L,R_L_min, R_L_max);
-        hratio_unmatched[i]     = new TH1F(Form("hratio_unmatched[%i]",i),"",Nbin_R_L,R_L_min, R_L_max);
-        hratio_halfunmatched[i] = new TH1F(Form("hratio_halfunmatched[%i]",i),"",Nbin_R_L,R_L_min, R_L_max);
+        hratio_matched[i]       = new TH1F(Form("hratio_matched[%i]",i)  ,"",Nbin_rl,rl_min, rl_max);
+        hratio_unmatched[i]     = new TH1F(Form("hratio_unmatched[%i]",i),"",Nbin_rl,rl_min, rl_max);
+        hratio_halfunmatched[i] = new TH1F(Form("hratio_halfunmatched[%i]",i),"",Nbin_rl,rl_min, rl_max);
 
         hratio_matched[i]->Divide(hmatched[i],hall[i],1,1,"B");
         hratio_unmatched[i]->Divide(hunmatched[i],hall[i],1,1,"B");
@@ -72,7 +72,7 @@ void macro_print_matching_fraction_jetpt()
     set_lhcb_watermark_properties(tex);
     
     s->Draw("NOSTACK");
-    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};",R_L_res));
+    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};",rl_resolution));
 
     gPad->SetLogx(1);
     
@@ -92,5 +92,5 @@ void macro_print_matching_fraction_jetpt()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/matched_unmatched_jetpt_npair_deltarleq%.3f.pdf",R_L_res));    
+    c->Print(Form("./plots/matched_unmatched_jetpt_npair_deltarleq%.3f.pdf",rl_resolution));    
 }

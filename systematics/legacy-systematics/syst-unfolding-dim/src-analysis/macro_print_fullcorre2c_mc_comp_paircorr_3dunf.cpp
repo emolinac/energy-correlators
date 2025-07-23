@@ -56,36 +56,36 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
     ntuple->SetBranchAddress("weight_pt_truth",&weight_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH3D* hpurcorr = new TH3D("hpurcorr","",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hmeas    = new TH3D("hmeas"   ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* htrue    = new TH3D("htrue"   ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpurcorr = new TH3D("hpurcorr","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hmeas    = new TH3D("hmeas"   ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* htrue    = new TH3D("htrue"   ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
     
-    TH3D* hpurcorr_l = new TH3D("hpurcorr_l","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hmeas_l    = new TH3D("hmeas_l"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* htrue_l    = new TH3D("htrue_l"   ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpurcorr_l = new TH3D("hpurcorr_l","",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hmeas_l    = new TH3D("hmeas_l"   ,"",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* htrue_l    = new TH3D("htrue_l"   ,"",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
     RooUnfoldResponse* response_l = new RooUnfoldResponse(hmeas_l, htrue_l, "response_l");
 
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
     {
         // Access entry of ntuple
         ntuple->GetEntry(evt);
-        if (abs(R_L_truth-R_L_reco)>0.015) continue;
+        if (abs(R_L_truth-R_L_reco)>rl_resolution) continue;
     
         response->Fill(R_L_reco, jet_pt_reco, weight_reco, R_L_truth, jet_pt_truth, weight_truth);
         response_l->Fill(R_L_reco, jet_pt_reco, weight_reco, R_L_truth, jet_pt_truth, weight_truth);
     }
 
     // Fill the purity corrected distributions
-    TH2D* hunfolded_ratio_2d   = new TH2D("hunfolded_ratio_2d"  ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH3D* hunfolded_ratio_3d   = new TH3D("hunfolded_ratio_3d"  ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hpuritycorrected     = new TH3D("hpuritycorrected"    ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hpuritycorrected2    = new TH3D("hpuritycorrected2"   ,"",Nbin_R_L_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH2D* hunfolded_ratio_2d   = new TH2D("hunfolded_ratio_2d"  ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH3D* hunfolded_ratio_3d   = new TH3D("hunfolded_ratio_3d"  ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpuritycorrected     = new TH3D("hpuritycorrected"    ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpuritycorrected2    = new TH3D("hpuritycorrected2"   ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
     
-    TH2D* hunfolded_ratio_2d_l = new TH2D("hunfolded_ratio_2d_l","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH3D* hunfolded_ratio_3d_l = new TH3D("hunfolded_ratio_3d_l","",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hpuritycorrected_l   = new TH3D("hpuritycorrected_l"  ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hpuritycorrected2_l  = new TH3D("hpuritycorrected2_l" ,"",Nbin_R_L_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH2D* hunfolded_ratio_2d_l = new TH2D("hunfolded_ratio_2d_l","",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH3D* hunfolded_ratio_3d_l = new TH3D("hunfolded_ratio_3d_l","",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpuritycorrected_l   = new TH3D("hpuritycorrected_l"  ,"",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpuritycorrected2_l  = new TH3D("hpuritycorrected2_l" ,"",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight_unfolding,weight_unfoldingbinning);
     
     ntuple_data->Project("hpuritycorrected" ,"weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     ntuple_data->Project("hpuritycorrected2","weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
@@ -132,12 +132,12 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = 4, bool do_print
 
     for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
     {
-        hcorr_e2c[bin]   = new TH1F(Form("hcorr_e2c[%i]",bin) ,"",Nbin_R_L_nominal,rl_nominal_binning);
-        hmc[bin]         = new TH1F(Form("hmc[%i]" ,bin)      ,"",Nbin_R_L_nominal,rl_nominal_binning);
-        hmcreco[bin]     = new TH1F(Form("hmcreco[%i]" ,bin)  ,"",Nbin_R_L_nominal,rl_nominal_binning);
-        hcorr_e2c_l[bin] = new TH1F(Form("hcorr_e2c_l[%i]",bin) ,"",Nbin_R_L,rl_binning);
-        hmc_l[bin]       = new TH1F(Form("hmc_l[%i]" ,bin)      ,"",Nbin_R_L,rl_binning);
-        hmcreco_l[bin]   = new TH1F(Form("hmcreco_l[%i]" ,bin)  ,"",Nbin_R_L,rl_binning);
+        hcorr_e2c[bin]   = new TH1F(Form("hcorr_e2c[%i]",bin) ,"",Nbin_rl_nominal,rl_nominal_binning);
+        hmc[bin]         = new TH1F(Form("hmc[%i]" ,bin)      ,"",Nbin_rl_nominal,rl_nominal_binning);
+        hmcreco[bin]     = new TH1F(Form("hmcreco[%i]" ,bin)  ,"",Nbin_rl_nominal,rl_nominal_binning);
+        hcorr_e2c_l[bin] = new TH1F(Form("hcorr_e2c_l[%i]",bin) ,"",Nbin_rl,rl_binning);
+        hmc_l[bin]       = new TH1F(Form("hmc_l[%i]" ,bin)      ,"",Nbin_rl,rl_binning);
+        hmcreco_l[bin]   = new TH1F(Form("hmcreco_l[%i]" ,bin)  ,"",Nbin_rl,rl_binning);
         
         hcorr_jet[bin]   = new TH1F(Form("hcorr_jet[%i]" ,bin)   ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
         hmc_jet[bin]     = new TH1F(Form("hmc_jet[%i]" ,bin)     ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]);

@@ -18,13 +18,13 @@ void macro_print_pairefficiency_rl()
     TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_correction_mc).c_str());
 
     // Determine log binnning
-    double binning[Nbin_R_L+1];
-    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    double binning[Nbin_rl+1];
+    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig        = new TH1F("hsig"       ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hall        = new TH1F("hall"       ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hsig        = new TH1F("hsig"       ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hall        = new TH1F("hall"       ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_rl,rl_min, rl_max);
     hsig->Sumw2();
     hall->Sumw2();
     
@@ -32,8 +32,8 @@ void macro_print_pairefficiency_rl()
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hcorr_data = new TH1F("hcorr_data","",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hall_data  = new TH1F("hall_data" ,"",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hcorr_data = new TH1F("hcorr_data","",Nbin_rl,rl_min, rl_max);
+    TH1F* hall_data  = new TH1F("hall_data" ,"",Nbin_rl,rl_min, rl_max);
     hcorr_data->Sumw2();
     hall_data->Sumw2();
 
@@ -57,9 +57,9 @@ void macro_print_pairefficiency_rl()
     s->Add(hsig);
     s->Add(hall);
     s->Draw("NOSTACK");
-    s->GetXaxis()->SetRangeUser(R_L_min,1);
+    s->GetXaxis()->SetRangeUser(rl_min,1);
 
-    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
+    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",rl_resolution));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -71,7 +71,7 @@ void macro_print_pairefficiency_rl()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_rl_recovsmc_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_rl_recovsmc_deltarleq%.3f.pdf",rl_resolution));
     
     gPad->SetLogy(0);
 
@@ -80,13 +80,13 @@ void macro_print_pairefficiency_rl()
     set_histogram_style(hefficiency, kViolet, std_line_width, std_marker_style, std_marker_size);
     
     hefficiency->Draw();
-    hefficiency->GetXaxis()->SetRangeUser(R_L_min,1);
+    hefficiency->GetXaxis()->SetRangeUser(rl_min,1);
     hefficiency->GetYaxis()->SetRangeUser(0,0.6);
-    hefficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",R_L_res));
+    hefficiency->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Pair efficiency",rl_resolution));
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/npair_efficiency_rl_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_efficiency_rl_deltarleq%.3f.pdf",rl_resolution));
     
     // DATA PLOTS
     hcorr_data->Divide(hefficiency);
@@ -95,9 +95,9 @@ void macro_print_pairefficiency_rl()
     s_data->Add(hcorr_data);
     s_data->Add(hall_data);
     s_data->Draw("NOSTACK");
-    s_data->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_data->GetXaxis()->SetRangeUser(rl_min,1);
 
-    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",R_L_res));
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};N_{pair}",rl_resolution));
 
     gPad->SetLogx(1);
     gPad->SetLogy(1);
@@ -109,5 +109,5 @@ void macro_print_pairefficiency_rl()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
     
-    c->Print(Form("./plots/npair_wefficiency_rl_data_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/npair_wefficiency_rl_data_deltarleq%.3f.pdf",rl_resolution));
 }

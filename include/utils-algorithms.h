@@ -1,6 +1,8 @@
 #ifndef UTILS_ALGORITHMS_H
 #define UTILS_ALGORITHMS_H
 
+#include "TRandom3.h"
+
 double get_hwhm(TH1F* h)
 {
         // As written, this function works for single peak distributions

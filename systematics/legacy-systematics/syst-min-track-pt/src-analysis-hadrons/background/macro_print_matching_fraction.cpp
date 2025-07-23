@@ -15,14 +15,14 @@ void macro_print_matching_fraction()
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_R_L+1];
-    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    double binning[Nbin_rl+1];
+    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate purity
-    TH1F* hall           = new TH1F("hall"      ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hmatched       = new TH1F("hmatched"  ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hunmatched     = new TH1F("hunmatched","",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hhalfunmatched = new TH1F("hhalfunmatched","",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hall           = new TH1F("hall"      ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hmatched       = new TH1F("hmatched"  ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hunmatched     = new TH1F("hunmatched","",Nbin_rl,rl_min, rl_max);
+    TH1F* hhalfunmatched = new TH1F("hhalfunmatched","",Nbin_rl,rl_min, rl_max);
     hall->Sumw2();
     hmatched->Sumw2();
     hunmatched->Sumw2();
@@ -34,9 +34,9 @@ void macro_print_matching_fraction()
     ntuple_dtrmatch->Project("hunmatched"    ,"R_L",pair_pairbg_cut);
     ntuple_dtrmatch->Project("hhalfunmatched","R_L",pair_singlebg_cut);
 
-    TH1F* hratio_matched       = new TH1F("hratio_matched"  ,"",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hratio_unmatched     = new TH1F("hratio_unmatched","",Nbin_R_L,R_L_min, R_L_max);
-    TH1F* hratio_halfunmatched = new TH1F("hratio_halfunmatched","",Nbin_R_L,R_L_min, R_L_max);
+    TH1F* hratio_matched       = new TH1F("hratio_matched"  ,"",Nbin_rl,rl_min, rl_max);
+    TH1F* hratio_unmatched     = new TH1F("hratio_unmatched","",Nbin_rl,rl_min, rl_max);
+    TH1F* hratio_halfunmatched = new TH1F("hratio_halfunmatched","",Nbin_rl,rl_min, rl_max);
     
     hratio_matched->Divide(hmatched,hall,1,1,"B");
     hratio_unmatched->Divide(hunmatched,hall,1,1,"B");
@@ -59,7 +59,7 @@ void macro_print_matching_fraction()
     s->Add(hratio_unmatched);
     s->Add(hratio_halfunmatched);
     s->Draw("NOSTACK");
-    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};",R_L_res));
+    s->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};",rl_resolution));
 
     gPad->SetLogx(1);
     
@@ -73,5 +73,5 @@ void macro_print_matching_fraction()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/matched_unmatched_npair_deltarleq%.3f.pdf",R_L_res));    
+    c->Print(Form("./plots/matched_unmatched_npair_deltarleq%.3f.pdf",rl_resolution));    
 }

@@ -64,12 +64,12 @@ of_weights = omnifold.reweight(mc_set_validate, omnifold.model2, batch_size = 10
 
 # Visualize
 unfolding_rl_nbins = 17
-R_L_min = 0.0099
-R_L_max = 0.49
+rl_min = 0.0099
+rl_max = 0.49
 
-unfolding_rl_binning = array('d',[R_L_min-0.005,R_L_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933,
+unfolding_rl_binning = array('d',[rl_min-0.005,rl_min, 0.0419067, 0.0739133, 0.10592, 0.137927, 0.169933,
                                           0.20194, 0.233947, 0.265953, 0.29796, 0.329967, 0.361973, 
-                                          0.39398, 0.425987, 0.457993, R_L_max, R_L_max + 0.04])
+                                          0.39398, 0.425987, 0.457993, rl_max, rl_max + 0.04])
 unfolding_jetpt_binning = array('d',[15,20,30,50,100,150])
 
 # Visualize

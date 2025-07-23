@@ -16,12 +16,12 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH1F* hmeas = new TH1F("hmeas","",Nbin_R_L+2,unfolding_rl_binning);
-    TH1F* htrue = new TH1F("htrue","",Nbin_R_L+2,unfolding_rl_binning);
-    TH2F* hresp = new TH2F("hresp","",Nbin_R_L+2,unfolding_rl_binning,Nbin_R_L+2,unfolding_rl_binning);
+    TH1F* hmeas = new TH1F("hmeas","",Nbin_rl+2,unfolding_rl_binning);
+    TH1F* htrue = new TH1F("htrue","",Nbin_rl+2,unfolding_rl_binning);
+    TH2F* hresp = new TH2F("hresp","",Nbin_rl+2,unfolding_rl_binning,Nbin_rl+2,unfolding_rl_binning);
 
-    TH1F* htrue_ref = new TH1F("htrue_ref","",Nbin_R_L+2,unfolding_rl_binning);
-    TH1F* h_ct      = new TH1F("h_ct"     ,"",Nbin_R_L+2,unfolding_rl_binning);
+    TH1F* htrue_ref = new TH1F("htrue_ref","",Nbin_rl+2,unfolding_rl_binning);
+    TH1F* h_ct      = new TH1F("h_ct"     ,"",Nbin_rl+2,unfolding_rl_binning);
 
     TRandom3* rndm = new TRandom3();
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -29,7 +29,7 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
         // Access entry of ntuple
         ntuple->GetEntry(evt);
         if (jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
-        if (abs(R_L_truth-R_L_reco)>0.015) continue;
+        if (abs(R_L_truth-R_L_reco)>rl_resolution) continue;
         if (rndm->Uniform(1)<=0.5) 
         {
             htrue_ref->Fill(R_L_truth);
@@ -69,7 +69,7 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
     // hs->Add(h_ct);
     // hs->Add(hmeas);
     h_ct->Draw("");
-    h_ct->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+    h_ct->GetXaxis()->SetRangeUser(rl_min, rl_max);
     h_ct->GetYaxis()->SetNdivisions(505);
     h_ct->SetTitle(";R_{L};Unfolded/True");
     h_ct->GetYaxis()->SetLimits(0.8,1.2);

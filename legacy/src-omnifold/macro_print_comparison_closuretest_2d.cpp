@@ -22,12 +22,12 @@ void macro_print_comparison_closuretest_2d(int Niter = 5, double jet_pt_min_loca
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH2D* hmeas = new TH2D("hmeas","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH2D* htrue = new TH2D("htrue","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2D* hmeas = new TH2D("hmeas","",Nbin_rl+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2D* htrue = new TH2D("htrue","",Nbin_rl+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
 
-    TH2D* htrue_ref = new TH2D("htrue_ref","",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH2D* hct       = new TH2D("hct"     ,"",Nbin_R_L+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2D* htrue_ref = new TH2D("htrue_ref","",Nbin_rl+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2D* hct       = new TH2D("hct"     ,"",Nbin_rl+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
 
     TRandom3* rndm = new TRandom3();
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -35,7 +35,7 @@ void macro_print_comparison_closuretest_2d(int Niter = 5, double jet_pt_min_loca
         // Access entry of ntuple
         ntuple->GetEntry(evt);
         if (jet_pt<jet_pt_min_local||jet_pt>jet_pt_max_local) continue;
-        if (abs(R_L_truth-R_L_reco)>0.015) continue;
+        if (abs(R_L_truth-R_L_reco)>rl_resolution) continue;
         if (rndm->Uniform(1)<=0.5) 
         {
             htrue_ref->Fill(R_L_truth,jet_pt_truth);
@@ -54,11 +54,11 @@ void macro_print_comparison_closuretest_2d(int Niter = 5, double jet_pt_min_loca
     htrue_ref->Scale(1./htrue_ref->Integral());
     hunfolded_bayes->Scale(1./hunfolded_bayes->Integral());
 
-    TH1D* htrue_ref_rl          = new TH1D("htrue_ref_rl","",Nbin_R_L+2,unfolding_rl_binning);
+    TH1D* htrue_ref_rl          = new TH1D("htrue_ref_rl","",Nbin_rl+2,unfolding_rl_binning);
     TH1D* htrue_ref_jetpt       = new TH1D("htrue_ref_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1D* hunfolded_bayes_rl    = new TH1D("hunfolded_bayes_rl","",Nbin_R_L+2,unfolding_rl_binning);
+    TH1D* hunfolded_bayes_rl    = new TH1D("hunfolded_bayes_rl","",Nbin_rl+2,unfolding_rl_binning);
     TH1D* hunfolded_bayes_jetpt = new TH1D("hunfolded_bayes_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1D* hct_rl                = new TH1D("hct_rl","",Nbin_R_L+2,unfolding_rl_binning);
+    TH1D* hct_rl                = new TH1D("hct_rl","",Nbin_rl+2,unfolding_rl_binning);
     TH1D* hct_jetpt             = new TH1D("hct_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning);
     
     htrue_ref_rl->Sumw2();
@@ -87,7 +87,7 @@ void macro_print_comparison_closuretest_2d(int Niter = 5, double jet_pt_min_loca
     hs_rl->Add(hct_rl_of);
     hs_rl->Draw("NOSTACK");
     hs_rl->SetTitle(";R_{L};Truth/Unfolded");
-    hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_R_L]);
+    hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_rl]);
     hs_rl->SetMinimum(0.89);
     hs_rl->SetMaximum(1.11);
     gPad->SetLogx(1);

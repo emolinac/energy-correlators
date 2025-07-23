@@ -15,6 +15,7 @@
 #include "analysis-functions.h"
 #include "directories.h"
 #include "names.h"
+#include "utils-algorithms.h"
 
 int main()
 {
@@ -56,15 +57,15 @@ int main()
         TH2D* h2_muon_2017_trgeff_data = (TH2D*) fefficiency_muon_2017_trg->Get("Hist_ALL_2017_ETA_PT_Eff");
 
         // Jet corrections
-        TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", Nbin_jetpt_corrections, corrections_jetpt_binning);
+        TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", Nbin_jetpt_corrections, jetpt_corrections_binning);
         hnum_pur_jet->Sumw2();
         hden_pur_jet->Sumw2();
 
-        TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", Nbin_jetpt_corrections, corrections_jetpt_binning);
+        TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", Nbin_jetpt_corrections, jetpt_corrections_binning);
         hnum_eff_jet->Sumw2();
         hden_eff_jet->Sumw2();
 
@@ -77,12 +78,12 @@ int main()
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
         // Hadron corrections
-        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hden_pur    = new TH2F("hden_pur"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hpurity     = new TH2F("hpurity"    , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hden_eff    = new TH2F("hden_eff"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hefficiency = new TH2F("hefficiency", "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hden_pur    = new TH2F("hden_pur"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hpurity     = new TH2F("hpurity"    , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hden_eff    = new TH2F("hden_eff"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hefficiency = new TH2F("hefficiency", "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
 
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
@@ -102,19 +103,19 @@ int main()
 
         // DELETE LATER
         // DELETE LATER
-        TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge", "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+        TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge", "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
 
-        TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   , "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
-        TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge", "", Nbin_R_L_nominal, rl_nominal_binning, Nbin_jetpt_corrections, corrections_jetpt_binning);
+        TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   , "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge", "", Nbin_rl_nominal, rl_nominal_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
 
         ntuple_purity->Project("hnum_pur_eqcharge", "jet_pt:R_L", pair_matching_cut + "eq_charge>1");
         ntuple_purity->Project("hden_pur_eqcharge", "jet_pt:R_L", "eq_charge>1");
@@ -145,7 +146,7 @@ int main()
         gStyle->SetPaintTextFormat("4.2f");
         hpurity->Draw("col text");
         hpurity->SetTitle("Purity Correction;R_{L};p^{jet}_{T}(GeV)");
-        hpurity->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+        hpurity->GetXaxis()->SetRangeUser(rl_min, rl_max);
         hpurity->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
@@ -153,7 +154,7 @@ int main()
 
         hefficiency->Draw("col text");
         hefficiency->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
-        hefficiency->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+        hefficiency->GetXaxis()->SetRangeUser(rl_min, rl_max);
         hefficiency->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
@@ -162,7 +163,7 @@ int main()
         // DELETE LATER!!!!
         hpurity_eqcharge->Draw("col text");
         hpurity_eqcharge->SetTitle("Purity Correction;R_{L};p^{jet}_{T}(GeV)");
-        hpurity_eqcharge->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+        hpurity_eqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
         hpurity_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
@@ -170,7 +171,7 @@ int main()
 
         hefficiency_eqcharge->Draw("col text");
         hefficiency_eqcharge->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
-        hefficiency_eqcharge->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+        hefficiency_eqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
         hefficiency_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
@@ -178,7 +179,7 @@ int main()
 
         hpurity_neqcharge->Draw("col text");
         hpurity_neqcharge->SetTitle("Purity Correction;R_{L};p^{jet}_{T}(GeV)");
-        hpurity_neqcharge->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+        hpurity_neqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
         hpurity_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
@@ -186,7 +187,7 @@ int main()
 
         hefficiency_neqcharge->Draw("col text");
         hefficiency_neqcharge->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
-        hefficiency_neqcharge->GetXaxis()->SetRangeUser(R_L_min, R_L_max);
+        hefficiency_neqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
         hefficiency_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);

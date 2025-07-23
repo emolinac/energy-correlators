@@ -20,7 +20,7 @@ void macro_print_responsematrices()
     ntuple->SetBranchAddress("weight_pt",&weight);
     ntuple->SetBranchAddress("weight_pt_truth",&weight_truth);
     
-    TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",Nbin_R_L_nominal      ,rl_nominal_binning          ,Nbin_R_L_nominal      ,rl_nominal_binning          );
+    TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",Nbin_rl_nominal      ,rl_nominal_binning          ,Nbin_rl_nominal      ,rl_nominal_binning          );
     TH2F* hresp_jetpt  = new TH2F("hresp_jetpt" ,"",Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     TH2F* hresp_weight = new TH2F("hresp_weight","",Nbin_weight_unfolding,weight_unfoldingbinning,Nbin_weight_unfolding,weight_unfoldingbinning);
     

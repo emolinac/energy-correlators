@@ -23,7 +23,7 @@ const double mass_res      = 0.008; // Mass resolution parameter (see src-resolu
 const double corr_rel_error = 0.5;
 const int ndim_corr = 50;
 
-const double R_L_res  = 0.015;
+const double rl_resolution  = rl_resolution;
 
 // Visual constants
 const double std_marker_size  = 1.0;

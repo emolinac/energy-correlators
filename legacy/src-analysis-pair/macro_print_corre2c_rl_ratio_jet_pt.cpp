@@ -21,8 +21,8 @@ void macro_print_corre2c_rl_ratio_jet_pt()
     TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_R_L+1];
-    determine_log10binning(Nbin_R_L, R_L_min, R_L_max, binning);
+    double binning[Nbin_rl+1];
+    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
     TH1F* hsig_eff[Nbin_jet_pt]; TH1F* hall_eff[Nbin_jet_pt]; TH1F* hefficiency[Nbin_jet_pt];
@@ -43,22 +43,22 @@ void macro_print_corre2c_rl_ratio_jet_pt()
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig_eff[jet_pt_bin]    = new TH1F(Form("hsig_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
-        hall_eff[jet_pt_bin]    = new TH1F(Form("hall_eff[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
-        hsig_pur[jet_pt_bin]    = new TH1F(Form("hsig_pur[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
-        hall_pur[jet_pt_bin]    = new TH1F(Form("hall_pur[%i]",jet_pt_bin)   ,"",Nbin_R_L,R_L_min, R_L_max);
-        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
-        hpurity[jet_pt_bin]     = new TH1F(Form("hpurity[%i]",jet_pt_bin)    ,"",Nbin_R_L,R_L_min, R_L_max);
+        hsig_eff[jet_pt_bin]    = new TH1F(Form("hsig_eff[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
+        hall_eff[jet_pt_bin]    = new TH1F(Form("hall_eff[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
+        hsig_pur[jet_pt_bin]    = new TH1F(Form("hsig_pur[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
+        hall_pur[jet_pt_bin]    = new TH1F(Form("hall_pur[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
+        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
+        hpurity[jet_pt_bin]     = new TH1F(Form("hpurity[%i]",jet_pt_bin)    ,"",Nbin_rl,rl_min, rl_max);
 
         hsig_eff[jet_pt_bin]->Sumw2();
         hall_eff[jet_pt_bin]->Sumw2();
         hsig_pur[jet_pt_bin]->Sumw2();
         hall_pur[jet_pt_bin]->Sumw2();
     
-        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
+        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
 
-        hmc[jet_pt_bin] = new TH1F(Form("hmc[%i]",jet_pt_bin),"",Nbin_R_L,R_L_min, R_L_max);
+        hmc[jet_pt_bin] = new TH1F(Form("hmc[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
 
         hcorr_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();
@@ -103,13 +103,13 @@ void macro_print_corre2c_rl_ratio_jet_pt()
     gPad->SetLogx(1);
    
     s_data->Draw("NOSTACK");
-    s_data->GetXaxis()->SetRangeUser(R_L_min,1);
+    s_data->GetXaxis()->SetRangeUser(rl_min,1);
     s_data->SetMaximum(1.4);
     s_data->SetMinimum(0.6);    
-    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Norm. E2C (Meas/MC)",R_L_res));
+    s_data->SetTitle(Form("#Delta R_{L}(truth-reco)<%.3f;R_{L};Norm. E2C (Meas/MC)",rl_resolution));
     l_data->Draw("SAME");
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
     
-    c->Print(Form("./plots/corr_e2c_ratio_jetpt_deltarleq%.3f.pdf",R_L_res));
+    c->Print(Form("./plots/corr_e2c_ratio_jetpt_deltarleq%.3f.pdf",rl_resolution));
 }

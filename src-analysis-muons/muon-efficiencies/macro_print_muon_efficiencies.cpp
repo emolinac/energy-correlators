@@ -26,7 +26,7 @@ void macro_print_muon_efficiencies()
         // Adding content with errors
         TLatex latex;
         latex.SetTextAlign(22); // center alignment
-        latex.SetTextSize(0.015);
+        latex.SetTextSize(rl_resolution);
         latex.SetTextColor(kBlack);
         gStyle->SetPaintTextFormat("4.2f");
         
