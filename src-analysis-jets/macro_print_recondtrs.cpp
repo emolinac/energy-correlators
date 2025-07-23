@@ -14,11 +14,11 @@ void macro_print_recondtrs()
         // Get the corresponding Ntuples
         TNtuple* ntuple = (TNtuple*) f->Get((name_ntuple_jetpurity).c_str());
 
-        TH1F* h[Nbin_jet_pt];
+        TH1F* h[nbin_jet_pt];
         THStack* hs = new THStack();
         TLegend* l = new TLegend();
 
-        for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
+        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 h[bin] = new TH1F(Form("h[%i]",bin),"",50,0,50);
 
                 ntuple->Project(Form("h[%i]",bin),"jet_ndtr",pair_jetpt_cut[bin]);

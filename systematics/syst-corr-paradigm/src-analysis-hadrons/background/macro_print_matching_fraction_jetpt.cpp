@@ -15,28 +15,28 @@ void macro_print_matching_fraction_jetpt()
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_rl+1];
-    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
+    double binning[nbin_rl+1];
+    determine_log10binning(nbin_rl, rl_min, rl_max, binning);
 
-    TH1F* hall[Nbin_jet_pt];           
-    TH1F* hmatched[Nbin_jet_pt];       
-    TH1F* hunmatched[Nbin_jet_pt];     
-    TH1F* hhalfunmatched[Nbin_jet_pt]; 
+    TH1F* hall[nbin_jet_pt];           
+    TH1F* hmatched[nbin_jet_pt];       
+    TH1F* hunmatched[nbin_jet_pt];     
+    TH1F* hhalfunmatched[nbin_jet_pt]; 
     
-    TH1F* hratio_matched[Nbin_jet_pt];       
-    TH1F* hratio_unmatched[Nbin_jet_pt];     
-    TH1F* hratio_halfunmatched[Nbin_jet_pt]; 
+    TH1F* hratio_matched[nbin_jet_pt];       
+    TH1F* hratio_unmatched[nbin_jet_pt];     
+    TH1F* hratio_halfunmatched[nbin_jet_pt]; 
 
     // MCRECO PLOTS
     THStack* s = new THStack();
     
     // Define the necessary histograms to calculate purity
-    for (int i = 0 ; i < Nbin_jet_pt ; i++)
+    for (int i = 0 ; i < nbin_jet_pt ; i++)
     {
-        hall[i]           = new TH1F(Form("hall[%i]",i)          ,"",Nbin_rl,rl_min, rl_max);
-        hmatched[i]       = new TH1F(Form("hmatched[%i]",i)      ,"",Nbin_rl,rl_min, rl_max);
-        hunmatched[i]     = new TH1F(Form("hunmatched[%i]",i)    ,"",Nbin_rl,rl_min, rl_max);
-        hhalfunmatched[i] = new TH1F(Form("hhalfunmatched[%i]",i),"",Nbin_rl,rl_min, rl_max);
+        hall[i]           = new TH1F(Form("hall[%i]",i)          ,"",nbin_rl,rl_min, rl_max);
+        hmatched[i]       = new TH1F(Form("hmatched[%i]",i)      ,"",nbin_rl,rl_min, rl_max);
+        hunmatched[i]     = new TH1F(Form("hunmatched[%i]",i)    ,"",nbin_rl,rl_min, rl_max);
+        hhalfunmatched[i] = new TH1F(Form("hhalfunmatched[%i]",i),"",nbin_rl,rl_min, rl_max);
         hall[i]->Sumw2();
         hmatched[i]->Sumw2();
         hunmatched[i]->Sumw2();
@@ -48,9 +48,9 @@ void macro_print_matching_fraction_jetpt()
         ntuple_dtrmatch->Project(Form("hunmatched[%i]",i)    ,"R_L",pair_jetpt_pairbg_cut[i]  );
         ntuple_dtrmatch->Project(Form("hhalfunmatched[%i]",i),"R_L",pair_jetpt_singlebg_cut[i]);
 
-        hratio_matched[i]       = new TH1F(Form("hratio_matched[%i]",i)  ,"",Nbin_rl,rl_min, rl_max);
-        hratio_unmatched[i]     = new TH1F(Form("hratio_unmatched[%i]",i),"",Nbin_rl,rl_min, rl_max);
-        hratio_halfunmatched[i] = new TH1F(Form("hratio_halfunmatched[%i]",i),"",Nbin_rl,rl_min, rl_max);
+        hratio_matched[i]       = new TH1F(Form("hratio_matched[%i]",i)  ,"",nbin_rl,rl_min, rl_max);
+        hratio_unmatched[i]     = new TH1F(Form("hratio_unmatched[%i]",i),"",nbin_rl,rl_min, rl_max);
+        hratio_halfunmatched[i] = new TH1F(Form("hratio_halfunmatched[%i]",i),"",nbin_rl,rl_min, rl_max);
 
         hratio_matched[i]->Divide(hmatched[i],hall[i],1,1,"B");
         hratio_unmatched[i]->Divide(hunmatched[i],hall[i],1,1,"B");

@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_error, double jet_pt_min_local = jet_pt_binning[0], double jet_pt_max_local = jet_pt_binning[Nbin_jet_pt])
+void macro_print_singletrackcorrections(double corr_rel_error_local = corr_rel_error, double jet_pt_min_local = jet_pt_binning[0], double jet_pt_max_local = jet_pt_binning[nbin_jet_pt])
 {
     gStyle->SetOptStat(1110);
     // Open the necessary files

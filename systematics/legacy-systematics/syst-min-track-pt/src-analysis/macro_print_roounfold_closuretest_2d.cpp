@@ -17,12 +17,12 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH2D* hmeas = new TH2D("hmeas","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* htrue = new TH2D("htrue","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hmeas = new TH2D("hmeas","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* htrue = new TH2D("htrue","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
 
-    TH2D* htrue_ref = new TH2D("htrue_ref","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hct       = new TH2D("hct"      ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* htrue_ref = new TH2D("htrue_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hct       = new TH2D("hct"      ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
 
     TRandom3* rndm = new TRandom3();
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -50,14 +50,14 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     htrue_ref->Scale(1./htrue_ref->Integral());
     hunfolded_bayes->Scale(1./hunfolded_bayes->Integral());
 
-    TH1D* htrue_ref_rl          = new TH1D("htrue_ref_rl"         ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
-    TH1D* htrue_ref_jetpt       = new TH1D("htrue_ref_jetpt"      ,"",Nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
-    TH1D* hunfolded_bayes_rl    = new TH1D("hunfolded_bayes_rl"   ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
-    TH1D* hunfolded_bayes_jetpt = new TH1D("hunfolded_bayes_jetpt","",Nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
-    TH1D* hct_rl                = new TH1D("hct_rl"               ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
-    TH1D* hct_jetpt             = new TH1D("hct_jetpt"            ,"",Nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
+    TH1D* htrue_ref_rl          = new TH1D("htrue_ref_rl"         ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
+    TH1D* htrue_ref_jetpt       = new TH1D("htrue_ref_jetpt"      ,"",nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
+    TH1D* hunfolded_bayes_rl    = new TH1D("hunfolded_bayes_rl"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
+    TH1D* hunfolded_bayes_jetpt = new TH1D("hunfolded_bayes_jetpt","",nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
+    TH1D* hct_rl                = new TH1D("hct_rl"               ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
+    TH1D* hct_jetpt             = new TH1D("hct_jetpt"            ,"",nbin_jet_pt_unfolding    ,unfolding_jetpt_binning);
     
-    TH2D* hct_rl_jetpt          = new TH2D("hct_rl_jetpt","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hct_rl_jetpt          = new TH2D("hct_rl_jetpt","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     
     htrue_ref_rl->Sumw2();
     htrue_ref_jetpt->Sumw2();
@@ -83,7 +83,7 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     hs_rl->Add(hct_rl);
     hs_rl->Draw("NOSTACK");
     hs_rl->SetTitle(";R_{L};Truth/Unfolded");
-    // hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_rl]);
+    // hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[nbin_rl]);
     hs_rl->SetMinimum(0.89);
     hs_rl->SetMaximum(1.11);
     gPad->SetLogx(1);
@@ -108,7 +108,7 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     hct_rl_jetpt->Draw("COL TEXT");
     hct_rl_jetpt->SetTitle(";R_{L};p^{jet}_{T} GeV");
     hct_rl_jetpt->GetYaxis()->SetRangeUser(20,100);
-    hct_rl_jetpt->GetYaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[Nbin_rl]);
+    hct_rl_jetpt->GetYaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl]);
     gStyle->SetPaintTextFormat(".2f");
     gPad->SetLogx(1);
     gPad->SetLogy(1);

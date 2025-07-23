@@ -18,19 +18,19 @@ void macro_print_pairefficiency_rl_jet_pt()
     TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_correction_mc).c_str());
 
     // Determine log binnning
-    double binning[Nbin_rl+1];
-    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
+    double binning[nbin_rl+1];
+    determine_log10binning(nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig[Nbin_jet_pt];
-    TH1F* hall[Nbin_jet_pt];
-    TH1F* hefficiency[Nbin_jet_pt];
+    TH1F* hsig[nbin_jet_pt];
+    TH1F* hall[nbin_jet_pt];
+    TH1F* hefficiency[nbin_jet_pt];
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
-        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
-        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
+        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",nbin_rl,rl_min, rl_max);
+        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",nbin_rl,rl_min, rl_max);
+        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
 
         hsig[jet_pt_bin]->Sumw2();
         hall[jet_pt_bin]->Sumw2();
@@ -41,13 +41,13 @@ void macro_print_pairefficiency_rl_jet_pt()
     }
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hcorr_data[Nbin_jet_pt];
-    TH1F* hall_data[Nbin_jet_pt];
+    TH1F* hcorr_data[nbin_jet_pt];
+    TH1F* hall_data[nbin_jet_pt];
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
+        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
 
         hcorr_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();
@@ -57,7 +57,7 @@ void macro_print_pairefficiency_rl_jet_pt()
     }
 
     // Project into the histograms
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
         ntuple_efficiency_reco->Project(Form("hsig[%i]",jet_pt_bin),"R_L",pair_jetpt_signal_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
         ntuple_efficiency_mc->Project(Form("hall[%i]",jet_pt_bin),"R_L"  ,pair_jetpt_cut[jet_pt_bin]+"(h1_pt<7&&h2_pt<7)");
@@ -78,7 +78,7 @@ void macro_print_pairefficiency_rl_jet_pt()
     THStack* s = new THStack();
     TLegend* l = new TLegend();
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
         s->Add(hsig[jet_pt_bin]);
         s->Add(hall[jet_pt_bin]);
@@ -100,7 +100,7 @@ void macro_print_pairefficiency_rl_jet_pt()
     THStack* s_efficiency = new THStack();
     TLegend* l_efficiency = new TLegend();
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
         hefficiency[jet_pt_bin]->Divide(hsig[jet_pt_bin],hall[jet_pt_bin],1,1,"B");
         set_histogram_style(hefficiency[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width, std_marker_style_jet_pt[jet_pt_bin], std_marker_size);
@@ -124,7 +124,7 @@ void macro_print_pairefficiency_rl_jet_pt()
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend();
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
         hcorr_data[jet_pt_bin]->Divide(hefficiency[jet_pt_bin]);
 

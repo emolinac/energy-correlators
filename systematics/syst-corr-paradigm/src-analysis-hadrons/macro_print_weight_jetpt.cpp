@@ -12,8 +12,8 @@ void macro_print_weight_jetpt()
     TFile*   fcorr       = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
     
-    TH1F* hcorr_data[Nbin_jet_pt]; 
-    // TH1F* hall_data[Nbin_jet_pt];  
+    TH1F* hcorr_data[nbin_jet_pt]; 
+    // TH1F* hall_data[nbin_jet_pt];  
 
     TCanvas* c = new TCanvas("c", "", 1920, 1080);
     c->Draw();
@@ -24,7 +24,7 @@ void macro_print_weight_jetpt()
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend();
     
-    for (int bin = 1 ; bin <= Nbin_jet_pt ; bin++)
+    for (int bin = 1 ; bin <= nbin_jet_pt ; bin++)
     {
         hcorr_data[bin-1] = new TH1F(Form("hcorr_data[%i]",bin-1),"",100,weight_min,weight_max);
         set_histogram_style(hcorr_data[bin-1], corr_marker_color_jet_pt[bin-1], std_line_width, corr_marker_style_jet_pt[bin-1], std_marker_size+1);

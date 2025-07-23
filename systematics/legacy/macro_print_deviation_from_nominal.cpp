@@ -17,15 +17,15 @@ void macro_print_deviation_from_nominal()
     THStack* s = new THStack();
     TLegend* l = new TLegend();
 
-    TH1F* h_nominal[Nbin_jet_pt];
-    TH1F* h_systematic[Nbin_jet_pt];
-    TH1F* h_deviations[Nbin_jet_pt];
+    TH1F* h_nominal[nbin_jet_pt];
+    TH1F* h_systematic[nbin_jet_pt];
+    TH1F* h_deviations[nbin_jet_pt];
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
         h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_e2c[%i]",jet_pt_bin));
         h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_e2c[%i]",jet_pt_bin));
-        h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",Nbin_rl,rl_binning);
+        h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",nbin_rl,rl_binning);
 
         h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
         h_deviations[jet_pt_bin]->Divide(h_nominal[jet_pt_bin]);

@@ -15,9 +15,9 @@ void macro_print_jet_kinematics()
         TNtuple* ntuple_jet_mc     = (TNtuple*) fin->Get(name_ntuple_mc_jet.c_str());
         TNtuple* ntuple_jet_mcreco = (TNtuple*) fin->Get(name_ntuple_mcreco_jet.c_str());
 
-        TH1F* h_pt_data   = new TH1F("h_pt_data"   ,"",20,jet_pt_binning[0],jet_pt_binning[Nbin_jet_pt]);
-        TH1F* h_pt_mc     = new TH1F("h_pt_mc"     ,"",20,jet_pt_binning[0],jet_pt_binning[Nbin_jet_pt]);
-        TH1F* h_pt_mcreco = new TH1F("h_pt_mcreco" ,"",20,jet_pt_binning[0],jet_pt_binning[Nbin_jet_pt]);
+        TH1F* h_pt_data   = new TH1F("h_pt_data"   ,"",20,jet_pt_binning[0],jet_pt_binning[nbin_jet_pt]);
+        TH1F* h_pt_mc     = new TH1F("h_pt_mc"     ,"",20,jet_pt_binning[0],jet_pt_binning[nbin_jet_pt]);
+        TH1F* h_pt_mcreco = new TH1F("h_pt_mcreco" ,"",20,jet_pt_binning[0],jet_pt_binning[nbin_jet_pt]);
         
         TH1F* h_z_pt_data   = new TH1F("h_z_pt_data"   ,"",20,0,200);
         TH1F* h_z_pt_mc     = new TH1F("h_z_pt_mc"     ,"",20,0,200);

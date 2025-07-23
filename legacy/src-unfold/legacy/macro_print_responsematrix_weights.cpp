@@ -14,11 +14,11 @@ void macro_print_responsematrix_weights()
   ntuple->SetBranchAddress("weight_truth",&weight_truth);
 
   // Create histograms with the respective true and matched reco 
-//   double em_weightunfolding_binning[Nbin_weight+1];
-//   determine_log10binning(Nbin_weight,weight_min,weight_max,em_weightunfolding_binning);    
-//   TH2F* hresp = new TH2F("hresp","",Nbin_weight, em_weightunfolding_binning,Nbin_weight, em_weightunfolding_binning);
+//   double em_weightunfolding_binning[nbin_weight+1];
+//   determine_log10binning(nbin_weight,weight_min,weight_max,em_weightunfolding_binning);    
+//   TH2F* hresp = new TH2F("hresp","",nbin_weight, em_weightunfolding_binning,nbin_weight, em_weightunfolding_binning);
 
-  TH2F* hresp = new TH2F("hresp","",Nbin_weight,weight_binning,Nbin_weight,weight_binning);
+  TH2F* hresp = new TH2F("hresp","",nbin_weight,weight_binning,nbin_weight,weight_binning);
 
   for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
   {

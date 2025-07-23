@@ -17,16 +17,16 @@ void macro_print_closuretest_rl_jetpt(int Niter = 5, double jet_pt_min_local = u
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH2D* hmeas = new TH2D("hmeas","",Nbin_rl+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH2D* htrue = new TH2D("htrue","",Nbin_rl+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2D* hmeas = new TH2D("hmeas","",nbin_rl+2,unfolding_rl_binning,nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2D* htrue = new TH2D("htrue","",nbin_rl+2,unfolding_rl_binning,nbin_jet_pt+2,unfolding_jetpt_binning);
 
     std::cout << "hmeas bins (X, Y): " << hmeas->GetNbinsX() << ", " << hmeas->GetNbinsY() << std::endl;
     std::cout << "htrue bins (X, Y): " << htrue->GetNbinsX() << ", " << htrue->GetNbinsY() << std::endl;                
     // Create response matrix object
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
 
-    TH2D* htrue_ref = new TH2D("htrue_ref","",Nbin_rl+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH2D* hct      = new TH2D("hct"     ,"",Nbin_rl+2,unfolding_rl_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2D* htrue_ref = new TH2D("htrue_ref","",nbin_rl+2,unfolding_rl_binning,nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2D* hct      = new TH2D("hct"     ,"",nbin_rl+2,unfolding_rl_binning,nbin_jet_pt+2,unfolding_jetpt_binning);
 
     TRandom3* rndm = new TRandom3();
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -64,12 +64,12 @@ void macro_print_closuretest_rl_jetpt(int Niter = 5, double jet_pt_min_local = u
     
     // gPad->SetLogy(1);
 
-    TH1D* htrue_ref_rl          = new TH1D("htrue_ref_rl","",Nbin_rl+2,unfolding_rl_binning);
-    TH1D* htrue_ref_jetpt       = new TH1D("htrue_ref_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1D* hunfolded_bayes_rl    = new TH1D("hunfolded_bayes_rl","",Nbin_rl+2,unfolding_rl_binning);
-    TH1D* hunfolded_bayes_jetpt = new TH1D("hunfolded_bayes_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1D* hct_rl                = new TH1D("hct_rl","",Nbin_rl+2,unfolding_rl_binning);
-    TH1D* hct_jetpt             = new TH1D("hct_jetpt","",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1D* htrue_ref_rl          = new TH1D("htrue_ref_rl","",nbin_rl+2,unfolding_rl_binning);
+    TH1D* htrue_ref_jetpt       = new TH1D("htrue_ref_jetpt","",nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1D* hunfolded_bayes_rl    = new TH1D("hunfolded_bayes_rl","",nbin_rl+2,unfolding_rl_binning);
+    TH1D* hunfolded_bayes_jetpt = new TH1D("hunfolded_bayes_jetpt","",nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1D* hct_rl                = new TH1D("hct_rl","",nbin_rl+2,unfolding_rl_binning);
+    TH1D* hct_jetpt             = new TH1D("hct_jetpt","",nbin_jet_pt+2,unfolding_jetpt_binning);
     
     htrue_ref_rl->Sumw2();
     htrue_ref_jetpt->Sumw2();
@@ -88,7 +88,7 @@ void macro_print_closuretest_rl_jetpt(int Niter = 5, double jet_pt_min_local = u
     
     hct_rl->Draw();
     hct_rl->SetTitle(";R_{L};Truth/Unfolded");
-    hct_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[Nbin_rl]);
+    hct_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[nbin_rl]);
     hct_rl->GetYaxis()->SetRangeUser(0.8,1.2);
     gPad->SetLogx(1);
     c->Print(Form("./plots/closuretest_2d_roounfold_rl_bayes_iter%i_jetptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    

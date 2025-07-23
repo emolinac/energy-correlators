@@ -16,11 +16,11 @@ void macro_print_mc_at_e2c()
     TNtuple* ntuple_mc         = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
     TNtuple* ntuple_mc_jet     = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
     
-    TH1F* hmcreco[Nbin_jet_pt]; 
-    TH1F* hmcreco_jet[Nbin_jet_pt]; 
+    TH1F* hmcreco[nbin_jet_pt]; 
+    TH1F* hmcreco_jet[nbin_jet_pt]; 
     
-    TH1F* hmc[Nbin_jet_pt]; 
-    TH1F* hmc_jet[Nbin_jet_pt]; 
+    TH1F* hmc[nbin_jet_pt]; 
+    TH1F* hmc_jet[nbin_jet_pt]; 
     
     TCanvas* c = new TCanvas("c","",1800,600);
     c->Draw();
@@ -32,7 +32,7 @@ void macro_print_mc_at_e2c()
     THStack* s_data[3];
     TLegend* l_data[3];
     
-    for (int bin = 0 ; bin < Nbin_z_pt ; bin++)
+    for (int bin = 0 ; bin < nbin_z_pt ; bin++)
     {
         c->cd(bin + 1);
 
@@ -40,7 +40,7 @@ void macro_print_mc_at_e2c()
         l_data[bin] = new TLegend();
 
         hmc_jet[bin] = new TH1F(Form("hmc_jet[%i]" ,bin),"",1,z_pt_binning[bin],z_pt_binning[bin + 1]); 
-        hmc[bin]     = new TH1F(Form("hmc[%i]" ,bin)    ,"",Nbin_rl,rl_binning_at);
+        hmc[bin]     = new TH1F(Form("hmc[%i]" ,bin)    ,"",nbin_rl,rl_binning_at);
         
         set_histogram_style(hmc[bin], std_marker_color_jet_pt[bin] , std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
 

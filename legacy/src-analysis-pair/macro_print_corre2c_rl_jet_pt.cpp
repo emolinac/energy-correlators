@@ -20,25 +20,25 @@ void macro_print_corre2c_rl_jet_pt()
     TNtuple* ntuple_purity          = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_rl+1];
-    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
+    double binning[nbin_rl+1];
+    determine_log10binning(nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig_eff[Nbin_jet_pt];
-    TH1F* hall_eff[Nbin_jet_pt];
-    TH1F* hefficiency[Nbin_jet_pt];
-    TH1F* hsig_pur[Nbin_jet_pt];
-    TH1F* hall_pur[Nbin_jet_pt];
-    TH1F* hpurity[Nbin_jet_pt];
+    TH1F* hsig_eff[nbin_jet_pt];
+    TH1F* hall_eff[nbin_jet_pt];
+    TH1F* hefficiency[nbin_jet_pt];
+    TH1F* hsig_pur[nbin_jet_pt];
+    TH1F* hall_pur[nbin_jet_pt];
+    TH1F* hpurity[nbin_jet_pt];
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig_eff[jet_pt_bin]    = new TH1F(Form("hsig_eff[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
-        hall_eff[jet_pt_bin]    = new TH1F(Form("hall_eff[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
-        hsig_pur[jet_pt_bin]    = new TH1F(Form("hsig_pur[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
-        hall_pur[jet_pt_bin]    = new TH1F(Form("hall_pur[%i]",jet_pt_bin)   ,"",Nbin_rl,rl_min, rl_max);
-        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
-        hpurity[jet_pt_bin]     = new TH1F(Form("hpurity[%i]",jet_pt_bin)    ,"",Nbin_rl,rl_min, rl_max);
+        hsig_eff[jet_pt_bin]    = new TH1F(Form("hsig_eff[%i]",jet_pt_bin)   ,"",nbin_rl,rl_min, rl_max);
+        hall_eff[jet_pt_bin]    = new TH1F(Form("hall_eff[%i]",jet_pt_bin)   ,"",nbin_rl,rl_min, rl_max);
+        hsig_pur[jet_pt_bin]    = new TH1F(Form("hsig_pur[%i]",jet_pt_bin)   ,"",nbin_rl,rl_min, rl_max);
+        hall_pur[jet_pt_bin]    = new TH1F(Form("hall_pur[%i]",jet_pt_bin)   ,"",nbin_rl,rl_min, rl_max);
+        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
+        hpurity[jet_pt_bin]     = new TH1F(Form("hpurity[%i]",jet_pt_bin)    ,"",nbin_rl,rl_min, rl_max);
 
         hsig_eff[jet_pt_bin]->Sumw2();
         hall_eff[jet_pt_bin]->Sumw2();
@@ -47,13 +47,13 @@ void macro_print_corre2c_rl_jet_pt()
     }
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hcorr_data[Nbin_jet_pt];
-    TH1F* hall_data[Nbin_jet_pt];
+    TH1F* hcorr_data[nbin_jet_pt];
+    TH1F* hall_data[nbin_jet_pt];
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",Nbin_rl,rl_min, rl_max);
+        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
 
         hcorr_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();
@@ -80,7 +80,7 @@ void macro_print_corre2c_rl_jet_pt()
     gPad->SetLogy(1);
 
     // Calculate corrections
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
         hefficiency[jet_pt_bin]->Divide(hsig_eff[jet_pt_bin],hall_eff[jet_pt_bin],1,1,"B");
         hpurity[jet_pt_bin]->Divide(hsig_pur[jet_pt_bin],hall_pur[jet_pt_bin],1,1,"B");
@@ -90,7 +90,7 @@ void macro_print_corre2c_rl_jet_pt()
     THStack* s_data = new THStack();
     TLegend* l_data = new TLegend(0.4,0.35);
 
-    for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+    for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
         hcorr_data[jet_pt_bin]->Divide(hefficiency[jet_pt_bin]);
         hcorr_data[jet_pt_bin]->Multiply(hpurity[jet_pt_bin]);

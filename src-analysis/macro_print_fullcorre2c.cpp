@@ -32,9 +32,9 @@ void macro_print_fullcorre2c(int niter = 4)
         set_unfolding_ntuple_branches(ntuple, &R_L_reco, &R_L_truth, &jet_pt_reco, &jet_pt_truth, &weight_pt_reco, &weight_pt_truth);
         
         // Create histograms with different types of binning
-        TH3D* hpurcorr = new TH3D("hpurcorr","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-        TH3D* hmeas    = new TH3D("hmeas"   ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-        TH3D* htrue    = new TH3D("htrue"   ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+        TH3D* hpurcorr = new TH3D("hpurcorr","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning,nbin_weight,weight_binning);
+        TH3D* hmeas    = new TH3D("hmeas"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning,nbin_weight,weight_binning);
+        TH3D* htrue    = new TH3D("htrue"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning,nbin_weight,weight_binning);
         RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
         
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
@@ -46,9 +46,9 @@ void macro_print_fullcorre2c(int niter = 4)
         }
 
         // Fill the purity corrected distributions
-        TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-        TH3D* hpuritycorrected    = new TH3D("hpuritycorrected" ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
-        TH3D* hpuritycorrected2   = new TH3D("hpuritycorrected2","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning,Nbin_weight,weight_binning);
+        TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+        TH3D* hpuritycorrected    = new TH3D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning,nbin_weight,weight_binning);
+        TH3D* hpuritycorrected2   = new TH3D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning,nbin_weight,weight_binning);
         
         ntuple_data->Project("hpuritycorrected" ,"weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
         ntuple_data->Project("hpuritycorrected2","weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
@@ -60,12 +60,12 @@ void macro_print_fullcorre2c(int niter = 4)
         TH2D* hpuritycorrected2_rl_jetpt = (TH2D*) hpuritycorrected2->Project3D("yx");
         hunfolded_ratio->Divide(hunfolded_bayes_rl_jetpt,hpuritycorrected2_rl_jetpt,1,1);
         
-        TH1F* hcorr_jet[Nbin_jet_pt];
-        TH1F* hcorr_jet_centroid[Nbin_jet_pt];
-        TH1F* hcorr_e2c[Nbin_jet_pt]; 
-        TH1F* hcorr_e2c_nounf[Nbin_jet_pt]; 
-        TH1F* hcorr_tau[Nbin_jet_pt]; 
-        TH1F* hcorr_tau_nounf[Nbin_jet_pt]; 
+        TH1F* hcorr_jet[nbin_jet_pt];
+        TH1F* hcorr_jet_centroid[nbin_jet_pt];
+        TH1F* hcorr_e2c[nbin_jet_pt]; 
+        TH1F* hcorr_e2c_nounf[nbin_jet_pt]; 
+        TH1F* hcorr_tau[nbin_jet_pt]; 
+        TH1F* hcorr_tau_nounf[nbin_jet_pt]; 
         
         TCanvas* c = new TCanvas("c", "", 1920, 1080);
         c->Draw();
@@ -83,14 +83,14 @@ void macro_print_fullcorre2c(int niter = 4)
         // c->Print(Form("./plots/unfolded3d_niter%_ratio_sepyears_linearbinning_unfbinvarv2.pdf",niter));
 
         // Fill the histograms
-        for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
+        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)  ,"", 1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
                 hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
 
-                hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", Nbin_rl_nominal,rl_nominal_binning);
-                hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)   ,"", Nbin_rl_nominal,rl_nominal_binning);
-                hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)         ,"", Nbin_rl_nominal,tau_nominal_binning);
-                hcorr_tau_nounf[bin]    = new TH1F(Form("hcorr_tau_nounf%i",bin)   ,"", Nbin_rl_nominal,tau_nominal_binning);
+                hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", nbin_rl_nominal,rl_nominal_binning);
+                hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)   ,"", nbin_rl_nominal,rl_nominal_binning);
+                hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)         ,"", nbin_rl_nominal,tau_nominal_binning);
+                hcorr_tau_nounf[bin]    = new TH1F(Form("hcorr_tau_nounf%i",bin)   ,"", nbin_rl_nominal,tau_nominal_binning);
                 
                 set_histogram_style(hcorr_e2c[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
                 set_histogram_style(hcorr_tau[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
@@ -141,7 +141,7 @@ void macro_print_fullcorre2c(int niter = 4)
         THStack* s_data = new THStack();
         TLegend* l_data = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
 
-        for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
+        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c[bin],"E");
                 l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }

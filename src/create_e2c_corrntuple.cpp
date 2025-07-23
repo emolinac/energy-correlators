@@ -71,15 +71,15 @@ int main()
         TH2D* h2_muon_2018_trgeff_data = (TH2D*) fefficiency_muon_2018_trg->Get("Hist_ALL_2018_ETA_PT_Eff");
 
         // Jet corrections
-        TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", nbin_jetpt_corrections, jetpt_corrections_binning);
         hnum_pur_jet->Sumw2();
         hden_pur_jet->Sumw2();
 
-        TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", nbin_jetpt_corrections, jetpt_corrections_binning);
         hnum_eff_jet->Sumw2();
         hden_eff_jet->Sumw2();
 
@@ -92,12 +92,12 @@ int main()
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
         // Hadron corrections
-        TH3F* hnum_pur    = new TH3F("hnum_pur"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH3F* hden_pur    = new TH3F("hden_pur"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH3F* hpurity     = new TH3F("hpurity"    , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH3F* hnum_eff    = new TH3F("hnum_eff"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH3F* hden_eff    = new TH3F("hden_eff"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
-        TH3F* hefficiency = new TH3F("hefficiency", "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, Nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH3F* hnum_pur    = new TH3F("hnum_pur"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH3F* hden_pur    = new TH3F("hden_pur"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH3F* hpurity     = new TH3F("hpurity"    , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH3F* hnum_eff    = new TH3F("hnum_eff"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH3F* hden_eff    = new TH3F("hden_eff"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jetpt_corrections, jetpt_corrections_binning);
+        TH3F* hefficiency = new TH3F("hefficiency", "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jetpt_corrections, jetpt_corrections_binning);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();

@@ -22,7 +22,7 @@ void macro_determine_binning()
         TH1F* h_weight_cumul = (TH1F*) h_weight->GetCumulative();
 
         // Determine binning in weights
-        double entries_bin_weight = h_weight->Integral()/Nbin_weight;
+        double entries_bin_weight = h_weight->Integral()/nbin_weight;
         std::cout<<"The number of entries for weight is "<<entries_bin_weight<<std::endl;
         std::cout<<"const double weight_binning[] = {"<<weight_min<<"";
         int counter_weight = 1;
@@ -30,7 +30,7 @@ void macro_determine_binning()
                 double q = h_weight_cumul->GetBinContent(bin);
 
                 // Exit when determined last bin
-                if (counter_weight == Nbin_weight) {
+                if (counter_weight == nbin_weight) {
                         std::cout<<", "<<weight_max<<"};"<<std::endl;
                         break;
                 }
@@ -47,19 +47,19 @@ void macro_determine_binning()
         // Close file
         f->Close();
 
-        const int Nbin = Nbin_rl;
+        const int Nbin = nbin_rl;
         double binning[Nbin + 1];
         
-        const int Nbin_log = Nbin_rl_nominal;
-        double binning_log[Nbin_log+1];
-        double binning_corr_log[Nbin_rl_altlogbin + 1];
+        const int nbin_log = nbin_rl_nominal;
+        double binning_log[nbin_log+1];
+        double binning_corr_log[nbin_rl_altlogbin + 1];
 
-        double binning_tau_log[Nbin_tau_logbin + 1];
+        double binning_tau_log[nbin_tau_logbin + 1];
 
         determine_eqsizebinning(Nbin, rl_min, rl_max, binning);
-        determine_log10binning(Nbin_log, rl_logmin, rl_logmax, binning_log);
-        determine_log10binning(Nbin_tau_logbin, tau_min, tau_max, binning_tau_log);
-        determine_log10binning(Nbin_rl_altlogbin, rl_logmin, rl_logmax, binning_corr_log);
+        determine_log10binning(nbin_log, rl_logmin, rl_logmax, binning_log);
+        determine_log10binning(nbin_tau_logbin, tau_min, tau_max, binning_tau_log);
+        determine_log10binning(nbin_rl_altlogbin, rl_logmin, rl_logmax, binning_corr_log);
         
         // rl binning
         std::cout<<"const double rl_binning[]              = {rl_min";
@@ -72,7 +72,7 @@ void macro_determine_binning()
         // rl log bin
         std::cout<<"const double rl_nominal_binning[]           = {rl_logmin";
         
-        for (int i = 1 ; i < Nbin_log ; i++)
+        for (int i = 1 ; i < nbin_log ; i++)
                 std::cout<<", "<<binning_log[i];
 
         std::cout<<", rl_logmax};"<<std::endl;
@@ -80,7 +80,7 @@ void macro_determine_binning()
         // rl alternative logbinning
         std::cout<<"const double rl_altlogbinning[]           = {rl_logmin";
         
-        for (int i = 1 ; i < Nbin_rl_altlogbin ; i++)
+        for (int i = 1 ; i < nbin_rl_altlogbin ; i++)
                 std::cout<<", "<<binning_corr_log[i];
 
         std::cout<<", rl_logmax};"<<std::endl;
@@ -88,7 +88,7 @@ void macro_determine_binning()
         // tau logbinning
         std::cout<<"const double tau_nominal_binning[]          = {tau_min";
         
-        for (int i = 1 ; i < Nbin_tau_logbin ; i++)
+        for (int i = 1 ; i < nbin_tau_logbin ; i++)
                 std::cout<<", "<<binning_tau_log[i];
         
         std::cout<<", tau_max};"<<std::endl;

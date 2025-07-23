@@ -22,15 +22,15 @@ void macro_print_deviation_from_nominal_logbin_ct(bool normalize = true, bool do
         TLegend* l     = new TLegend(0.2,0.7,0.3,0.9);
         TLegend* l_tau = new TLegend(0.2,0.7,0.3,0.9);
         
-        TH1F* h_nominal[Nbin_jet_pt];
-        TH1F* h_systematic[Nbin_jet_pt];
-        TH1F* h_deviations[Nbin_jet_pt];
+        TH1F* h_nominal[nbin_jet_pt];
+        TH1F* h_systematic[nbin_jet_pt];
+        TH1F* h_deviations[nbin_jet_pt];
 
-        TH1F* h_nominal_tau[Nbin_jet_pt];
-        TH1F* h_systematic_tau[Nbin_jet_pt];
-        TH1F* h_deviations_tau[Nbin_jet_pt];
+        TH1F* h_nominal_tau[nbin_jet_pt];
+        TH1F* h_systematic_tau[nbin_jet_pt];
+        TH1F* h_deviations_tau[nbin_jet_pt];
 
-        for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++) {
+        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
                 h_deviations[jet_pt_bin]     = (TH1F*) fout_dev->Get(Form("h_deviations%i",jet_pt_bin));
                 h_deviations_tau[jet_pt_bin] = (TH1F*) fout_dev->Get(Form("h_deviations_tau%i",jet_pt_bin));
 
@@ -41,7 +41,7 @@ void macro_print_deviation_from_nominal_logbin_ct(bool normalize = true, bool do
         TCanvas* c = new TCanvas("c", "", 1920, 1080);
         c->Draw();
 
-        for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++) {
+        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
                 s->Add(h_deviations[jet_pt_bin],"E1 X0");
                 l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
 

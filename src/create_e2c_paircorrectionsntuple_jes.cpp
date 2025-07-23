@@ -97,7 +97,7 @@ int main()
                                         mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Cor);
 
                 double new_jes_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < Nbin_jet_pt ; jet_pt_bin++)
+                for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
                         if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
                                 new_jes_cor = syst_jes_array[jet_pt_bin];
 

@@ -16,17 +16,17 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
     TNtuple* ntuple_jes_reco = (TNtuple*) f->Get((name_ntuple_jes_reco).c_str());
     
     // Define the necessary histograms to calculate purity
-    TH1F* hjes_data[Nbin_jet_pt]; 
-    TH1F* hjes_reco[Nbin_jet_pt];  
-    TH1F* hjes_ratio[Nbin_jet_pt];  
+    TH1F* hjes_data[nbin_jet_pt]; 
+    TH1F* hjes_reco[nbin_jet_pt];  
+    TH1F* hjes_ratio[nbin_jet_pt];  
 
-    THStack* hs[Nbin_jet_pt];
-    TLegend* l[Nbin_jet_pt];
+    THStack* hs[nbin_jet_pt];
+    TLegend* l[nbin_jet_pt];
     TCanvas* c = new TCanvas("c","",1500,500);
     c->Draw();
     c->Divide(3,1);
     
-    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
         hs[bin] = new THStack();
         l[bin]  = new TLegend(0.6,0.8,0.75,0.9,Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
@@ -57,7 +57,7 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
 
     c->Print(Form("./plots/jet_jes_ptratios.pdf"));
 
-    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
         hjes_ratio[bin] = new TH1F(Form("hjes_ratio[%i]",bin) ,"",nbin , ptratio_min , ptratio_max);
         hjes_ratio[bin]->Divide(hjes_data[bin],hjes_reco[bin]);

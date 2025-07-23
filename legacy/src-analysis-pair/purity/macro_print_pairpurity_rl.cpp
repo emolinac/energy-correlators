@@ -17,13 +17,13 @@ void macro_print_pairpurity_rl()
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[Nbin_rl+1];
-    determine_log10binning(Nbin_rl, rl_min, rl_max, binning);
+    double binning[nbin_rl+1];
+    determine_log10binning(nbin_rl, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate purity
-    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_rl,rl_min, rl_max);
-    TH1F* hall    = new TH1F("hall"   ,"",Nbin_rl,rl_min, rl_max);
-    TH1F* hpurity = new TH1F("hpurity","",Nbin_rl,rl_min, rl_max);
+    TH1F* hsig    = new TH1F("hsig"   ,"",nbin_rl,rl_min, rl_max);
+    TH1F* hall    = new TH1F("hall"   ,"",nbin_rl,rl_min, rl_max);
+    TH1F* hpurity = new TH1F("hpurity","",nbin_rl,rl_min, rl_max);
     hsig->Sumw2();
     hall->Sumw2();
     hpurity->Sumw2();
@@ -32,8 +32,8 @@ void macro_print_pairpurity_rl()
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hsig_data = new TH1F("hsig_data","",Nbin_rl,rl_min, rl_max);
-    TH1F* hall_data = new TH1F("hall_data","",Nbin_rl,rl_min, rl_max);
+    TH1F* hsig_data = new TH1F("hsig_data","",nbin_rl,rl_min, rl_max);
+    TH1F* hall_data = new TH1F("hall_data","",nbin_rl,rl_min, rl_max);
     hsig_data->Sumw2();
     hall_data->Sumw2();
 

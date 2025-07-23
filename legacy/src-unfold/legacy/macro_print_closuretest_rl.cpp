@@ -16,12 +16,12 @@ void macro_print_closuretest_rl(int Niter = 1, double jet_pt_min_local = 15, dou
     ntuple->SetBranchAddress("R_L_truth",&R_L_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH1F* hmeas = new TH1F("hmeas","",Nbin_rl+2,unfolding_rl_binning);
-    TH1F* htrue = new TH1F("htrue","",Nbin_rl+2,unfolding_rl_binning);
-    TH2F* hresp = new TH2F("hresp","",Nbin_rl+2,unfolding_rl_binning,Nbin_rl+2,unfolding_rl_binning);
+    TH1F* hmeas = new TH1F("hmeas","",nbin_rl+2,unfolding_rl_binning);
+    TH1F* htrue = new TH1F("htrue","",nbin_rl+2,unfolding_rl_binning);
+    TH2F* hresp = new TH2F("hresp","",nbin_rl+2,unfolding_rl_binning,nbin_rl+2,unfolding_rl_binning);
 
-    TH1F* htrue_ref = new TH1F("htrue_ref","",Nbin_rl+2,unfolding_rl_binning);
-    TH1F* h_ct      = new TH1F("h_ct"     ,"",Nbin_rl+2,unfolding_rl_binning);
+    TH1F* htrue_ref = new TH1F("htrue_ref","",nbin_rl+2,unfolding_rl_binning);
+    TH1F* h_ct      = new TH1F("h_ct"     ,"",nbin_rl+2,unfolding_rl_binning);
 
     TRandom3* rndm = new TRandom3();
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)

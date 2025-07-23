@@ -15,12 +15,12 @@ void macro_print_closuretest_jetpt(int Niter = 1, double jet_pt_min_local = unfo
     ntuple->SetBranchAddress("jet_pt_truth",&jet_pt_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH1F* hmeas = new TH1F("hmeas","",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* htrue = new TH1F("htrue","",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH2F* hresp = new TH2F("hresp","",Nbin_jet_pt+2,unfolding_jetpt_binning,Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hmeas = new TH1F("hmeas","",nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* htrue = new TH1F("htrue","",nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH2F* hresp = new TH2F("hresp","",nbin_jet_pt+2,unfolding_jetpt_binning,nbin_jet_pt+2,unfolding_jetpt_binning);
 
-    TH1F* htrue_ref = new TH1F("htrue_ref","",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* h_ct      = new TH1F("h_ct"     ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* htrue_ref = new TH1F("htrue_ref","",nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* h_ct      = new TH1F("h_ct"     ,"",nbin_jet_pt+2,unfolding_jetpt_binning);
 
     TRandom3* rndm = new TRandom3();
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)

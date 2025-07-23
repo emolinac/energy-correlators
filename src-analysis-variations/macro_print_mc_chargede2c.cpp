@@ -16,15 +16,15 @@ void macro_print_mc_chargede2c()
     TNtuple* ntuple_mc         = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
     TNtuple* ntuple_mc_jet     = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
     
-    TH1F* hmcreco_pp[Nbin_jet_pt]; 
-    TH1F* hmcreco_pm[Nbin_jet_pt]; 
-    TH1F* hmcreco_mm[Nbin_jet_pt]; 
-    TH1F* hmcreco_all[Nbin_jet_pt]; 
+    TH1F* hmcreco_pp[nbin_jet_pt]; 
+    TH1F* hmcreco_pm[nbin_jet_pt]; 
+    TH1F* hmcreco_mm[nbin_jet_pt]; 
+    TH1F* hmcreco_all[nbin_jet_pt]; 
     
-    TH1F* hmc_pp[Nbin_jet_pt]; 
-    TH1F* hmc_pm[Nbin_jet_pt]; 
-    TH1F* hmc_mm[Nbin_jet_pt]; 
-    TH1F* hmc_all[Nbin_jet_pt];
+    TH1F* hmc_pp[nbin_jet_pt]; 
+    TH1F* hmc_pm[nbin_jet_pt]; 
+    TH1F* hmc_mm[nbin_jet_pt]; 
+    TH1F* hmc_all[nbin_jet_pt];
     
     TCanvas* c = new TCanvas("c","",1800,600);
     c->Draw();
@@ -36,22 +36,22 @@ void macro_print_mc_chargede2c()
     THStack* s_data[3];
     TLegend* l_data[3];
     
-    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
         c->cd(bin + 1);
 
         s_data[bin] = new THStack();
         l_data[bin] = new TLegend();
 
-        hmcreco_pp[bin] = new TH1F(Form("hmcreco_pp[%i]",bin)  ,"",Nbin_rl,rl_binning);
-        hmcreco_pm[bin] = new TH1F(Form("hmcreco_pm[%i]",bin)  ,"",Nbin_rl,rl_binning);
-        hmcreco_mm[bin] = new TH1F(Form("hmcreco_mm[%i]",bin)  ,"",Nbin_rl,rl_binning);
-        hmcreco_all[bin] = new TH1F(Form("hmcreco_all[%i]",bin),"",Nbin_rl,rl_binning);
+        hmcreco_pp[bin] = new TH1F(Form("hmcreco_pp[%i]",bin)  ,"",nbin_rl,rl_binning);
+        hmcreco_pm[bin] = new TH1F(Form("hmcreco_pm[%i]",bin)  ,"",nbin_rl,rl_binning);
+        hmcreco_mm[bin] = new TH1F(Form("hmcreco_mm[%i]",bin)  ,"",nbin_rl,rl_binning);
+        hmcreco_all[bin] = new TH1F(Form("hmcreco_all[%i]",bin),"",nbin_rl,rl_binning);
         
-        hmc_pp[bin] = new TH1F(Form("hmc_pp[%i]" ,bin)  ,"",Nbin_rl,rl_binning);
-        hmc_pm[bin] = new TH1F(Form("hmc_pm[%i]" ,bin)  ,"",Nbin_rl,rl_binning);
-        hmc_mm[bin] = new TH1F(Form("hmc_mm[%i]" ,bin)  ,"",Nbin_rl,rl_binning);
-        hmc_all[bin] = new TH1F(Form("hmc_all[%i]" ,bin),"",Nbin_rl,rl_binning);
+        hmc_pp[bin] = new TH1F(Form("hmc_pp[%i]" ,bin)  ,"",nbin_rl,rl_binning);
+        hmc_pm[bin] = new TH1F(Form("hmc_pm[%i]" ,bin)  ,"",nbin_rl,rl_binning);
+        hmc_mm[bin] = new TH1F(Form("hmc_mm[%i]" ,bin)  ,"",nbin_rl,rl_binning);
+        hmc_all[bin] = new TH1F(Form("hmc_all[%i]" ,bin),"",nbin_rl,rl_binning);
         
         // Project into the histograms
         ntuple_mcreco->Project(Form("hmcreco_pp[%i]",bin),"R_L",e2c_jetpt_cut_weightpt_pp[bin]);

@@ -16,16 +16,16 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         TNtuple* ntuple_jes_reco = (TNtuple*) f->Get((name_ntuple_jes_reco).c_str());
         
         // Define the necessary histograms to calculate purity
-        TH1F* hdata_nojec[Nbin_jet_pt]; 
-        TH1F* hreco_nojec[Nbin_jet_pt];  
-        TH1F* hreco_newjec[Nbin_jet_pt];  
-        TH1F* hbetastar_balance[Nbin_jet_pt];  
-        TH1F* hbetastar_chisquare[Nbin_jet_pt];
+        TH1F* hdata_nojec[nbin_jet_pt]; 
+        TH1F* hreco_nojec[nbin_jet_pt];  
+        TH1F* hreco_newjec[nbin_jet_pt];  
+        TH1F* hbetastar_balance[nbin_jet_pt];  
+        TH1F* hbetastar_chisquare[nbin_jet_pt];
 
-        TGraph* chisquare_graph[Nbin_jet_pt];
+        TGraph* chisquare_graph[nbin_jet_pt];
 
-        THStack* hs[Nbin_jet_pt];
-        TLegend* l[Nbin_jet_pt];
+        THStack* hs[nbin_jet_pt];
+        TLegend* l[nbin_jet_pt];
         TCanvas* c = new TCanvas("c","",1500,500);
         c->Draw();
         c->Divide(3,1);
@@ -35,7 +35,7 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         const int    beta_star_bins = 60;
         double beta_star_step = (beta_star_end - beta_star_init)/beta_star_bins;
         
-        for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
+        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 c->cd(bin + 1);
                 
                 hs[bin] = new THStack();
@@ -86,12 +86,12 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                 c->Print(Form("./plots/jes_beta_balance.pdf"));
 
         std::cout<<"COPY INTO sys-jes-jer.h ---> const double syst_jes_array[] = { ";
-        for (int bin = 0 ; bin < Nbin_jet_pt ; bin++) {
+        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 c->cd(bin + 1);
 
                 double beta_star_min = hbetastar_chisquare[bin]->GetBinCenter(hbetastar_chisquare[bin]->GetMinimumBin());
                 
-                std::cout<<beta_star_min; if (bin<Nbin_jet_pt-1) std::cout<<", ";
+                std::cout<<beta_star_min; if (bin<nbin_jet_pt-1) std::cout<<", ";
 
                 hbetastar_chisquare[bin]->Draw("E");
                 // hbetastar_chisquare[bin]->SetMinimum(0);

@@ -15,9 +15,9 @@ void macro_print_jetefficiency()
     TNtuple* ntuple = (TNtuple*) fefficiency->Get((name_ntuple_jetefficiency).c_str());
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig    = new TH1F("hsig"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hall    = new TH1F("hall"   ,"",Nbin_jet_pt+2,unfolding_jetpt_binning);
-    TH1F* hefficiency = new TH1F("hefficiency","",Nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hsig    = new TH1F("hsig"   ,"",nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hall    = new TH1F("hall"   ,"",nbin_jet_pt+2,unfolding_jetpt_binning);
+    TH1F* hefficiency = new TH1F("hefficiency","",nbin_jet_pt+2,unfolding_jetpt_binning);
     hsig->Sumw2();
     hall->Sumw2();
     hefficiency->Sumw2();

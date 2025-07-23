@@ -26,13 +26,13 @@ const double rl_min_at     = rl_min;
 const double rl_max_at     = TMath::Pi();
 
 // Binning
-const int Nbin_jet_pt            = 3;
-const int Nbin_weight            = 10;
-const int Nbin_weight_unfolding  = Nbin_weight+2;
-const int Nbin_jet_e             = 3;
-const int Nbin_z_pt              = 3;
-const int Nbin_jetpt_corrections = 3;
-const int Nbin_jet_pt_unfolding  = Nbin_jet_pt+2;
+const int nbin_jet_pt            = 3;
+const int nbin_weight            = 10;
+const int nbin_weight_unfolding  = nbin_weight+2;
+const int nbin_jet_e             = 3;
+const int nbin_z_pt              = 3;
+const int nbin_jetpt_corrections = 3;
+const int nbin_jet_pt_unfolding  = nbin_jet_pt+2;
 
 const double z_pt_binning[]   = {15,20,30,75};
 const double jet_pt_binning[] = {jet_pt_min_nom, 30., 50., jet_pt_max};
@@ -43,23 +43,23 @@ const double jetpt_corrections_binning[] = {20,30,50,100};
 const double unfolding_jetpt_binning[]   = {15,20,30,50,100,150};
 
 // Angular distance binning
-// const int Nbin_rl    = 10; // Golden binning
-const int Nbin_rl                  = 15;
-const int Nbin_rl_unfolding        = Nbin_rl + 2;
-const int Nbin_rl_nominal           = 15; 
-const int Nbin_rl_nominal_unfolding = Nbin_rl_nominal + 2;
+// const int nbin_rl    = 10; // Golden binning
+const int nbin_rl                  = 15;
+const int nbin_rl_unfolding        = nbin_rl + 2;
+const int nbin_rl_nominal           = 15; 
+const int nbin_rl_nominal_unfolding = nbin_rl_nominal + 2;
 
 const double rl_binning[]              = {rl_min, 0.0408, 0.0736, 0.1064, 0.1392, 0.172, 0.2048, 0.2376, 0.2704, 0.3032, 0.336, 0.3688, 0.4016, 0.4344, 0.4672, rl_max};
 const double unfolding_rl_binning[]    = {rl_absmin,rl_min, 0.0408, 0.0736, 0.1064, 0.1392, 0.172, 0.2048, 0.2376, 0.2704, 0.3032, 0.336, 0.3688, 0.4016, 0.4344, 0.4672, rl_max, rl_absmax};
 const double rl_nominal_binning[]           = {rl_logmin, 0.0247871, 0.0307201, 0.0380731, 0.0471861, 0.0584804, 0.072478, 0.089826, 0.111326, 0.137973, 0.170998, 0.211927, 0.262653, 0.32552, 0.403435, rl_logmax};
 const double unfolding_rl_nominal_binning[] = {rl_absmin,rl_logmin, 0.0247871, 0.0307201, 0.0380731, 0.0471861, 0.0584804, 0.072478, 0.089826, 0.111326, 0.137973, 0.170998, 0.211927, 0.262653, 0.32552, 0.403435, rl_logmax, rl_absmax};
 
-const int Nbin_tau_logbin     = Nbin_rl_nominal;
+const int nbin_tau_logbin     = nbin_rl_nominal;
 const double tau_nominal_binning[] = {tau_min, 0.68799, 0.94666, 1.30259, 1.79233, 2.46621, 3.39346, 4.66933, 6.4249, 8.84054, 12.1644, 16.738, 23.0311, 31.6904, 43.6053, tau_max};
 
 // Alternative binnings
-const int Nbin_rl_altlogbin           = 20; 
-const int Nbin_rl_altlogbin_unfolding = Nbin_rl_nominal + 2;
+const int nbin_rl_altlogbin           = 20; 
+const int nbin_rl_altlogbin_unfolding = nbin_rl_nominal + 2;
 
 const double rl_altlogbinning[]           = {rl_logmin, 0.0234924, 0.0275946, 0.0324131, 0.0380731, 0.0447214, 0.0525306, 0.0617034, 0.072478, 0.085134, 0.1, 0.117462, 0.137973, 0.162066, 0.190365, 0.223607, 0.262653, 0.308517, 0.36239, 0.42567, rl_logmax};
 const double unfolding_rl_altlogbinning[] = {rl_absmin,rl_logmin, 0.0234924, 0.0275946, 0.0324131, 0.0380731, 0.0447214, 0.0525306, 0.0617034, 0.072478, 0.085134, 0.1, 0.117462, 0.137973, 0.162066, 0.190365, 0.223607, 0.262653, 0.308517, 0.36239, 0.42567, rl_logmax, rl_absmax};

@@ -56,14 +56,14 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     ntuple->SetBranchAddress("weight_pt_truth",&weight_truth);
     
     // Create histograms with the respective true and matched reco 
-    TH2D* hpurcorr = new TH2D("hpurcorr","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hmeas    = new TH2D("hmeas"   ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* htrue    = new TH2D("htrue"   ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hpurcorr = new TH2D("hpurcorr","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hmeas    = new TH2D("hmeas"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* htrue    = new TH2D("htrue"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
 
-    TH2D* hpurcorr_l = new TH2D("hpurcorr_l","",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hmeas_l    = new TH2D("hmeas_l"   ,"",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* htrue_l    = new TH2D("htrue_l"   ,"",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hpurcorr_l = new TH2D("hpurcorr_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hmeas_l    = new TH2D("hmeas_l"   ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* htrue_l    = new TH2D("htrue_l"   ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     RooUnfoldResponse* response_l = new RooUnfoldResponse(hmeas_l, htrue_l, "response_l");
 
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -77,12 +77,12 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     }
 
     // Fill the purity corrected distributions
-    TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",Nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hunfolded_ratio_l   = new TH2D("hunfolded_ratio_l"  ,"",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hpuritycorrected_l  = new TH2D("hpuritycorrected_l" ,"",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
-    TH2D* hpuritycorrected2_l = new TH2D("hpuritycorrected2_l","",Nbin_rl_unfolding,unfolding_rl_binning,Nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hunfolded_ratio_l   = new TH2D("hunfolded_ratio_l"  ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hpuritycorrected_l  = new TH2D("hpuritycorrected_l" ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
+    TH2D* hpuritycorrected2_l = new TH2D("hpuritycorrected2_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jetpt_binning);
     
     ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
@@ -98,16 +98,16 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     TH2D* hunfolded_bayes_l = (TH2D*) unfold_l.Hunfold();
     hunfolded_ratio_l->Divide(hunfolded_bayes_l,hpuritycorrected2_l,1,1);
 
-    TH1F* hcorr_e2c[Nbin_jet_pt]; 
-    TH1F* hmc[Nbin_jet_pt]; 
-    TH1F* hmcreco[Nbin_jet_pt]; 
-    TH1F* hcorr_e2c_l[Nbin_jet_pt]; 
-    TH1F* hmc_l[Nbin_jet_pt]; 
-    TH1F* hmcreco_l[Nbin_jet_pt]; 
+    TH1F* hcorr_e2c[nbin_jet_pt]; 
+    TH1F* hmc[nbin_jet_pt]; 
+    TH1F* hmcreco[nbin_jet_pt]; 
+    TH1F* hcorr_e2c_l[nbin_jet_pt]; 
+    TH1F* hmc_l[nbin_jet_pt]; 
+    TH1F* hmcreco_l[nbin_jet_pt]; 
 
-    TH1F* hcorr_jet[Nbin_jet_pt];
-    TH1F* hmc_jet[Nbin_jet_pt]; 
-    TH1F* hmcreco_jet[Nbin_jet_pt]; 
+    TH1F* hcorr_jet[nbin_jet_pt];
+    TH1F* hmc_jet[nbin_jet_pt]; 
+    TH1F* hmcreco_jet[nbin_jet_pt]; 
     
     TCanvas* c = new TCanvas("c","",1800,600);
     c->Draw();
@@ -119,14 +119,14 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     THStack* s_data[3];
     TLegend* l_data[3];
 
-    for (int bin = 0 ; bin < Nbin_jet_pt ; bin++)
+    for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
-        hcorr_e2c[bin]   = new TH1F(Form("hcorr_e2c[%i]",bin) ,"",Nbin_rl_nominal,rl_nominal_binning);
-        hmc[bin]         = new TH1F(Form("hmc[%i]" ,bin)      ,"",Nbin_rl_nominal,rl_nominal_binning);
-        hmcreco[bin]     = new TH1F(Form("hmcreco[%i]" ,bin)  ,"",Nbin_rl_nominal,rl_nominal_binning);
-        hcorr_e2c_l[bin] = new TH1F(Form("hcorr_e2c_l[%i]",bin) ,"",Nbin_rl,rl_binning);
-        hmc_l[bin]       = new TH1F(Form("hmc_l[%i]" ,bin)      ,"",Nbin_rl,rl_binning);
-        hmcreco_l[bin]   = new TH1F(Form("hmcreco_l[%i]" ,bin)  ,"",Nbin_rl,rl_binning);
+        hcorr_e2c[bin]   = new TH1F(Form("hcorr_e2c[%i]",bin) ,"",nbin_rl_nominal,rl_nominal_binning);
+        hmc[bin]         = new TH1F(Form("hmc[%i]" ,bin)      ,"",nbin_rl_nominal,rl_nominal_binning);
+        hmcreco[bin]     = new TH1F(Form("hmcreco[%i]" ,bin)  ,"",nbin_rl_nominal,rl_nominal_binning);
+        hcorr_e2c_l[bin] = new TH1F(Form("hcorr_e2c_l[%i]",bin) ,"",nbin_rl,rl_binning);
+        hmc_l[bin]       = new TH1F(Form("hmc_l[%i]" ,bin)      ,"",nbin_rl,rl_binning);
+        hmcreco_l[bin]   = new TH1F(Form("hmcreco_l[%i]" ,bin)  ,"",nbin_rl,rl_binning);
         
         hcorr_jet[bin]   = new TH1F(Form("hcorr_jet[%i]" ,bin)   ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
         hmc_jet[bin]     = new TH1F(Form("hmc_jet[%i]" ,bin)     ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]);
@@ -196,7 +196,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     }
 
     // Draw the log binning histos
-    for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
+    for (int bin = 0 ; bin < nbin_jet_pt ; bin ++)
     {
         c->cd(bin + 1);
         s_data[bin] = new THStack();
@@ -218,7 +218,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     }
     if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logbinning_2dunf.pdf",niter));
     
-    for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
+    for (int bin = 0 ; bin < nbin_jet_pt ; bin ++)
     {
         c->cd(bin + 1);
         s_data[bin]->SetMaximum(1.2);
@@ -228,7 +228,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
     if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logbinning_logscale_2dunf.pdf",niter));
     
     // Draw the log binning histos
-    for (int bin = 0 ; bin < Nbin_jet_pt ; bin ++)
+    for (int bin = 0 ; bin < nbin_jet_pt ; bin ++)
     {
         c->cd(bin + 1);
         s_data[bin] = new THStack();
