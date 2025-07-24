@@ -127,6 +127,8 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
 
         if (total > 0)
                 std::cout<<total_err*100./total;
+        else if (total == 0)
+                std::cout<<0;
 }
 
 void set_histo_sqrt_content(TH1F* h)
