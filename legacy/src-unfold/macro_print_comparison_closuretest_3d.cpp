@@ -116,7 +116,7 @@ void macro_print_comparison_closuretest_3d(int Niter = 5, double jet_pt_min_loca
     hs_jet_pt->Add(hct_jet_pt);
     hs_jet_pt->Add(hct_jet_pt_of);
     hs_jet_pt->Draw("NOSTACK");
-    hs_jet_pt->SetTitle(";p^{jet}_{t}(GeV);Truth/Unfolded");
+    hs_jet_pt->SetTitle(";p_{T,jet}(GeV);Truth/Unfolded");
     hs_jet_pt->GetXaxis()->SetRangeUser(20,100);
     hs_jet_pt->SetMinimum(0.89);
     hs_jet_pt->SetMaximum(1.11);

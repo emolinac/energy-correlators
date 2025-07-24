@@ -81,7 +81,7 @@ void macro_print_jet_kinematics()
     hjet_pt->Add(h_pt_data);
     hjet_pt->Add(h_pt_mc);
     hjet_pt->Add(h_pt_mcreco);
-    hjet_pt->SetTitle(";p^{jet}_{t}(GeV);Normalized Distributions");
+    hjet_pt->SetTitle(";p_{T,jet}(GeV);Normalized Distributions");
     
     THStack* hjeteta = new THStack();
     hjeteta->Add(h_eta_data);

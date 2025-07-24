@@ -18,7 +18,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
         }
 
         TFile* fout_dev = new TFile((output_folder + devfromnom_namef[systematic]).c_str(),"RECREATE");
-        TFile* fout     = new TFile((output_folder + namef_histos_paircorr_e2c_logbin_shapect).c_str(),"RECREATE");
+        TFile* fout     = new TFile((output_folder + namef_histos_paircorr_e2c_shapect).c_str(),"RECREATE");
         gROOT->cd();
 
         TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr_ct).c_str()); 
@@ -144,7 +144,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_shapect_niter%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
+                c->Print(Form("./plots/unfolded2d_shapect_niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
 
         hmcreco->Draw("col");
         for (int i = 2; i < hmcreco->GetNbinsX(); ++i) {
@@ -165,7 +165,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/reweight_shapect_niter%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
+                c->Print(Form("./plots/reweight_shapect_niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
 
         THStack* s_data     = new THStack();
         TLegend* l_data     = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
@@ -310,6 +310,6 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = 4, int ct_
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/closuretest_shapect_niter%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
+                if (do_print) c->Print(Form("./plots/closuretest_shapect_niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
         }
 }

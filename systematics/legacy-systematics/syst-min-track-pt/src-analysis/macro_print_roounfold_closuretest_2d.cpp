@@ -96,7 +96,7 @@ void macro_print_roounfold_closuretest_2d(int Niter = 4)
     THStack* hs_jet_pt = new THStack();
     hs_jet_pt->Add(hct_jet_pt);
     hs_jet_pt->Draw("NOSTACK");
-    hs_jet_pt->SetTitle(";p^{jet}_{t}(GeV);Truth/Unfolded");
+    hs_jet_pt->SetTitle(";p_{T,jet}(GeV);Truth/Unfolded");
     // hs_jet_pt->GetXaxis()->SetRangeUser(20,100);
     hs_jet_pt->SetMinimum(0.89);
     hs_jet_pt->SetMaximum(1.11);

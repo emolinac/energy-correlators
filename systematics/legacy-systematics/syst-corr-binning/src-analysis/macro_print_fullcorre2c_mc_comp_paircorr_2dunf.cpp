@@ -206,7 +206,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         s_data[bin]->Add(hmcreco[bin],"E");
         s_data[bin]->Add(hcorr_e2c[bin],"E");
         s_data[bin]->Draw("NOSTACK");
-        s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+        s_data[bin]->SetTitle(Form("%.1f<p_{T,jet}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         s_data[bin]->SetMaximum(1.2);
         s_data[bin]->SetMinimum(40E-03);
 
@@ -216,7 +216,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         gPad->SetLogx(1);
         l_data[bin]->Draw("SAME");    
     }
-    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logbinning_2dunf.pdf",niter));
+    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_2dunf.pdf",niter));
     
     for (int bin = 0 ; bin < nbin_jet_pt ; bin ++)
     {
@@ -225,7 +225,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         gPad->SetLogx(1);
         gPad->SetLogy(1);
     }
-    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logbinning_logscale_2dunf.pdf",niter));
+    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logscale_2dunf.pdf",niter));
     
     // Draw the log binning histos
     for (int bin = 0 ; bin < nbin_jet_pt ; bin ++)
@@ -238,7 +238,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = 4, bool do_print
         s_data[bin]->Add(hmcreco_l[bin],"E");
         s_data[bin]->Add(hcorr_e2c_l[bin],"E");
         s_data[bin]->Draw("NOSTACK");
-        s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+        s_data[bin]->SetTitle(Form("%.1f<p_{T,jet}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         s_data[bin]->SetMaximum(5E-02);
         s_data[bin]->SetMinimum(1E-03);
 

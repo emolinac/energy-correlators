@@ -9,7 +9,7 @@
 void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = true, bool compare_to_nominal = false, bool compare_to_truth = true)
 {
     // Open the necessary files
-    TFile* fout        = new TFile((output_folder + namef_histos_paircorr_e2c_logbin_ct).c_str(),"RECREATE");
+    TFile* fout        = new TFile((output_folder + namef_histos_paircorr_e2c_ct).c_str(),"RECREATE");
     TFile* fout_linear = new TFile((output_folder + namef_histos_paircorr_e2c_ct).c_str(),"RECREATE");
     gROOT->cd();
 
@@ -115,7 +115,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
     hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
     gPad->SetLogx(1);
     gPad->SetLogy(1);
-    if (do_print) c->Print(Form("./plots/unfolded2d_niter%i_ratio_logbinning_ct.pdf",niter));
+    if (do_print) c->Print(Form("./plots/unfolded2d_niter%i_ratio_ct.pdf",niter));
 
     hunfolded_ratio_l->Draw("col text");
     hunfolded_ratio_l->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
@@ -214,24 +214,24 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
     for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_tau[bin],"E");
-        l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+        l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
     }
     
     s_data->Draw("NOSTACK");
-    s_data->SetTitle(";R_{L} #LT p^{jet}_{t} #GT(GeV);#Sigma_{EEC}(R_{L})");
+    s_data->SetTitle(";R_{L} #LT p_{T,jet} #GT(GeV);#Sigma_{EEC}(R_{L})");
     l_data_tau->Draw("SAME");
     gPad->SetLogx(1);
     gPad->SetLogy(0);
     
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    if (do_print) c->Print(Form("./plots/paircorrtau_niter%i_logbinning_2dunf_ct.pdf",niter));
+    if (do_print) c->Print(Form("./plots/paircorrtau_niter%i_2dunf_ct.pdf",niter));
 
     s_data = new THStack();
     for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_e2c[bin],"E");
-        l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+        l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
     }
     
     s_data->Draw("NOSTACK");
@@ -242,11 +242,11 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
     
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_logbinning_2dunf_ct.pdf",niter));
+    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_2dunf_ct.pdf",niter));
 
     if (compare_to_nominal)
     {
-        TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_e2c_logbin).c_str());
+        TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_e2c).c_str());
         if (fnominal->IsZombie()) return;
 
         TH2F* hct_ratio = new TH2F("hct_ratio","",nbin_rl_nominal,rl_nominal_binning,nbin_jet_pt,jet_pt_binning);
@@ -286,7 +286,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
         hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        if (do_print) c->Print(Form("./plots/corrpseudata_data_comp_niter%i_ratio_logbinning.pdf",niter));
+        if (do_print) c->Print(Form("./plots/corrpseudata_data_comp_niter%i_ratio.pdf",niter));
     }
 
     if (compare_to_truth)
@@ -329,6 +329,6 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct(int niter = 4, bool do_print = tr
         hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        if (do_print) c->Print(Form("./plots/closuretest_niter%i_ratio_logbinning.pdf",niter));
+        if (do_print) c->Print(Form("./plots/closuretest_niter%i_ratio.pdf",niter));
     }
 }

@@ -96,7 +96,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_niter%i_ratio_logbinning_incsyst.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_niter%i_ratio_incsyst.pdf",niter));
 
         // Fill the NOIMNAL histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -157,7 +157,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
         TH1F* hdev[nbin_jet_pt];
         TH1F* hdev_tau[nbin_jet_pt];
 
-        std::cout<<"Source & $20<p_T(jet)<30$ & $30<p_T(jet)<50$ & $50<p_T(jet)<100$ \\\\"<<std::endl;
+        std::cout<<"Source & $20<p_{T,jet}<30$ & $30<p_{T,jet}<50$ & $50<p_{T,jet}<100$ \\\\"<<std::endl;
         std::cout<<"\\hline"<<std::endl;
         for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
                 fsyst[syst_index] = new TFile((output_folder + devfromnom_namef[available_systematics[syst_index]]).c_str());
@@ -183,7 +183,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
                 delete fsyst[syst_index];
         }
 
-        std::cout<<"Source & $20<p_T(jet)<30$ & $30<p_T(jet)<50$ & $50<p_T(jet)<100$ \\\\"<<std::endl;
+        std::cout<<"Source & $20<p_{T,jet}<30$ & $30<p_{T,jet}<50$ & $50<p_{T,jet}<100$ \\\\"<<std::endl;
         std::cout<<"\\hline"<<std::endl;
         for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
                 fsyst[syst_index] = new TFile((output_folder + devfromnom_namef[available_systematics[syst_index]]).c_str());
@@ -217,11 +217,11 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_tau[bin],"E X0");
                 s_data->Add(hcorr_tau_syst[bin],"E2");
-                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lpf");
+                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lpf");
         }
         
         s_data->Draw("NOSTACK");
-        s_data->SetTitle(";R_{L} #LT p^{jet}_{t} #GT(GeV);#Sigma_{EEC}(R_{L})");
+        s_data->SetTitle(";R_{L} #LT p_{T,jet} #GT(GeV);#Sigma_{EEC}(R_{L})");
         l_data_tau->Draw("SAME");
         gPad->SetLogx(1);
         gPad->SetLogy(0);
@@ -229,13 +229,13 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
         draw_lhcb_tag(lhcbprint);
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrtau_niter%i_logbinning_2dunf_incsyst.pdf",niter));
+                c->Print(Form("./plots/paircorrtau_niter%i_2dunf_incsyst.pdf",niter));
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c[bin],"E X0");
                 s_data->Add(hcorr_e2c_syst[bin],"E2");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lpf");
+                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lpf");
         }
         
         s_data->Draw("NOSTACK");
@@ -248,5 +248,5 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = 4, bool do_print
         draw_lhcb_tag(lhcbprint);
 
         if (do_print) 
-                c->Print(Form("./plots/paircorre2c_niter%i_logbinning_2dunf_incsyst.pdf",niter));
+                c->Print(Form("./plots/paircorre2c_niter%i_2dunf_incsyst.pdf",niter));
 }

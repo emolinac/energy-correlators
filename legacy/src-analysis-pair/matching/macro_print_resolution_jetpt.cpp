@@ -38,7 +38,7 @@ void macro_print_resolution_jet_pt()
     set_histogram_style(hres, kCyan, std_line_width, std_marker_style, std_marker_size);
     set_histogram_style(hres, kCyan, std_line_width, std_marker_style, std_marker_size);
     hres->Draw();
-    hres->SetTitle(";#Delta p^{jet}_{t}(Reco,Truth)(GeV);");
+    hres->SetTitle(";#Delta p_{T,jet}(Reco,Truth)(GeV);");
     line1->DrawLine(hres->GetBinCenter(hres->GetMaximumBin())-get_hwhm(hres),0,hres->GetBinCenter(hres->GetMaximumBin())-get_hwhm(hres),hres->GetMaximum());
     line2->DrawLine(hres->GetBinCenter(hres->GetMaximumBin())+get_hwhm(hres),0,hres->GetBinCenter(hres->GetMaximumBin())+get_hwhm(hres),hres->GetMaximum());
 
@@ -47,7 +47,7 @@ void macro_print_resolution_jet_pt()
     c->Print("./plots/resolution_jet_pt.pdf");
 
     hratio->Draw();
-    hratio->SetTitle(";p^{jet}_{t}(Reco)/p^{jet}_{t}(Truth);");
+    hratio->SetTitle(";p_{T,jet}(Reco)/p_{T,jet}(Truth);");
     line1->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())-get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())-get_hwhm(hratio),hratio->GetMaximum());
     line2->DrawLine(hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),0,hratio->GetBinCenter(hratio->GetMaximumBin())+get_hwhm(hratio),hratio->GetMaximum());
 

@@ -14,8 +14,8 @@ std::string systematic = "syst-unfolding-dim";
 
 void macro_print_deviation_from_nominal_logbin(bool normalize = false)
 {
-    std::string syst_name = (systematic=="syst-corr-paradigm") ? namef_histos_corr_e2c_logbin : namef_histos_paircorr_e2c_logbin;
-    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_e2c_logbin).c_str());
+    std::string syst_name = (systematic=="syst-corr-paradigm") ? namef_histos_corr_e2c : namef_histos_paircorr_e2c;
+    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_e2c).c_str());
     TFile* fsystematic = new TFile((systematic+"/output-files/"+syst_name).c_str());
 
     THStack* s = new THStack();
@@ -43,7 +43,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = false)
         set_histogram_style(h_deviations[jet_pt_bin], corr_marker_color_jet_pt[jet_pt_bin], std_line_width-1, corr_marker_style_jet_pt[jet_pt_bin], std_marker_size+1);
 
         s->Add(h_deviations[jet_pt_bin],"E1 X0 L");
-        l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
+        l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
     }
 
     TCanvas* c = new TCanvas("c", "", 1920, 1080);
@@ -57,5 +57,5 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = false)
     s->SetMaximum(0.9);
     s->SetMinimum(-0.9);
 
-    c->Print(Form("./plots/dev_from_nominal_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
+    c->Print(Form("./plots/dev_from_nominal_%s_norm-%s.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 }

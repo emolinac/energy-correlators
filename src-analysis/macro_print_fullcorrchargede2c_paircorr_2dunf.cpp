@@ -9,7 +9,7 @@
 void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = 4, bool do_print = true)
 {
         // Open the necessary files
-        TFile* fout = new TFile((output_folder + namef_histos_paircorr_e2c_logbin).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_histos_paircorr_e2c).c_str(),"RECREATE");
         gROOT->cd();
 
         TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str()); 
@@ -85,7 +85,7 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = 4, bool do_print 
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_niter%i_ratio_logbinning.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_niter%i_ratio.pdf",niter));
 
         // Fill the histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -159,11 +159,11 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = 4, bool do_print 
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_tau[bin],"E");
-                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
-        s_data->SetTitle(";R_{L} #LT p^{jet}_{t} #GT(GeV);#Sigma_{EEC}(R_{L})");
+        s_data->SetTitle(";R_{L} #LT p_{T,jet} #GT(GeV);#Sigma_{EEC}(R_{L})");
         l_data_tau->Draw("SAME");
         gPad->SetLogx(1);
         gPad->SetLogy(0);
@@ -171,14 +171,14 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = 4, bool do_print 
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrtau_niter%i_logbinning_2dunf.pdf",niter));
+                c->Print(Form("./plots/paircorrtau_niter%i_2dunf.pdf",niter));
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c_eqcharge[bin] ,"E1 X0 ");
                 s_data->Add(hcorr_e2c_neqcharge[bin],"E1 X0 ");
-                l_data_chargede2c->AddEntry(hcorr_e2c_eqcharge[bin],Form("eq. charge %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
-                l_data_chargede2c->AddEntry(hcorr_e2c_neqcharge[bin],Form("op. charge %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
+                l_data_chargede2c->AddEntry(hcorr_e2c_eqcharge[bin],Form("eq. charge %.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
+                l_data_chargede2c->AddEntry(hcorr_e2c_neqcharge[bin],Form("op. charge %.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
         }
         
         s_data->Draw("NOSTACK");
@@ -191,12 +191,12 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = 4, bool do_print 
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrchargede2c_niter%i_logbinning_2dunf.pdf",niter));
+                c->Print(Form("./plots/paircorrchargede2c_niter%i_2dunf.pdf",niter));
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c[bin],"E");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
@@ -208,6 +208,6 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = 4, bool do_print 
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorre2c_niter%i_logbinning_2dunf.pdf",niter));
+                c->Print(Form("./plots/paircorre2c_niter%i_2dunf.pdf",niter));
 }
 

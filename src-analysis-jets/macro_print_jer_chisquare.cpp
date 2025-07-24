@@ -46,7 +46,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                 c->cd(bin + 1);
                 
                 hs[bin] = new THStack();
-                l[bin]  = new TLegend(gPad->GetLeftMargin()+0.01,0.8,gPad->GetLeftMargin()+0.26,0.9,Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+                l[bin]  = new TLegend(gPad->GetLeftMargin()+0.01,0.8,gPad->GetLeftMargin()+0.26,0.9,Form(" %.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
 
                 hdata_nojec[bin]          = new TH1F(Form("hdata_nojec[%i]",bin)         ,"", nbin           , ptratio_min    , ptratio_max); 
                 hreco_nojec[bin]          = new TH1F(Form("hreco_nojec[%i]",bin)         ,"", nbin           , ptratio_min    , ptratio_max); 
@@ -91,8 +91,8 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                 halphastar_balance[bin]->SetTitle(";#alpha;");
 
                 l[bin]->Clear();
-                l[bin]->SetHeader(Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                l[bin]->AddEntry(halphastar_balance[bin],Form("#Delta #sigma(p^{jet}_{t}/p^{Z}_{t}), #alpha^{*}=%.4f",alpha_star_min),"p");
+                l[bin]->SetHeader(Form(" %.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+                l[bin]->AddEntry(halphastar_balance[bin],Form("#Delta #sigma(p_{T,jet}/p^{Z}_{t}), #alpha^{*}=%.4f",alpha_star_min),"p");
                 l[bin]->Draw("SAME");
         }
 
@@ -113,8 +113,8 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                 halphastar_chisquare[bin]->SetTitle(";#alpha;");
                 
                 l[bin]->Clear();
-                l[bin]->SetHeader(Form(" %.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                l[bin]->AddEntry(halphastar_chisquare[bin],Form("#chi^{2}(p^{jet}_{t}/p^{Z}_{t}), #alpha^{*}=%.4f",alpha_star_min),"p");
+                l[bin]->SetHeader(Form(" %.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+                l[bin]->AddEntry(halphastar_chisquare[bin],Form("#chi^{2}(p_{T,jet}/p^{Z}_{t}), #alpha^{*}=%.4f",alpha_star_min),"p");
                 l[bin]->Draw("SAME");
         }
 

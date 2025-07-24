@@ -60,7 +60,7 @@ void macro_print_closuretest_rl_jet_pt(int Niter = 5, double jet_pt_min_local = 
     // // gStyle->SetPaintTextFormat(".3f");
     // // hct->SetMarkerSize(.7);
     // // hct->Smooth();
-    // // hct->SetTitle(";R_{L};p^{jet}_{t}");
+    // // hct->SetTitle(";R_{L};p_{T,jet}");
     
     // gPad->SetLogy(1);
 
@@ -94,7 +94,7 @@ void macro_print_closuretest_rl_jet_pt(int Niter = 5, double jet_pt_min_local = 
     c->Print(Form("./plots/closuretest_2d_roounfold_rl_bayes_iter%i_jet_ptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    
 
     hct_jet_pt->Draw();
-    hct_jet_pt->SetTitle(";p^{jet}_{t}(GeV);Truth/Unfolded");
+    hct_jet_pt->SetTitle(";p_{T,jet}(GeV);Truth/Unfolded");
     hct_jet_pt->GetXaxis()->SetRangeUser(20,100);
     hct_jet_pt->GetYaxis()->SetRangeUser(0.8,1.2);
     gPad->SetLogx(0);
@@ -105,7 +105,7 @@ void macro_print_closuretest_rl_jet_pt(int Niter = 5, double jet_pt_min_local = 
     // // gStyle->SetPaintTextFormat(".3f");
     // // hct->SetMarkerSize(.7);
     // // hct->Smooth();
-    // // hct->SetTitle(";R_{L};p^{jet}_{t}");
+    // // hct->SetTitle(";R_{L};p_{T,jet}");
     
     // gPad->SetLogy(1);
     // // c->Print(Form("./plots/closuretest_roounfold_rl_bayes_iter%i_jet_ptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    

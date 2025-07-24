@@ -32,7 +32,7 @@ void macro_print_responsematrices()
 
         gStyle->SetPaintTextFormat("1.f");
         hresp_jet_pt->Draw("col text");
-        hresp_jet_pt->SetTitle("Response matrix of p^{jet}_{t};Reco;Truth");
+        hresp_jet_pt->SetTitle("Response matrix of p_{T,jet};Reco;Truth");
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         c->Print("./plots/responsematrix_jet_pt.pdf");

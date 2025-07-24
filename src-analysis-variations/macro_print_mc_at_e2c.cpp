@@ -63,5 +63,5 @@ void macro_print_mc_at_e2c()
         l_data[bin]->Draw("SAME");
     }
     
-    // c->Print("./plots/mc_mcreco_e2c_at_fullrange_logbinning.pdf");
+    // c->Print("./plots/mc_mcreco_e2c_at_fullrange.pdf");
 }

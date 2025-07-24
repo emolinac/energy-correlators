@@ -66,7 +66,7 @@ void macro_print_closuretest_jet_pt(int Niter = 1, double jet_pt_min_local = unf
 
     h_ct->GetYaxis()->SetNdivisions(505);
     h_ct->Draw("E0");
-    h_ct->SetTitle(";p^{jet}_{t}(GeV);Unfolded/True");
+    h_ct->SetTitle(";p_{T,jet}(GeV);Unfolded/True");
     // h_ct->GetYaxis()->SetRangeUser(0.9,1.1);
 
     // gPad->SetLogx(1);

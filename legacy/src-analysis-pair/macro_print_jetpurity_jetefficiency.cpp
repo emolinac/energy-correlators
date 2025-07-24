@@ -59,7 +59,7 @@ void macro_print_jetpurity_jetefficiency()
     THStack* hs = new THStack();
     hs->Add(hefficiency);
     hs->Add(hpurity);
-    hs->SetTitle(";p^{jet}_{t}(GeV);");
+    hs->SetTitle(";p_{T,jet}(GeV);");
     hs->Draw("NOSTACK");
     
 

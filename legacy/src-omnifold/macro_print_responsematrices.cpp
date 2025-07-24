@@ -38,7 +38,7 @@ void macro_print_responsematrices()
     }
 
     hresp_jet_pt->Draw("col text");
-    hresp_jet_pt->SetTitle("Response matrix of p^{jet}_{t};Reco;Truth");
+    hresp_jet_pt->SetTitle("Response matrix of p_{T,jet};Reco;Truth");
     c->Print("./plots/responsematrix_jet_pt.pdf");
     hresp_rl->Draw("col text");
     hresp_rl->SetTitle("Response matrix of R_{L};Reco;Truth");

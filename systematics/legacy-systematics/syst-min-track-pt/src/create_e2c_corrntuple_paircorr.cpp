@@ -131,7 +131,7 @@ int main()
   hpurity->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
   gPad->SetLogx(1);
   gPad->SetLogy(1);
-  c->Print("../src-analysis/plots/pair_purity_correction_logbin.pdf");
+  c->Print("../src-analysis/plots/pair_purity_correction.pdf");
 
   hefficiency->Draw("col text");
   hefficiency->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
@@ -139,7 +139,7 @@ int main()
   hefficiency->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
   gPad->SetLogx(1);
   gPad->SetLogy(1);
-  c->Print("../src-analysis/plots/pair_efficiency_correction_logbin.pdf");
+  c->Print("../src-analysis/plots/pair_efficiency_correction.pdf");
 
   // Create necessary 4vectors
   TLorentzVector* Jet_4vector = new TLorentzVector();

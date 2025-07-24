@@ -6,9 +6,9 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_print = false, int index_syst = 0)
+void macro_print_deviation_from_nominal(bool normalize = true, bool do_print = false, int index_syst = 0)
 {
-        if (available_systematics[index_syst]=="ct") {
+        if (available_systematics[index_syst]=="ct" || available_systematics[index_syst]=="shape-ct") {
                 std::cout<<"Remember CT dev from nominal is calculated inside macro_print_fullcorre2c_paircorr_2dunf_ct_niter.cpp !!!"<<std::endl; 
                 return;
         }
@@ -17,7 +17,7 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
         TFile* fout = new TFile((output_folder + devfromnom_namef[systematic]).c_str(),"RECREATE");
         gROOT->cd();
 
-        TFile* fnominal    = new TFile((output_folder + namef_histos_paircorr_e2c_logbin).c_str());
+        TFile* fnominal    = new TFile((output_folder + namef_histos_paircorr_e2c).c_str());
         TFile* fsystematic = new TFile((output_folder+systematic_namef[systematic]).c_str());
 
         THStack* s     = new THStack();
@@ -69,10 +69,10 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
 
         for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
                 s->Add(h_deviations[jet_pt_bin],"E1 X0 L");
-                l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
+                l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
 
                 s_tau->Add(h_deviations_tau[jet_pt_bin],"E1 X0 L");
-                l_tau->AddEntry(h_deviations_tau[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
+                l_tau->AddEntry(h_deviations_tau[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
         }
 
         s->Draw("NOSTACK");
@@ -83,15 +83,15 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = true, bool do_pr
         s->SetMinimum(0.5);
 
         if (do_print) 
-                c->Print(Form("./plots/dev_from_nominal_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
+                c->Print(Form("./plots/dev_from_nominal_%s_norm-%s.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 
         s_tau->Draw("NOSTACK");
-        s_tau->SetTitle(";R_{L} #LT p^{jet}_{t} #GT(GeV);Frac. Dev. From Nominal");
+        s_tau->SetTitle(";R_{L} #LT p_{T,jet} #GT(GeV);Frac. Dev. From Nominal");
         gPad->SetLogx(1);
         l_tau->Draw("SAME");
         s_tau->SetMaximum(1.5);
         s_tau->SetMinimum(0.5);
 
         if (do_print) 
-                c->Print(Form("./plots/dev_from_nominal_tau_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
+                c->Print(Form("./plots/dev_from_nominal_tau_%s_norm-%s.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 }

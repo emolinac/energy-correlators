@@ -9,7 +9,7 @@
 void macro_print_fullcorre2c(int niter = 4)
 {
     // Open the necessary files
-    TFile* fout        = new TFile((output_folder + namef_histos_corr_e2c_logbin).c_str(),"RECREATE");
+    TFile* fout        = new TFile((output_folder + namef_histos_corr_e2c).c_str(),"RECREATE");
     TFile* fout_linear = new TFile((output_folder + namef_histos_corr_e2c).c_str(),"RECREATE");
     gROOT->cd();
 
@@ -170,7 +170,7 @@ void macro_print_fullcorre2c(int niter = 4)
     for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_e2c[bin],"E");
-        l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+        l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
     }
     
     s_data->Draw("NOSTACK");
@@ -180,7 +180,7 @@ void macro_print_fullcorre2c(int niter = 4)
     
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/fullcorre2c_niter%i_logbinning.pdf",niter,corr_rel_error));
+    c->Print(Form("./plots/fullcorre2c_niter%i.pdf",niter,corr_rel_error));
     
     // Draw Linear binning distribution
     s_data = new THStack();

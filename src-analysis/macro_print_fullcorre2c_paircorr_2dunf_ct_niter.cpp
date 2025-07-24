@@ -17,14 +17,14 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         }
 
         TFile* fout_dev = new TFile((output_folder + devfromnom_namef[systematic]).c_str(),"RECREATE");
-        TFile* fout     = new TFile((output_folder + namef_histos_paircorr_e2c_logbin_ct).c_str(),"RECREATE");
+        TFile* fout     = new TFile((output_folder + namef_histos_paircorr_e2c_ct).c_str(),"RECREATE");
         gROOT->cd();
 
         TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr_ct).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
 
-        TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_e2c_logbin).c_str());
+        TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_e2c).c_str());
         if (fnominal->IsZombie()) 
                 return;
         
@@ -119,7 +119,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
         hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        if (do_print) c->Print(Form("./plots/unfolded2d_niter%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
+        if (do_print) c->Print(Form("./plots/unfolded2d_niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
 
         THStack* s_data     = new THStack();
         TLegend* l_data     = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
@@ -270,6 +270,6 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = 4, int ct_niter
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/closuretest_niter%i_ratio_logbinning_ctniter%i.pdf",niter,ct_niter));
+                if (do_print) c->Print(Form("./plots/closuretest_niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
         }
 }

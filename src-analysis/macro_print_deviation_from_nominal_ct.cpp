@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_deviation_from_nominal_logbin_ct(bool normalize = true, bool do_print = true, int index_syst = 1)
+void macro_print_deviation_from_nominal_ct(bool normalize = true, bool do_print = true, int index_syst = 1)
 {
         if (available_systematics[index_syst]!="ct") {
                 std::cout<<"This code is only valid for CT !!!"<<std::endl; 
@@ -43,10 +43,10 @@ void macro_print_deviation_from_nominal_logbin_ct(bool normalize = true, bool do
 
         for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
                 s->Add(h_deviations[jet_pt_bin],"E1 X0");
-                l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
+                l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
 
                 s_tau->Add(h_deviations_tau[jet_pt_bin],"E1 X0");
-                l_tau->AddEntry(h_deviations_tau[jet_pt_bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
+                l_tau->AddEntry(h_deviations_tau[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
         }
 
         s->Draw("NOSTACK");
@@ -57,15 +57,15 @@ void macro_print_deviation_from_nominal_logbin_ct(bool normalize = true, bool do
         s->SetMinimum(0.5);
 
         if (do_print) 
-                c->Print(Form("./plots/dev_from_nominal_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
+                c->Print(Form("./plots/dev_from_nominal_%s_norm-%s.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 
         s_tau->Draw("NOSTACK");
-        s_tau->SetTitle(";R_{L} #LT p^{jet}_{t} #GT(GeV);#LT Corr. Pseudodata / Truth #GT");
+        s_tau->SetTitle(";R_{L} #LT p_{T,jet} #GT(GeV);#LT Corr. Pseudodata / Truth #GT");
         gPad->SetLogx(1);
         l_tau->Draw("SAME");
         s_tau->SetMaximum(1.5);
         s_tau->SetMinimum(0.5);
 
         if (do_print) 
-                c->Print(Form("./plots/dev_from_nominal_tau_%s_norm-%s_logbin.pdf",systematic.c_str(),(normalize)?"yes":"no"));
+                c->Print(Form("./plots/dev_from_nominal_tau_%s_norm-%s.pdf",systematic.c_str(),(normalize)?"yes":"no"));
 }

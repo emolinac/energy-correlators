@@ -170,7 +170,7 @@ int main()
         hpurity->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_purity_correction_logbin.pdf");
+        c->Print("../src-analysis/plots/pair_purity_correction.pdf");
 
         hefficiency->Draw("col text");
         hefficiency->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
@@ -178,7 +178,7 @@ int main()
         hefficiency->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_efficiency_correction_logbin.pdf");
+        c->Print("../src-analysis/plots/pair_efficiency_correction.pdf");
 
         // DELETE LATER!!!!
         hpurity_eqcharge->Draw("col text");
@@ -187,7 +187,7 @@ int main()
         hpurity_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_purity_correction_eqcharge_logbin.pdf");
+        c->Print("../src-analysis/plots/pair_purity_correction_eqcharge.pdf");
 
         hefficiency_eqcharge->Draw("col text");
         hefficiency_eqcharge->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
@@ -195,7 +195,7 @@ int main()
         hefficiency_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_efficiency_correction_eqcharge_logbin.pdf");
+        c->Print("../src-analysis/plots/pair_efficiency_correction_eqcharge.pdf");
 
         hpurity_neqcharge->Draw("col text");
         hpurity_neqcharge->SetTitle("Purity Correction;R_{L};p^{jet}_{T}(GeV)");
@@ -203,7 +203,7 @@ int main()
         hpurity_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_purity_correction_neqcharge_logbin.pdf");
+        c->Print("../src-analysis/plots/pair_purity_correction_neqcharge.pdf");
 
         hefficiency_neqcharge->Draw("col text");
         hefficiency_neqcharge->SetTitle("Efficiency Correction;R_{L};p^{jet}_{T}(GeV)");
@@ -211,7 +211,7 @@ int main()
         hefficiency_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_efficiency_correction_neqcharge_logbin.pdf");
+        c->Print("../src-analysis/plots/pair_efficiency_correction_neqcharge.pdf");
         
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector = new TLorentzVector();

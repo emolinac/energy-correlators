@@ -48,7 +48,7 @@ const double max_relerror[]   = {0.50,0.35,0.45};
 
 // Misc analysis cuts
 // TCut pair_matching_cut = "R_L_truth!=-999";
-TCut pair_matching_cut = "TMath::Abs(R_L-R_L_truth)<rl_resolution";
+TCut pair_matching_cut = Form("TMath::Abs(R_L-R_L_truth)<%f",rl_resolution);
 
 // Nominal Analysis Cuts
 

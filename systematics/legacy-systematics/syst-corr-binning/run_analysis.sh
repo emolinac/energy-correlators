@@ -33,5 +33,5 @@ echo "Corr. data ntuple ready!"
 
 # echo "Producing results"
 # cd ../src-analysis/
-# root -b -q macro_print_fullcorre2c_logbin.cpp
+# root -b -q macro_print_fullcorre2c.cpp
 # root -b -q macro_print_fullcorre2c.cpp

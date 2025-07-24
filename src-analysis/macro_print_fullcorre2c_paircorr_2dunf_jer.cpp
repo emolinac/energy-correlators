@@ -9,7 +9,7 @@
 void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = true, bool compare_to_nominal = false)
 {
         // Open the necessary files
-        TFile* fout = new TFile((output_folder + namef_histos_paircorr_e2c_logbin_jer).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_histos_paircorr_e2c_jer).c_str(),"RECREATE");
         gROOT->cd();
 
         TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr_jer).c_str()); 
@@ -97,7 +97,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_niter%i_ratio_logbinning_jer.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_niter%i_ratio_jer.pdf",niter));
 
         // Fill the histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -154,11 +154,11 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_tau[bin],"E");
-                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
-        s_data->SetTitle(";R_{L} #LT p^{jet}_{t} #GT(GeV);#Sigma_{EEC}(R_{L})");
+        s_data->SetTitle(";R_{L} #LT p_{T,jet} #GT(GeV);#Sigma_{EEC}(R_{L})");
         l_data_tau->Draw("SAME");
         gPad->SetLogx(1);
         gPad->SetLogy(0);
@@ -166,12 +166,12 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrtau_niter%i_logbinning_2dunf_jer.pdf",niter));
+                c->Print(Form("./plots/paircorrtau_niter%i_2dunf_jer.pdf",niter));
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c[bin],"E");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p^{jet}_{t}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
@@ -183,10 +183,10 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorre2c_niter%i_logbinning_2dunf_jer.pdf",niter));
+                c->Print(Form("./plots/paircorre2c_niter%i_2dunf_jer.pdf",niter));
 
         if (compare_to_nominal) {
-                TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_e2c_logbin).c_str());
+                TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_e2c).c_str());
                 
                 if (fnominal->IsZombie()) 
                         return;
@@ -226,6 +226,6 @@ void macro_print_fullcorre2c_paircorr_2dunf_jer(int niter = 4, bool do_print = t
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/nom_jer_comp_niter%i_ratio_logbinning.pdf",niter));
+                if (do_print) c->Print(Form("./plots/nom_jer_comp_niter%i_ratio.pdf",niter));
         }
 }

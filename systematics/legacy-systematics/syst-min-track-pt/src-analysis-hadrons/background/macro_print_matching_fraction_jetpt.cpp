@@ -85,9 +85,9 @@ void macro_print_matching_fraction_jet_pt()
     l->Draw("SAME");
 
     TLegend* l2 = new TLegend();
-    l2->AddEntry(hratio_matched[0],Form("%.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[0],jet_pt_binning[1]),"p");
-    l2->AddEntry(hratio_matched[1],Form("%.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[1],jet_pt_binning[2]),"p");
-    l2->AddEntry(hratio_matched[2],Form("%.1f<p^{jet}_{t}(GeV)<%.1f",jet_pt_binning[2],jet_pt_binning[3]),"p");
+    l2->AddEntry(hratio_matched[0],Form("%.1f<p_{T,jet}(GeV)<%.1f",jet_pt_binning[0],jet_pt_binning[1]),"p");
+    l2->AddEntry(hratio_matched[1],Form("%.1f<p_{T,jet}(GeV)<%.1f",jet_pt_binning[1],jet_pt_binning[2]),"p");
+    l2->AddEntry(hratio_matched[2],Form("%.1f<p_{T,jet}(GeV)<%.1f",jet_pt_binning[2],jet_pt_binning[3]),"p");
     l2->Draw("SAME");
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");

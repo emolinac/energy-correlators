@@ -14,9 +14,9 @@ void draw_lhcb_tag(TLatex* latex)
 {
         latex->SetLineWidth(2);
         latex->DrawLatexNDC(0.75, 0.85, "#font[22]{LHCb}");
-        latex->DrawLatexNDC(0.75, 0.80, "#font[22]{p-p collisions}");
+        latex->DrawLatexNDC(0.75, 0.80, "#font[22]{pp collisions}");
         latex->DrawLatexNDC(0.75, 0.75, "#font[22]{#sqrt{s} = 13 TeV}");
-        latex->DrawLatexNDC(0.75, 0.70, "#font[22]{Z-Tagged Jets}");
+        latex->DrawLatexNDC(0.75, 0.70, "#font[22]{AK5 Z-Tagged Jets}");
 }
 
 void set_lhcb_watermark_properties(TLatex* latex)
