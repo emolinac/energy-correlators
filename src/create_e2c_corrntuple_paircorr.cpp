@@ -55,7 +55,7 @@ int main()
         TNtuple* ntuple_purity_jet      = (TNtuple*) fpurity_jet->Get((name_ntuple_jetpurity.c_str()));
         TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jetefficiency.c_str()));
         TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str(),"All Data",ntuple_paircorrdata_vars); 
-        TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str(),"All Data",ntuple_jet_vars_nominal); 
+        TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str(),"All Data",ntuple_jet_vars); 
         ntuple_data->SetAutoSave(0);
         ntuple_corrjet->SetAutoSave(0);
 
@@ -221,7 +221,7 @@ int main()
           
         // Define array carrying the variables
         float vars[Nvars_paircorrdata];
-        float vars_jet[Nvars_corrjet_nominal];
+        float vars_jet[Nvars_corrjet];
 
         // Fill the data TNtuple
         std::cout<<"Working with 2016 data."<<std::endl;
@@ -396,7 +396,7 @@ int main()
 
                 vars_jet[0]  = Jet_4vector->Pt();
                 vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = datatree_2016->Jet_NDtr;
+                vars_jet[2]  = jet_ndtr_nominal;
                 vars_jet[3]  = jet_efficiency;
                 vars_jet[4]  = jet_purity;
                 vars_jet[5]  = jet_efficiency_error;
@@ -412,7 +412,6 @@ int main()
                 vars_jet[15] = Z0_4vector->Pt();
                 vars_jet[16] = Z0_4vector->Eta();
                 vars_jet[17] = Z0_4vector->Rapidity();
-                vars_jet[18] = jet_ndtr_nominal;
                 
                 ntuple_corrjet->Fill(vars_jet);
 
@@ -591,7 +590,7 @@ int main()
 
                 vars_jet[0]  = Jet_4vector->Pt();
                 vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = datatree_2017->Jet_NDtr;
+                vars_jet[2]  = jet_ndtr_nominal;
                 vars_jet[3]  = jet_efficiency;
                 vars_jet[4]  = jet_purity;
                 vars_jet[5]  = jet_efficiency_error;
@@ -607,7 +606,6 @@ int main()
                 vars_jet[15] = Z0_4vector->Pt();
                 vars_jet[16] = Z0_4vector->Eta();
                 vars_jet[17] = Z0_4vector->Rapidity();
-                vars_jet[18] = jet_ndtr_nominal;
                 
                 ntuple_corrjet->Fill(vars_jet);
 
@@ -786,7 +784,7 @@ int main()
 
                 vars_jet[0]  = Jet_4vector->Pt();
                 vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = datatree_2018->Jet_NDtr;
+                vars_jet[2]  = jet_ndtr_nominal;
                 vars_jet[3]  = jet_efficiency;
                 vars_jet[4]  = jet_purity;
                 vars_jet[5]  = jet_efficiency_error;
@@ -802,7 +800,6 @@ int main()
                 vars_jet[15] = Z0_4vector->Pt();
                 vars_jet[16] = Z0_4vector->Eta();
                 vars_jet[17] = Z0_4vector->Rapidity();
-                vars_jet[17] = jet_ndtr_nominal;
                 
                 ntuple_corrjet->Fill(vars_jet);
 

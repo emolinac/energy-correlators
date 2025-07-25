@@ -149,13 +149,11 @@ std::string name_ntuple_jes_reco      = "ntuple_jes_reco";
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_corrjet         = 18;
-const int Nvars_corrjet_nominal = 19;
 const int Nvars_jetpurity       = 8;
 const int Nvars_jetefficiency   = 7;
 const int Nvars_jet_minimal     = 2;
 
 const char* ntuple_jet_vars           = "jet_pt:jet_e:jet_ndtr:jet_efficiency:jet_purity:jet_efficiency_error:jet_purity_error:mup_eff_id:mup_eff_trk:mup_eff_trg:mum_eff_id:mum_eff_trk:mum_eff_trg:year:jet_eta:z_pt:z_eta:z_y";
-const char* ntuple_jet_vars_nominal   = "jet_pt:jet_e:jet_ndtr:jet_efficiency:jet_purity:jet_efficiency_error:jet_purity_error:mup_eff_id:mup_eff_trk:mup_eff_trg:mum_eff_id:mum_eff_trk:mum_eff_trg:year:jet_eta:z_pt:z_eta:z_y:jet_ndtr";
 const char* ntuple_jetpurity_vars     = "jet_pt:jet_e:jet_ndtr:jet_pt_truth:jet_e_truth:jet_ndtr_truth:deltaR_matchedjets:jet_eta";
 const char* ntuple_jetefficiency_vars = "jet_pt_truth:jet_e_truth:jet_ndtr_truth:jet_pt:jet_e:jet_ndtr:jet_eta_truth";
 const char* ntuple_jetminimal_vars    = "jet_pt:jet_eta";

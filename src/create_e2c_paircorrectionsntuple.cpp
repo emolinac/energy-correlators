@@ -26,6 +26,9 @@ int main()
         // Create Ntuples
         TNtuple* ntuple_reco = new TNtuple(name_ntuple_correction_reco.c_str(),"",ntuple_corrections_reco_vars); 
         TNtuple* ntuple_mc   = new TNtuple(name_ntuple_correction_mc.c_str()  ,"",ntuple_corrections_mc_vars); 
+
+        TNtuple* ntuple_reco_jet = new TNtuple(name_ntuple_mcreco_jet.c_str(),"","jet_pt:jet_eta:jet_ndtr");
+        TNtuple* ntuple_mc_jet   = new TNtuple(name_ntuple_mc_jet.c_str(),"","jet_pt:jet_eta:jet_ndtr");
         
         ntuple_reco->SetAutoSave(0);
         ntuple_mc->SetAutoSave(0);
@@ -136,9 +139,9 @@ int main()
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
-                                        mup_4vector->Py()+mum_4vector->Py(),
-                                        mup_4vector->Pz()+mum_4vector->Pz(),
-                                        mup_4vector->E() +mum_4vector->E());
+                                       mup_4vector->Py()+mum_4vector->Py(),
+                                       mup_4vector->Pz()+mum_4vector->Pz(),
+                                       mup_4vector->E() +mum_4vector->E());
 
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
@@ -151,7 +154,9 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
                         continue;
                 
-                
+                double jet_ndtr_mc   = 0;
+                double jet_ndtr_reco = 0;
+
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
@@ -170,6 +175,8 @@ int main()
                                                      mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
                                                      h1_4vector->Eta())) 
                                 continue;
+
+                        jet_ndtr_reco++;
 
                         int key1_match = 0;
                         if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index] != -999) {
@@ -256,6 +263,8 @@ int main()
                         }
                 }
 
+                ntuple_reco_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(), jet_ndtr_reco);
+
                 // Fill the mc ntuple
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++) {
                         // Skip non-hadronic particles
@@ -272,6 +281,8 @@ int main()
                                                               h1_4vector->Pt(),
                                                               h1_4vector->Eta())) 
                                 continue;
+
+                        jet_ndtr_mc++;
 
                         for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++) {
                                 // Skip non-hadronic particles
@@ -310,11 +321,15 @@ int main()
                 }
 
                 last_eventNum = mcrecotree->eventNumber;
+
+                ntuple_mc_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(), jet_ndtr_mc);
         }
 
         fout->cd();
         ntuple_reco->Write();
         ntuple_mc->Write();
+        ntuple_reco_jet->Write();
+        ntuple_mc_jet->Write();
         fout->Close();
 
         std::cout<<std::endl;
