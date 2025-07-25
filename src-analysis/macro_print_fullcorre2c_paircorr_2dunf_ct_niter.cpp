@@ -111,7 +111,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 }
         }
 
-        hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
+        hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
         hunfolded_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
@@ -262,7 +262,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                         }
                 }
 
-                hct_ratio->SetTitle("Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p^{jet}_{T}GeV");
+                hct_ratio->SetTitle("Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p_{T,jet} (GeV)");
                 hct_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);

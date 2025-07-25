@@ -103,7 +103,7 @@ void macro_print_roounfold_closuretest_2d(int niter = nominal_niter)
         }
     }
 
-    hct_rl_jet_pt->SetTitle(";R_{L};p^{jet}_{T} GeV");
+    hct_rl_jet_pt->SetTitle(";R_{L};p_{T,jet} (GeV)");
     hct_rl_jet_pt->GetYaxis()->SetRangeUser(20,100);
     hct_rl_jet_pt->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl]);
     gStyle->SetPaintTextFormat(".2f");

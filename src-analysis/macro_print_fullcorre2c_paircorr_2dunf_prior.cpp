@@ -112,7 +112,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_prior(int niter = nominal_niter, boo
                 }
         }
 
-        hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
+        hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
         hunfolded_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
@@ -173,7 +173,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_prior(int niter = nominal_niter, boo
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_tau[bin],"E");
-                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+                l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
@@ -190,7 +190,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_prior(int niter = nominal_niter, boo
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c[bin],"E");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
@@ -239,7 +239,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_prior(int niter = nominal_niter, boo
                         }
                 }
 
-                hct_ratio->SetTitle("Norm. Corr. Pseudodata / Norm. Corr. Data ;R_{L};p^{jet}_{T}GeV");
+                hct_ratio->SetTitle("Norm. Corr. Pseudodata / Norm. Corr. Data ;R_{L};p_{T,jet} (GeV)");
                 hct_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);

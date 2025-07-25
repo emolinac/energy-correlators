@@ -28,7 +28,7 @@ void macro_print_energyproduct_weights()
         set_histogram_style(hcorr_data[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
         ntuple_data->Project(Form("hcorr_data[%i]",bin),"h1_e*h2_e",Form("weight>%f&&weight<%f",weight_binning[bin],weight_binning[bin + 1]));
         s_data->Add(hcorr_data[bin]);
-        l_data->AddEntry(hcorr_data[bin],Form("%.3f<weight<%.3f GeV",weight_binning[bin],weight_binning[bin + 1]),"lf");
+        l_data->AddEntry(hcorr_data[bin],Form("%.3f<weight<%.3f (GeV)",weight_binning[bin],weight_binning[bin + 1]),"lf");
     }
     
     s_data->Draw("NOSTACK");

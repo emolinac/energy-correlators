@@ -24,7 +24,7 @@ hist_jp , xbins_jp , ybins_jp , _ = ax22.hist2d(theta0_G_jp_np ,theta0_S_jp_np, 
 hist_w , xbins_w  , ybins_w  , _ = ax33.hist2d(theta0_G_w_np  ,theta0_S_w_np , bins=[np.geomspace(0.000001,1,10),np.geomspace(0.000001,1,10)]          )
 
 ax11.set(xlabel="Truth",ylabel="Reco",title="$R_{L}$")
-ax22.set(xlabel="Truth",ylabel="Reco",title="$p^{jet}_{T}$")
+ax22.set(xlabel="Truth",ylabel="Reco",title="$p_{T,jet}$")
 ax33.set(xlabel="Truth",ylabel="Reco",title="$weight$",xscale='log',yscale='log')
 
 # plt.suptitle('Iter {}, 3 layers , #Nodes = {} , #Epochs = {} , Batch size = {}'.format(niterations,nnodes,nepochs,nbatch_size))

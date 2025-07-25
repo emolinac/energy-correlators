@@ -72,7 +72,7 @@ void macro_print_fullcorre2c(int niter = nominal_niter)
 
         // gStyle->SetPaintTextFormat("4.2f");
         // hunfolded_ratio->Draw("col text");
-        // hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
+        // hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
         // hunfolded_ratio->GetXaxis()->SetRangeUser(rl_min, rl_max);
         // hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         // gPad->SetLogx(0);
@@ -140,7 +140,7 @@ void macro_print_fullcorre2c(int niter = nominal_niter)
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c[bin],"E");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");

@@ -79,7 +79,7 @@ void macro_print_mc_chargede2c()
         // s_data[bin]->Add(hmcreco_pm[bin],"E");
         s_data[bin]->Add(hmc_pp[bin],"E");
         s_data[bin]->Add(hmc_pm[bin],"E");
-        l_data[bin]->SetHeader(Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+        l_data[bin]->SetHeader(Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         // l_data[bin]->AddEntry(hmcreco_pp[bin],"MCReco Eq. Charge","lpf");
         // l_data[bin]->AddEntry(hmcreco_pm[bin],"MCReco Op. Charge","lpf");
         l_data[bin]->AddEntry(hmc_pp[bin]    ,"MC Eq. Charge","lpf");

@@ -60,7 +60,7 @@ void macro_print_mc_e2c()
 
         s_data[bin]->Add(hmcreco[bin],"E");
         s_data[bin]->Add(hmc[bin],"E");
-        l_data[bin]->SetHeader(Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+        l_data[bin]->SetHeader(Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         l_data[bin]->AddEntry(hmcreco[bin],"MCReco","lpf");
         l_data[bin]->AddEntry(hmc[bin]    ,"MC","lpf");
         s_data[bin]->Draw("NOSTACK");

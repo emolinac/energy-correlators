@@ -111,7 +111,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
 
     gStyle->SetPaintTextFormat("4.2f");
     hunfolded_ratio_2d->Draw("col text");
-    hunfolded_ratio_2d->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
+    hunfolded_ratio_2d->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
     // hunfolded_ratio_2d->GetXaxis()->SetRangeUser(rl_min, rl_max);
     hunfolded_ratio_2d->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
     gPad->SetLogx(1);
@@ -119,7 +119,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
     if (do_print) c->Print(Form("./plots/unfolded3d_niter%i_ratio.pdf",niter));
 
     hunfolded_ratio_2d_l->Draw("col text");
-    hunfolded_ratio_2d_l->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p^{jet}_{T}GeV");
+    hunfolded_ratio_2d_l->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
     // hunfolded_ratio_2d_l->GetXaxis()->SetRangeUser(rl_min, rl_max);
     hunfolded_ratio_2d_l->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
     gPad->SetLogx(0);
@@ -188,7 +188,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
     for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
         s_data->Add(hcorr_e2c[bin],"E");
-        l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+        l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
     }
     
     s_data->Draw("NOSTACK");

@@ -23,7 +23,7 @@ void macro_print_responsematrix_jet_pt()
     }
 
     hresp->Draw("COL TEXT");
-    hresp->SetTitle("Response matrix of p^{jet}_{T};Reco;Truth");
+    hresp->SetTitle("Response matrix of p_{T,jet};Reco;Truth");
     gPad->SetLogy(1);
     gPad->SetLogx(1);
 }

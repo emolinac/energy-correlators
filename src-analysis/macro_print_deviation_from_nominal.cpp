@@ -69,10 +69,10 @@ void macro_print_deviation_from_nominal(bool normalize = true, bool do_print = f
 
         for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
                 s->Add(h_deviations[jet_pt_bin],"E1 X0 L");
-                l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
+                l->AddEntry(h_deviations[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
 
                 s_tau->Add(h_deviations_tau[jet_pt_bin],"E1 X0 L");
-                l_tau->AddEntry(h_deviations_tau[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
+                l_tau->AddEntry(h_deviations_tau[jet_pt_bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[jet_pt_bin],jet_pt_binning[jet_pt_bin + 1]),"lf");
         }
 
         s->Draw("NOSTACK");

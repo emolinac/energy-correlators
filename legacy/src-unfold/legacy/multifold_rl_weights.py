@@ -62,10 +62,10 @@ _,_,_ = ax22.hist(theta_unknown_S[:,1],bins=np.linspace(0,0.2,25),color='orange'
 _,_,_ = ax22.hist(theta0_G[:,1]       ,weights=myweights[niterations-1, 1, :], bins=np.linspace(0,0.2,25),color='black',histtype="step",label="Unfolded",lw="2")
 
 # ax11.set(xlabel="$R_{L}$", ylabel="$N_{pair}$", xscale="log", yscale="log")
-# ax22.set(xlabel="$p^{jet}_{T}$", ylabel="$N_{pair}$", yscale="log")
+# ax22.set(xlabel="$p_{T,jet}$", ylabel="$N_{pair}$", yscale="log")
 
 ax11.set(xlabel="$R_{L}$", ylabel="$N_{pair}$", xscale="log")
-ax22.set(xlabel="$p^{jet}_{T}$", ylabel="$N_{pair}$", yscale="log")
+ax22.set(xlabel="$p_{T,jet}$", ylabel="$N_{pair}$", yscale="log")
 
 ax11.legend(frameon=False,loc='upper left')
 ax22.legend(frameon=False,loc='upper right')

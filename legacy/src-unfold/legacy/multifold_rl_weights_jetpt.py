@@ -70,10 +70,10 @@ _,_,_ = ax33.hist(theta_unknown_S[:,2],bins=np.linspace(0,0.125,25),color='orang
 _,_,_ = ax33.hist(theta0_G[:,2]       ,weights=myweights[niterations-1, 1, :], bins=np.linspace(0,0.125,25),color='black',histtype="step",label="Unfolded",lw="2")
 
 # ax11.set(xlabel="$R_{L}$", ylabel="$N_{pair}$", xscale="log", yscale="log")
-# ax22.set(xlabel="$p^{jet}_{T}$", ylabel="$N_{pair}$", yscale="log")
+# ax22.set(xlabel="$p_{T,jet}$", ylabel="$N_{pair}$", yscale="log")
 
 ax11.set(xlabel="$R_{L}$", ylabel="$N_{pair}$", xscale="log")
-ax22.set(xlabel="$p^{jet}_{T}$", ylabel="$N_{pair}$", yscale="log")
+ax22.set(xlabel="$p_{T,jet}$", ylabel="$N_{pair}$", yscale="log")
 ax33.set(xlabel="$weights$", ylabel="$N_{pair}$", yscale="log")
 
 ax11.legend(frameon=False,loc='upper left')

@@ -72,7 +72,7 @@ void macro_print_mc_kaons()
         s_data[bin]->Add(hmcreco_nokaon[bin],"E");
         // s_data[bin]->Add(hmc_kaon[bin],"E");
         // s_data[bin]->Add(hmc_nokaon[bin],"E");
-        l_data[bin]->SetHeader(Form("%.1f<p_{T,jet}<%.1f GeV",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+        l_data[bin]->SetHeader(Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         l_data[bin]->AddEntry(hmcreco_kaon[bin]  ,"MCReco Kaon","lpf");
         l_data[bin]->AddEntry(hmcreco_nokaon[bin],"MCReco No Kaons","lpf");
         // l_data[bin]->AddEntry(hmc_kaon[bin]  ,"MC Kaon","lpf");
