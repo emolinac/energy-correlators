@@ -302,7 +302,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                         }
                 }
 
-                hct_ratio->SetTitle("Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p_{T,jet} (GeV)");
+                hct_ratio->SetTitle("Shape Closure Test: Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p_{T,jet} (GeV)");
                 hct_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
