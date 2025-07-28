@@ -35,7 +35,7 @@ const int    std_line_width   = 3;
 const int std_marker_style_jet_pt[]  = {24,25,26,32,27};
 const int corr_marker_style_jet_pt[] = {20,21,22,23,33};
 
-const int std_marker_color_jet_pt[]  = {868,797,618,633,820,418,810,616,600,1}; // darker
-const int corr_marker_color_jet_pt[] = {868,797,618,633,820,418,810,616,600,1}; // lighter
+const int std_marker_color_jet_pt[]  = {868,797,618,633,820,418,810,616,600,1};
+const int corr_marker_color_jet_pt[] = {868,797,618,633,820,418,810,616,600,1};
 
 #endif
