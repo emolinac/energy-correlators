@@ -95,11 +95,6 @@ std::map<std::string, std::string> systematic_errtype = {
 };
 
 //--------------------------------------------------------------------------------------//
-const int Nvars_unfold = 26; 
-
-const char* ntuple_unfold_vars = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_pt:jet_pt_truth:reco_passed:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
-
-//--------------------------------------------------------------------------------------//
 const int Nvars_mcreco          = 21; 
 const int Nvars_mc              = 21; 
 const int Nvars_data            = 17; 
