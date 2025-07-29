@@ -56,18 +56,18 @@ void macro_determine_binning()
 
         double binning_tau_log[nbin_tau_logbin + 1];
 
-        determine_eqsizebinning(Nbin, rl_min, rl_max, binning);
+        determine_eqsizebinning(nbin_log, rl_logmin, rl_logmax, binning);
         determine_log10binning(nbin_log, rl_logmin, rl_logmax, binning_log);
         determine_log10binning(nbin_tau_logbin, tau_min, tau_max, binning_tau_log);
         determine_log10binning(nbin_rl_altlogbin, rl_logmin, rl_logmax, binning_corr_log);
         
         // rl binning
-        std::cout<<"const double rl_binning[]              = {rl_min";
+        std::cout<<"const double charged_rl_chargedeec_binning[]              = {rl_logmin";
         
-        for (int i = 1 ; i < Nbin ; i++){
+        for (int i = 1 ; i < Nbin ; i++)
                 std::cout<<", "<<binning[i];
 
-        std::cout<<", rl_max};"<<std::endl;
+        std::cout<<", rl_logmax};"<<std::endl;
 
         // rl log bin
         std::cout<<"const double rl_nominal_binning[]           = {rl_logmin";

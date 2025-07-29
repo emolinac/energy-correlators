@@ -181,6 +181,18 @@ void set_data_ntuple_branches(TNtuple* ntuple, float* R_L, float* jet_pt, float*
         ntuple->SetBranchAddress("purity_relerror", purity_relerror);
 }
 
+void set_data_ntuple_branches(TNtuple* ntuple, float* R_L, float* jet_pt, float* weight_pt, float* efficiency, float* purity, float* efficiency_relerror, float* purity_relerror, float* eq_charge)
+{
+        ntuple->SetBranchAddress("R_L", R_L);
+        ntuple->SetBranchAddress("jet_pt", jet_pt);
+        ntuple->SetBranchAddress("weight_pt", weight_pt);
+        ntuple->SetBranchAddress("efficiency", efficiency);
+        ntuple->SetBranchAddress("efficiency_relerror", efficiency_relerror);
+        ntuple->SetBranchAddress("purity", purity);
+        ntuple->SetBranchAddress("purity_relerror", purity_relerror);
+        ntuple->SetBranchAddress("eq_charge", eq_charge);
+}
+
 void set_unfolding_ntuple_branches(TNtuple* ntuple, float* R_L_reco, float* R_L_truth, float* jet_pt_reco, float* jet_pt_truth, float* weight_pt_reco, float* weight_pt_truth)
 {
         ntuple->SetBranchAddress("jet_pt", jet_pt_reco);

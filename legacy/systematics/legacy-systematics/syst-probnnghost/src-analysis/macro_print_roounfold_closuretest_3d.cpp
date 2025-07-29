@@ -89,7 +89,7 @@ void macro_print_roounfold_closuretest_3d(int niter = nominal_niter)
     hs_rl->Add(hct_rl);
     hs_rl->Draw("NOSTACK");
     hs_rl->SetTitle(";R_{L};Truth/Unfolded");
-    // hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[nbin_rl]);
+    // hs_rl->GetXaxis()->SetRangeUser(rl_chargedeec_binning[0],rl_chargedeec_binning[nbin_rl]);
     hs_rl->SetMinimum(0.89);
     hs_rl->SetMaximum(1.11);
     gPad->SetLogx(1);

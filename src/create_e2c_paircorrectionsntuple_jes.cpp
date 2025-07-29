@@ -165,7 +165,6 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
                         continue;
                 
-                
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
@@ -173,15 +172,15 @@ int main()
                                 continue;
 
                         h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,
-                                                mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
-                                                mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,
-                                                mcrecotree->Jet_Dtr_E[h1_index]/1000.);
+                                               mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
+                                               mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,
+                                               mcrecotree->Jet_Dtr_E[h1_index]/1000.);
 
                         if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h1_index],
-                                                        h1_4vector->P(),
-                                                        h1_4vector->Pt(),
-                                                        mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
-                                                        mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
+                                                     mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
                                                      h1_4vector->Eta())) 
                                 continue;
 

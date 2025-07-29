@@ -87,7 +87,7 @@ void macro_print_comparison_closuretest_2d(int Niter = 5, double jet_pt_min_loca
     hs_rl->Add(hct_rl_of);
     hs_rl->Draw("NOSTACK");
     hs_rl->SetTitle(";R_{L};Truth/Unfolded");
-    hs_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[nbin_rl]);
+    hs_rl->GetXaxis()->SetRangeUser(rl_chargedeec_binning[0],rl_chargedeec_binning[nbin_rl]);
     hs_rl->SetMinimum(0.89);
     hs_rl->SetMaximum(1.11);
     gPad->SetLogx(1);

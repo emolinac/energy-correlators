@@ -295,26 +295,29 @@ int main()
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
-                vars_jet[0]  = Jet_4vector->Pt();
-                vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = pseudodata->Jet_NDtr;
-                vars_jet[3]  = jet_efficiency;
-                vars_jet[4]  = jet_purity;
-                vars_jet[5]  = jet_efficiency_error;
-                vars_jet[6]  = jet_purity_error;
-                vars_jet[7]  = mup_eff_id;
-                vars_jet[8]  = mup_eff_trk;
-                vars_jet[9]  = mup_eff_trg;
-                vars_jet[10] = mum_eff_id;
-                vars_jet[11] = mum_eff_trk;
-                vars_jet[12] = mum_eff_trg;
-                vars_jet[13] = 2017;
-                vars_jet[14] = Jet_4vector->Eta();
-                vars_jet[15] = Z0_4vector->Pt();
-                vars_jet[16] = Z0_4vector->Eta();
-                vars_jet[17] = Z0_4vector->Rapidity();
+                double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < pseudodata->Jet_NDtr ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (pseudodata->Jet_Dtr_IsMeson[h1_index] != 1 && pseudodata->Jet_Dtr_IsBaryon[h1_index] != 1)
+                                continue;
 
-                ntuple_corrjet->Fill(vars_jet);
+                        h1_4vector->SetPxPyPzE(pseudodata->Jet_Dtr_PX[h1_index]/1000.,
+                                               pseudodata->Jet_Dtr_PY[h1_index]/1000.,
+                                               pseudodata->Jet_Dtr_PZ[h1_index]/1000.,
+                                               pseudodata->Jet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(pseudodata->Jet_Dtr_ThreeCharge[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     pseudodata->Jet_Dtr_TrackChi2[h1_index]/pseudodata->Jet_Dtr_TrackNDF[h1_index],
+                                                     pseudodata->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->Eta())) 
+                                continue;
+                        
+                        jet_ndtr_nominal++;
+                }
+                if(jet_ndtr_nominal < 2)
+                        continue;
 
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < pseudodata->Jet_NDtr ; h1_index++) {
@@ -398,6 +401,27 @@ int main()
                         }
                 }
 
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->E();
+                vars_jet[2]  = jet_ndtr_nominal;
+                vars_jet[3]  = jet_efficiency;
+                vars_jet[4]  = jet_purity;
+                vars_jet[5]  = jet_efficiency_error;
+                vars_jet[6]  = jet_purity_error;
+                vars_jet[7]  = mup_eff_id;
+                vars_jet[8]  = mup_eff_trk;
+                vars_jet[9]  = mup_eff_trg;
+                vars_jet[10] = mum_eff_id;
+                vars_jet[11] = mum_eff_trk;
+                vars_jet[12] = mum_eff_trg;
+                vars_jet[13] = 2017;
+                vars_jet[14] = Jet_4vector->Eta();
+                vars_jet[15] = Z0_4vector->Pt();
+                vars_jet[16] = Z0_4vector->Eta();
+                vars_jet[17] = Z0_4vector->Rapidity();
+
+                ntuple_corrjet->Fill(vars_jet);
+
                 last_eventNum = pseudodata->eventNumber;
         }
 
@@ -454,8 +478,27 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
 
-                vars_mc_jet[0] = Jet_4vector->Pt();
-                vars_mc_jet[1] = Jet_4vector->Eta();
+                double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (truthdata->MCJet_Dtr_IsMeson[h1_index] != 1 && truthdata->MCJet_Dtr_IsBaryon[h1_index] != 1) 
+                                continue;
+
+                        h1_4vector->SetPxPyPzE(truthdata->MCJet_Dtr_PX[h1_index]/1000.,
+                                               truthdata->MCJet_Dtr_PY[h1_index]/1000.,
+                                               truthdata->MCJet_Dtr_PZ[h1_index]/1000., 
+                                               truthdata->MCJet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_momentum_cuts(truthdata->MCJet_Dtr_ThreeCharge[h1_index],
+                                                              h1_4vector->P(),
+                                                              h1_4vector->Pt(),
+                                                              h1_4vector->Eta())) 
+                                continue;
+                        
+                        jet_ndtr_nominal++;
+                }
+                if(jet_ndtr_nominal < 2)
+                        continue;
 
                 for (int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++) {
                         // Skip non-hadronic particles
@@ -515,6 +558,10 @@ int main()
                                 ntuple_mc->Fill(vars_mc);        
                         }   
                 }
+                
+                vars_mc_jet[0] = Jet_4vector->Pt();
+                vars_mc_jet[1] = Jet_4vector->Eta();
+
                 ntuple_mc_jet->Fill(vars_mc_jet);
 
                 last_eventNum = truthdata->eventNumber;

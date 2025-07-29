@@ -309,8 +309,6 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
                 double jet_ndtr_nominal = 0;
-                
-                // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
                         if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
@@ -330,7 +328,28 @@ int main()
                                 continue;
 
                         jet_ndtr_nominal++;
+                }
+                if (jet_ndtr_nominal < 2)
+                        continue;
+                
+                for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
+                                continue;
 
+                        h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
+                                               datatree_2016->Jet_Dtr_PY[h1_index]/1000.,
+                                               datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,
+                                               datatree_2016->Jet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
+                                                     datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->Eta())) 
+                                continue;
+                
                         // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
@@ -503,6 +522,28 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
                 double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (datatree_2017->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h1_index] != 1)
+                                continue;
+
+                        h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
+                                               datatree_2017->Jet_Dtr_PY[h1_index]/1000.,
+                                               datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,
+                                               datatree_2017->Jet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
+                                                     datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->Eta())) 
+                                continue;
+
+                        jet_ndtr_nominal++;
+                }
+                if (jet_ndtr_nominal < 2)
+                        continue;
                 
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
@@ -523,8 +564,6 @@ int main()
                                                      h1_4vector->Eta())) 
                                 continue;
                         
-                        jet_ndtr_nominal++;
-
                         // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
@@ -697,6 +736,28 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
                 double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (datatree_2018->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2018->Jet_Dtr_IsBaryon[h1_index] != 1)
+                                continue;
+
+                        h1_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h1_index]/1000.,
+                                               datatree_2018->Jet_Dtr_PY[h1_index]/1000.,
+                                               datatree_2018->Jet_Dtr_PZ[h1_index]/1000.,
+                                               datatree_2018->Jet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
+                                                     datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->Eta())) 
+                                continue;
+
+                        jet_ndtr_nominal++;
+                }
+                if (jet_ndtr_nominal < 2)
+                        continue;
                 
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
@@ -716,8 +777,6 @@ int main()
                                                      datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
                                                      h1_4vector->Eta()))
                                 continue;
-
-                        jet_ndtr_nominal++;
 
                         // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++) {

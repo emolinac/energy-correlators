@@ -88,7 +88,7 @@ void macro_print_closuretest_rl_jet_pt(int Niter = 5, double jet_pt_min_local = 
     
     hct_rl->Draw();
     hct_rl->SetTitle(";R_{L};Truth/Unfolded");
-    hct_rl->GetXaxis()->SetRangeUser(rl_binning[0],rl_binning[nbin_rl]);
+    hct_rl->GetXaxis()->SetRangeUser(rl_chargedeec_binning[0],rl_chargedeec_binning[nbin_rl]);
     hct_rl->GetYaxis()->SetRangeUser(0.8,1.2);
     gPad->SetLogx(1);
     c->Print(Form("./plots/closuretest_2d_roounfold_rl_bayes_iter%i_jet_ptfrom%.0fto%.0f.pdf",Niter,jet_pt_min_local,jet_pt_max_local));    

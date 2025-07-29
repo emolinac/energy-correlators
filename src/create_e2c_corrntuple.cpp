@@ -216,26 +216,29 @@ int main()
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
-                vars_jet[0]  = Jet_4vector->Pt();
-                vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = datatree_2016->Jet_NDtr;
-                vars_jet[3]  = jet_efficiency;
-                vars_jet[4]  = jet_purity;
-                vars_jet[5]  = jet_efficiency_error;
-                vars_jet[6]  = jet_purity_error;
-                vars_jet[7]  = mup_eff_id;
-                vars_jet[8]  = mup_eff_trk;
-                vars_jet[9]  = mup_eff_trg;
-                vars_jet[10] = mum_eff_id;
-                vars_jet[11] = mum_eff_trk;
-                vars_jet[12] = mum_eff_trg;
-                vars_jet[13] = 2016;
-                vars_jet[14] = Jet_4vector->Eta();
-                vars_jet[15] = Z0_4vector->Pt();
-                vars_jet[16] = Z0_4vector->Eta();
-                vars_jet[17] = Z0_4vector->Rapidity();
-                
-                ntuple_corrjet->Fill(vars_jet);
+                double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
+                                continue;
+
+                        h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
+                                               datatree_2016->Jet_Dtr_PY[h1_index]/1000.,
+                                               datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,
+                                               datatree_2016->Jet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
+                                                     datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->Eta())) 
+                                continue;
+
+                        jet_ndtr_nominal++;
+                }
+                if(jet_ndtr_nominal < 2)
+                        continue;
 
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
@@ -341,6 +344,27 @@ int main()
                         }
                 }
 
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->E();
+                vars_jet[2]  = datatree_2016->Jet_NDtr;
+                vars_jet[3]  = jet_efficiency;
+                vars_jet[4]  = jet_purity;
+                vars_jet[5]  = jet_efficiency_error;
+                vars_jet[6]  = jet_purity_error;
+                vars_jet[7]  = mup_eff_id;
+                vars_jet[8]  = mup_eff_trk;
+                vars_jet[9]  = mup_eff_trg;
+                vars_jet[10] = mum_eff_id;
+                vars_jet[11] = mum_eff_trk;
+                vars_jet[12] = mum_eff_trg;
+                vars_jet[13] = 2016;
+                vars_jet[14] = Jet_4vector->Eta();
+                vars_jet[15] = Z0_4vector->Pt();
+                vars_jet[16] = Z0_4vector->Eta();
+                vars_jet[17] = Z0_4vector->Rapidity();
+                
+                ntuple_corrjet->Fill(vars_jet);
+
                 last_eventNum = datatree_2016->eventNumber;
         }
 
@@ -428,26 +452,29 @@ int main()
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
-                vars_jet[0]  = Jet_4vector->Pt();
-                vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = datatree_2017->Jet_NDtr;
-                vars_jet[3]  = jet_efficiency;
-                vars_jet[4]  = jet_purity;
-                vars_jet[5]  = jet_efficiency_error;
-                vars_jet[6]  = jet_purity_error;
-                vars_jet[7]  = mup_eff_id;
-                vars_jet[8]  = mup_eff_trk;
-                vars_jet[9]  = mup_eff_trg;
-                vars_jet[10] = mum_eff_id;
-                vars_jet[11] = mum_eff_trk;
-                vars_jet[12] = mum_eff_trg;
-                vars_jet[13] = 2017;
-                vars_jet[14] = Jet_4vector->Eta();
-                vars_jet[15] = Z0_4vector->Pt();
-                vars_jet[16] = Z0_4vector->Eta();
-                vars_jet[17] = Z0_4vector->Rapidity();
-                
-                ntuple_corrjet->Fill(vars_jet);
+                double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (datatree_2017->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h1_index] != 1)
+                                continue;
+
+                        h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
+                                               datatree_2017->Jet_Dtr_PY[h1_index]/1000.,
+                                               datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,
+                                               datatree_2017->Jet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
+                                                     datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->Eta())) 
+                                continue;
+
+                        jet_ndtr_nominal++;
+                }
+                if(jet_ndtr_nominal < 2)
+                        continue;
 
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
@@ -553,6 +580,27 @@ int main()
                         }
                 }
 
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->E();
+                vars_jet[2]  = datatree_2017->Jet_NDtr;
+                vars_jet[3]  = jet_efficiency;
+                vars_jet[4]  = jet_purity;
+                vars_jet[5]  = jet_efficiency_error;
+                vars_jet[6]  = jet_purity_error;
+                vars_jet[7]  = mup_eff_id;
+                vars_jet[8]  = mup_eff_trk;
+                vars_jet[9]  = mup_eff_trg;
+                vars_jet[10] = mum_eff_id;
+                vars_jet[11] = mum_eff_trk;
+                vars_jet[12] = mum_eff_trg;
+                vars_jet[13] = 2017;
+                vars_jet[14] = Jet_4vector->Eta();
+                vars_jet[15] = Z0_4vector->Pt();
+                vars_jet[16] = Z0_4vector->Eta();
+                vars_jet[17] = Z0_4vector->Rapidity();
+                
+                ntuple_corrjet->Fill(vars_jet);
+
                 last_eventNum = datatree_2017->eventNumber;
         }
 
@@ -640,26 +688,29 @@ int main()
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
-                vars_jet[0]  = Jet_4vector->Pt();
-                vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = datatree_2018->Jet_NDtr;
-                vars_jet[3]  = jet_efficiency;
-                vars_jet[4]  = jet_purity;
-                vars_jet[5]  = jet_efficiency_error;
-                vars_jet[6]  = jet_purity_error;
-                vars_jet[7]  = mup_eff_id;
-                vars_jet[8]  = mup_eff_trk;
-                vars_jet[9]  = mup_eff_trg;
-                vars_jet[10] = mum_eff_id;
-                vars_jet[11] = mum_eff_trk;
-                vars_jet[12] = mum_eff_trg;
-                vars_jet[13] = 2018;
-                vars_jet[14] = Jet_4vector->Eta();
-                vars_jet[15] = Z0_4vector->Pt();
-                vars_jet[16] = Z0_4vector->Eta();
-                vars_jet[17] = Z0_4vector->Rapidity();
-                
-                ntuple_corrjet->Fill(vars_jet);
+                double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (datatree_2018->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2018->Jet_Dtr_IsBaryon[h1_index] != 1)
+                                continue;
+
+                        h1_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h1_index]/1000.,
+                                               datatree_2018->Jet_Dtr_PY[h1_index]/1000.,
+                                               datatree_2018->Jet_Dtr_PZ[h1_index]/1000.,
+                                               datatree_2018->Jet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
+                                                     datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->Eta())) 
+                                continue;
+
+                        jet_ndtr_nominal++;
+                }
+                if(jet_ndtr_nominal < 2)
+                        continue;
 
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
@@ -765,6 +816,27 @@ int main()
                         }
                 }
 
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->E();
+                vars_jet[2]  = datatree_2018->Jet_NDtr;
+                vars_jet[3]  = jet_efficiency;
+                vars_jet[4]  = jet_purity;
+                vars_jet[5]  = jet_efficiency_error;
+                vars_jet[6]  = jet_purity_error;
+                vars_jet[7]  = mup_eff_id;
+                vars_jet[8]  = mup_eff_trk;
+                vars_jet[9]  = mup_eff_trg;
+                vars_jet[10] = mum_eff_id;
+                vars_jet[11] = mum_eff_trk;
+                vars_jet[12] = mum_eff_trg;
+                vars_jet[13] = 2018;
+                vars_jet[14] = Jet_4vector->Eta();
+                vars_jet[15] = Z0_4vector->Pt();
+                vars_jet[16] = Z0_4vector->Eta();
+                vars_jet[17] = Z0_4vector->Rapidity();
+                
+                ntuple_corrjet->Fill(vars_jet);
+                
                 last_eventNum = datatree_2018->eventNumber;
         }
 
