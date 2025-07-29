@@ -7,7 +7,7 @@
 #include "../include/utils-visual.h"
 #include "TRandom3.h"
 
-void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = nominal_niter, int ct_niter = 10, bool do_print = true, bool compare_to_truth = true)
+void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = nominal_niter, int ct_niter = 1, bool do_print = true, bool compare_to_truth = true)
 {
         // Open the necessary files
         std::string systematic = available_systematics[5]; // choose CT systematic
@@ -134,7 +134,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                 }
         }
 
-        hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
+        hunfolded_ratio->SetTitle("Shape Closure Test: Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
         hunfolded_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
@@ -155,7 +155,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                 }
         }
 
-        hmcreco->SetTitle("Reweight Distribution;R_{L};p_{T,jet} (GeV)");
+        hmcreco->SetTitle("Shape Closure Test: Reweight Distribution;R_{L};p_{T,jet} (GeV)");
         hmcreco->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hmcreco->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);

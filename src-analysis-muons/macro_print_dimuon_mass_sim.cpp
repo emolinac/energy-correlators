@@ -23,6 +23,6 @@ void macro_print_dimuon_mass_sim()
 
         TCanvas* c = new TCanvas("c","",1920,1080);
         h->Draw("E1");
-        h->SetTitle(";M_{#mu^{+}#mu^{-}};");
+        h->SetTitle(";M_{#mu^{+}#mu^{-}} (GeV);");
         c->Print("./plots/dimuon_mass_sim.pdf");
 }
