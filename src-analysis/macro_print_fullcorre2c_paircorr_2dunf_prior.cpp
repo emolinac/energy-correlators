@@ -112,7 +112,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_prior(int niter = nominal_niter, boo
                 }
         }
 
-        hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
+        hunfolded_ratio->SetTitle("Prior Variation: Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
         hunfolded_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
@@ -126,7 +126,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_prior(int niter = nominal_niter, boo
                 hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"", 1  ,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
                 hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
 
-                hcorr_e2c_nonorm[bin]        = new TH1F(Form("hcorr_e2c_nonorm%i",bin)       ,"", nbin_rl_nominal,rl_nominal_binning );
+                hcorr_e2c_nonorm[bin]   = new TH1F(Form("hcorr_e2c_nonorm%i",bin)       ,"", nbin_rl_nominal,rl_nominal_binning );
                 hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", nbin_rl_nominal,rl_nominal_binning );
                 hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)   ,"", nbin_rl_nominal,rl_nominal_binning );
                 hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)         ,"", nbin_rl_nominal,tau_nominal_binning);

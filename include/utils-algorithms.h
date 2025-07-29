@@ -104,6 +104,8 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
                 double dev     = hdeviations->GetBinContent(hbin);
                 double dev_err = hdeviations->GetBinError(hbin);
 
+                total += hnominal->GetBinContent(hbin);
+
                 // Demand more than one sigma to be considered
                 if ((dev+dev_err > 1 && dev < 1) || (dev-dev_err < 1 && dev > 1)) 
                         continue;
@@ -122,7 +124,6 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
                 hsystematic->SetBinError(hbin, sqrt(syst_error*syst_error + hnominal->GetBinError(hbin)*hnominal->GetBinError(hbin)));
 
                 total_err += hnominal->GetBinContent(hbin)*syst_error_percentage;
-                total     += hnominal->GetBinContent(hbin);
         }
 
         if (total > 0)
