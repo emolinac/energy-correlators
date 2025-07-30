@@ -27,7 +27,7 @@ int main()
         TNtuple* ntuple_reco = new TNtuple(name_ntuple_correction_reco.c_str(),"",ntuple_corrections_reco_vars); 
         TNtuple* ntuple_mc   = new TNtuple(name_ntuple_correction_mc.c_str()  ,"",ntuple_corrections_mc_vars); 
 
-        TNtuple* ntuple_reco_jet = new TNtuple(name_ntuple_mcreco_jet.c_str(),"","jet_pt:jet_eta:jet_ndtr");
+        TNtuple* ntuple_reco_jet = new TNtuple(name_ntuple_mcreco_jet.c_str(),"","jet_pt:jet_eta:jet_ndtr:jet_pt_truth");
         TNtuple* ntuple_mc_jet   = new TNtuple(name_ntuple_mc_jet.c_str(),"","jet_pt:jet_eta:jet_ndtr");
         
         ntuple_reco->SetAutoSave(0);
@@ -263,8 +263,6 @@ int main()
                         }
                 }
 
-                ntuple_reco_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(), jet_ndtr_reco);
-
                 // Fill the mc ntuple
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++) {
                         // Skip non-hadronic particles
@@ -322,6 +320,7 @@ int main()
 
                 last_eventNum = mcrecotree->eventNumber;
 
+                ntuple_reco_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(), jet_ndtr_reco, true_Jet_4vector->Pt());
                 ntuple_mc_jet->Fill(true_Jet_4vector->Pt(), true_Jet_4vector->Eta(), jet_ndtr_mc);
         }
 

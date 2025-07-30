@@ -31,4 +31,6 @@ void set_data_ntuple_branches(TNtuple* ntuple, float* R_L, float* jet_pt, float*
 
 void set_unfolding_ntuple_branches(TNtuple* ntuple, float* R_L_reco, float* R_L_truth, float* jet_pt_reco, float* jet_pt_truth, float* weight_pt_reco, float* weight_pt_truth);
 
+void set_unfolding_jet_ntuple_branches(TNtuple* ntuple, float* jet_pt_reco, float* jet_pt_truth);
+
 #endif

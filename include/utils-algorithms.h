@@ -203,4 +203,10 @@ void set_unfolding_ntuple_branches(TNtuple* ntuple, float* R_L_reco, float* R_L_
         ntuple->SetBranchAddress("weight_pt_truth", weight_pt_truth);
 }
 
+void set_unfolding_jet_ntuple_branches(TNtuple* ntuple, float* jet_pt_reco, float* jet_pt_truth)
+{
+        ntuple->SetBranchAddress("jet_pt", jet_pt_reco);
+        ntuple->SetBranchAddress("jet_pt_truth", jet_pt_truth);
+}
+
 #endif
