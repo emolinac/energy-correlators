@@ -61,9 +61,9 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = nominal_niter, b
     TH3D* htrue    = new TH3D("htrue"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
     RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
     
-    TH3D* hpurcorr_l = new TH3D("hpurcorr_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hmeas_l    = new TH3D("hmeas_l"   ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* htrue_l    = new TH3D("htrue_l"   ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpurcorr_l = new TH3D("hpurcorr_l","",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hmeas_l    = new TH3D("hmeas_l"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* htrue_l    = new TH3D("htrue_l"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
     RooUnfoldResponse* response_l = new RooUnfoldResponse(hmeas_l, htrue_l, "response_l");
 
     for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++)
@@ -82,10 +82,10 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = nominal_niter, b
     TH3D* hpuritycorrected     = new TH3D("hpuritycorrected"    ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
     TH3D* hpuritycorrected2    = new TH3D("hpuritycorrected2"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
     
-    TH2D* hunfolded_ratio_2d_l = new TH2D("hunfolded_ratio_2d_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-    TH3D* hunfolded_ratio_3d_l = new TH3D("hunfolded_ratio_3d_l","",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hpuritycorrected_l   = new TH3D("hpuritycorrected_l"  ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
-    TH3D* hpuritycorrected2_l  = new TH3D("hpuritycorrected2_l" ,"",nbin_rl_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
+    TH2D* hunfolded_ratio_2d_l = new TH2D("hunfolded_ratio_2d_l","",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+    TH3D* hunfolded_ratio_3d_l = new TH3D("hunfolded_ratio_3d_l","",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpuritycorrected_l   = new TH3D("hpuritycorrected_l"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
+    TH3D* hpuritycorrected2_l  = new TH3D("hpuritycorrected2_l" ,"",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_weight_unfolding,weight_unfoldingbinning);
     
     ntuple_data->Project("hpuritycorrected" ,"weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
     ntuple_data->Project("hpuritycorrected2","weight_pt:jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
@@ -135,9 +135,9 @@ void macro_print_fullcorre2c_mc_comp_paircorr_3dunf(int niter = nominal_niter, b
         hcorr_e2c[bin]   = new TH1F(Form("hcorr_e2c[%i]",bin) ,"",nbin_rl_nominal,rl_nominal_binning);
         hmc[bin]         = new TH1F(Form("hmc[%i]" ,bin)      ,"",nbin_rl_nominal,rl_nominal_binning);
         hmcreco[bin]     = new TH1F(Form("hmcreco[%i]" ,bin)  ,"",nbin_rl_nominal,rl_nominal_binning);
-        hcorr_e2c_l[bin] = new TH1F(Form("hcorr_e2c_l[%i]",bin) ,"",nbin_rl,rl_binning);
-        hmc_l[bin]       = new TH1F(Form("hmc_l[%i]" ,bin)      ,"",nbin_rl,rl_binning);
-        hmcreco_l[bin]   = new TH1F(Form("hmcreco_l[%i]" ,bin)  ,"",nbin_rl,rl_binning);
+        hcorr_e2c_l[bin] = new TH1F(Form("hcorr_e2c_l[%i]",bin) ,"",nbin_rl_nominal,rl_binning);
+        hmc_l[bin]       = new TH1F(Form("hmc_l[%i]" ,bin)      ,"",nbin_rl_nominal,rl_binning);
+        hmcreco_l[bin]   = new TH1F(Form("hmcreco_l[%i]" ,bin)  ,"",nbin_rl_nominal,rl_binning);
         
         hcorr_jet[bin]   = new TH1F(Form("hcorr_jet[%i]" ,bin)   ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
         hmc_jet[bin]     = new TH1F(Form("hmc_jet[%i]" ,bin)     ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]);

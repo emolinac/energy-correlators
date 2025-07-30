@@ -228,29 +228,8 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_p
                 tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
                 if (do_print) 
-                        c->Print(Form("./plots/paircorrchargede2c_niter%i_2dunf.pdf",niter));
+                        c->Print(Form("./plots/paircorrchargede2c_jetptbin%i_niter%i_2dunf.pdf", bin, niter));
         }
-
-        // s_data = new THStack();
-        // for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-        //         s_data->Add(hcorr_e2c_eqcharge[bin] ,"E1 ");
-        //         s_data->Add(hcorr_e2c_neqcharge[bin],"E1 ");
-        //         l_data_chargede2c->AddEntry(hcorr_e2c_eqcharge[bin],Form("eq. charge %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
-        //         l_data_chargede2c->AddEntry(hcorr_e2c_neqcharge[bin],Form("op. charge %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
-        // }
-        
-        // s_data->Draw("NOSTACK");
-        // s_data->SetMaximum(0.8);
-        // s_data->SetMinimum(0.2);
-        // s_data->SetTitle(";R_{L};Charged #Sigma_{EEC}(R_{L})");
-        // l_data_chargede2c->Draw("SAME");
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(0);
-        
-        // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
-
-        // if (do_print) 
-        //         c->Print(Form("./plots/paircorrchargede2c_niter%i_2dunf.pdf",niter));
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {

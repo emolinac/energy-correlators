@@ -18,8 +18,8 @@ void macro_print_pairefficiency_rl_jet_pt()
     TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_correction_mc).c_str());
 
     // Determine log binnning
-    double binning[nbin_rl+1];
-    determine_log10binning(nbin_rl, rl_min, rl_max, binning);
+    double binning[nbin_rl_nominal+1];
+    determine_log10binning(nbin_rl_nominal, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
     TH1F* hsig[nbin_jet_pt];
@@ -28,9 +28,9 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",nbin_rl,rl_min, rl_max);
-        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",nbin_rl,rl_min, rl_max);
-        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
+        hsig[jet_pt_bin]    = new TH1F(Form("hsig[%i]",jet_pt_bin)   ,"",nbin_rl_nominal,rl_min, rl_max);
+        hall[jet_pt_bin]    = new TH1F(Form("hall[%i]",jet_pt_bin)   ,"",nbin_rl_nominal,rl_min, rl_max);
+        hefficiency[jet_pt_bin] = new TH1F(Form("hefficiency[%i]",jet_pt_bin),"",nbin_rl_nominal,rl_min, rl_max);
 
         hsig[jet_pt_bin]->Sumw2();
         hall[jet_pt_bin]->Sumw2();
@@ -46,8 +46,8 @@ void macro_print_pairefficiency_rl_jet_pt()
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
-        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",nbin_rl,rl_min, rl_max);
+        hcorr_data[jet_pt_bin] = new TH1F(Form("hcorr_data[%i]",jet_pt_bin),"",nbin_rl_nominal,rl_min, rl_max);
+        hall_data[jet_pt_bin] = new TH1F(Form("hall_data[%i]",jet_pt_bin),"",nbin_rl_nominal,rl_min, rl_max);
 
         hcorr_data[jet_pt_bin]->Sumw2();
         hall_data[jet_pt_bin]->Sumw2();

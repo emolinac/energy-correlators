@@ -83,7 +83,7 @@ void macro_print_roounfold_closuretest_2d(int niter = nominal_niter)
     hs_rl->Add(hct_rl);
     hs_rl->Draw("NOSTACK");
     hs_rl->SetTitle(";R_{L};Truth/Unfolded");
-    // hs_rl->GetXaxis()->SetRangeUser(rl_chargedeec_binning[0],rl_chargedeec_binning[nbin_rl]);
+    // hs_rl->GetXaxis()->SetRangeUser(rl_chargedeec_binning[0],rl_chargedeec_binning[nbin_rl_nominal]);
     hs_rl->SetMinimum(0.89);
     hs_rl->SetMaximum(1.11);
     gPad->SetLogx(1);
@@ -108,7 +108,7 @@ void macro_print_roounfold_closuretest_2d(int niter = nominal_niter)
     hct_rl_jet_pt->Draw("COL TEXT");
     hct_rl_jet_pt->SetTitle(";R_{L};p_{T,jet} (GeV)");
     hct_rl_jet_pt->GetYaxis()->SetRangeUser(20,100);
-    hct_rl_jet_pt->GetYaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl]);
+    hct_rl_jet_pt->GetYaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
     gStyle->SetPaintTextFormat(".2f");
     gPad->SetLogx(1);
     gPad->SetLogy(1);

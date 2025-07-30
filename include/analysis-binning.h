@@ -43,9 +43,6 @@ const double jet_pt_corrections_binning[] = {20,30,50,100};
 const double unfolding_jet_pt_binning[]   = {15,20,30,50,100,150};
 
 // Angular distance binning
-// const int nbin_rl    = 10; // Golden binning
-const int nbin_rl                   = 15;
-const int nbin_rl_unfolding         = nbin_rl + 2;
 const int nbin_rl_nominal           = 15; 
 const int nbin_rl_nominal_unfolding = nbin_rl_nominal + 2;
 

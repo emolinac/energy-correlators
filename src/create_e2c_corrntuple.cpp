@@ -237,7 +237,7 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
-                if(jet_ndtr_nominal < 2)
+                if (jet_ndtr_nominal < 2)
                         continue;
 
                 // Loop over hadron 1
@@ -473,7 +473,7 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
-                if(jet_ndtr_nominal < 2)
+                if (jet_ndtr_nominal < 2)
                         continue;
 
                 // Loop over hadron 1
@@ -709,7 +709,7 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
-                if(jet_ndtr_nominal < 2)
+                if (jet_ndtr_nominal < 2)
                         continue;
 
                 // Loop over hadron 1

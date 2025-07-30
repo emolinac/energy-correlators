@@ -15,8 +15,8 @@ void macro_print_matching_fraction_jet_pt()
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[nbin_rl+1];
-    determine_log10binning(nbin_rl, rl_min, rl_max, binning);
+    double binning[nbin_rl_nominal+1];
+    determine_log10binning(nbin_rl_nominal, rl_min, rl_max, binning);
 
     TH1F* hall[nbin_jet_pt];           
     TH1F* hmatched[nbin_jet_pt];       
@@ -33,10 +33,10 @@ void macro_print_matching_fraction_jet_pt()
     // Define the necessary histograms to calculate purity
     for (int i = 0 ; i < nbin_jet_pt ; i++)
     {
-        hall[i]           = new TH1F(Form("hall[%i]",i)          ,"",nbin_rl,rl_min, rl_max);
-        hmatched[i]       = new TH1F(Form("hmatched[%i]",i)      ,"",nbin_rl,rl_min, rl_max);
-        hunmatched[i]     = new TH1F(Form("hunmatched[%i]",i)    ,"",nbin_rl,rl_min, rl_max);
-        hhalfunmatched[i] = new TH1F(Form("hhalfunmatched[%i]",i),"",nbin_rl,rl_min, rl_max);
+        hall[i]           = new TH1F(Form("hall[%i]",i)          ,"",nbin_rl_nominal,rl_min, rl_max);
+        hmatched[i]       = new TH1F(Form("hmatched[%i]",i)      ,"",nbin_rl_nominal,rl_min, rl_max);
+        hunmatched[i]     = new TH1F(Form("hunmatched[%i]",i)    ,"",nbin_rl_nominal,rl_min, rl_max);
+        hhalfunmatched[i] = new TH1F(Form("hhalfunmatched[%i]",i),"",nbin_rl_nominal,rl_min, rl_max);
         hall[i]->Sumw2();
         hmatched[i]->Sumw2();
         hunmatched[i]->Sumw2();
@@ -48,9 +48,9 @@ void macro_print_matching_fraction_jet_pt()
         ntuple_dtrmatch->Project(Form("hunmatched[%i]",i)    ,"R_L",pair_jet_pt_pairbg_cut[i]  );
         ntuple_dtrmatch->Project(Form("hhalfunmatched[%i]",i),"R_L",pair_jet_pt_singlebg_cut[i]);
 
-        hratio_matched[i]       = new TH1F(Form("hratio_matched[%i]",i)  ,"",nbin_rl,rl_min, rl_max);
-        hratio_unmatched[i]     = new TH1F(Form("hratio_unmatched[%i]",i),"",nbin_rl,rl_min, rl_max);
-        hratio_halfunmatched[i] = new TH1F(Form("hratio_halfunmatched[%i]",i),"",nbin_rl,rl_min, rl_max);
+        hratio_matched[i]       = new TH1F(Form("hratio_matched[%i]",i)  ,"",nbin_rl_nominal,rl_min, rl_max);
+        hratio_unmatched[i]     = new TH1F(Form("hratio_unmatched[%i]",i),"",nbin_rl_nominal,rl_min, rl_max);
+        hratio_halfunmatched[i] = new TH1F(Form("hratio_halfunmatched[%i]",i),"",nbin_rl_nominal,rl_min, rl_max);
 
         hratio_matched[i]->Divide(hmatched[i],hall[i],1,1,"B");
         hratio_unmatched[i]->Divide(hunmatched[i],hall[i],1,1,"B");

@@ -25,7 +25,7 @@ void macro_print_deviation_from_nominal_npair()
     {
         h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_npair[%i]",jet_pt_bin));
         h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_npair[%i]",jet_pt_bin));
-        h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",nbin_rl,rl_binning);
+        h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",nbin_rl_nominal,rl_binning);
 
         h_deviations[jet_pt_bin]->Add(h_nominal[jet_pt_bin],h_systematic[jet_pt_bin],1,-1);
         h_deviations[jet_pt_bin]->Divide(h_nominal[jet_pt_bin]);

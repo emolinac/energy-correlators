@@ -16,9 +16,9 @@ void macro_print_leptonpair_frac()
     TNtuple* ntuple_nominal   = (TNtuple*) fnominal->Get(name_ntuple_data.c_str());
     TNtuple* ntuple_variation = (TNtuple*) fvariation->Get(name_ntuple_data.c_str());
 
-    TH1F* hnominal   = new TH1F("hnominal"  ,"",nbin_rl,rl_binning);
-    TH1F* hvariation = new TH1F("hvariation","",nbin_rl,rl_binning);
-    TH1F* hratio     = new TH1F("hratio"    ,"",nbin_rl,rl_binning);
+    TH1F* hnominal   = new TH1F("hnominal"  ,"",nbin_rl_nominal,rl_binning);
+    TH1F* hvariation = new TH1F("hvariation","",nbin_rl_nominal,rl_binning);
+    TH1F* hratio     = new TH1F("hratio"    ,"",nbin_rl_nominal,rl_binning);
 
     ntuple_nominal->Project("hnominal","R_L",pair_cut);
     ntuple_variation->Project("hvariation","R_L",pair_cut);

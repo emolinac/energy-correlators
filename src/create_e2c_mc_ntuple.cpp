@@ -99,9 +99,29 @@ int main()
 
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
-
-                ntuple_mc_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(),Z0_4vector->Pt(),Z0_4vector->Eta(),Z0_4vector->Rapidity());
                 
+                double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < mctree->MCJet_Dtr_nmcdtrs ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (mctree->MCJet_Dtr_IsMeson[h1_index] != 1 && mctree->MCJet_Dtr_IsBaryon[h1_index] != 1) 
+                                continue;
+
+                        h1_4vector->SetPxPyPzE(mctree->MCJet_Dtr_PX[h1_index]/1000.,
+                                               mctree->MCJet_Dtr_PY[h1_index]/1000.,
+                                               mctree->MCJet_Dtr_PZ[h1_index]/1000., 
+                                               mctree->MCJet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h1_index],
+                                                              h1_4vector->P(),
+                                                              h1_4vector->Pt(),
+                                                              h1_4vector->Eta())) 
+                                continue;
+                        
+                        jet_ndtr_nominal++;
+                }
+                if (jet_ndtr_nominal < 2)
+                        continue;
+
                 for (int h1_index = 0 ; h1_index < mctree->MCJet_Dtr_nmcdtrs ; h1_index++) {
                         // Skip non-hadronic particles
                         if (mctree->MCJet_Dtr_IsMeson[h1_index] != 1 && mctree->MCJet_Dtr_IsBaryon[h1_index] != 1) 
@@ -161,6 +181,8 @@ int main()
                         }   
                 }
 
+                ntuple_mc_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(),Z0_4vector->Pt(),Z0_4vector->Eta(),Z0_4vector->Rapidity());
+                
                 last_eventNum = mctree->eventNumber;
         }
 
@@ -232,8 +254,30 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
 
-                ntuple_mcreco_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(),Z0_4vector->Pt(),Z0_4vector->Eta(),Z0_4vector->Rapidity());
-                        
+                double jet_ndtr_nominal = 0;
+                for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
+                        // Skip non-hadronic particles
+                        if (mcrecotree->Jet_Dtr_IsMeson[h1_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h1_index] != 1) 
+                                continue;
+
+                        h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,
+                                               mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
+                                               mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,
+                                               mcrecotree->Jet_Dtr_E[h1_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h1_index],
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
+                                                     mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
+                                                     mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
+                                                     h1_4vector->Eta())) 
+                                continue;
+
+                        jet_ndtr_nominal++;
+                }
+                if (jet_ndtr_nominal < 2)
+                        continue;
+                
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
@@ -300,6 +344,8 @@ int main()
                         }
                 }
 
+                ntuple_mcreco_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(),Z0_4vector->Pt(),Z0_4vector->Eta(),Z0_4vector->Rapidity());
+                        
                 last_eventNum = mcrecotree->eventNumber;
         }
 

@@ -15,14 +15,14 @@ void macro_print_matching_fraction_e2c()
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
 
     // Determine log binnning
-    double binning[nbin_rl+1];
-    determine_log10binning(nbin_rl, rl_min, rl_max, binning);
+    double binning[nbin_rl_nominal+1];
+    determine_log10binning(nbin_rl_nominal, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate purity
-    TH1F* hall           = new TH1F("hall"      ,"",nbin_rl,rl_min, rl_max);
-    TH1F* hmatched       = new TH1F("hmatched"  ,"",nbin_rl,rl_min, rl_max);
-    TH1F* hunmatched     = new TH1F("hunmatched","",nbin_rl,rl_min, rl_max);
-    TH1F* hhalfunmatched = new TH1F("hhalfunmatched","",nbin_rl,rl_min, rl_max);
+    TH1F* hall           = new TH1F("hall"      ,"",nbin_rl_nominal,rl_min, rl_max);
+    TH1F* hmatched       = new TH1F("hmatched"  ,"",nbin_rl_nominal,rl_min, rl_max);
+    TH1F* hunmatched     = new TH1F("hunmatched","",nbin_rl_nominal,rl_min, rl_max);
+    TH1F* hhalfunmatched = new TH1F("hhalfunmatched","",nbin_rl_nominal,rl_min, rl_max);
     hall->Sumw2();
     hmatched->Sumw2();
     hunmatched->Sumw2();
@@ -34,9 +34,9 @@ void macro_print_matching_fraction_e2c()
     ntuple_dtrmatch->Project("hunmatched"    ,"R_L",e2c_pairbg_cut);
     ntuple_dtrmatch->Project("hhalfunmatched","R_L",e2c_singlebg_cut);
 
-    TH1F* hratio_matched       = new TH1F("hratio_matched"  ,"",nbin_rl,rl_min, rl_max);
-    TH1F* hratio_unmatched     = new TH1F("hratio_unmatched","",nbin_rl,rl_min, rl_max);
-    TH1F* hratio_halfunmatched = new TH1F("hratio_halfunmatched","",nbin_rl,rl_min, rl_max);
+    TH1F* hratio_matched       = new TH1F("hratio_matched"  ,"",nbin_rl_nominal,rl_min, rl_max);
+    TH1F* hratio_unmatched     = new TH1F("hratio_unmatched","",nbin_rl_nominal,rl_min, rl_max);
+    TH1F* hratio_halfunmatched = new TH1F("hratio_halfunmatched","",nbin_rl_nominal,rl_min, rl_max);
     
     hratio_matched->Divide(hmatched,hall,1,1,"B");
     hratio_unmatched->Divide(hunmatched,hall,1,1,"B");

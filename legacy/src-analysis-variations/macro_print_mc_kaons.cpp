@@ -41,13 +41,13 @@ void macro_print_mc_kaons()
         s_data[bin] = new THStack();
         l_data[bin] = new TLegend();
 
-        hmcreco_kaon[bin]   = new TH1F(Form("hmcreco_kaon[%i]",bin)  ,"",nbin_rl,rl_binning);
-        hmcreco_nokaon[bin] = new TH1F(Form("hmcreco_nokaon[%i]",bin),"",nbin_rl,rl_binning);
-        hmcreco_all[bin]    = new TH1F(Form("hmcreco_all[%i]",bin)   ,"",nbin_rl,rl_binning);
+        hmcreco_kaon[bin]   = new TH1F(Form("hmcreco_kaon[%i]",bin)  ,"",nbin_rl_nominal,rl_binning);
+        hmcreco_nokaon[bin] = new TH1F(Form("hmcreco_nokaon[%i]",bin),"",nbin_rl_nominal,rl_binning);
+        hmcreco_all[bin]    = new TH1F(Form("hmcreco_all[%i]",bin)   ,"",nbin_rl_nominal,rl_binning);
         
-        hmc_kaon[bin]   = new TH1F(Form("hmc_kaon[%i]" ,bin)  ,"",nbin_rl,rl_binning);
-        hmc_nokaon[bin] = new TH1F(Form("hmc_nokaon[%i]" ,bin),"",nbin_rl,rl_binning);
-        hmc_all[bin]    = new TH1F(Form("hmc_all[%i]" ,bin)   ,"",nbin_rl,rl_binning);
+        hmc_kaon[bin]   = new TH1F(Form("hmc_kaon[%i]" ,bin)  ,"",nbin_rl_nominal,rl_binning);
+        hmc_nokaon[bin] = new TH1F(Form("hmc_nokaon[%i]" ,bin),"",nbin_rl_nominal,rl_binning);
+        hmc_all[bin]    = new TH1F(Form("hmc_all[%i]" ,bin)   ,"",nbin_rl_nominal,rl_binning);
         
         // Project into the histograms
         ntuple_mcreco->Project(Form("hmcreco_kaon[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt_kaon[bin]);

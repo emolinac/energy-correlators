@@ -18,13 +18,13 @@ void macro_print_pairefficiency_rl()
     TNtuple* ntuple_efficiency_mc   = (TNtuple*) fefficiency->Get((name_ntuple_correction_mc).c_str());
 
     // Determine log binnning
-    double binning[nbin_rl+1];
-    determine_log10binning(nbin_rl, rl_min, rl_max, binning);
+    double binning[nbin_rl_nominal+1];
+    determine_log10binning(nbin_rl_nominal, rl_min, rl_max, binning);
 
     // Define the necessary histograms to calculate efficiency
-    TH1F* hsig        = new TH1F("hsig"       ,"",nbin_rl,rl_min, rl_max);
-    TH1F* hall        = new TH1F("hall"       ,"",nbin_rl,rl_min, rl_max);
-    TH1F* hefficiency = new TH1F("hefficiency","",nbin_rl,rl_min, rl_max);
+    TH1F* hsig        = new TH1F("hsig"       ,"",nbin_rl_nominal,rl_min, rl_max);
+    TH1F* hall        = new TH1F("hall"       ,"",nbin_rl_nominal,rl_min, rl_max);
+    TH1F* hefficiency = new TH1F("hefficiency","",nbin_rl_nominal,rl_min, rl_max);
     hsig->Sumw2();
     hall->Sumw2();
     
@@ -32,8 +32,8 @@ void macro_print_pairefficiency_rl()
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Define the necessary histograms to show data and corrected data
-    TH1F* hcorr_data = new TH1F("hcorr_data","",nbin_rl,rl_min, rl_max);
-    TH1F* hall_data  = new TH1F("hall_data" ,"",nbin_rl,rl_min, rl_max);
+    TH1F* hcorr_data = new TH1F("hcorr_data","",nbin_rl_nominal,rl_min, rl_max);
+    TH1F* hall_data  = new TH1F("hall_data" ,"",nbin_rl_nominal,rl_min, rl_max);
     hcorr_data->Sumw2();
     hall_data->Sumw2();
 

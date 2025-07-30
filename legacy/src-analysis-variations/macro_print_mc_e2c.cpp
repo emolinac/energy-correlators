@@ -40,10 +40,10 @@ void macro_print_mc_e2c()
         l_data[bin] = new TLegend();
 
         hmcreco_jet[bin] = new TH1F(Form("hmcreco_jet[%i]" ,bin),"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
-        hmcreco[bin]     = new TH1F(Form("hmcreco[%i]",bin),"",nbin_rl,rl_binning);
+        hmcreco[bin]     = new TH1F(Form("hmcreco[%i]",bin),"",nbin_rl_nominal,rl_binning);
         
         hmc_jet[bin] = new TH1F(Form("hmc_jet[%i]" ,bin),"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
-        hmc[bin]     = new TH1F(Form("hmc[%i]" ,bin)       ,"",nbin_rl,rl_binning);
+        hmc[bin]     = new TH1F(Form("hmc[%i]" ,bin)       ,"",nbin_rl_nominal,rl_binning);
         
         set_histogram_style(hmcreco[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
         set_histogram_style(hmc[bin]         , std_marker_color_jet_pt[bin] , std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);

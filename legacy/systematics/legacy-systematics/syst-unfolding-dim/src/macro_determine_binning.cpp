@@ -49,7 +49,7 @@ void macro_determine_binning()
     // Close file
     f->Close();
 
-    const int Nbin = nbin_rl;
+    const int Nbin = nbin_rl_nominal;
     double binning[Nbin + 1];
     
     const int nbin_log = nbin_rl_nominal;

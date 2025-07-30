@@ -100,12 +100,12 @@ int main()
   TH2F* hden_eff    = new TH2F("hden_eff"   ,"",nbin_rl_altlogbin,rl_altlogbinning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
   TH2F* hefficiency = new TH2F("hefficiency","",nbin_rl_altlogbin,rl_altlogbinning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
   
-  // TH2F* hnum_pur    = new TH2F("hnum_pur"   ,"",nbin_rl,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
-  // TH2F* hden_pur    = new TH2F("hden_pur"   ,"",nbin_rl,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
-  // TH2F* hpurity     = new TH2F("hpurity"    ,"",nbin_rl,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
-  // TH2F* hnum_eff    = new TH2F("hnum_eff"   ,"",nbin_rl,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
-  // TH2F* hden_eff    = new TH2F("hden_eff"   ,"",nbin_rl,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
-  // TH2F* hefficiency = new TH2F("hefficiency","",nbin_rl,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
+  // TH2F* hnum_pur    = new TH2F("hnum_pur"   ,"",nbin_rl_nominal,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
+  // TH2F* hden_pur    = new TH2F("hden_pur"   ,"",nbin_rl_nominal,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
+  // TH2F* hpurity     = new TH2F("hpurity"    ,"",nbin_rl_nominal,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
+  // TH2F* hnum_eff    = new TH2F("hnum_eff"   ,"",nbin_rl_nominal,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
+  // TH2F* hden_eff    = new TH2F("hden_eff"   ,"",nbin_rl_nominal,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
+  // TH2F* hefficiency = new TH2F("hefficiency","",nbin_rl_nominal,rl_binning,nbin_jet_pt_corrections,jet_pt_corrections_binning);
   
   hnum_pur->Sumw2();
   hden_pur->Sumw2();
