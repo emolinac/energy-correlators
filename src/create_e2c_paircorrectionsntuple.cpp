@@ -322,7 +322,7 @@ int main()
 
                 last_eventNum = mcrecotree->eventNumber;
 
-                ntuple_mc_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(), jet_ndtr_mc);
+                ntuple_mc_jet->Fill(true_Jet_4vector->Pt(), true_Jet_4vector->Eta(), jet_ndtr_mc);
         }
 
         fout->cd();
