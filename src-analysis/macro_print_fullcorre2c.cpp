@@ -102,11 +102,11 @@ void macro_print_fullcorre2c(int niter = nominal_niter)
                         if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin + 1]) 
                                 continue;
                         
-                        if (efficiency_relerror>corr_rel_error) 
-                                continue;
+                        // if (efficiency_relerror>corr_rel_error) 
+                        //         continue;
                         
-                        if (purity_relerror>corr_rel_error) 
-                                continue;
+                        // if (purity_relerror>corr_rel_error) 
+                        //         continue;
                         
                         if (efficiency <= 0 || efficiency > 1) 
                                 efficiency = 1;

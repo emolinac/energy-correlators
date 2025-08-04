@@ -92,12 +92,20 @@ int main()
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
         // Hadron corrections
-        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        
+        // //DELETE LATER
+        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
@@ -115,7 +123,6 @@ int main()
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
 
-        // DELETE LATER
         // DELETE LATER
         TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
         TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
@@ -370,7 +377,7 @@ int main()
                                         continue;
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);
-
+                                
                                 double purity           = hpurity->GetBinContent(hpurity->FindBin(R_L, Jet_4vector->Pt()));        
                                 double efficiency       = hefficiency->GetBinContent(hefficiency->FindBin(R_L, Jet_4vector->Pt()));
                                 double purity_error     = hpurity->GetBinError(hpurity->FindBin(R_L, Jet_4vector->Pt()));        

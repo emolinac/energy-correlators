@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_print = true, bool do_jet_unfolding = false)
+void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_print = true, bool do_jet_unfolding = false, bool apply_alice_factor = false)
 {
         // Open the necessary files
         TFile* fout = new TFile((output_folder + namef_histos_paircorr_e2c).c_str(),"RECREATE");
@@ -83,11 +83,9 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_p
 
         TH2D* hresponse_jet = new TH2D("hresponse_jet","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         
-        
         for (int evt = 0 ; evt < ntuple_jet_unfolding->GetEntries() ; evt++) {
                 ntuple_jet_unfolding->GetEntry(evt);
 
-                // response_jet->Fill(jet_pt_unfolding_reco, jet_pt_unfolding_truth);
                 hresponse_jet->Fill(jet_pt_unfolding_reco, jet_pt_unfolding_truth);
         }
 
@@ -100,8 +98,8 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_p
         ntuple_jet->Project("hpuritycorrected_jet" , "jet_pt", "jet_purity");
         ntuple_jet->Project("hpuritycorrected2_jet", "jet_pt", "jet_purity");
         
-        RooUnfoldBayes unfold_jet(response_jet, hpuritycorrected_jet, 3);
-        TH1D* hunfolded_bayes_jet = (TH1D*) unfold_jet.Hreco();
+        RooUnfoldBayes unfold_jet(response_jet, hpuritycorrected_jet, 4);
+        TH1D* hunfolded_bayes_jet = (TH1D*) unfold_jet.Hunfold();
         hunfolded_ratio_jet->Divide(hunfolded_bayes_jet,hpuritycorrected2_jet,1,1);
 
         hunfolded_bayes_jet->Draw();
@@ -221,10 +219,15 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_p
                                 hcorr_e2c_neqcharge[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
                 }
 
-                // Log binning
-                hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-                hcorr_e2c_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");                
-                hcorr_npair[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                double alice_factor   = 18./4.;
+                double overall_factor = 1.;
+
+                if (apply_alice_factor)
+                        overall_factor = alice_factor;
+
+                hcorr_e2c[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");
+                hcorr_e2c_nounf[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");                
+                hcorr_npair[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");
 
                 hcorr_e2c_total[bin]->Add(hcorr_e2c_eqcharge[bin],hcorr_e2c_neqcharge[bin],1,1);
                 hcorr_e2c_eqcharge[bin]->Divide(hcorr_e2c_total[bin]);
@@ -260,7 +263,7 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_p
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrtau_niter%i_2dunf.pdf",niter));
+                c->Print(Form("./plots/paircorrtau_niter%i_alicefactor-%s_jetptunf-%s_2dunf.pdf",niter,(apply_alice_factor)?"yes":"no",(do_jet_unfolding)?"yes":"no"));
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data = new THStack();
@@ -282,8 +285,8 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_p
                 
                 tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-                if (do_print) 
-                        c->Print(Form("./plots/paircorrchargede2c_jetptbin%i_niter%i_2dunf.pdf", bin, niter));
+                if (do_print)
+                        c->Print(Form("./plots/paircorrchargede2c_jetptbin%i_niter%i_alicefactor-%s_jetptunf-%s_2dunf.pdf", bin, niter, (apply_alice_factor)?"yes":"no",(do_jet_unfolding)?"yes":"no"));
         }
 
         s_data = new THStack();
@@ -301,5 +304,5 @@ void macro_print_fullcorre2c_paircorr_2dunf(int niter = nominal_niter, bool do_p
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorre2c_niter%i_2dunf.pdf",niter));
+                c->Print(Form("./plots/paircorre2c_niter%i_alicefactor-%s_jetptunf-%s_2dunf.pdf",niter, (apply_alice_factor)?"yes":"no",(do_jet_unfolding)?"yes":"no"));
 }
