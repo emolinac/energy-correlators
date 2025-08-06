@@ -17,7 +17,21 @@ all: ${BIN}/create_jet_purityntuple ${BIN}/create_jet_efficiencyntuple \
 	 ${BIN}/create_e2c_mc_ntuple ${BIN}/create_hadron_ntuple ${BIN}/create_jes_jer_ntuple \
 	 ${BIN}/create_e2c_paircorrectionsntuple ${BIN}/create_e2c_paircorrectionsntuple_ct \
 	 ${BIN}/create_e2c_paircorrectionsntuple_jes ${BIN}/create_e2c_paircorrectionsntuple_jer \
-	 ${BIN}/create_e2c_corrntuple ${BIN}/create_e2c_hadroncorrectionsntuple
+	 ${BIN}/create_e2c_corrntuple ${BIN}/create_e2c_hadroncorrectionsntuple \
+	 ${BIN}/create_mcreco_hadronmultiplicity_corrntuple ${BIN}/create_e2c_mcrecocorrntuple \
+	 ${BIN}/create_e2c_mcrecocorrntuple_paircorr ${BIN}/create_e2c_mcrecocorrntuple_2d
+
+${BIN}/create_e2c_mcrecocorrntuple_paircorr: ${SRC}/create_e2c_mcrecocorrntuple_paircorr.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_mcrecocorrntuple_paircorr.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_mcrecocorrntuple_paircorr
+
+${BIN}/create_e2c_mcrecocorrntuple: ${SRC}/create_e2c_mcrecocorrntuple.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_mcrecocorrntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_mcrecocorrntuple
+
+${BIN}/create_e2c_mcrecocorrntuple_2d: ${SRC}/create_e2c_mcrecocorrntuple_2d.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_e2c_mcrecocorrntuple_2d.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_e2c_mcrecocorrntuple_2d
+
+${BIN}/create_mcreco_hadronmultiplicity_corrntuple: ${SRC}/create_mcreco_hadronmultiplicity_corrntuple.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_mcreco_hadronmultiplicity_corrntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_mcreco_hadronmultiplicity_corrntuple
 
 ${BIN}/create_jet_purityntuple: ${SRC}/create_jet_purityntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_jet_purityntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_jet_purityntuple

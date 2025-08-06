@@ -28,10 +28,11 @@ int main()
         ntuple->SetAutoSave(0);
         
         // Create necessary 4vectors
-        TLorentzVector* Jet_4vector   = new TLorentzVector();
-        TLorentzVector* Z0_4vector    = new TLorentzVector();
-        TLorentzVector* mum_4vector   = new TLorentzVector();
-        TLorentzVector* mup_4vector   = new TLorentzVector();
+        TLorentzVector* Jet_4vector = new TLorentzVector();
+        TLorentzVector* Z0_4vector  = new TLorentzVector();
+        TLorentzVector* mum_4vector = new TLorentzVector();
+        TLorentzVector* mup_4vector = new TLorentzVector();
+        TLorentzVector* h_4vector   = new TLorentzVector();
         
         TLorentzVector* true_Jet_4vector   = new TLorentzVector();
         TLorentzVector* true_Z0_4vector    = new TLorentzVector();
@@ -129,12 +130,31 @@ int main()
                                                mup_4vector->Pz()+mum_4vector->Pz(),
                                                mup_4vector->E() +mum_4vector->E());
 
-                        // if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())&&\
-                        //    apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())&&\
-                        //    apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())&&\
-                        //    apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) reco_passed = true;
-                        if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
-                                reco_passed = true; // Ibrahim condition
+                        double mpt  = 0; // Min pt at least one track has to have
+                        double ntrk = 0;
+                        for (int h_index = 0 ; h_index < mctree->MCJet_recojet_nrecodtrs ; h_index++) {
+                                // Skip non-hadronic particles
+                                if (mctree->MCJet_recojet_Dtr_IsBaryon[h_index] != 1&&mctree->MCJet_recojet_Dtr_IsMeson[h_index] != 1) 
+                                        continue;
+
+                                h_4vector->SetPxPyPzE(mctree->MCJet_recojet_Dtr_PX[h_index]/1000.,
+                                                      mctree->MCJet_recojet_Dtr_PY[h_index]/1000.,
+                                                      mctree->MCJet_recojet_Dtr_PZ[h_index]/1000.,
+                                                      mctree->MCJet_recojet_Dtr_E[h_index]/1000.);
+
+                                if (h_4vector->Pt() > mpt)
+                                        mpt = h_4vector->Pt();
+
+                                if (mctree->MCJet_recojet_Dtr_ThreeCharge[h_index] != 0)
+                                        ntrk++;
+                        }
+
+                        if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())&&\
+                            apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())&&\
+                            apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())&&\
+                            apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) reco_passed = true;
+                        // if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                        //         reco_passed = true; // Ibrahim condition
                 }
                 
                 vars[0] = true_Jet_4vector->Pt();

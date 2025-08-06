@@ -58,6 +58,9 @@ int main()
                         double percentage = 100.*evt/mctree->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
+
+                if (mctree->MCJet_recojet_PE == -999)
+                        continue;
                 
                 if (evt != 0)
                         if (last_eventNum == mctree->eventNumber) 

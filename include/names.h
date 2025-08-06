@@ -15,7 +15,7 @@ std::string name_ntuple_correction_mc   = "ntuple_correction_mc";
 std::string name_ntuple_correction_reco = "ntuple_correction_reco";
 std::string name_ntuple_mc_jet          = "ntuple_mc_jet";
 std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
-
+std::string name_ntuple_data_jet        = "ntuple_data_jet";
 
 // Names of the files
 std::string namef_ntuple_e2c                = "ntuple_e2c.root";

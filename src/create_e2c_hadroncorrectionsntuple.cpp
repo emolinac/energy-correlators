@@ -118,6 +118,24 @@ int main()
                 
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
+
+                double mpt = 0; // Min pt at least one track has to have
+                for (int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++) {
+                        // Skip non-hadronic particles
+                        if (mcrecotree->Jet_Dtr_IsMeson[h_index] != 1&&mcrecotree->Jet_Dtr_IsBaryon[h_index] != 1) 
+                                continue;
+
+                        h_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h_index]/1000.,
+                                              mcrecotree->Jet_Dtr_PY[h_index]/1000.,
+                                              mcrecotree->Jet_Dtr_PZ[h_index]/1000.,
+                                              mcrecotree->Jet_Dtr_E[h_index]/1000.);
+
+                        if (h_4vector->Pt() > mpt)
+                                mpt = h_4vector->Pt();
+                }
+
+                // if (!apply_jet_id_cuts(mpt, mcrecotree->Jet_NTrk, mcrecotree->Jet_CPF, mcrecotree->Jet_MTF))
+                //         continue;
                 
                 // Apply cuts to MC jets
                 true_Jet_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_PX/1000.,
@@ -143,12 +161,14 @@ int main()
                 if (!apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) 
                         continue;
                 
-                // if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) 
-                //         continue;
-                // if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) 
-                //         continue;
-                // if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
-                //         continue;
+                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) 
+                        continue;
+
+                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) 
+                        continue;
+                
+                if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
+                        continue;
                 
                 // Loop over reco
                 for (int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++) {

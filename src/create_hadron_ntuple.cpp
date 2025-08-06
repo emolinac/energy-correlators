@@ -34,12 +34,19 @@ int main()
         TZJets2018Data* datatree_2018 = new TZJets2018Data();
         
         // Create Ntuples
-        TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"MC Sim"  ,"h_p:h_pt:h_eta:h_phi");
-        TNtuple* ntuple_mcreco = new TNtuple(name_ntuple_mcreco.c_str(),"Reco Sim","h_p:h_pt:h_eta:h_phi");
-        TNtuple* ntuple_data   = new TNtuple(name_ntuple_data.c_str()  ,"Data"    ,"h_p:h_pt:h_eta:h_phi");
+        TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"MC Sim"  ,"h_p:h_pt:h_eta:h_phi:jet_pt");
+        TNtuple* ntuple_mcreco = new TNtuple(name_ntuple_mcreco.c_str(),"Reco Sim","h_p:h_pt:h_eta:h_phi:jet_pt");
+        TNtuple* ntuple_data   = new TNtuple(name_ntuple_data.c_str()  ,"Data"    ,"h_p:h_pt:h_eta:h_phi:jet_pt");
         ntuple_mc->SetAutoSave(0);
         ntuple_mcreco->SetAutoSave(0);
         ntuple_data->SetAutoSave(0);
+        
+        TNtuple* ntuple_mc_jet     = new TNtuple(name_ntuple_mc_jet.c_str()    ,"MC Sim"  ,"jet_pt");
+        TNtuple* ntuple_mcreco_jet = new TNtuple(name_ntuple_mcreco_jet.c_str(),"Reco Sim","jet_pt");
+        TNtuple* ntuple_data_jet   = new TNtuple(name_ntuple_data_jet.c_str()  ,"Data"    ,"jet_pt");
+        ntuple_mc_jet->SetAutoSave(0);
+        ntuple_mcreco_jet->SetAutoSave(0);
+        ntuple_data_jet->SetAutoSave(0);
         
         TLorentzVector* Jet_4vector = new TLorentzVector();
         TLorentzVector* Z0_4vector  = new TLorentzVector();
@@ -53,7 +60,7 @@ int main()
         bool maxjetpT_found = false;
         
         // Fill the MC TNtuple
-        float vars[4];
+        float vars[5];
         for (int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++) {
                 // Access entry of tree
                 mctree->GetEntry(evt);
@@ -124,9 +131,12 @@ int main()
                         vars[1] = h_4vector->Pt();
                         vars[2] = h_4vector->Eta();
                         vars[3] = h_4vector->Phi();
+                        vars[4] = Jet_4vector->Pt();
 
                         ntuple_mc->Fill(vars);
                 }
+
+                ntuple_mc_jet->Fill(Jet_4vector->Pt());
 
                 last_eventNum = mctree->eventNumber;
         }
@@ -221,9 +231,12 @@ int main()
                         vars[1] = h_4vector->Pt();
                         vars[2] = h_4vector->Eta();
                         vars[3] = h_4vector->Phi();
+                        vars[4] = Jet_4vector->Pt();
 
                         ntuple_mcreco->Fill(vars);
                 }
+
+                ntuple_mcreco_jet->Fill(Jet_4vector->Pt());
 
                 last_eventNum = mcrecotree->eventNumber;
         }
@@ -315,9 +328,12 @@ int main()
                         vars[1] = h_4vector->Pt();
                         vars[2] = h_4vector->Eta();
                         vars[3] = h_4vector->Phi();
+                        vars[4] = Jet_4vector->Pt();
 
                         ntuple_data->Fill(vars);
                 }
+
+                ntuple_data_jet->Fill(Jet_4vector->Pt());
 
                 last_eventNum = datatree_2016->eventNumber;
         }
@@ -408,9 +424,12 @@ int main()
                         vars[1] = h_4vector->Pt();
                         vars[2] = h_4vector->Eta();
                         vars[3] = h_4vector->Phi();
+                        vars[4] = Jet_4vector->Pt();
 
                         ntuple_data->Fill(vars);
                 }
+
+                ntuple_data_jet->Fill(Jet_4vector->Pt());
 
                 last_eventNum = datatree_2017->eventNumber;
         }
@@ -501,9 +520,12 @@ int main()
                         vars[1] = h_4vector->Pt();
                         vars[2] = h_4vector->Eta();
                         vars[3] = h_4vector->Phi();
+                        vars[4] = Jet_4vector->Pt();
 
                         ntuple_data->Fill(vars);
                 }
+
+                ntuple_data_jet->Fill(Jet_4vector->Pt());
 
                 last_eventNum = datatree_2018->eventNumber;
         }
@@ -512,6 +534,9 @@ int main()
         ntuple_mc->Write();
         ntuple_mcreco->Write();
         ntuple_data->Write();
+        ntuple_mc_jet->Write();
+        ntuple_mcreco_jet->Write();
+        ntuple_data_jet->Write();
         fout->Close();
 
         std::cout<<std::endl;

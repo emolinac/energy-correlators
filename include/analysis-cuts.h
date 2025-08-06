@@ -16,12 +16,6 @@ const double jet_eta_min = 2.5;
 const double jet_eta_max = 4.0;
 const double jet_pt_min  = 15;
 
-// Jet ID cuts
-const double mpf_max = 0.8; 
-const double cpf_min = 0.1;
-const double mpt_min = 1.2;
-const double nPVtrks_min = 1.5;
-
 // Topological cuts
 const double deltaphi_z_jet_min  = 7*TMath::Pi()/8.;
 const double jet_radius = 0.5;
@@ -47,8 +41,8 @@ const double min_efficiency[] = {0.14,0.10,0.05};
 const double max_relerror[]   = {0.50,0.35,0.45};
 
 // Misc analysis cuts
-// TCut pair_matching_cut = "R_L_truth!=-999";
-TCut pair_matching_cut = Form("TMath::Abs(R_L-R_L_truth)<%f",rl_resolution);
+TCut pair_matching_cut = "R_L_truth!=-999";
+// TCut pair_matching_cut = Form("TMath::Abs(R_L-R_L_truth)<%f",rl_resolution);
 
 // Nominal Analysis Cuts
 
@@ -88,7 +82,7 @@ TCut pair_zpt_cut[] = {
 
 // _______________________________ Purity Analysis Cuts _______________________________ //
 TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution,jet_pt_min_nom,jet_pt_max);
-TCut single_signal_cut = Form("key_match==1&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max); // This was designed for single particle tuples
+TCut single_signal_cut = "key_match==1";
 
 TCut purity_corr_singletrack     = Form("purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
 TCut efficiency_corr_singletrack = Form("(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
@@ -101,6 +95,12 @@ TCut e2c_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(effi
 TCut pair_purity_corr_singletrack_weightpt = Form("purity*(purity_relerror<%f)",corr_rel_error);
 
 TString muons_eff = "1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))";
+
+// TCut jet_full_corr[] = {
+//         Form("jet_purity*(1./jet_efficiency)*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
+//         Form("jet_purity*(1./jet_efficiency)*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
+//         Form("jet_purity*(1./jet_efficiency)*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
+// };
 
 TCut jet_full_corr[] = {
         Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
@@ -157,7 +157,13 @@ bool apply_jet_cuts(double jet_eta, double jet_pt)
         return true;    
 }
 
-bool apply_jet_id_cuts(double mpt, double nPVtrk, double cpf, double mpf)
+// Jet ID cuts
+const double mtf_max = 0.75; 
+const double cpf_min = 0.06;
+const double mpt_min = 1.4;
+const double nPVtrks_min = 2;
+
+bool apply_jet_id_cuts(double mpt, double nPVtrk, double cpf, double mtf)
 {
         if (mpt < mpt_min)
                 return false;
@@ -168,7 +174,7 @@ bool apply_jet_id_cuts(double mpt, double nPVtrk, double cpf, double mpf)
         if (cpf < cpf_min)
                 return false;
         
-        if (mpf > mpf_max)
+        if (mtf > mtf_max)
                 return false;
 
         return true;    
