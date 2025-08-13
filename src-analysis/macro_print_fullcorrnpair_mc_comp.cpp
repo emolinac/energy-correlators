@@ -18,9 +18,9 @@ void macro_print_fullcorrnpair_mc_comp(int niter = 4, bool do_print = true)
         TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
         
         // Set the branches of data
-        float R_L, jet_pt, weight_pt, efficiency, purity, efficiency_relerror, purity_relerror, weight_event;
+        float R_L, jet_pt, weight_pt, efficiency, purity, efficiency_relerror, purity_relerror, event_weight;
         set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
-        ntuple_data->SetBranchAddress("weight_event", &weight_event);
+        ntuple_data->SetBranchAddress("event_weight", &event_weight);
         
         // Unfold the purity corrected data
         TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
@@ -85,7 +85,7 @@ void macro_print_fullcorrnpair_mc_comp(int niter = 4, bool do_print = true)
                         if (unfolding_weight <= 0) 
                                 unfolding_weight = 1;
 
-                        hcorr_npair[bin]->Fill(R_L,weight_event*purity/efficiency);
+                        hcorr_npair[bin]->Fill(R_L,event_weight*purity/efficiency);
                 }
 
                 hcorr_npair[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");

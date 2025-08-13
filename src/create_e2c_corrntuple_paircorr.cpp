@@ -388,9 +388,9 @@ int main()
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
 
-                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+                                double event_weight = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
                                 
-                                vars[0 ] = weight_due_to_jet;
+                                vars[0 ] = event_weight;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
                                 vars[3 ] = efficiency_error/efficiency;
@@ -604,9 +604,9 @@ int main()
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 
-                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+                                double event_weight = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
                                 
-                                vars[0 ] = weight_due_to_jet;
+                                vars[0 ] = event_weight;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
                                 vars[3 ] = efficiency_error/efficiency;
@@ -820,9 +820,9 @@ int main()
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 
-                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+                                double event_weight = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
                                 
-                                vars[0 ] = weight_due_to_jet;
+                                vars[0 ] = event_weight;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
                                 vars[3 ] = efficiency_error/efficiency;

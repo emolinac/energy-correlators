@@ -100,10 +100,10 @@ const int Nvars_mc              = 21;
 const int Nvars_data            = 17; 
 const int Nvars_paircorrdata    = 26; 
 
-const char* ntuple_mcreco_vars       = "weight_event:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
-const char* ntuple_data_vars         = "weight_event:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e";
-const char* ntuple_paircorrdata_vars = "weight_event:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_reco_ok:n_reco:n_truth_ok:n_truth:eq_charge";
-const char* ntuple_mc_vars           = "weight_event:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
+const char* ntuple_mcreco_vars       = "event_weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
+const char* ntuple_data_vars         = "event_weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e";
+const char* ntuple_paircorrdata_vars = "event_weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_reco_ok:n_reco:n_truth_ok:n_truth:eq_charge";
+const char* ntuple_mc_vars           = "event_weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
 
 //--------------------------------------------------------------------------------------//
 const int   Nvars_corrections_mc         = 13;
@@ -118,7 +118,7 @@ const char* ntuple_hadroncorrections_mc_vars   = "h_eta:h_y:h_p:h_pt:jet_pt:jet_
 const char* ntuple_hadroncorrections_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:jet_e_truth:jet_pt_truth:h_y_truth:h_eta_truth:h_p_truth:deltaR_jet_h:key_match";
 
 const int   Nvars_corrdata       = 29; 
-const char* ntuple_corrdata_vars = "weight_event:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth";
+const char* ntuple_corrdata_vars = "event_weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth";
 
 
 // JET NTUPLES SPECS
