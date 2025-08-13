@@ -47,14 +47,14 @@ void macro_print_fullcorre2c_mc_comp(int niter = 4, bool do_print = true)
 
         TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hpuritycorrected_ref   = new TH2D("hpuritycorrected_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         
         ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L");
-        ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L");
+        ntuple_data->Project("hpuritycorrected_ref", "jet_pt:R_L");
         
         RooUnfoldBayes unfold(response, hpuritycorrected, niter);
         TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
-        hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected2,1,1);
+        hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
 
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];

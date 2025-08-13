@@ -46,16 +46,16 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
                         response->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
         }
 
-        TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hunfolded_ratio      = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hpuritycorrected     = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hpuritycorrected_ref = new TH2D("hpuritycorrected_ref","",nbin_rl_nominal_unfolding,unfolding_rl_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         
-        ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-        ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+        ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L","purity");
+        ntuple_data->Project("hpuritycorrected_ref", "jet_pt:R_L","purity");
         
         RooUnfoldBayes unfold(response, hpuritycorrected, niter);
         TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
-        hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected2,1,1);
+        hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
 
         TH1F* hcorr_e2c_eqcharge[nbin_jet_pt]; 
         TH1F* hcorr_e2c_neqcharge[nbin_jet_pt]; 
