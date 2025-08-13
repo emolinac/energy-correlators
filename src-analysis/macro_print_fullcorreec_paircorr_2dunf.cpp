@@ -35,23 +35,17 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
         TH2D* htrue    = new TH2D("htrue"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
         
-        TH2D* hpurcorr_chargedeec = new TH2D("hpurcorr_chargedeec","",nbin_rl_nominal_unfolding,unfolding_rl_chargedeec_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hmeas_chargedeec    = new TH2D("hmeas_chargedeec"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_chargedeec_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* htrue_chargedeec    = new TH2D("htrue_chargedeec"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_chargedeec_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        RooUnfoldResponse* response_chargedeec = new RooUnfoldResponse(hmeas_chargedeec, htrue_chargedeec, "response_chargedeec");
-        
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
                 ntuple->GetEntry(evt);
 
                 if (abs(R_L_truth - R_L_reco) < rl_resolution) {
                         response->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
-                        response_chargedeec->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
                 }
         }
 
-        TH2D* hunfolded_ratio     = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected_ref   = new TH2D("hpuritycorrected_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hunfolded_ratio      = new TH2D("hunfolded_ratio"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hpuritycorrected     = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* hpuritycorrected_ref = new TH2D("hpuritycorrected_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         
         ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L","purity");
         ntuple_data->Project("hpuritycorrected_ref", "jet_pt:R_L","purity");
@@ -59,17 +53,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
         RooUnfoldBayes unfold(response, hpuritycorrected, niter);
         TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
         hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
-
-        TH2D* hunfolded_ratio_chargedeec     = new TH2D("hunfolded_ratio_chargedeec"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_chargedeec_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected_chargedeec    = new TH2D("hpuritycorrected_chargedeec" ,"",nbin_rl_nominal_unfolding,unfolding_rl_chargedeec_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected_ref_chargedeec   = new TH2D("hpuritycorrected_ref_chargedeec","",nbin_rl_nominal_unfolding,unfolding_rl_chargedeec_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        
-        ntuple_data->Project("hpuritycorrected_chargedeec" , "jet_pt:R_L","purity");
-        ntuple_data->Project("hpuritycorrected_ref_chargedeec", "jet_pt:R_L","purity");
-        
-        RooUnfoldBayes unfold_chargedeec(response_chargedeec, hpuritycorrected_chargedeec, niter);
-        TH2D* hunfolded_bayes_chargedeec = (TH2D*) unfold_chargedeec.Hunfold();
-        hunfolded_ratio_chargedeec->Divide(hunfolded_bayes_chargedeec,hpuritycorrected_ref_chargedeec,1,1);
+        hunfolded_ratio->Smooth();
 
         // Unfold the purity corrected jets
         TNtuple* ntuple_jet_unfolding = (TNtuple*) f->Get(name_ntuple_mcreco_jet.c_str());
@@ -101,6 +85,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
         RooUnfoldBayes unfold_jet(response_jet, hpuritycorrected_jet, 4);
         TH1D* hunfolded_bayes_jet = (TH1D*) unfold_jet.Hunfold();
         hunfolded_ratio_jet->Divide(hunfolded_bayes_jet,hpuritycorrected_ref_jet,1,1);
+        hunfolded_ratio_jet->Smooth();
 
         hunfolded_bayes_jet->Draw();
         hpuritycorrected_ref_jet->Draw();
@@ -147,7 +132,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
         gPad->SetLogy(0);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded_jetpt_niter%i_ratio.pdf",niter));
+                c->Print(Form("./plots/unfolded1d_jetpt_niter%i_ratio.pdf",niter));
 
         hresponse_jet->Draw("col text");
         gPad->SetLogx(1);
@@ -194,7 +179,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
 
                 // Apply the unfolding factor
                 if (do_jet_unfolding)
-                        hcorr_jet[bin]->Scale(hunfolded_ratio_jet->GetBinContent(bin+1));
+                        hcorr_jet[bin]->Scale(hunfolded_ratio_jet->GetBinContent(bin+2));
 
                 double jet_pt_centroid = hcorr_jet_centroid[bin]->GetMean();
                 for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++) {
@@ -263,7 +248,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrtau_niter%i_alicefactor-%s_jetptunf-%s_2dunf.pdf",niter,(apply_alice_factor)?"yes":"no",(do_jet_unfolding)?"yes":"no"));
+                c->Print(Form("./plots/paircorrtau_niter%i_jetptunf-%s_2dunf.pdf",niter,(do_jet_unfolding)?"yes":"no"));
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data = new THStack();
@@ -286,7 +271,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
                 tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
                 if (do_print)
-                        c->Print(Form("./plots/paircorrchargedeec_jetptbin%i_niter%i_alicefactor-%s_jetptunf-%s_2dunf.pdf", bin, niter, (apply_alice_factor)?"yes":"no",(do_jet_unfolding)?"yes":"no"));
+                        c->Print(Form("./plots/paircorrchargedeec_jetptbin%i_niter%i_jetptunf-%s_2dunf.pdf", bin, niter,(do_jet_unfolding)?"yes":"no"));
         }
 
         s_data = new THStack();
@@ -304,5 +289,5 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorreec_niter%i_alicefactor-%s_jetptunf-%s_2dunf.pdf",niter, (apply_alice_factor)?"yes":"no",(do_jet_unfolding)?"yes":"no"));
+                c->Print(Form("./plots/paircorreec_niter%i_jetptunf-%s_2dunf.pdf",niter,(do_jet_unfolding)?"yes":"no"));
 }

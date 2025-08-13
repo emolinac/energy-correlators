@@ -93,12 +93,12 @@ int main()
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
         // //DELETE LATER
-        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
@@ -120,19 +120,19 @@ int main()
         hefficiency->Smooth();
 
         // DELETE LATER
-        TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
-        TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
         ntuple_purity->Project("hnum_pur_eqcharge", "jet_pt:R_L",pair_matching_cut + "eq_charge>1");
         ntuple_purity->Project("hden_pur_eqcharge", "jet_pt:R_L","eq_charge>1");
@@ -170,12 +170,12 @@ int main()
         
         TLatex latex;
         latex.SetTextAlign(22); // center alignment
-        latex.SetTextSize(rl_resolution);
+        latex.SetTextSize(text_size_correction_plots);
         latex.SetTextColor(kBlack);
 
         hpurity->Draw("col");
-        for (int i = 1; i <= hpurity->GetNbinsX(); ++i) {
-                for (int j = 1; j <= hpurity->GetNbinsY(); ++j) {
+        for (int i = 2; i < hpurity->GetNbinsX(); ++i) {
+                for (int j = 2; j < hpurity->GetNbinsY(); ++j) {
                         double x = hpurity->GetXaxis()->GetBinCenter(i);
                         double y = hpurity->GetYaxis()->GetBinCenter(j);
                         double content = hpurity->GetBinContent(i, j);
@@ -185,15 +185,15 @@ int main()
                 }
         }
         hpurity->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        hpurity->GetXaxis()->SetRangeUser(rl_min, rl_max);
+        hpurity->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hpurity->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         c->Print("../src-analysis/plots/pair_purity_correction_smooth.pdf");
 
         hefficiency->Draw("col");
-        for (int i = 1; i <= hefficiency->GetNbinsX(); ++i) {
-                for (int j = 1; j <= hefficiency->GetNbinsY(); ++j) {
+        for (int i = 2; i < hefficiency->GetNbinsX(); ++i) {
+                for (int j = 2; j < hefficiency->GetNbinsY(); ++j) {
                         double x = hefficiency->GetXaxis()->GetBinCenter(i);
                         double y = hefficiency->GetYaxis()->GetBinCenter(j);
                         double content = hefficiency->GetBinContent(i, j);
@@ -203,7 +203,7 @@ int main()
                 }
         }
         hefficiency->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        hefficiency->GetXaxis()->SetRangeUser(rl_min, rl_max);
+        hefficiency->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hefficiency->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
@@ -211,8 +211,8 @@ int main()
 
 
         hpurity_eqcharge->Draw("col");
-        for (int i = 1; i <= hpurity_eqcharge->GetNbinsX(); ++i) {
-                for (int j = 1; j <= hpurity_eqcharge->GetNbinsY(); ++j) {
+        for (int i = 2; i < hpurity_eqcharge->GetNbinsX(); ++i) {
+                for (int j = 2; j < hpurity_eqcharge->GetNbinsY(); ++j) {
                         double x = hpurity_eqcharge->GetXaxis()->GetBinCenter(i);
                         double y = hpurity_eqcharge->GetYaxis()->GetBinCenter(j);
                         double content = hpurity_eqcharge->GetBinContent(i, j);
@@ -222,15 +222,15 @@ int main()
                 }
         }
         hpurity_eqcharge->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        hpurity_eqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
+        hpurity_eqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hpurity_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         c->Print("../src-analysis/plots/pair_purity_correction_eqcharge_smooth.pdf");
 
         hefficiency_eqcharge->Draw("col");
-        for (int i = 1; i <= hefficiency_eqcharge->GetNbinsX(); ++i) {
-                for (int j = 1; j <= hefficiency_eqcharge->GetNbinsY(); ++j) {
+        for (int i = 2; i < hefficiency_eqcharge->GetNbinsX(); ++i) {
+                for (int j = 2; j < hefficiency_eqcharge->GetNbinsY(); ++j) {
                         double x = hefficiency_eqcharge->GetXaxis()->GetBinCenter(i);
                         double y = hefficiency_eqcharge->GetYaxis()->GetBinCenter(j);
                         double content = hefficiency_eqcharge->GetBinContent(i, j);
@@ -240,15 +240,15 @@ int main()
                 }
         }
         hefficiency_eqcharge->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        hefficiency_eqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
+        hefficiency_eqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hefficiency_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         c->Print("../src-analysis/plots/pair_efficiency_correction_eqcharge_smooth.pdf");
 
         hpurity_neqcharge->Draw("col");
-        for (int i = 1; i <= hpurity_neqcharge->GetNbinsX(); ++i) {
-                for (int j = 1; j <= hpurity_neqcharge->GetNbinsY(); ++j) {
+        for (int i = 2; i < hpurity_neqcharge->GetNbinsX(); ++i) {
+                for (int j = 2; j < hpurity_neqcharge->GetNbinsY(); ++j) {
                         double x = hpurity_neqcharge->GetXaxis()->GetBinCenter(i);
                         double y = hpurity_neqcharge->GetYaxis()->GetBinCenter(j);
                         double content = hpurity_neqcharge->GetBinContent(i, j);
@@ -258,15 +258,15 @@ int main()
                 }
         }
         hpurity_neqcharge->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        hpurity_neqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
+        hpurity_neqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hpurity_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         c->Print("../src-analysis/plots/pair_purity_correction_neqcharge_smooth.pdf");
 
         hefficiency_neqcharge->Draw("col");
-        for (int i = 1; i <= hefficiency_neqcharge->GetNbinsX(); ++i) {
-                for (int j = 1; j <= hefficiency_neqcharge->GetNbinsY(); ++j) {
+        for (int i = 2; i < hefficiency_neqcharge->GetNbinsX(); ++i) {
+                for (int j = 2; j < hefficiency_neqcharge->GetNbinsY(); ++j) {
                         double x = hefficiency_neqcharge->GetXaxis()->GetBinCenter(i);
                         double y = hefficiency_neqcharge->GetYaxis()->GetBinCenter(j);
                         double content = hefficiency_neqcharge->GetBinContent(i, j);
@@ -276,7 +276,7 @@ int main()
                 }
         }
         hefficiency_neqcharge->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        hefficiency_neqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
+        hefficiency_neqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hefficiency_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);

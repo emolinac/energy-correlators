@@ -98,12 +98,12 @@ int main()
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
         // Hadron corrections
-        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
@@ -124,19 +124,19 @@ int main()
         hpurity->Smooth();
         hefficiency->Smooth();
 
-        TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
-        TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
         ntuple_purity->Project("hnum_pur_eqcharge", "jet_pt:R_L",pair_matching_cut + "eq_charge>1");
         ntuple_purity->Project("hden_pur_eqcharge", "jet_pt:R_L","eq_charge>1");
