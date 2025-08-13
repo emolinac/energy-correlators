@@ -221,7 +221,7 @@ int main()
                                                 key2_match = 0;
                                 } 
                         
-                                vars_reco[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
+                                vars_reco[0]  = mcrecotree->Jet_Dtr_ThreeCharge[h1_index]*mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
                                 vars_reco[1]  = h1_4vector->DeltaR(*h2_4vector);
                                 vars_reco[2]  = h1_4vector->Eta();
                                 vars_reco[3]  = h2_4vector->Eta();
@@ -249,7 +249,6 @@ int main()
                                 vars_reco[22] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
                                 vars_reco[23] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
                                 vars_reco[24] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
-                                vars_reco[25] = mcrecotree->Jet_Dtr_ThreeCharge[h1_index]*mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
 
                                 // Fill the TNtuple
                                 ntuple_reco->Fill(vars_reco);
@@ -289,7 +288,7 @@ int main()
                                                                       h2_4vector->Eta())) 
                                         continue;
 
-                                vars_mc[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
+                                vars_mc[0]  = mcrecotree->Jet_mcjet_dtrThreeCharge[h1_index]*mcrecotree->Jet_mcjet_dtrThreeCharge[h2_index];
                                 vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
                                 vars_mc[2]  = h1_4vector->Eta();
                                 vars_mc[3]  = h2_4vector->Eta();
@@ -302,7 +301,6 @@ int main()
                                 vars_mc[10] = Jet_4vector->Eta();
                                 vars_mc[11] = Jet_4vector->Pt();
                                 vars_mc[12] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
-                                vars_mc[13] = mcrecotree->Jet_mcjet_dtrThreeCharge[h1_index]*mcrecotree->Jet_mcjet_dtrThreeCharge[h2_index];
 
                                 // Fill the TNtuple
                                 ntuple_mc->Fill(vars_mc);
