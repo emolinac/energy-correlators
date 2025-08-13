@@ -101,8 +101,9 @@ int main()
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
 
-        // DELETE LATER
-        // DELETE LATER
+        hpurity->Smooth();
+        hefficiency->Smooth();
+
         TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
         TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
         TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
@@ -133,65 +134,17 @@ int main()
         regularize_correction_factors(hpurity_eqcharge);
         regularize_correction_factors(hefficiency_eqcharge);
 
+        hpurity_eqcharge->Smooth();
+        hefficiency_eqcharge->Smooth();
+
         hpurity_neqcharge->Divide(hnum_pur_neqcharge, hden_pur_neqcharge, 1, 1, "B");
         hefficiency_neqcharge->Divide(hnum_eff_neqcharge, hden_eff_neqcharge, 1, 1, "B");
 
         regularize_correction_factors(hpurity_neqcharge);
         regularize_correction_factors(hefficiency_neqcharge);
 
-        TCanvas* c = new TCanvas("c", "", 1920, 1080);
-        c->Draw();
-
-        gStyle->SetOptStat("");
-        gStyle->SetPaintTextFormat("4.2f");
-        hpurity->Draw("col text");
-        hpurity->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        hpurity->GetXaxis()->SetRangeUser(rl_min, rl_max);
-        hpurity->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_purity_correction_ct.pdf");
-
-        hefficiency->Draw("col text");
-        hefficiency->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        hefficiency->GetXaxis()->SetRangeUser(rl_min, rl_max);
-        hefficiency->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_efficiency_correction_ct.pdf");
-
-        // DELETE LATER!!!!
-        hpurity_eqcharge->Draw("col text");
-        hpurity_eqcharge->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        hpurity_eqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
-        hpurity_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_purity_correction_eqcharge_ct.pdf");
-
-        hefficiency_eqcharge->Draw("col text");
-        hefficiency_eqcharge->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        hefficiency_eqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
-        hefficiency_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_efficiency_correction_eqcharge_ct.pdf");
-
-        hpurity_neqcharge->Draw("col text");
-        hpurity_neqcharge->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        hpurity_neqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
-        hpurity_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_purity_correction_neqcharge_ct.pdf");
-
-        hefficiency_neqcharge->Draw("col text");
-        hefficiency_neqcharge->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        hefficiency_neqcharge->GetXaxis()->SetRangeUser(rl_min, rl_max);
-        hefficiency_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_efficiency_correction_neqcharge_ct.pdf");
+        hpurity_neqcharge->Smooth();
+        hefficiency_neqcharge->Smooth();
 
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector = new TLorentzVector();
