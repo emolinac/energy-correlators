@@ -129,12 +129,11 @@ int main()
                                                mup_4vector->Pz()+mum_4vector->Pz(),
                                                mup_4vector->E() +mum_4vector->E());
 
-                        // if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())&&\
-                        //    apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())&&\
-                        //    apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())&&\
-                        //    apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) reco_passed = true;
-                        if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
-                                reco_passed = true; // Ibrahim condition
+                        if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())&&\
+                            apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())&&\
+                            apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())&&\
+                            apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
+                                reco_passed = true;
                 }
                 
                 vars[0] = true_Jet_4vector->Pt();

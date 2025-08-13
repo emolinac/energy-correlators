@@ -136,12 +136,11 @@ int main()
                                                     true_mup_4vector->Pz()+true_mum_4vector->Pz(),
                                                     true_mup_4vector->E() +true_mum_4vector->E());
 
-                        // if (apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())&&\
-                        //    apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())&&\
-                        //    apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())&&\
-                        //    apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) truth_passed = true;
-                        if (apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) 
-                                truth_passed = true; // Ibrahim conditions
+                        if (apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())&&\
+                            apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())&&\
+                            apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())&&\
+                            apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
+                                truth_passed = true;
                 }
                         
                 vars[0] = Jet_4vector->Pt();
