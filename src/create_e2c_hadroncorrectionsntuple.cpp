@@ -143,12 +143,14 @@ int main()
                 if (!apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) 
                         continue;
                 
-                // if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) 
-                //         continue;
-                // if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) 
-                //         continue;
-                // if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
-                //         continue;
+                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) 
+                        continue;
+
+                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) 
+                        continue;
+                
+                if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
+                        continue;
                 
                 // Loop over reco
                 for (int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++) {

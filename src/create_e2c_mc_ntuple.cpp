@@ -101,6 +101,7 @@ int main()
                         continue;
                 
                 double jet_ndtr_nominal = 0;
+                
                 for (int h1_index = 0 ; h1_index < mctree->MCJet_Dtr_nmcdtrs ; h1_index++) {
                         // Skip non-hadronic particles
                         if (mctree->MCJet_Dtr_IsMeson[h1_index] != 1 && mctree->MCJet_Dtr_IsBaryon[h1_index] != 1) 
@@ -119,6 +120,7 @@ int main()
                         
                         jet_ndtr_nominal++;
                 }
+
                 if (jet_ndtr_nominal < 2)
                         continue;
 

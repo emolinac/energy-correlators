@@ -100,16 +100,16 @@ const int Nvars_mc              = 21;
 const int Nvars_data            = 17; 
 const int Nvars_paircorrdata    = 26; 
 
-const char* ntuple_mcreco_vars       = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
-const char* ntuple_data_vars         = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e";
-const char* ntuple_paircorrdata_vars = "weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_reco_ok:n_reco:n_truth_ok:n_truth:eq_charge";
-const char* ntuple_mc_vars           = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
+const char* ntuple_mcreco_vars       = "weight_event:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
+const char* ntuple_data_vars         = "weight_event:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e";
+const char* ntuple_paircorrdata_vars = "weight_event:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_reco_ok:n_reco:n_truth_ok:n_truth:eq_charge";
+const char* ntuple_mc_vars           = "weight_event:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
 
 //--------------------------------------------------------------------------------------//
-const int   Nvars_corrections_mc         = 14;
-const int   Nvars_corrections_mcreco     = 26;
-const char* ntuple_corrections_mc_vars   = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:jet_pt:weight_pt:eq_charge";
-const char* ntuple_corrections_reco_vars = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:h1_p_truth:h2_p_truth:h1_pt_truth:h2_pt_truth:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt:eq_charge";
+const int   Nvars_corrections_mc         = 13;
+const int   Nvars_corrections_mcreco     = 25;
+const char* ntuple_corrections_mc_vars   = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:jet_pt:weight_pt";
+const char* ntuple_corrections_reco_vars = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:h1_p_truth:h2_p_truth:h1_pt_truth:h2_pt_truth:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
 
 //--------------------------------------------------------------------------------------//
 const int   Nvars_hadroncorrections_mc         = 8;
@@ -118,7 +118,7 @@ const char* ntuple_hadroncorrections_mc_vars   = "h_eta:h_y:h_p:h_pt:jet_pt:jet_
 const char* ntuple_hadroncorrections_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:jet_e_truth:jet_pt_truth:h_y_truth:h_eta_truth:h_p_truth:deltaR_jet_h:key_match";
 
 const int   Nvars_corrdata       = 29; 
-const char* ntuple_corrdata_vars = "weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth";
+const char* ntuple_corrdata_vars = "weight_event:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth";
 
 
 // JET NTUPLES SPECS

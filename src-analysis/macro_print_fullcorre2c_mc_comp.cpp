@@ -18,8 +18,13 @@ void macro_print_fullcorre2c_mc_comp(int niter = 4, bool do_print = true)
         TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
         
         // Set the branches of data
-        float R_L, jet_pt, weight_pt, efficiency, purity, efficiency_relerror, purity_relerror;
-        set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
+        float R_L, jet_pt, weight_pt;
+        float efficiency, purity, efficiency_factorized, purity_factorized;
+        ntuple_data->SetBranchAddress("R_L", &R_L);
+        ntuple_data->SetBranchAddress("jet_pt", &jet_pt);
+        ntuple_data->SetBranchAddress("weight_pt", &weight_pt);
+        ntuple_data->SetBranchAddress("efficiency", &efficiency);
+        ntuple_data->SetBranchAddress("purity", &purity);
         
         // Unfold the purity corrected data
         TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
@@ -44,8 +49,8 @@ void macro_print_fullcorre2c_mc_comp(int niter = 4, bool do_print = true)
         TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         TH2D* hpuritycorrected2   = new TH2D("hpuritycorrected2","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         
-        ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
-        ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L",pair_purity_corr_singletrack_weightpt);
+        ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L");
+        ntuple_data->Project("hpuritycorrected2", "jet_pt:R_L");
         
         RooUnfoldBayes unfold(response, hpuritycorrected, niter);
         TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
@@ -98,7 +103,7 @@ void macro_print_fullcorre2c_mc_comp(int niter = 4, bool do_print = true)
                         if (unfolding_weight <= 0) 
                                 unfolding_weight = 1;
 
-                        hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_e2c[bin]->Fill(R_L,unfolding_weight*weight_pt/efficiency);
                         hcorr_e2c_syst[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
                         hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
                         hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
@@ -115,62 +120,62 @@ void macro_print_fullcorre2c_mc_comp(int niter = 4, bool do_print = true)
                 
         }
 
-        // Include the systematics in the whole deal
-        const int nsyst = sizeof(available_systematics)/sizeof(available_systematics[0]);
-        TFile* fsyst[nsyst];
-        TH1F* hdev[nbin_jet_pt];
-        TH1F* hdev_tau[nbin_jet_pt];
+        // // Include the systematics in the whole deal
+        // const int nsyst = sizeof(available_systematics)/sizeof(available_systematics[0]);
+        // TFile* fsyst[nsyst];
+        // TH1F* hdev[nbin_jet_pt];
+        // TH1F* hdev_tau[nbin_jet_pt];
 
-        std::cout<<"Source & $20<p_{T,jet}<30$ & $30<p_{T,jet}<50$ & $50<p_{T,jet}<100$ \\\\"<<std::endl;
-        std::cout<<"\\hline"<<std::endl;
-        for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
-                fsyst[syst_index] = new TFile((output_folder + devfromnom_namef[available_systematics[syst_index]]).c_str());
+        // std::cout<<"Source & $20<p_{T,jet}<30$ & $30<p_{T,jet}<50$ & $50<p_{T,jet}<100$ \\\\"<<std::endl;
+        // std::cout<<"\\hline"<<std::endl;
+        // for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
+        //         fsyst[syst_index] = new TFile((output_folder + devfromnom_namef[available_systematics[syst_index]]).c_str());
                 
-                if (fsyst[syst_index]->IsZombie()) 
-                        continue;
+        //         if (fsyst[syst_index]->IsZombie()) 
+        //                 continue;
                 
-                std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
+        //         std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
                 
-                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                        hdev[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations%i",bin));
+        //         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+        //                 hdev[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations%i",bin));
 
-                        set_histo_with_systematics(hdev[bin], hcorr_e2c[bin], hcorr_e2c_syst[bin], systematic_errtype[available_systematics[syst_index]]);
+        //                 set_histo_with_systematics(hdev[bin], hcorr_e2c[bin], hcorr_e2c_syst[bin], systematic_errtype[available_systematics[syst_index]]);
 
-                        if (bin!=nbin_jet_pt-1) 
-                                std::cout<<" & ";
-                        else
-                                std::cout<<" \\\\ ";
-                }
+        //                 if (bin!=nbin_jet_pt-1) 
+        //                         std::cout<<" & ";
+        //                 else
+        //                         std::cout<<" \\\\ ";
+        //         }
 
-                std::cout<<std::endl;
+        //         std::cout<<std::endl;
 
-                delete fsyst[syst_index];
-        }
+        //         delete fsyst[syst_index];
+        // }
 
-        std::cout<<"Source & $20<p_{T,jet}<30$ & $30<p_{T,jet}<50$ & $50<p_{T,jet}<100$ \\\\"<<std::endl;
-        std::cout<<"\\hline"<<std::endl;
-        for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
-                fsyst[syst_index] = new TFile((output_folder + devfromnom_namef[available_systematics[syst_index]]).c_str());
+        // std::cout<<"Source & $20<p_{T,jet}<30$ & $30<p_{T,jet}<50$ & $50<p_{T,jet}<100$ \\\\"<<std::endl;
+        // std::cout<<"\\hline"<<std::endl;
+        // for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
+        //         fsyst[syst_index] = new TFile((output_folder + devfromnom_namef[available_systematics[syst_index]]).c_str());
                 
-                if (fsyst[syst_index]->IsZombie()) 
-                        continue;
+        //         if (fsyst[syst_index]->IsZombie()) 
+        //                 continue;
 
-                std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
-                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                        hdev_tau[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations_tau%i",bin));
+        //         std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
+        //         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+        //                 hdev_tau[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations_tau%i",bin));
 
-                        set_histo_with_systematics(hdev_tau[bin], hcorr_tau[bin], hcorr_tau_syst[bin], systematic_errtype[available_systematics[syst_index]]);
+        //                 set_histo_with_systematics(hdev_tau[bin], hcorr_tau[bin], hcorr_tau_syst[bin], systematic_errtype[available_systematics[syst_index]]);
 
-                        if (bin!=nbin_jet_pt-1) 
-                                std::cout<<" & ";
-                        else
-                                std::cout<<" \\\\ ";
-                }
+        //                 if (bin!=nbin_jet_pt-1) 
+        //                         std::cout<<" & ";
+        //                 else
+        //                         std::cout<<" \\\\ ";
+        //         }
 
-                std::cout<<std::endl;
+        //         std::cout<<std::endl;
 
-                delete fsyst[syst_index];
-        }
+        //         delete fsyst[syst_index];
+        // }
 
         // Simulations Section
         TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
@@ -255,10 +260,10 @@ void macro_print_fullcorre2c_mc_comp(int niter = 4, bool do_print = true)
 
                 s_data[bin]->Add(hmc[bin],"E");
                 s_data[bin]->Add(hmcreco[bin],"E");
-                s_data[bin]->Add(hcorr_e2c_syst[bin],"E");
+                s_data[bin]->Add(hcorr_e2c[bin],"E");
                 s_data[bin]->Draw("NOSTACK");
                 s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
-                s_data[bin]->SetMaximum(1.7);
+                s_data[bin]->SetMaximum(1.);
                 s_data[bin]->SetMinimum(40E-03);
 
                 l_data[bin]->AddEntry(hmc[bin]      ,"mc"    ,"p");
@@ -268,14 +273,14 @@ void macro_print_fullcorre2c_mc_comp(int niter = 4, bool do_print = true)
                 l_data[bin]->Draw("SAME");    
         }
 
-        c->Print(Form("./plots/fullcorre2c_niter%i_norejectjetptdeprelerrorleq%.2f_nomjetptbinning_mccomp_logbinning.pdf",niter,corr_rel_error));
+        c->Print(Form("./plots/fullcorre2c_niter%i_data2mc.pdf",niter));
         
-        for(int bin = 0 ; bin < nbin_jet_pt ; bin ++) {
-                c->cd(bin+1);
-                s_data[bin]->SetMaximum(1.7);
-                gPad->SetLogx(1);
-                gPad->SetLogy(1);
-        }
+        // for(int bin = 0 ; bin < nbin_jet_pt ; bin ++) {
+        //         c->cd(bin+1);
+        //         s_data[bin]->SetMaximum(1.7);
+        //         gPad->SetLogx(1);
+        //         gPad->SetLogy(1);
+        // }
         
-        c->Print(Form("./plots/fullcorre2c_niter%i_norejectjetptdeprelerrorleq%.2f_nomjetptbinning_mccomp_logbinning_logscale.pdf",niter,corr_rel_error));
+        // c->Print(Form("./plots/fullcorre2c_niter%i_norejectjetptdeprelerrorleq%.2f_nomjetptbinning_mccomp_logbinning_logscale.pdf",niter,corr_rel_error));
 }
