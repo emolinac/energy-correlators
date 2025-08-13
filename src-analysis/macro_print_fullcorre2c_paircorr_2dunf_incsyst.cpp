@@ -18,8 +18,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
         TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
         
         // Set the branches of data
-        float R_L, jet_pt, weight_pt, efficiency, purity, efficiency_relerror, purity_relerror;
-        set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
+        float R_L, jet_pt, weight_pt, event_weight, efficiency, purity, efficiency_relerror, purity_relerror;
+        set_data_ntuple_branches(ntuple_data, &event_weight, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
         
         // Unfold the purity corrected data
         TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
@@ -131,12 +131,12 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
                         if (unfolding_weight <= 0) 
                                 unfolding_weight = 1;
 
-                        hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_e2c_syst[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
-                        hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_tau_syst[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,purity*weight_pt/efficiency);
+                        hcorr_e2c[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_e2c_syst[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_e2c_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt/efficiency);
+                        hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_tau_syst[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*weight_pt/efficiency);
                 }
 
                 hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");

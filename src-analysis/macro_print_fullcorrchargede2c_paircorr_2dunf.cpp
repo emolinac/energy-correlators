@@ -20,10 +20,10 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
         TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
         
         // Set the branches of data
-        float R_L, jet_pt, weight_pt, eq_charge;
+        float R_L, jet_pt, weight_pt, eq_charge, event_weight;
         float efficiency, purity, efficiency_relerror, purity_relerror;
         
-        set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
+        set_data_ntuple_branches(ntuple_data, &event_weight, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
         ntuple_data->SetBranchAddress("eq_charge",&eq_charge);
         
         // Unfold the purity corrected data
@@ -117,16 +117,16 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
                         if (unfolding_weight <= 0) 
                                 unfolding_weight = 1;
 
-                        hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
-                        hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,purity*weight_pt/efficiency);
+                        hcorr_e2c[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_e2c_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt/efficiency);
+                        hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*weight_pt/efficiency);
 
                         // Filling the charged e2cs
                         if (eq_charge > 0)  
-                                hcorr_e2c_eqcharge[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+                                hcorr_e2c_eqcharge[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                         else if (eq_charge < 0) 
-                                hcorr_e2c_neqcharge[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+                                hcorr_e2c_neqcharge[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                 }
 
                 // Normalize charged e2cs
@@ -154,22 +154,6 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
         
         TLegend* l_data_chargede2c = new TLegend(1-gPad->GetRightMargin()-0.31,gPad->GetBottomMargin()+0.01,1-gPad->GetRightMargin()-0.01,gPad->GetBottomMargin()+0.21);
 
-        // for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-        //         s_data->Add(hcorr_tau[bin],"E");
-        //         l_data_tau->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
-        // }
-        
-        // s_data->Draw("NOSTACK");
-        // s_data->SetTitle(";R_{L} #LT p_{T,jet} #GT(GeV);#Sigma_{EEC}(R_{L})");
-        // l_data_tau->Draw("SAME");
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(0);
-        
-        // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
-
-        // if (do_print) 
-        //         c->Print(Form("./plots/paircorrtau_niter%i_2dunf.pdf",niter));
-
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data->Add(hcorr_e2c_eqcharge[bin] ,"E1 ");
@@ -189,22 +173,5 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
 
         if (do_print) 
                 c->Print(Form("./plots/paircorrchargede2c_niter%i_2dunf.pdf",niter));
-
-        // s_data = new THStack();
-        // for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-        //         s_data->Add(hcorr_e2c[bin],"E");
-        //         l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
-        // }
-        
-        // s_data->Draw("NOSTACK");
-        // s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
-        // l_data->Draw("SAME");
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(0);
-        
-        // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
-
-        // if (do_print) 
-        //         c->Print(Form("./plots/paircorre2c_niter%i_2dunf.pdf",niter));
 }
 

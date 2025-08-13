@@ -34,8 +34,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
         TNtuple* ntuple_mc_jet = (TNtuple*) fcorr->Get((name_ntuple_mc_jet).c_str());
         
         // Set the branches of data
-        float R_L, jet_pt, weight_pt, efficiency, purity, efficiency_relerror, purity_relerror;
-        set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
+        float R_L, jet_pt, weight_pt, event_weight, efficiency, purity, efficiency_relerror, purity_relerror;
+        set_data_ntuple_branches(ntuple_data, &event_weight, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
         
         // Unfold the purity corrected data
         TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections_ct).c_str());
@@ -187,11 +187,11 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 
                                 double content_shift = hdatashift->GetBinContent(hdatashift->FindBin(R_L,jet_pt));
                 
-                                hcorr_e2c_nonorm[bin]->Fill(R_L,purity*unfolding_weight*weight_pt*content_shift/efficiency);
-                                hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt*content_shift/efficiency);
-                                hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt*content_shift/efficiency);
-                                hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt*content_shift/efficiency);
-                                hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,purity*weight_pt*content_shift/efficiency);
+                                hcorr_e2c_nonorm[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
+                                hcorr_e2c[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
+                                hcorr_e2c_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt*content_shift/efficiency);
+                                hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
+                                hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*weight_pt*content_shift/efficiency);
                         }
                 
                         // Normalize the distributions to unity
@@ -238,10 +238,6 @@ void macro_print_fullcorre2c_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                                 hct_ratio->SetBinContent(bin_rl, bin + 1, hcorr_ratio_e2c_total[bin]->GetBinContent(bin_rl));
                                 hct_ratio->SetBinError(bin_rl, bin + 1, hcorr_ratio_e2c_total[bin]->GetBinError(bin_rl));
                         } 
-
-                        // // For clarity in drawing
-                        // set_histo_null_errors(hcorr_ratio_e2c_total[bin]);
-                        // set_histo_null_errors(hcorr_ratio_tau_total[bin]);
 
                         fout_dev->cd();
                         hcorr_ratio_e2c_total[bin]->Write(Form("h_deviations%i",bin));

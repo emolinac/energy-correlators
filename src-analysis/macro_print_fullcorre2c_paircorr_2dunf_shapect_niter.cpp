@@ -32,8 +32,8 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = nominal_ni
         TNtuple* ntuple_mc_jet = (TNtuple*) fcorr->Get((name_ntuple_mc_jet).c_str());
         
         // Set the branches of data
-        float R_L, jet_pt, weight_pt, efficiency, purity, efficiency_relerror, purity_relerror;
-        set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
+        float R_L, jet_pt, weight_pt, event_weight, efficiency, purity, efficiency_relerror, purity_relerror;
+        set_data_ntuple_branches(ntuple_data, &event_weight, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
         
         // Necessary for the shape ct
         TFile* fmcreco   = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
@@ -231,11 +231,11 @@ void macro_print_fullcorre2c_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                 
                                 double content_shift = hdatashift->GetBinContent(hdatashift->FindBin(R_L,jet_pt));
                                 
-                                hcorr_e2c_nonorm[bin]->Fill(R_L,purity*unfolding_weight*weight_pt*content_shift/efficiency);
-                                hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt*content_shift/efficiency);
-                                hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt*content_shift/efficiency);
-                                hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt*content_shift/efficiency);
-                                hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,purity*weight_pt*content_shift/efficiency);
+                                hcorr_e2c_nonorm[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
+                                hcorr_e2c[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
+                                hcorr_e2c_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt*content_shift/efficiency);
+                                hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
+                                hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*weight_pt*content_shift/efficiency);
                         }
                 
                         // Normalize the distributions to unity

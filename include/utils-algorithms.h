@@ -170,8 +170,9 @@ void set_shift_histo(TH2D* href, TH2D* hshift, TRandom3* rndm)
         }
 }
 
-void set_data_ntuple_branches(TNtuple* ntuple, float* R_L, float* jet_pt, float* weight_pt, float* efficiency, float* purity, float* efficiency_relerror, float* purity_relerror)
+void set_data_ntuple_branches(TNtuple* ntuple, float* event_weight, float* R_L, float* jet_pt, float* weight_pt, float* efficiency, float* purity, float* efficiency_relerror, float* purity_relerror)
 {
+        ntuple->SetBranchAddress("event_weight", event_weight);
         ntuple->SetBranchAddress("R_L", R_L);
         ntuple->SetBranchAddress("jet_pt", jet_pt);
         ntuple->SetBranchAddress("weight_pt", weight_pt);
@@ -181,8 +182,9 @@ void set_data_ntuple_branches(TNtuple* ntuple, float* R_L, float* jet_pt, float*
         ntuple->SetBranchAddress("purity_relerror", purity_relerror);
 }
 
-void set_data_ntuple_branches(TNtuple* ntuple, float* R_L, float* jet_pt, float* weight_pt, float* efficiency, float* purity, float* efficiency_relerror, float* purity_relerror, float* eq_charge)
+void set_data_ntuple_branches(TNtuple* ntuple, float* event_weight, float* R_L, float* jet_pt, float* weight_pt, float* efficiency, float* purity, float* efficiency_relerror, float* purity_relerror, float* eq_charge)
 {
+        ntuple->SetBranchAddress("event_weight", event_weight);
         ntuple->SetBranchAddress("R_L", R_L);
         ntuple->SetBranchAddress("jet_pt", jet_pt);
         ntuple->SetBranchAddress("weight_pt", weight_pt);

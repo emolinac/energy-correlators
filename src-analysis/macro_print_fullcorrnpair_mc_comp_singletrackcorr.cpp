@@ -18,10 +18,8 @@ void macro_print_fullcorrnpair_mc_comp_singletrackcorr(int niter = 4, bool do_pr
         TNtuple* ntuple_jet  = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
         
         // Set the branches of data
-        float R_L, jet_pt, weight_pt;
-        float efficiency, purity, efficiency_relerror, purity_relerror, event_weight;
-        set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
-        ntuple_data->SetBranchAddress("event_weight", &event_weight);
+        float R_L, jet_pt, weight_pt, efficiency, purity, efficiency_relerror, purity_relerror, event_weight;
+        set_data_ntuple_branches(ntuple_data, &event_weight, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
         
         // Unfold the purity corrected data
         TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
