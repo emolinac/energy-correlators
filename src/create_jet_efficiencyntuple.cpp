@@ -32,6 +32,7 @@ int main()
         TLorentzVector* Z0_4vector    = new TLorentzVector();
         TLorentzVector* mum_4vector   = new TLorentzVector();
         TLorentzVector* mup_4vector   = new TLorentzVector();
+        TLorentzVector* h_4vector     = new TLorentzVector();
         
         TLorentzVector* true_Jet_4vector   = new TLorentzVector();
         TLorentzVector* true_Z0_4vector    = new TLorentzVector();
@@ -99,6 +100,29 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
                         continue;
 
+                int ndtrs_mcjet = 0;
+
+                for (int h_index = 0 ; h_index < mctree->MCJet_Dtr_nmcdtrs ; h_index++) {
+                        if (mctree->MCJet_Dtr_IsBaryon[h_index] != 1&&mctree->MCJet_Dtr_IsMeson[h_index] != 1) 
+                                continue;
+
+                        h_4vector->SetPxPyPzE(mctree->MCJet_Dtr_PX[h_index]/1000.,
+                                              mctree->MCJet_Dtr_PY[h_index]/1000.,
+                                              mctree->MCJet_Dtr_PZ[h_index]/1000.,
+                                              mctree->MCJet_Dtr_E[h_index]/1000.);
+
+                        if (!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h_index],
+                                                              h_4vector->P(),
+                                                              h_4vector->Pt(),
+                                                              h_4vector->Eta())) 
+                                continue;
+
+                        ndtrs_mcjet++;
+                }
+
+                if (ndtrs_mcjet < 2)
+                        continue;
+
                 bool reco_passed = false;
                 if (mctree->MCJet_recojet_PX!=-999) {
                         double mum_energy = sqrt(pow(mctree->MCJet_truth_match_mum_PX,2) + 
@@ -129,10 +153,32 @@ int main()
                                                mup_4vector->Pz()+mum_4vector->Pz(),
                                                mup_4vector->E() +mum_4vector->E());
 
+                        int ndtrs_mcrecojet = 0;
+
+                        for (int h_index = 0 ; h_index < mctree->MCJet_recojet_nrecodtrs ; h_index++) {
+                                if (mctree->MCJet_recojet_Dtr_IsBaryon[h_index] != 1&&mctree->MCJet_recojet_Dtr_IsMeson[h_index] != 1) 
+                                        continue;
+
+                                h_4vector->SetPxPyPzE(mctree->MCJet_recojet_Dtr_PX[h_index]/1000.,
+                                                      mctree->MCJet_recojet_Dtr_PY[h_index]/1000.,
+                                                      mctree->MCJet_recojet_Dtr_PZ[h_index]/1000.,
+                                                      mctree->MCJet_recojet_Dtr_E[h_index]/1000.);
+
+                                if (!apply_chargedtrack_cuts(mctree->MCJet_recojet_Dtr_ThreeCharge[h_index],
+                                                             h_4vector->P(),
+                                                             h_4vector->Pt(),
+                                                             mctree->MCJet_recojet_Dtr_TrackChi2[h_index]/mctree->MCJet_recojet_Dtr_TrackNDF[h_index],
+                                                             mctree->MCJet_recojet_Dtr_ProbNNghost[h_index],
+                                                             h_4vector->Eta())) 
+                                        continue;
+
+                                ndtrs_mcrecojet++;
+                        }
+
                         if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())&&\
                             apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())&&\
                             apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())&&\
-                            apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
+                            apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())&&(ndtrs_mcrecojet > 1)) 
                                 reco_passed = true;
                 }
                 

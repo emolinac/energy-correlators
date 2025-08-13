@@ -316,6 +316,7 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
                 double jet_ndtr_nominal = 0;
+
                 for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
                         if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
@@ -336,6 +337,7 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
+
                 if (jet_ndtr_nominal < 2)
                         continue;
                 
@@ -531,6 +533,7 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
                 double jet_ndtr_nominal = 0;
+
                 for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
                         if (datatree_2017->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h1_index] != 1)
@@ -551,6 +554,7 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
+
                 if (jet_ndtr_nominal < 2)
                         continue;
                 
@@ -747,6 +751,7 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
                 double jet_ndtr_nominal = 0;
+
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
                         if (datatree_2018->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2018->Jet_Dtr_IsBaryon[h1_index] != 1)
@@ -767,6 +772,7 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
+                
                 if (jet_ndtr_nominal < 2)
                         continue;
                 

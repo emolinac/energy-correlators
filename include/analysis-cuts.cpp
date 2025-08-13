@@ -11,6 +11,10 @@ bool apply_zboson_cuts(double deltaphi_zboson_jet, double zboson_mass);
 
 bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta);
 
+bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta, double deltaR_h_jet);
+
 bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta);
+
+bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta, double deltaR_h_jet);
 
 #endif
