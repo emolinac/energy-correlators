@@ -14,8 +14,8 @@ std::string systematic = "syst-unfolding-dim";
 
 void macro_print_deviation_from_nominal_logbin(bool normalize = false)
 {
-    std::string syst_name = (systematic=="syst-corr-paradigm") ? namef_histos_corr_e2c : namef_histos_paircorr_e2c;
-    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_e2c).c_str());
+    std::string syst_name = (systematic=="syst-corr-paradigm") ? namef_histos_corr_eec : namef_histos_paircorr_eec;
+    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_eec).c_str());
     TFile* fsystematic = new TFile((systematic+"/output-files/"+syst_name).c_str());
 
     THStack* s = new THStack();
@@ -27,8 +27,8 @@ void macro_print_deviation_from_nominal_logbin(bool normalize = false)
 
     for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
     {
-        h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_e2c%i",jet_pt_bin));
-        h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_e2c%i",jet_pt_bin));
+        h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_eec%i",jet_pt_bin));
+        h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_eec%i",jet_pt_bin));
         h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",nbin_rl_nominal,rl_nominal_binning);
 
         if (normalize)

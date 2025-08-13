@@ -25,8 +25,8 @@
 int main()
 {
   // Open correction files
-  TFile* fpurity         = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
-  TFile* fefficiency     = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+  TFile* fpurity         = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
+  TFile* fefficiency     = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
   
   TFile* fpurity_jet     = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
   TFile* fefficiency_jet = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
@@ -42,7 +42,7 @@ int main()
   TFile* fefficiency_muon_2018_trg = new TFile((muons_folder + "TRGEff_Data_2018.root").c_str());
   
   // Create output file
-  TFile* fout = new TFile((output_folder + namef_ntuple_e2c_corr).c_str(),"RECREATE");
+  TFile* fout = new TFile((output_folder + namef_ntuple_eec_corr).c_str(),"RECREATE");
   
   // Declare the TTrees to be used to build the ntuples
   TZJets2016Data* datatree_2016 = new TZJets2016Data();

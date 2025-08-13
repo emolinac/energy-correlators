@@ -13,7 +13,6 @@
 #include "TNtuple.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
-#include "TRandom3.h"
 #include "TVector3.h"
 #include "TH3.h"
 #include "analysis-constants.h"
@@ -22,18 +21,12 @@
 #include "analysis-functions.h"
 #include "directories.h"
 #include "names.h"
-#include "syst-jes-jer.h"
 #include "utils-algorithms.h"
 
 int main()
 {
-        std::cout<<"Current paradigm of this the JER systematic code:"<<std::endl;
-        std::cout<<"- The jet corrections are not changed due to the JER"<<std::endl;
-        std::cout<<"- The pair corrections are changed due to the JER"<<std::endl;
-        
         // Open correction files
-        // TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_e2c_paircorrections_jes).c_str());
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -48,7 +41,7 @@ int main()
         TFile* fefficiency_muon_2018_trg = new TFile((muons_folder + "TRGEff_Data_2018.root").c_str());
         
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_e2c_paircorr_jer).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJets2016Data* datatree_2016 = new TZJets2016Data();
@@ -99,12 +92,20 @@ int main()
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
         // Hadron corrections
-        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        
+        // //DELETE LATER
+        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
@@ -122,7 +123,6 @@ int main()
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
 
-        // DELETE LATER
         // DELETE LATER
         TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
         TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
@@ -230,8 +230,6 @@ int main()
         float vars[Nvars_paircorrdata];
         float vars_jet[Nvars_corrjet];
 
-        TRandom3* rndm = new TRandom3();
-
         // Fill the data TNtuple
         std::cout<<"Working with 2016 data."<<std::endl;
         for (int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++) {
@@ -267,25 +265,11 @@ int main()
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PY/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PZ/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PE/1000./datatree_2016->Jet_JEC_Cor);
-
-                double new_jer_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1])
-                                new_jer_cor = syst_jer_array[jet_pt_bin];
-
-                if (new_jer_cor<0)
-                        continue;
-                double smearing_factor = rndm->Gaus(1, new_jer_cor);
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2016->Jet_PY/1000./datatree_2016->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2016->Jet_PZ/1000./datatree_2016->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2016->Jet_PE/1000./datatree_2016->Jet_JEC_Cor);
-
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt()))
+                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,
+                                        datatree_2016->Jet_PY/1000.,
+                                        datatree_2016->Jet_PZ/1000.,
+                                        datatree_2016->Jet_PE/1000.);
+                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(datatree_2016->mum_PX/1000.,
@@ -353,7 +337,7 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
-                
+
                 if (jet_ndtr_nominal < 2)
                         continue;
                 
@@ -372,9 +356,9 @@ int main()
                                                      h1_4vector->Pt(),
                                                      datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta()))
+                                                     h1_4vector->Eta())) 
                                 continue;
-
+                
                         // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
@@ -395,7 +379,7 @@ int main()
                                         continue;
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);
-
+                                
                                 double purity           = hpurity->GetBinContent(hpurity->FindBin(R_L, Jet_4vector->Pt()));        
                                 double efficiency       = hefficiency->GetBinContent(hefficiency->FindBin(R_L, Jet_4vector->Pt()));
                                 double purity_error     = hpurity->GetBinError(hpurity->FindBin(R_L, Jet_4vector->Pt()));        
@@ -405,7 +389,7 @@ int main()
                                 double nreco     = hden_pur->GetBinContent(hden_pur->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
-                                
+
                                 double event_weight = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
                                 
                                 vars[0 ] = event_weight;
@@ -480,7 +464,7 @@ int main()
                 if (evt != 0)
                         if (last_eventNum == datatree_2017->eventNumber) 
                                 continue;
-                
+
                 // Apply PV cut
                 if (datatree_2017->nPV != 1)
                         continue;
@@ -498,24 +482,10 @@ int main()
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PY/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PZ/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PE/1000./datatree_2017->Jet_JEC_Cor);
-
-                double new_jer_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
-                                new_jer_cor = syst_jer_array[jet_pt_bin];
-
-                if (new_jer_cor<0) 
-                        continue;
-                double smearing_factor = rndm->Gaus(1,new_jer_cor);
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000./datatree_2017->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2017->Jet_PY/1000./datatree_2017->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2017->Jet_PZ/1000./datatree_2017->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2017->Jet_PE/1000./datatree_2017->Jet_JEC_Cor);
-
+                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,
+                                        datatree_2017->Jet_PY/1000.,
+                                        datatree_2017->Jet_PZ/1000.,
+                                        datatree_2017->Jet_PE/1000.);
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
@@ -561,7 +531,7 @@ int main()
                 
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
-                
+
                 double jet_ndtr_nominal = 0;
 
                 for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
@@ -584,10 +554,10 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
-                
+
                 if (jet_ndtr_nominal < 2)
                         continue;
-
+                
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
@@ -604,9 +574,9 @@ int main()
                                                      h1_4vector->Pt(),
                                                      datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta()))
+                                                     h1_4vector->Eta())) 
                                 continue;
-
+                        
                         // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
@@ -730,24 +700,10 @@ int main()
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PY/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PZ/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PE/1000./datatree_2018->Jet_JEC_Cor);
-
-                double new_jer_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1])
-                                new_jer_cor = syst_jer_array[jet_pt_bin];
-
-                if (new_jer_cor<0) 
-                        continue;
-                double smearing_factor = rndm->Gaus(1,new_jer_cor);
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2018->Jet_PX/1000./datatree_2018->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2018->Jet_PY/1000./datatree_2018->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2018->Jet_PZ/1000./datatree_2018->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2018->Jet_PE/1000./datatree_2018->Jet_JEC_Cor);
-
+                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000.,
+                                        datatree_2018->Jet_PY/1000.,
+                                        datatree_2018->Jet_PZ/1000.,
+                                        datatree_2018->Jet_PE/1000.);
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
@@ -793,7 +749,7 @@ int main()
                 
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
-                
+
                 double jet_ndtr_nominal = 0;
 
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
@@ -819,7 +775,7 @@ int main()
                 
                 if (jet_ndtr_nominal < 2)
                         continue;
-
+                
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
@@ -836,7 +792,7 @@ int main()
                                                      h1_4vector->Pt(),
                                                      datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta()))
                                 continue;
 
                         // Loop over hadron 2
@@ -855,7 +811,7 @@ int main()
                                                              h2_4vector->Pt(),
                                                              datatree_2018->Jet_Dtr_TrackChi2[h2_index]/datatree_2018->Jet_Dtr_TrackNDF[h2_index],
                                                              datatree_2018->Jet_Dtr_ProbNNghost[h2_index],
-                                                             h2_4vector->Eta())) 
+                                                             h2_4vector->Eta()))
                                         continue;
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);

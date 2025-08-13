@@ -10,8 +10,8 @@ import tensorflow as tf
 
 import uproot
 
-file      = uproot.open("../output-files/ntuple_e2c_unfolding.root")
-file_data = uproot.open("../output-files/ntuple_corre2c.root")
+file      = uproot.open("../output-files/ntuple_eec_unfolding.root")
+file_data = uproot.open("../output-files/ntuple_correec.root")
 root_tree      = file["ntuple_unfolding"]
 root_tree_data = file_data["ntuple_data"]
 

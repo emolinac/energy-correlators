@@ -18,7 +18,7 @@
 int main()
 {
   // Create output file
-  TFile* fout = new TFile((output_folder + namef_ntuple_e2c_pairpurity).c_str(),"RECREATE");
+  TFile* fout = new TFile((output_folder + namef_ntuple_eec_pairpurity).c_str(),"RECREATE");
   
   // Declare the TTrees to be used to build the ntuples
   TZJetsMCReco* mcrecotree = new TZJetsMCReco();

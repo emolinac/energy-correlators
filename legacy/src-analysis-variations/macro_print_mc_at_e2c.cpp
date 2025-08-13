@@ -6,10 +6,10 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_mc_at_e2c()
+void macro_print_mc_at_eec()
 {
     // Open the necessary files
-    TFile* fmc = new TFile((output_folder + namef_ntuple_mc_at_e2c).c_str());
+    TFile* fmc = new TFile((output_folder + namef_ntuple_mc_at_eec).c_str());
     
     // TNtuple* ntuple_mcreco     = (TNtuple*) fmc->Get((name_ntuple_mcreco).c_str());
     // TNtuple* ntuple_mcreco_jet = (TNtuple*) fmc->Get((name_ntuple_mcreco_jet).c_str());
@@ -45,7 +45,7 @@ void macro_print_mc_at_e2c()
         set_histogram_style(hmc[bin], std_marker_color_jet_pt[bin] , std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
 
         // Project into the histograms
-        ntuple_mc->Project(Form("hmc[%i]" ,bin),"R_L",e2c_zpt_cut_weightpt[bin]);
+        ntuple_mc->Project(Form("hmc[%i]" ,bin),"R_L",eec_zpt_cut_weightpt[bin]);
         ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"z_pt",pair_zpt_cut[bin]);
         
         hmc[bin]->Scale(1./hmc_jet[bin]->Integral());
@@ -63,5 +63,5 @@ void macro_print_mc_at_e2c()
         l_data[bin]->Draw("SAME");
     }
     
-    // c->Print("./plots/mc_mcreco_e2c_at_fullrange.pdf");
+    // c->Print("./plots/mc_mcreco_eec_at_fullrange.pdf");
 }

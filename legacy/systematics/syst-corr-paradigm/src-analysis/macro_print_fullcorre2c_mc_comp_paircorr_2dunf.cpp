@@ -6,11 +6,11 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, bool do_print = true)
+void macro_print_fullcorreec_mc_comp_paircorr_2dunf(int niter = nominal_niter, bool do_print = true)
 {
     // Open the necessary files
-    TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str()); 
-    TFile* fmc   = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
+    TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_paircorr).c_str()); 
+    TFile* fmc   = new TFile((output_folder + namef_ntuple_mc_eec).c_str());
     if (fcorr->IsZombie()) return;
     
     TNtuple* ntuple_data       = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
@@ -44,7 +44,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
     ntuple_mcreco->SetBranchAddress("weight_pt",&weight_pt_mcreco);
     
     // Unfold the purity corrected data
-    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_reco, weight_truth;
@@ -98,10 +98,10 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
     TH2D* hunfolded_bayes_l = (TH2D*) unfold_l.Hunfold();
     hunfolded_ratio_l->Divide(hunfolded_bayes_l,hpuritycorrected_ref_l,1,1);
 
-    TH1F* hcorr_e2c[nbin_jet_pt]; 
+    TH1F* hcorr_eec[nbin_jet_pt]; 
     TH1F* hmc[nbin_jet_pt]; 
     TH1F* hmcreco[nbin_jet_pt]; 
-    TH1F* hcorr_e2c_l[nbin_jet_pt]; 
+    TH1F* hcorr_eec_l[nbin_jet_pt]; 
     TH1F* hmc_l[nbin_jet_pt]; 
     TH1F* hmcreco_l[nbin_jet_pt]; 
 
@@ -121,10 +121,10 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
 
     for (int bin = 0 ; bin < nbin_jet_pt ; bin++)
     {
-        hcorr_e2c[bin]   = new TH1F(Form("hcorr_e2c[%i]",bin) ,"",nbin_rl_nominal,rl_nominal_binning);
+        hcorr_eec[bin]   = new TH1F(Form("hcorr_eec[%i]",bin) ,"",nbin_rl_nominal,rl_nominal_binning);
         hmc[bin]         = new TH1F(Form("hmc[%i]" ,bin)      ,"",nbin_rl_nominal,rl_nominal_binning);
         hmcreco[bin]     = new TH1F(Form("hmcreco[%i]" ,bin)  ,"",nbin_rl_nominal,rl_nominal_binning);
-        hcorr_e2c_l[bin] = new TH1F(Form("hcorr_e2c_l[%i]",bin) ,"",nbin_rl_nominal,rl_binning);
+        hcorr_eec_l[bin] = new TH1F(Form("hcorr_eec_l[%i]",bin) ,"",nbin_rl_nominal,rl_binning);
         hmc_l[bin]       = new TH1F(Form("hmc_l[%i]" ,bin)      ,"",nbin_rl_nominal,rl_binning);
         hmcreco_l[bin]   = new TH1F(Form("hmcreco_l[%i]" ,bin)  ,"",nbin_rl_nominal,rl_binning);
         
@@ -132,10 +132,10 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
         hmc_jet[bin]     = new TH1F(Form("hmc_jet[%i]" ,bin)     ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]);
         hmcreco_jet[bin] = new TH1F(Form("hmcreco_jet[%i]" ,bin) ,"",1,jet_pt_binning[bin],jet_pt_binning[bin + 1]);
         
-        set_histogram_style(hcorr_e2c[bin]  , corr_marker_color_jet_pt[0], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
+        set_histogram_style(hcorr_eec[bin]  , corr_marker_color_jet_pt[0], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
         set_histogram_style(hmc[bin]        , corr_marker_color_jet_pt[1], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
         set_histogram_style(hmcreco[bin]    , corr_marker_color_jet_pt[2], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
-        set_histogram_style(hcorr_e2c_l[bin], corr_marker_color_jet_pt[0], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
+        set_histogram_style(hcorr_eec_l[bin], corr_marker_color_jet_pt[0], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
         set_histogram_style(hmc_l[bin]      , corr_marker_color_jet_pt[1], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
         set_histogram_style(hmcreco_l[bin]  , corr_marker_color_jet_pt[2], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
     
@@ -154,14 +154,14 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
             double unfolding_weight_l = hunfolded_ratio_l->GetBinContent(hunfolded_ratio_l->FindBin(R_L,jet_pt));
             if (unfolding_weight_l <= 0) unfolding_weight_l = 1;
 
-            hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
-            hcorr_e2c_l[bin]->Fill(R_L,purity*unfolding_weight_l*weight_pt/efficiency);
+            hcorr_eec[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+            hcorr_eec_l[bin]->Fill(R_L,purity*unfolding_weight_l*weight_pt/efficiency);
         }
         
         ntuple_jet->Project(Form("hcorr_jet[%i]" ,bin), "jet_pt",jet_full_corr[bin]);
         
-        hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-        hcorr_e2c_l[bin]->Scale(1./hcorr_jet[bin]->Integral());
+        hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+        hcorr_eec_l[bin]->Scale(1./hcorr_jet[bin]->Integral());
 
         // Fill and normalize MC        
         for (int entry = 0 ; entry < ntuple_mc->GetEntries() ; entry++)
@@ -204,7 +204,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
 
         s_data[bin]->Add(hmc[bin],"E");
         s_data[bin]->Add(hmcreco[bin],"E");
-        s_data[bin]->Add(hcorr_e2c[bin],"E");
+        s_data[bin]->Add(hcorr_eec[bin],"E");
         s_data[bin]->Draw("NOSTACK");
         s_data[bin]->SetTitle(Form("%.1f<p_{T,jet}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         s_data[bin]->SetMaximum(1.2);
@@ -212,11 +212,11 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
 
         l_data[bin]->AddEntry(hmc[bin]      ,"mc"    ,"p");
         l_data[bin]->AddEntry(hmcreco[bin]  ,"mcreco","p");
-        l_data[bin]->AddEntry(hcorr_e2c[bin],"data"  ,"p");
+        l_data[bin]->AddEntry(hcorr_eec[bin],"data"  ,"p");
         gPad->SetLogx(1);
         l_data[bin]->Draw("SAME");    
     }
-    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_2dunf.pdf",niter));
+    if (do_print) c->Print(Form("./plots/paircorreec_niter%i_mccomp_2dunf.pdf",niter));
     
     for (int bin = 0 ; bin < nbin_jet_pt ; bin ++)
     {
@@ -225,7 +225,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
         gPad->SetLogx(1);
         gPad->SetLogy(1);
     }
-    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_logscale_2dunf.pdf",niter));
+    if (do_print) c->Print(Form("./plots/paircorreec_niter%i_mccomp_logscale_2dunf.pdf",niter));
     
     // Draw the log binning histos
     for (int bin = 0 ; bin < nbin_jet_pt ; bin ++)
@@ -236,7 +236,7 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
 
         s_data[bin]->Add(hmc_l[bin],"E");
         s_data[bin]->Add(hmcreco_l[bin],"E");
-        s_data[bin]->Add(hcorr_e2c_l[bin],"E");
+        s_data[bin]->Add(hcorr_eec_l[bin],"E");
         s_data[bin]->Draw("NOSTACK");
         s_data[bin]->SetTitle(Form("%.1f<p_{T,jet}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
         s_data[bin]->SetMaximum(5E-02);
@@ -244,11 +244,11 @@ void macro_print_fullcorre2c_mc_comp_paircorr_2dunf(int niter = nominal_niter, b
 
         l_data[bin]->AddEntry(hmc_l[bin]      ,"mc"    ,"p");
         l_data[bin]->AddEntry(hmcreco_l[bin]  ,"mcreco","p");
-        l_data[bin]->AddEntry(hcorr_e2c_l[bin],"data"  ,"p");
+        l_data[bin]->AddEntry(hcorr_eec_l[bin],"data"  ,"p");
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         l_data[bin]->Draw("SAME");    
     }
     
-    if (do_print) c->Print(Form("./plots/paircorre2c_niter%i_mccomp_linbinning_2dunf.pdf",niter));
+    if (do_print) c->Print(Form("./plots/paircorreec_niter%i_mccomp_linbinning_2dunf.pdf",niter));
 }

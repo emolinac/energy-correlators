@@ -6,10 +6,10 @@
 #include "../../include/utils-algorithms.h"
 #include "../../include/utils-visual.h"
 
-void macro_print_matching_fraction_e2c()
+void macro_print_matching_fraction_eec()
 {
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
@@ -29,10 +29,10 @@ void macro_print_matching_fraction_e2c()
     hhalfunmatched->Sumw2();
     
     // Project into the histograms
-    ntuple_dtrmatch->Project("hall"          ,"R_L",e2c_cut);
-    ntuple_dtrmatch->Project("hmatched"      ,"R_L",e2c_signal_cut);
-    ntuple_dtrmatch->Project("hunmatched"    ,"R_L",e2c_pairbg_cut);
-    ntuple_dtrmatch->Project("hhalfunmatched","R_L",e2c_singlebg_cut);
+    ntuple_dtrmatch->Project("hall"          ,"R_L",eec_cut);
+    ntuple_dtrmatch->Project("hmatched"      ,"R_L",eec_signal_cut);
+    ntuple_dtrmatch->Project("hunmatched"    ,"R_L",eec_pairbg_cut);
+    ntuple_dtrmatch->Project("hhalfunmatched","R_L",eec_singlebg_cut);
 
     TH1F* hratio_matched       = new TH1F("hratio_matched"  ,"",nbin_rl_nominal,rl_min, rl_max);
     TH1F* hratio_unmatched     = new TH1F("hratio_unmatched","",nbin_rl_nominal,rl_min, rl_max);
@@ -73,6 +73,6 @@ void macro_print_matching_fraction_e2c()
 
     tex->DrawLatexNDC(0.3,0.3,"simulations");
 
-    c->Print(Form("./plots/matched_unmatched_e2c_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/matched_unmatched_eec_deltarleq%.3f.pdf",rl_resolution));
     
 }

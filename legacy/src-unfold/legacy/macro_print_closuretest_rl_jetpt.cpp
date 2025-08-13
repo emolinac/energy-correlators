@@ -7,7 +7,7 @@
 
 void macro_print_closuretest_rl_jet_pt(int Niter = 5, double jet_pt_min_local = unfolding_jet_pt_binning[0], double jet_pt_max_local = unfolding_jet_pt_binning[5])
 {
-    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L, R_L_truth, jet_pt, jet_pt_truth;

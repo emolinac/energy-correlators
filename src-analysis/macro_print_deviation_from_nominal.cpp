@@ -9,7 +9,7 @@
 void macro_print_deviation_from_nominal(bool normalize = true, bool do_print = false, int index_syst = 0)
 {
         if (available_systematics[index_syst]=="ct" || available_systematics[index_syst]=="shape-ct") {
-                std::cout<<"Remember CT dev from nominal is calculated inside macro_print_fullcorre2c_paircorr_2dunf_ct_niter.cpp !!!"<<std::endl; 
+                std::cout<<"Remember CT dev from nominal is calculated inside macro_print_fullcorreec_paircorr_2dunf_ct_niter.cpp !!!"<<std::endl; 
                 return;
         }
 
@@ -17,7 +17,7 @@ void macro_print_deviation_from_nominal(bool normalize = true, bool do_print = f
         TFile* fout = new TFile((output_folder + devfromnom_namef[systematic]).c_str(),"RECREATE");
         gROOT->cd();
 
-        TFile* fnominal    = new TFile((output_folder + namef_histos_paircorr_e2c).c_str());
+        TFile* fnominal    = new TFile((output_folder + namef_histos_paircorr_eec).c_str());
         TFile* fsystematic = new TFile((output_folder+systematic_namef[systematic]).c_str());
 
         THStack* s     = new THStack();
@@ -34,8 +34,8 @@ void macro_print_deviation_from_nominal(bool normalize = true, bool do_print = f
         TH1F* h_deviations_tau[nbin_jet_pt];
 
         for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
-                h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_e2c%i",jet_pt_bin));
-                h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_e2c%i",jet_pt_bin));
+                h_nominal[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_eec%i",jet_pt_bin));
+                h_systematic[jet_pt_bin] = (TH1F*) fsystematic->Get(Form("hcorr_eec%i",jet_pt_bin));
                 h_deviations[jet_pt_bin] = new TH1F(Form("h_deviations%i",jet_pt_bin),"",nbin_rl_nominal,rl_nominal_binning);
 
                 h_nominal_tau[jet_pt_bin]    = (TH1F*) fnominal->Get(Form("hcorr_tau%i",jet_pt_bin));

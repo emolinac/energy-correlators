@@ -6,10 +6,10 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_corre2c_singletrackcorr()
+void macro_print_correec_singletrackcorr()
 {
     // Open the necessary files
-    TFile*   fcorr       = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
+    TFile*   fcorr       = new TFile((output_folder + namef_ntuple_eec_corr).c_str()); 
     TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
     
     // Determine log binnning
@@ -38,8 +38,8 @@ void macro_print_corre2c_singletrackcorr()
     set_histogram_style(hall_data, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Project into the histograms
-    ntuple_data->Project("hcorr_data","R_L",e2c_full_corr_singletrack);
-    ntuple_data->Project("hall_data","R_L",e2c_cut);
+    ntuple_data->Project("hcorr_data","R_L",eec_full_corr_singletrack);
+    ntuple_data->Project("hall_data","R_L",eec_cut);
 
     hcorr_data->Scale(1./hall_data->Integral());
     hall_data->Scale(1./hall_data->Integral());
@@ -67,5 +67,5 @@ void macro_print_corre2c_singletrackcorr()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    // c->Print("./plots/corr_e2c.pdf");
+    // c->Print("./plots/corr_eec.pdf");
 }

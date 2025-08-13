@@ -6,9 +6,9 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_print = true, bool integrate_weight = true)
+void macro_print_fullcorreec_paircorr_3dunf(int niter = nominal_niter, bool do_print = true, bool integrate_weight = true)
 {
-        TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_paircorr).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -20,7 +20,7 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
         set_data_ntuple_branches(ntuple_data, &event_weight, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
         
         // Unfold the purity corrected data
-        TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
         float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
@@ -55,8 +55,8 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
         hunfolded_ratio_2d->Divide(hunfolded_bayes_rl_jet_pt,hpuritycorrected_ref_rl_jet_pt,1,1);
         
         TH1F* hcorr_jet[nbin_jet_pt];
-        TH1F* hcorr_e2c[nbin_jet_pt]; 
-        TH1F* hcorr_e2c_nounf[nbin_jet_pt]; 
+        TH1F* hcorr_eec[nbin_jet_pt]; 
+        TH1F* hcorr_eec_nounf[nbin_jet_pt]; 
         
         TCanvas* c = new TCanvas("c", "", 1920, 1080);
         c->Draw();
@@ -79,10 +79,10 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)  ,"", 1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
                 
-                hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", nbin_rl_nominal,rl_nominal_binning);
-                hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)   ,"", nbin_rl_nominal,rl_nominal_binning);
+                hcorr_eec[bin]          = new TH1F(Form("hcorr_eec%i",bin)         ,"", nbin_rl_nominal,rl_nominal_binning);
+                hcorr_eec_nounf[bin]    = new TH1F(Form("hcorr_eec_nounf%i",bin)   ,"", nbin_rl_nominal,rl_nominal_binning);
                 
-                set_histogram_style(hcorr_e2c[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+                set_histogram_style(hcorr_eec[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
         
                 for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++) {
                         ntuple_data->GetEntry(entry);
@@ -96,15 +96,15 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
                         if (unfolding_weight <= 0) 
                                 unfolding_weight = 1;
 
-                        hcorr_e2c[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_e2c_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt/efficiency);
+                        hcorr_eec[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_eec_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt/efficiency);
                 }
 
                 // Normalize the distributions
                 ntuple_jet->Project(Form("hcorr_jet%i" ,bin), "jet_pt",jet_full_corr[bin]);
 
-                hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-                hcorr_e2c_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_eec_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
         }
 
         THStack* s_data = new THStack();
@@ -112,8 +112,8 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
 
         // Draw Log binning distributions
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                s_data->Add(hcorr_e2c[bin],"E");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
+                s_data->Add(hcorr_eec[bin],"E");
+                l_data->AddEntry(hcorr_eec[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lf");
         }
         
         s_data->Draw("NOSTACK");
@@ -125,5 +125,5 @@ void macro_print_fullcorre2c_paircorr_3dunf(int niter = nominal_niter, bool do_p
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorre2c_niter%i_3dunf_wintegrated%s.pdf",niter,integrate_weight?"true":"false"));
+                c->Print(Form("./plots/paircorreec_niter%i_3dunf_wintegrated%s.pdf",niter,integrate_weight?"true":"false"));
 }

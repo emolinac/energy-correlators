@@ -20,7 +20,7 @@
 int main()
 {
         // Open correction files
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_e2c_paircorrections_ct).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections_ct).c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
 
@@ -29,7 +29,7 @@ int main()
         TFile* fefficiency_muon_2017_trg = new TFile((muons_folder + "TRGEff_Data_2017.root").c_str());
 
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_e2c_paircorr_ct).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr_ct).c_str(),"RECREATE");
 
         // Declare the TTrees to be used to build the ntuples
         TZJetsPseudoData* pseudodata = new TZJetsPseudoData();

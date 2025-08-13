@@ -6,13 +6,13 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bool do_print = true)
+void macro_print_fullcorrchargedeec_paircorr_2dunf(int niter = nominal_niter, bool do_print = true)
 {
         // Open the necessary files
-        TFile* fout = new TFile((output_folder + namef_histos_paircorr_e2c).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_histos_paircorr_eec).c_str(),"RECREATE");
         gROOT->cd();
 
-        TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_paircorr).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -27,7 +27,7 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
         ntuple_data->SetBranchAddress("eq_charge",&eq_charge);
         
         // Unfold the purity corrected data
-        TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
         float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
@@ -57,13 +57,13 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
         TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
         hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
 
-        TH1F* hcorr_e2c_eqcharge[nbin_jet_pt]; 
-        TH1F* hcorr_e2c_neqcharge[nbin_jet_pt]; 
+        TH1F* hcorr_eec_eqcharge[nbin_jet_pt]; 
+        TH1F* hcorr_eec_neqcharge[nbin_jet_pt]; 
 
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
-        TH1F* hcorr_e2c[nbin_jet_pt]; 
-        TH1F* hcorr_e2c_nounf[nbin_jet_pt]; 
+        TH1F* hcorr_eec[nbin_jet_pt]; 
+        TH1F* hcorr_eec_nounf[nbin_jet_pt]; 
         TH1F* hcorr_tau[nbin_jet_pt]; 
         TH1F* hcorr_tau_nounf[nbin_jet_pt]; 
         
@@ -89,18 +89,18 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
                 hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"", 1  ,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
                 hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
 
-                hcorr_e2c_eqcharge[bin]  = new TH1F(Form("hcorr_e2c_eqcharge%i",bin) ,"", nbin_rl_nominal,rl_binning );
-                hcorr_e2c_neqcharge[bin] = new TH1F(Form("hcorr_e2c_neqcharge%i",bin),"", nbin_rl_nominal,rl_binning );
+                hcorr_eec_eqcharge[bin]  = new TH1F(Form("hcorr_eec_eqcharge%i",bin) ,"", nbin_rl_nominal,rl_binning );
+                hcorr_eec_neqcharge[bin] = new TH1F(Form("hcorr_eec_neqcharge%i",bin),"", nbin_rl_nominal,rl_binning );
 
-                hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", nbin_rl_nominal,rl_binning );
-                hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)   ,"", nbin_rl_nominal,rl_binning );
+                hcorr_eec[bin]          = new TH1F(Form("hcorr_eec%i",bin)         ,"", nbin_rl_nominal,rl_binning );
+                hcorr_eec_nounf[bin]    = new TH1F(Form("hcorr_eec_nounf%i",bin)   ,"", nbin_rl_nominal,rl_binning );
                 hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)         ,"", nbin_rl_nominal,tau_nominal_binning);
                 hcorr_tau_nounf[bin]    = new TH1F(Form("hcorr_tau_nounf%i",bin)   ,"", nbin_rl_nominal,tau_nominal_binning);
                 
-                set_histogram_style(hcorr_e2c_eqcharge[bin]  , corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[bin], std_marker_size+1);
-                set_histogram_style(hcorr_e2c_neqcharge[bin] , corr_marker_color_jet_pt[bin], std_line_width-1, std_marker_style_jet_pt[bin] , std_marker_size+1);
+                set_histogram_style(hcorr_eec_eqcharge[bin]  , corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[bin], std_marker_size+1);
+                set_histogram_style(hcorr_eec_neqcharge[bin] , corr_marker_color_jet_pt[bin], std_line_width-1, std_marker_style_jet_pt[bin] , std_marker_size+1);
                 
-                set_histogram_style(hcorr_e2c[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
+                set_histogram_style(hcorr_eec[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
                 set_histogram_style(hcorr_tau[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
         
                 ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         , "jet_pt",jet_full_corr[bin]);
@@ -117,34 +117,34 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
                         if (unfolding_weight <= 0) 
                                 unfolding_weight = 1;
 
-                        hcorr_e2c[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_e2c_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt/efficiency);
+                        hcorr_eec[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_eec_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt/efficiency);
                         hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                         hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*weight_pt/efficiency);
 
-                        // Filling the charged e2cs
+                        // Filling the charged eecs
                         if (eq_charge > 0)  
-                                hcorr_e2c_eqcharge[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                                hcorr_eec_eqcharge[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                         else if (eq_charge < 0) 
-                                hcorr_e2c_neqcharge[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
+                                hcorr_eec_neqcharge[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                 }
 
-                // Normalize charged e2cs
-                hcorr_e2c_eqcharge[bin]->Divide(hcorr_e2c[bin]);
-                hcorr_e2c_neqcharge[bin]->Divide(hcorr_e2c[bin]);
+                // Normalize charged eecs
+                hcorr_eec_eqcharge[bin]->Divide(hcorr_eec[bin]);
+                hcorr_eec_neqcharge[bin]->Divide(hcorr_eec[bin]);
                 
                 // Normalize the distributions
                 // Log binning
-                hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-                hcorr_e2c_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_eec_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
 
                 fout->cd();
-                hcorr_e2c[bin]->Write();
-                hcorr_e2c_nounf[bin]->Write();
+                hcorr_eec[bin]->Write();
+                hcorr_eec_nounf[bin]->Write();
                 hcorr_tau[bin]->Write();
                 hcorr_tau_nounf[bin]->Write();
-                hcorr_e2c_eqcharge[bin]->Write();
-                hcorr_e2c_neqcharge[bin]->Write();
+                hcorr_eec_eqcharge[bin]->Write();
+                hcorr_eec_neqcharge[bin]->Write();
                 gROOT->cd();
         }
 
@@ -152,26 +152,26 @@ void macro_print_fullcorrchargede2c_paircorr_2dunf(int niter = nominal_niter, bo
         TLegend* l_data     = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
         TLegend* l_data_tau = new TLegend(gPad->GetLeftMargin()+0.01,1-gPad->GetTopMargin()-0.01,gPad->GetLeftMargin()+0.21,1-gPad->GetTopMargin()-0.21);
         
-        TLegend* l_data_chargede2c = new TLegend(1-gPad->GetRightMargin()-0.31,gPad->GetBottomMargin()+0.01,1-gPad->GetRightMargin()-0.01,gPad->GetBottomMargin()+0.21);
+        TLegend* l_data_chargedeec = new TLegend(1-gPad->GetRightMargin()-0.31,gPad->GetBottomMargin()+0.01,1-gPad->GetRightMargin()-0.01,gPad->GetBottomMargin()+0.21);
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                s_data->Add(hcorr_e2c_eqcharge[bin] ,"E1 ");
-                s_data->Add(hcorr_e2c_neqcharge[bin],"E1 ");
-                l_data_chargede2c->AddEntry(hcorr_e2c_eqcharge[bin],Form("eq. charge %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
-                l_data_chargede2c->AddEntry(hcorr_e2c_neqcharge[bin],Form("op. charge %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
+                s_data->Add(hcorr_eec_eqcharge[bin] ,"E1 ");
+                s_data->Add(hcorr_eec_neqcharge[bin],"E1 ");
+                l_data_chargedeec->AddEntry(hcorr_eec_eqcharge[bin],Form("eq. charge %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
+                l_data_chargedeec->AddEntry(hcorr_eec_neqcharge[bin],Form("op. charge %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lfp");
         }
         
         s_data->Draw("NOSTACK");
         s_data->SetMaximum(1);
         s_data->SetTitle(";R_{L};Charged #Sigma_{EEC}(R_{L})");
-        l_data_chargede2c->Draw("SAME");
+        l_data_chargedeec->Draw("SAME");
         gPad->SetLogx(1);
         gPad->SetLogy(0);
         
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrchargede2c_niter%i_2dunf.pdf",niter));
+                c->Print(Form("./plots/paircorrchargedeec_niter%i_2dunf.pdf",niter));
 }
 

@@ -9,7 +9,7 @@ void macro_print_responsematrices()
         TCanvas* c = new TCanvas("","",1920,1080);
         c->Draw();
 
-        TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
         float jet_pt, jet_pt_truth, R_L, R_L_truth, weight, weight_truth;

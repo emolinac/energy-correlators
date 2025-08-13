@@ -6,10 +6,10 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_mc_e2c()
+void macro_print_mc_eec()
 {
     // Open the necessary files
-    TFile* fmc = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
+    TFile* fmc = new TFile((output_folder + namef_ntuple_mc_eec).c_str());
     
     TNtuple* ntuple_mcreco     = (TNtuple*) fmc->Get((name_ntuple_mcreco).c_str());
     TNtuple* ntuple_mcreco_jet = (TNtuple*) fmc->Get((name_ntuple_mcreco_jet).c_str());
@@ -49,8 +49,8 @@ void macro_print_mc_e2c()
         set_histogram_style(hmc[bin]         , std_marker_color_jet_pt[bin] , std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
 
         // Project into the histograms
-        ntuple_mcreco->Project(Form("hmcreco[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt[bin]);
-        ntuple_mc->Project(Form("hmc[%i]" ,bin),"R_L",e2c_jet_pt_cut_weightpt[bin]);
+        ntuple_mcreco->Project(Form("hmcreco[%i]",bin),"R_L",eec_jet_pt_cut_weightpt[bin]);
+        ntuple_mc->Project(Form("hmc[%i]" ,bin),"R_L",eec_jet_pt_cut_weightpt[bin]);
         
         ntuple_mcreco_jet->Project(Form("hmcreco_jet[%i]" ,bin), "jet_pt",pair_jet_pt_cut[bin]);
         ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin), "jet_pt",pair_jet_pt_cut[bin]);
@@ -72,5 +72,5 @@ void macro_print_mc_e2c()
     
     // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("./plots/mc_mcreco_e2c_fullrange.pdf");
+    c->Print("./plots/mc_mcreco_eec_fullrange.pdf");
 }

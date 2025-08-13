@@ -22,7 +22,7 @@ int main()
         if (syst_jes_array[0]==-999){std::cout<<"You need to set the beta values on the jes systematic."<<std::endl; return 0;}
 
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_e2c_paircorrections_jes).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorrections_jes).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJetsMCReco* mcrecotree = new TZJetsMCReco();

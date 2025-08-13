@@ -6,7 +6,7 @@
 
 void macro_print_responsematrix_jet_pt()
 {
-    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float jet_pt, jet_pt_truth;

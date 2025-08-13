@@ -6,17 +6,17 @@ make
 cd ./bin
 
 echo "Creating purity ntuple"
-./create_e2c_purityntuple
+./create_eec_purityntuple
 echo "Purity ntuple ready!"
 echo "Creating efficiency ntuple"
-./create_e2c_efficiencyntuple
+./create_eec_efficiencyntuple
 echo "Efficiency ntuple ready!"
 
 echo "Creating pair purity ntuple"
-./create_e2c_pairpurityntuple
+./create_eec_pairpurityntuple
 echo "Pair purity ntuple ready!"
 echo "Creating pair efficiency ntuple"
-./create_e2c_pairefficiencyntuple
+./create_eec_pairefficiencyntuple
 echo "Pair efficiency ntuple ready!"
 
 # echo "Creating jet purity ntuple"
@@ -27,11 +27,11 @@ echo "Pair efficiency ntuple ready!"
 # echo "Jet efficiency ntuple ready!"
 
 echo "Creating corr data ntuple"
-./create_e2c_corrntuple_paircorr
+./create_eec_corrntuple_paircorr
 echo "Corr. data ntuple ready!"
 
 
 # echo "Producing results"
 # cd ../src-analysis/
-# root -b -q macro_print_fullcorre2c_paircorr_2dunf.cpp
-# root -b -q macro_print_fullcorre2c_paircorr_3dunf.cpp
+# root -b -q macro_print_fullcorreec_paircorr_2dunf.cpp
+# root -b -q macro_print_fullcorreec_paircorr_3dunf.cpp

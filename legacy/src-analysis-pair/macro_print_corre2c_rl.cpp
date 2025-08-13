@@ -6,12 +6,12 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_corre2c_rl()
+void macro_print_correec_rl()
 {
     // Open the necessary files
-    TFile* fdata       = new TFile((output_folder + namef_ntuple_e2c).c_str());
-    TFile* fefficiency = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
-    TFile* fpurity     = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fdata       = new TFile((output_folder + namef_ntuple_eec).c_str());
+    TFile* fefficiency = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
+    TFile* fpurity     = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
 
 
     // Get the corresponding Ntuples
@@ -50,8 +50,8 @@ void macro_print_corre2c_rl()
     ntuple_efficiency_mc->Project("hall_eff","R_L",pair_cut);
     ntuple_purity->Project("hsig_pur","R_L",pair_signal_cut);
     ntuple_purity->Project("hall_pur","R_L",pair_cut);
-    ntuple_data->Project("hcorr_data","R_L",e2c_cut);
-    ntuple_data->Project("hall_data","R_L",e2c_cut);
+    ntuple_data->Project("hcorr_data","R_L",eec_cut);
+    ntuple_data->Project("hall_data","R_L",eec_cut);
 
     hcorr_data->Scale(1./hcorr_data->Integral());
     hall_data->Scale(1./hall_data->Integral());
@@ -87,5 +87,5 @@ void macro_print_corre2c_rl()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/corr_eec_deltarleq%.3f.pdf",rl_resolution));
 }

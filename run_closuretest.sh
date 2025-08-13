@@ -6,14 +6,14 @@ make
 cd ./bin
 
 echo "Creating corrections ntuple"
-./create_e2c_paircorrectionsntuple_ct
+./create_eec_paircorrectionsntuple_ct
 echo "Corrections ntuple ready!"
 
 echo "Creating corr data ntuple"
-./create_e2c_corrntuple_paircorr_ct
+./create_eec_corrntuple_paircorr_ct
 echo "Corr. data ntuple ready!"
 
 
 echo "Producing results"
 cd ../src-analysis/
-root -b -q "macro_print_fullcorre2c_paircorr_2dunf_ct(4, true, true)"
+root -b -q "macro_print_fullcorreec_paircorr_2dunf_ct(4, true, true)"

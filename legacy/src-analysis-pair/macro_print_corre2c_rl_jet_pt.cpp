@@ -6,12 +6,12 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_corre2c_rl_jet_pt()
+void macro_print_correec_rl_jet_pt()
 {
     // Open the necessary files
-    TFile* fdata       = new TFile((output_folder + namef_ntuple_e2c).c_str());
-    TFile* fefficiency = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
-    TFile* fpurity     = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fdata       = new TFile((output_folder + namef_ntuple_eec).c_str());
+    TFile* fefficiency = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
+    TFile* fpurity     = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_data            = (TNtuple*) fdata->Get((name_ntuple_data).c_str());
@@ -65,8 +65,8 @@ void macro_print_corre2c_rl_jet_pt()
         ntuple_efficiency_mc->Project(Form("hall_eff[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
         ntuple_purity->Project(Form("hsig_pur[%i]",jet_pt_bin),"R_L",pair_jet_pt_signal_cut[jet_pt_bin]);
         ntuple_purity->Project(Form("hall_pur[%i]",jet_pt_bin),"R_L",pair_jet_pt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",e2c_jet_pt_cut[jet_pt_bin]);
-        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", e2c_jet_pt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hcorr_data[%i]",jet_pt_bin),"R_L",eec_jet_pt_cut[jet_pt_bin]);
+        ntuple_data->Project(Form("hall_data[%i]",jet_pt_bin),"R_L", eec_jet_pt_cut[jet_pt_bin]);
     }
     
     TCanvas* c = new TCanvas("c","",800,600);
@@ -110,5 +110,5 @@ void macro_print_corre2c_rl_jet_pt()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/corr_e2c_jet_pt_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/corr_eec_jet_pt_deltarleq%.3f.pdf",rl_resolution));
 }

@@ -52,23 +52,23 @@ TCut pair_matching_cut = Form("TMath::Abs(R_L-R_L_truth)<%f",rl_resolution);
 
 // Nominal Analysis Cuts
 
-TCut e2c_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut eec_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 
 // Cuts as function of jet pt
-TCut e2c_jet_pt_cut[] = {
+TCut eec_jet_pt_cut[] = {
         Form("weight*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt[] = {
+TCut eec_jet_pt_cut_weightpt[] = {
         Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_zpt_cut_weightpt[] = {
+TCut eec_zpt_cut_weightpt[] = {
         Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[0], z_pt_binning[1]),
         Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[1], z_pt_binning[2]),
         Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[2], z_pt_binning[3])
@@ -94,9 +94,9 @@ TCut purity_corr_singletrack     = Form("purity*(purity_relerror<%f&&jet_pt>%f&&
 TCut efficiency_corr_singletrack = Form("(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
 TCut full_corr_singletrack       = Form("purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
-TCut e2c_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
-TCut e2c_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
-TCut e2c_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut eec_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut eec_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut eec_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
 TCut pair_purity_corr_singletrack_weightpt = Form("purity*(purity_relerror<%f)",corr_rel_error);
 
@@ -115,31 +115,31 @@ TCut pair_jet_pt_signal_cut[] = {
 };
 
 // ANALYSIS VARIATIONS CUTS
-TCut e2c_jet_pt_cut_weightpt_pp[] = {
+TCut eec_jet_pt_cut_weightpt_pp[] = {
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt_mm[] = {
+TCut eec_jet_pt_cut_weightpt_mm[] = {
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt_pm[] = {
+TCut eec_jet_pt_cut_weightpt_pm[] = {
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt_kaon[] = {
+TCut eec_jet_pt_cut_weightpt_kaon[] = {
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt_nokaon[] = {
+TCut eec_jet_pt_cut_weightpt_nokaon[] = {
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])

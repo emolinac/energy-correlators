@@ -6,12 +6,12 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_corre2c_rl_ratio()
+void macro_print_correec_rl_ratio()
 {
     // Open the necessary files
-    TFile* fdata       = new TFile((output_folder + namef_ntuple_e2c).c_str());
-    TFile* fefficiency = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
-    TFile* fpurity     = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+    TFile* fdata       = new TFile((output_folder + namef_ntuple_eec).c_str());
+    TFile* fefficiency = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
+    TFile* fpurity     = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
 
 
     // Get the corresponding Ntuples
@@ -46,13 +46,13 @@ void macro_print_corre2c_rl_ratio()
     hall_data->Sumw2();
 
     // Project into the histograms
-    ntuple_mc->Draw("R_L>>h_mc",e2c_cut,"goff");
+    ntuple_mc->Draw("R_L>>h_mc",eec_cut,"goff");
     ntuple_efficiency_reco->Project("hsig_eff","R_L",pair_signal_cut);
     ntuple_efficiency_mc->Project("hall_eff","R_L",pair_cut);
     ntuple_purity->Project("hsig_pur","R_L",pair_signal_cut);
     ntuple_purity->Project("hall_pur","R_L",pair_cut);
-    ntuple_data->Project("hcorr_data","R_L",e2c_cut);
-    ntuple_data->Project("hall_data","R_L",e2c_cut);
+    ntuple_data->Project("hcorr_data","R_L",eec_cut);
+    ntuple_data->Project("hall_data","R_L",eec_cut);
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();
@@ -100,5 +100,5 @@ void macro_print_corre2c_rl_ratio()
 
     tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print(Form("./plots/ratio_corr_e2c_deltarleq%.3f.pdf",rl_resolution));
+    c->Print(Form("./plots/ratio_corr_eec_deltarleq%.3f.pdf",rl_resolution));
 }
