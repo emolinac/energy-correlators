@@ -10,7 +10,7 @@ void macro_print_fullcorrnpairs_reco2mc_singletrackcorr(int niter = 10, bool do_
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TFile* fcorr = new TFile((output_folder + "ntuple_corrmcrecoe2c.root").c_str()); 
+        TFile* fcorr = new TFile((output_folder + "ntuple_corrmcrecoeec.root").c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -26,7 +26,7 @@ void macro_print_fullcorrnpairs_reco2mc_singletrackcorr(int niter = 10, bool do_
         ntuple_data->SetBranchAddress("weight"    , &weight);
 
         // Unfold the purity corrected data
-        TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
         float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
@@ -77,7 +77,7 @@ void macro_print_fullcorrnpairs_reco2mc_singletrackcorr(int niter = 10, bool do_
                 
                 hcorr_npairs[bin] = new TH1F(Form("hcorr_npairs%i",bin),"", nbin_rl_nominal, rl_nominal_binning);
                 
-                set_histogram_style(hcorr_npairs[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+                set_histogram_style(hcorr_npairs[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
                 
                 ntuple_jet->Project(Form("hcorr_jet%i" ,bin), "jet_pt", jet_full_corr[bin]);
         
@@ -98,13 +98,14 @@ void macro_print_fullcorrnpairs_reco2mc_singletrackcorr(int niter = 10, bool do_
                                 unfolding_weight = 1;
                         
                         hcorr_npairs[bin]->Fill(R_L,weight*unfolding_weight*purity/efficiency);
+                        // hcorr_npairs[bin]->Fill(R_L,purity/efficiency);
                 }
 
                 hcorr_npairs[bin]->Scale(1./hcorr_jet[bin]->Integral());
         }
 
         // Simulations Section
-        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_eec).c_str());
         
         TNtuple* ntuple_mc     = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
         TNtuple* ntuple_mc_jet = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
@@ -161,13 +162,13 @@ void macro_print_fullcorrnpairs_reco2mc_singletrackcorr(int niter = 10, bool do_
                 
                 s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};N_{pairs}", jet_pt_binning[bin], jet_pt_binning[bin+1]));
                 
-                l_data[bin]->AddEntry(hmc[bin]         , "mc"  , "p");
-                l_data[bin]->AddEntry(hcorr_npairs[bin], "data", "p");
+                l_data[bin]->AddEntry(hmc[bin]         , "mc"          , "p");
+                l_data[bin]->AddEntry(hcorr_npairs[bin], "mcreco", "p");
 
                 l_data[bin]->Draw("SAME");    
 
                 gPad->SetLogx(1);
         }
 
-        c->Print("./plots/reco2mc_npairs_multiplicity_fullconditions_wredundantjetid_eventweightapplied_pseudatajetmatchedjet_unfolded.pdf");
+        c->Print("./plots/reco2mc_npairs_singletrackcorr_fullsim.pdf");
 }

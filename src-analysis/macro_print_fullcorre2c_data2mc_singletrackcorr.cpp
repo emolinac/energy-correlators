@@ -6,11 +6,11 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_data2mc_singletrackcorr(int niter = 15, bool do_print = true)
+void macro_print_fullcorreec_data2mc_singletrackcorr(int niter = 15, bool do_print = true)
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_corr).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -58,7 +58,7 @@ void macro_print_fullcorre2c_data2mc_singletrackcorr(int niter = 15, bool do_pri
         }
 
         // Simulations Section
-        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_eec).c_str());
         
         TNtuple* ntuple_mc     = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
         TNtuple* ntuple_mc_jet = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
@@ -106,7 +106,7 @@ void macro_print_fullcorre2c_data2mc_singletrackcorr(int niter = 15, bool do_pri
                 c->cd(bin+1);
 
                 s_data[bin] = new THStack();
-                l_data[bin] = new TLegend(1-gPad->GetRightMargin()-0.21,gPad->GetBottomMargin()+0.01,1-gPad->GetRightMargin()-0.01,gPad->GetBottomMargin()+0.16);
+                l_data[bin] = new TLegend(1-gPad->GetRightMargin()-0.21,1.-gPad->GetTopMargin(),1-gPad->GetRightMargin()-0.01,1.-gPad->GetTopMargin()-0.21);
 
                 s_data[bin]->Add(hmc[bin],"E");
                 s_data[bin]->Add(hcorr_eec[bin],"E");
@@ -127,5 +127,5 @@ void macro_print_fullcorre2c_data2mc_singletrackcorr(int niter = 15, bool do_pri
                 // gPad->SetLogy(1);
         }
 
-        // c->Print("./plots/data2mc_eec_singledtrjetsexcluded_eventweightapplied_alicefactor.pdf");
+        c->Print("./plots/data2mc_eec_singletrackcorr_fullsim.pdf");
 }

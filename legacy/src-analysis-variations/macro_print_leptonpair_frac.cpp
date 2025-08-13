@@ -10,8 +10,8 @@ std::string variation_folder = "/home/esteban/Documents/umich-work/lhcb/energy-c
 
 void macro_print_leptonpair_frac()
 {
-    TFile* fnominal   = new TFile((output_folder+"ntuple_corre2c.root").c_str());
-    TFile* fvariation = new TFile((variation_folder+"ntuple_corre2c.root").c_str());
+    TFile* fnominal   = new TFile((output_folder+"ntuple_correec.root").c_str());
+    TFile* fvariation = new TFile((variation_folder+"ntuple_correec.root").c_str());
 
     TNtuple* ntuple_nominal   = (TNtuple*) fnominal->Get(name_ntuple_data.c_str());
     TNtuple* ntuple_variation = (TNtuple*) fvariation->Get(name_ntuple_data.c_str());

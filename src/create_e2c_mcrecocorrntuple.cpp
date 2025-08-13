@@ -26,7 +26,7 @@
 int main()
 {
         // Open correction files
-        TFile* fcorrections    = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+        TFile* fcorrections    = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
         TFile* fpurity_jet     = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -35,7 +35,7 @@ int main()
         TFile* fefficiency_muon_2016_trg = new TFile((muons_folder + "TRGEff_Data_2016.root").c_str());
         
         // Create output file
-        TFile* fout = new TFile((output_folder + "ntuple_corrmcrecoe2c.root").c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + "ntuple_corrmcrecoeec.root").c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJetsMCReco* mcrecotree = new TZJetsMCReco();
@@ -108,6 +108,9 @@ int main()
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
 
+        hpurity->Smooth();
+        hefficiency->Smooth();
+
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector = new TLorentzVector();
         TLorentzVector* Z0_4vector  = new TLorentzVector();
@@ -136,21 +139,16 @@ int main()
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
 
-                // Access entry of tree
-                mcrecotree->GetEntry(evt);
-
                 if (evt != 0)
                         if (last_eventNum == mcrecotree->eventNumber) 
                                 continue;
 
-                // Apply PV cut
                 if (mcrecotree->nPV != 1) 
                         continue;
 
                 if (mcrecotree->Jet_mcjet_nmcdtrs == -999)
                         continue;
 
-                // Apply trigger cut
                 bool mum_trigger = (mcrecotree->mum_L0MuonEWDecision_TOS == 1 && 
                                     mcrecotree->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
                                     mcrecotree->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
@@ -162,7 +160,6 @@ int main()
                 if (!mum_trigger && !mup_trigger) 
                         continue;
                 
-                // Set Jet-associated 4 vectors and apply cuts
                 Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,
                                         mcrecotree->Jet_PY/1000.,
                                         mcrecotree->Jet_PZ/1000.,
@@ -214,6 +211,7 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
                 double jet_ndtr_nominal = 0;
+                
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
                         if (mcrecotree->Jet_Dtr_IsMeson[h1_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h1_index] != 1)
@@ -229,13 +227,14 @@ int main()
                                                      h1_4vector->Pt(),
                                                      mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                                      mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h1_4vector))) 
                                 continue;
 
                         jet_ndtr_nominal++;
                 }
                 
-                if (jet_ndtr_nominal < 1)
+                if (jet_ndtr_nominal < 2)
                         continue;
 
                 // Loop over hadron 1
@@ -254,17 +253,19 @@ int main()
                                                      h1_4vector->Pt(),
                                                      mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                                      mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h1_4vector))) 
                                 continue;
 
                         double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
                         double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                        if (h1_purity > 1. || h1_efficiency > 1.) 
+                        if (h1_purity > 1. || h1_efficiency > 1.) {
+                                std::cout<<"eff = "<<h1_efficiency<<std::endl;
+                                std::cout<<"pur = "<<h1_purity<<std::endl;
                                 continue;
+                        }
 
-                        // Loop over hadron 2
-                        for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++) {
-                                // Skip non-hadronic particles
+                        for (int h2_index = h1_index + 1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++) {
                                 if (mcrecotree->Jet_Dtr_IsMeson[h2_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
 
@@ -278,7 +279,8 @@ int main()
                                                              h2_4vector->Pt(),
                                                              mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
                                                              mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
-                                                             h2_4vector->Eta())) 
+                                                             h2_4vector->Eta(),
+                                                             Jet_4vector->DeltaR(*h2_4vector))) 
                                         continue;
 
                                 double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
@@ -336,8 +338,8 @@ int main()
                                 vars[24] = ntruth_h1;
                                 vars[25] = nreco_ok_h2;
                                 vars[26] = nreco_h2;
-                                vars[27] = ntruth_ok_h2;
-                                vars[28] = ntruth_h2;
+                                vars[27] = h1_4vector->DeltaPhi(*h2_4vector);
+                                vars[28] = h1_4vector->Eta() - h2_4vector->Eta();
                                 
                                 // Fill the TNtuple
                                 ntuple_data->Fill(vars);

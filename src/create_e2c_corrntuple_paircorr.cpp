@@ -26,7 +26,7 @@
 int main()
 {
         // Open correction files
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -41,7 +41,7 @@ int main()
         TFile* fefficiency_muon_2018_trg = new TFile((muons_folder + "TRGEff_Data_2018.root").c_str());
         
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJets2016Data* datatree_2016 = new TZJets2016Data();
@@ -91,21 +91,19 @@ int main()
         hpurity_jet->Divide(hnum_pur_jet, hden_pur_jet, 1, 1, "B");
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
-        // Hadron corrections
-        // TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        // TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        // TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        // TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        // TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        // TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        
-        // //DELETE LATER
-        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        // TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+
+        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_altlogbinning_unfolding, unfolding_rl_altlogbinning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_altlogbinning_unfolding, unfolding_rl_altlogbinning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_altlogbinning_unfolding, unfolding_rl_altlogbinning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_altlogbinning_unfolding, unfolding_rl_altlogbinning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_altlogbinning_unfolding, unfolding_rl_altlogbinning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_altlogbinning_unfolding, unfolding_rl_altlogbinning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
@@ -122,6 +120,9 @@ int main()
 
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
+
+        hpurity->Smooth();
+        hefficiency->Smooth();
 
         // DELETE LATER
         TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
@@ -171,7 +172,7 @@ int main()
         hpurity->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_purity_correction.pdf");
+        c->Print("../src-analysis/plots/pair_purity_correction_smooth.pdf");
 
         hefficiency->Draw("col text");
         hefficiency->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
@@ -179,7 +180,7 @@ int main()
         hefficiency->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("../src-analysis/plots/pair_efficiency_correction.pdf");
+        c->Print("../src-analysis/plots/pair_efficiency_correction_smooth.pdf");
 
         // DELETE LATER!!!!
         hpurity_eqcharge->Draw("col text");
@@ -388,7 +389,9 @@ int main()
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 
-                                vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
+                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+                                
+                                vars[0 ] = weight_due_to_jet;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
                                 vars[3 ] = efficiency_error/efficiency;
@@ -602,7 +605,9 @@ int main()
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 
-                                vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
+                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+                                
+                                vars[0 ] = weight_due_to_jet;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
                                 vars[3 ] = efficiency_error/efficiency;
@@ -816,7 +821,9 @@ int main()
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 
-                                vars[0 ] = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
+                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+                                
+                                vars[0 ] = weight_due_to_jet;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
                                 vars[3 ] = efficiency_error/efficiency;

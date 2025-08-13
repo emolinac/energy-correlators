@@ -19,41 +19,49 @@ void macro_makeclasses()
         
         TChain* data_2016_new  = new TChain("StdHltZJets/DecayTree");
         
-        // sim_mc->Add((input_folder + "Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
-        // sim_mc->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
-        // sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
-        // sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
-        // sim_mc->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
-        // sim_mc->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
-        // sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
-        // sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
+        sim_mc->Add((input_folder + "Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
+        sim_mc->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
+        sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
+        sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
+        sim_mc->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
+        sim_mc->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
+        sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
         sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2018_MD_04142025.root").c_str());
         sim_mc->Add((input_folder + "Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
         sim_mc->Add((input_folder + "Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
         sim_mc->Add((input_folder + "Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
         sim_mc->MakeClass("TZJetsMC");
         
-        // sim_mcreco->Add((input_folder + "Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
-        // sim_mcreco->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
-        // sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
-        // sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
-        // sim_mcreco->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
-        // sim_mcreco->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
-        // sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
-        // sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
+        sim_mcreco->Add((input_folder + "Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
+        sim_mcreco->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
+        sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
+        sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
+        sim_mcreco->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
+        sim_mcreco->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
+        sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
         sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2018_MD_04142025.root").c_str());
         sim_mcreco->Add((input_folder + "Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
         sim_mcreco->Add((input_folder + "Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
         sim_mcreco->Add((input_folder + "Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
         sim_mcreco->MakeClass("TZJetsMCReco");
 
+        // sim_mc->Add((input_folder + "ibrahim_files/Zhadron_MC_Sim09l_MU_2018_11202024.root").c_str());
+        // sim_mc->Add((input_folder + "ibrahim_files/Zhadron_MC_Sim09l_MD_2018_11202024.root").c_str());
+        // sim_mc->MakeClass("TZJetsMC");
+
+        // sim_mcreco->Add((input_folder + "ibrahim_files/Zhadron_MC_Sim09l_MU_2018_11202024.root").c_str());
+        // sim_mcreco->Add((input_folder + "ibrahim_files/Zhadron_MC_Sim09l_MD_2018_11202024.root").c_str());
+        // sim_mcreco->MakeClass("TZJetsMCReco");
+
         // Ibrahim data
         // data_2016->Add((input_folder + "Zjet_Data_2016_MU_04062024.root").c_str());
         // data_2016->Add((input_folder + "Zjet_Data_2016_MD_04062024.root").c_str());
         // data_2017->Add((input_folder + "Zjet_Data_2017_MU_04062024.root").c_str());
         // data_2017->Add((input_folder + "Zjet_Data_2017_MD_04062024.root").c_str());
-        // data_2018->Add((input_folder + "Zjet_Data_2018_MU_04062024.root").c_str());
-        // data_2018->Add((input_folder + "Zjet_Data_2018_MD_04062024.root").c_str());
+        // data_2018->Add((input_folder + "ibrahim_files/Zjet_Data_2018_MU_04062024.root").c_str());
+        // data_2018->Add((input_folder + "ibrahim_files/Zjet_Data_2018_MD_04062024.root").c_str());
         // My data with JEC correction branches included
         data_2016->Add((input_folder + "Zjet_Data_2016_MU_04212025.root").c_str());
         data_2016->Add((input_folder + "Zjet_Data_2016_MD_04212025.root").c_str());

@@ -32,8 +32,8 @@ int main()
         std::cout<<"- The pair corrections are changed due to the JER"<<std::endl;
         
         // Open correction files
-        // TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_e2c_paircorrections_jes).c_str());
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        // TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections_jes).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -48,7 +48,7 @@ int main()
         TFile* fefficiency_muon_2018_trg = new TFile((muons_folder + "TRGEff_Data_2018.root").c_str());
         
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_e2c_paircorr_jer).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr_jer).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJets2016Data* datatree_2016 = new TZJets2016Data();

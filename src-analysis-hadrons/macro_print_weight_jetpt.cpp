@@ -9,7 +9,7 @@
 void macro_print_weight_jet_pt()
 {
         // Open the necessary files
-        TFile*   fcorr       = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
+        TFile*   fcorr       = new TFile((output_folder + namef_ntuple_eec_corr).c_str()); 
         TNtuple* ntuple_data = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
         
         TH1F* hcorr_data[nbin_jet_pt]; 

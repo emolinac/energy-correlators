@@ -12,7 +12,7 @@ void macro_print_comparison_closuretest_2d(int Niter = 5, double jet_pt_min_loca
     TH1D* hct_rl_of    = (TH1D*) fof->Get("hct_rl");
     TH1D* hct_jet_pt_of = (TH1D*) fof->Get("hct_jet_pt");
 
-    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L, R_L_truth, jet_pt, jet_pt_truth;

@@ -26,7 +26,7 @@
 int main()
 {
         // Open correction files
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -35,7 +35,7 @@ int main()
         TFile* fefficiency_muon_2016_trg = new TFile((muons_folder + "TRGEff_Data_2016.root").c_str());
 
         // Create output file
-        TFile* fout = new TFile((output_folder + "ntuple_corrmcrecoe2c_paircorr.root").c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + "ntuple_corrmcrecoeec_paircorr.root").c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJetsMCReco* mcrecotree = new TZJetsMCReco();
@@ -104,6 +104,9 @@ int main()
 
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
+
+        hpurity->Smooth();
+        hefficiency->Smooth();
 
         // DELETE LATER
         TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal, rl_nominal_binning, nbin_jet_pt_corrections, jet_pt_corrections_binning);
@@ -230,7 +233,9 @@ int main()
                         if (last_eventNum == mcrecotree->eventNumber) 
                                 continue;
 
-                // Apply PV cut
+                if (mcrecotree->Jet_mcjet_nmcdtrs == -999)
+                        continue;
+                
                 if (mcrecotree->nPV != 1) 
                         continue;
 
@@ -298,8 +303,8 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
                 double jet_ndtr_nominal = 0;
+
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
-                        // Skip non-hadronic particles
                         if (mcrecotree->Jet_Dtr_IsMeson[h1_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h1_index] != 1)
                                 continue;
 
@@ -313,16 +318,17 @@ int main()
                                                      h1_4vector->Pt(),
                                                      mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                                      mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h1_4vector))) 
                                 continue;
 
                         jet_ndtr_nominal++;
                 }
+                
                 if (jet_ndtr_nominal < 2)
                         continue;
                 
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
-                        // Skip non-hadronic particles
                         if (mcrecotree->Jet_Dtr_IsMeson[h1_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h1_index] != 1)
                                 continue;
 
@@ -336,12 +342,11 @@ int main()
                                                      h1_4vector->Pt(),
                                                      mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                                      mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h1_4vector))) 
                                 continue;
                 
-                        // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++) {
-                                // Skip non-hadronic particles
                                 if (mcrecotree->Jet_Dtr_IsMeson[h2_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
 
@@ -355,7 +360,8 @@ int main()
                                                              h2_4vector->Pt(),
                                                              mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
                                                              mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
-                                                             h2_4vector->Eta())) 
+                                                             h2_4vector->Eta(),
+                                                             Jet_4vector->DeltaR(*h2_4vector))) 
                                         continue;
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);
@@ -370,8 +376,7 @@ int main()
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 
-                                // double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
-                                double weight_due_to_jet = jet_purity/jet_efficiency;
+                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
                                 
                                 vars[0 ] = weight_due_to_jet;
                                 vars[1 ] = efficiency;

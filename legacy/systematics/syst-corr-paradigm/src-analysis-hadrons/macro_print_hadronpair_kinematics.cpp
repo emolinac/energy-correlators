@@ -8,8 +8,8 @@
 
 void macro_print_hadronpair_kinematics()
 {
-    TFile* findata = new TFile((output_folder + namef_ntuple_e2c_corr).c_str());
-    TFile* fin     = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
+    TFile* findata = new TFile((output_folder + namef_ntuple_eec_corr).c_str());
+    TFile* fin     = new TFile((output_folder + namef_ntuple_mc_eec).c_str());
     
     TNtuple* ntuple_data   = (TNtuple*) findata->Get(name_ntuple_data.c_str());
     TNtuple* ntuple_mc     = (TNtuple*) fin->Get(name_ntuple_mc.c_str());

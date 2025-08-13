@@ -41,28 +41,28 @@ const double min_efficiency[] = {0.14,0.10,0.05};
 const double max_relerror[]   = {0.50,0.35,0.45};
 
 // Misc analysis cuts
-TCut pair_matching_cut = "R_L_truth!=-999";
-// TCut pair_matching_cut = Form("TMath::Abs(R_L-R_L_truth)<%f",rl_resolution);
+// TCut pair_matching_cut = "R_L_truth!=-999";
+TCut pair_matching_cut = Form("TMath::Abs(R_L-R_L_truth)<%f",rl_resolution);
 
 // Nominal Analysis Cuts
 
-TCut e2c_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut eec_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 
 // Cuts as function of jet pt
-TCut e2c_jet_pt_cut[] = {
+TCut eec_jet_pt_cut[] = {
         Form("weight*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt[] = {
+TCut eec_jet_pt_cut_weightpt[] = {
         Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_zpt_cut_weightpt[] = {
+TCut eec_zpt_cut_weightpt[] = {
         Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[0], z_pt_binning[1]),
         Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[1], z_pt_binning[2]),
         Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[2], z_pt_binning[3])
@@ -88,9 +88,9 @@ TCut purity_corr_singletrack     = Form("purity*(purity_relerror<%f&&jet_pt>%f&&
 TCut efficiency_corr_singletrack = Form("(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
 TCut full_corr_singletrack       = Form("purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
-TCut e2c_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
-TCut e2c_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
-TCut e2c_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut eec_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut eec_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut eec_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
 
 TCut pair_purity_corr_singletrack_weightpt = Form("purity*(purity_relerror<%f)",corr_rel_error);
 
@@ -102,10 +102,16 @@ TString muons_eff = "1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_
 //         Form("jet_purity*(1./jet_efficiency)*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 // };
 
+// TCut jet_full_corr[] = {
+//         Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
+//         Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
+//         Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
+// };
+
 TCut jet_full_corr[] = {
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
+        Form("(jet_pt>%f&&jet_pt<%f)*jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))", jet_pt_binning[0], jet_pt_binning[1]),
+        Form("(jet_pt>%f&&jet_pt<%f)*jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))", jet_pt_binning[1], jet_pt_binning[2]),
+        Form("(jet_pt>%f&&jet_pt<%f)*jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))", jet_pt_binning[2], jet_pt_binning[3])
 };
 
 TCut pair_jet_pt_signal_cut[] = {
@@ -115,31 +121,31 @@ TCut pair_jet_pt_signal_cut[] = {
 };
 
 // ANALYSIS VARIATIONS CUTS
-TCut e2c_jet_pt_cut_weightpt_pp[] = {
+TCut eec_jet_pt_cut_weightpt_pp[] = {
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt_mm[] = {
+TCut eec_jet_pt_cut_weightpt_mm[] = {
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt_pm[] = {
+TCut eec_jet_pt_cut_weightpt_pm[] = {
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt_kaon[] = {
+TCut eec_jet_pt_cut_weightpt_kaon[] = {
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut e2c_jet_pt_cut_weightpt_nokaon[] = {
+TCut eec_jet_pt_cut_weightpt_nokaon[] = {
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
@@ -228,6 +234,32 @@ bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf,
         return true;
 }
 
+bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta, double deltaR_h_jet)
+{
+        if (charge == 0)
+                return false;
+
+        if (p < track_p_min || p > track_p_max)
+                return false;
+
+        if (pt < track_pt_min)
+                return false;
+
+        if (chi2ndf > track_chi2ndf_max)
+                return false;
+
+        if (probnnghost > track_probnnghost_max)
+                return false;
+
+        if (eta < muon_eta_min || eta > muon_eta_max)
+                return false;
+
+        if (deltaR_h_jet > jet_radius)
+                return false;
+
+        return true;
+}
+
 bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta)
 {
         if (charge == 0)
@@ -240,6 +272,26 @@ bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double
                 return false;
 
         if (eta < muon_eta_min || eta > muon_eta_max)
+                return false;
+
+        return true;
+}
+
+bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta, double deltaR_h_jet)
+{
+        if (charge == 0)
+                return false;
+
+        if (p < track_p_min || p > track_p_max)
+                return false;
+
+        if (pt < track_pt_min)
+                return false;
+
+        if (eta < muon_eta_min || eta > muon_eta_max)
+                return false;
+
+        if (deltaR_h_jet > jet_radius)
                 return false;
 
         return true;

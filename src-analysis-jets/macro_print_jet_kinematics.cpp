@@ -8,8 +8,8 @@
 
 void macro_print_jet_kinematics()
 {
-        TFile* fin     = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
-        TFile* findata = new TFile((output_folder + namef_ntuple_e2c_corr).c_str());
+        TFile* fin     = new TFile((output_folder + namef_ntuple_mc_eec).c_str());
+        TFile* findata = new TFile((output_folder + namef_ntuple_eec_corr).c_str());
         
         TNtuple* ntuple_jet_data   = (TNtuple*) findata->Get(name_ntuple_corrjet.c_str());
         TNtuple* ntuple_jet_mc     = (TNtuple*) fin->Get(name_ntuple_mc_jet.c_str());

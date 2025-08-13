@@ -6,10 +6,10 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_mc_chargede2c()
+void macro_print_mc_chargedeec()
 {
     // Open the necessary files
-    TFile* fmc = new TFile((output_folder + namef_ntuple_mc_e2c).c_str());
+    TFile* fmc = new TFile((output_folder + namef_ntuple_mc_eec).c_str());
     
     TNtuple* ntuple_mcreco     = (TNtuple*) fmc->Get((name_ntuple_mcreco).c_str());
     TNtuple* ntuple_mcreco_jet = (TNtuple*) fmc->Get((name_ntuple_mcreco_jet).c_str());
@@ -54,18 +54,18 @@ void macro_print_mc_chargede2c()
         hmc_all[bin] = new TH1F(Form("hmc_all[%i]" ,bin),"",nbin_rl_nominal,rl_binning);
         
         // Project into the histograms
-        ntuple_mcreco->Project(Form("hmcreco_pp[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt_pp[bin]);
-        ntuple_mcreco->Project(Form("hmcreco_pm[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt_pm[bin]);
-        ntuple_mcreco->Project(Form("hmcreco_mm[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt_mm[bin]);
-        ntuple_mcreco->Project(Form("hmcreco_all[%i]",bin),"R_L",e2c_jet_pt_cut_weightpt[bin]);
+        ntuple_mcreco->Project(Form("hmcreco_pp[%i]",bin),"R_L",eec_jet_pt_cut_weightpt_pp[bin]);
+        ntuple_mcreco->Project(Form("hmcreco_pm[%i]",bin),"R_L",eec_jet_pt_cut_weightpt_pm[bin]);
+        ntuple_mcreco->Project(Form("hmcreco_mm[%i]",bin),"R_L",eec_jet_pt_cut_weightpt_mm[bin]);
+        ntuple_mcreco->Project(Form("hmcreco_all[%i]",bin),"R_L",eec_jet_pt_cut_weightpt[bin]);
         hmcreco_pp[bin]->Add(hmcreco_mm[bin]);
         hmcreco_pp[bin]->Divide(hmcreco_all[bin]);
         hmcreco_pm[bin]->Divide(hmcreco_all[bin]);
 
-        ntuple_mc->Project(Form("hmc_pp[%i]" ,bin),"R_L",e2c_jet_pt_cut_weightpt_pp[bin]);
-        ntuple_mc->Project(Form("hmc_pm[%i]" ,bin),"R_L",e2c_jet_pt_cut_weightpt_pm[bin]);
-        ntuple_mc->Project(Form("hmc_mm[%i]" ,bin),"R_L",e2c_jet_pt_cut_weightpt_mm[bin]);
-        ntuple_mc->Project(Form("hmc_all[%i]" ,bin),"R_L",e2c_jet_pt_cut_weightpt[bin]);
+        ntuple_mc->Project(Form("hmc_pp[%i]" ,bin),"R_L",eec_jet_pt_cut_weightpt_pp[bin]);
+        ntuple_mc->Project(Form("hmc_pm[%i]" ,bin),"R_L",eec_jet_pt_cut_weightpt_pm[bin]);
+        ntuple_mc->Project(Form("hmc_mm[%i]" ,bin),"R_L",eec_jet_pt_cut_weightpt_mm[bin]);
+        ntuple_mc->Project(Form("hmc_all[%i]" ,bin),"R_L",eec_jet_pt_cut_weightpt[bin]);
         hmc_pp[bin]->Add(hmc_mm[bin]);
         hmc_pp[bin]->Divide(hmc_all[bin]);
         hmc_pm[bin]->Divide(hmc_all[bin]);
@@ -95,5 +95,5 @@ void macro_print_mc_chargede2c()
     
     // tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-    c->Print("./plots/mc_mcreco_chargede2c_rlleqjetradius_biggerbins_mc.pdf");
+    c->Print("./plots/mc_mcreco_chargedeec_rlleqjetradius_biggerbins_mc.pdf");
 }

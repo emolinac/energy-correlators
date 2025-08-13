@@ -10,7 +10,7 @@ void macro_print_fullcorrnpairs_reco2mc(int niter = 15, bool do_print = true)
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TFile* fcorr = new TFile((output_folder + "ntuple_corrmcrecoe2c_paircorr.root").c_str()); 
+        TFile* fcorr = new TFile((output_folder + "ntuple_corrmcrecoeec_paircorr.root").c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -34,7 +34,7 @@ void macro_print_fullcorrnpairs_reco2mc(int niter = 15, bool do_print = true)
                 
                 hcorr_npairs[bin] = new TH1F(Form("hcorr_npairs%i",bin),"", nbin_rl_nominal, rl_nominal_binning);
                 
-                set_histogram_style(hcorr_npairs[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+                set_histogram_style(hcorr_npairs[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
                 
                 ntuple_jet->Project(Form("hcorr_jet%i" ,bin), "jet_pt", jet_full_corr[bin]);
         
@@ -57,7 +57,7 @@ void macro_print_fullcorrnpairs_reco2mc(int niter = 15, bool do_print = true)
         }
 
         // Simulations Section
-        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_eec).c_str());
         
         TNtuple* ntuple_mc         = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
         TNtuple* ntuple_mc_jet     = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
@@ -121,5 +121,5 @@ void macro_print_fullcorrnpairs_reco2mc(int niter = 15, bool do_print = true)
                 gPad->SetLogx(1);
         }
 
-        c->Print("./plots/reco2mc_npairs_multiplicity_paircorr_fullconditions_matchedpair_eventweightapplied_nomuoneff.pdf");
+        c->Print("./plots/reco2mc_npairs_paircorr_fullsim_smooth.pdf");
 }

@@ -10,7 +10,7 @@ void macro_print_fullcorrnpair_mc_comp_singletrackcorr(int niter = 15, bool do_p
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_corr).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -23,7 +23,7 @@ void macro_print_fullcorrnpair_mc_comp_singletrackcorr(int niter = 15, bool do_p
         set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
         
         // Unfold the purity corrected data
-        TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
         float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
@@ -102,7 +102,7 @@ void macro_print_fullcorrnpair_mc_comp_singletrackcorr(int niter = 15, bool do_p
         }
 
         // Simulations Section
-        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_eec).c_str());
         
         TNtuple* ntuple_mc         = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
         TNtuple* ntuple_mc_jet     = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());

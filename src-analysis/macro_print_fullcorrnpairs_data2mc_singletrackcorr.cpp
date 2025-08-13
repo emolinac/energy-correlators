@@ -10,7 +10,7 @@ void macro_print_fullcorrnpairs_data2mc_singletrackcorr(int niter = 15, bool do_
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_corr).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -34,7 +34,7 @@ void macro_print_fullcorrnpairs_data2mc_singletrackcorr(int niter = 15, bool do_
                 
                 hcorr_npairs[bin] = new TH1F(Form("hcorr_npairs%i",bin),"", nbin_rl_nominal, rl_nominal_binning);
                 
-                set_histogram_style(hcorr_npairs[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+                set_histogram_style(hcorr_npairs[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
                 
                 ntuple_jet->Project(Form("hcorr_jet%i" ,bin), "jet_pt", jet_full_corr[bin]);
         
@@ -50,6 +50,7 @@ void macro_print_fullcorrnpairs_data2mc_singletrackcorr(int niter = 15, bool do_
                         if (efficiency > 1 || purity > 1) 
                                 continue;
                         
+                        // hcorr_npairs[bin]->Fill(R_L,weight*purity/efficiency);
                         hcorr_npairs[bin]->Fill(R_L,weight*purity/efficiency);
                 }
 
@@ -57,7 +58,7 @@ void macro_print_fullcorrnpairs_data2mc_singletrackcorr(int niter = 15, bool do_
         }
 
         // Simulations Section
-        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_eec).c_str());
         
         TNtuple* ntuple_mc         = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
         TNtuple* ntuple_mc_jet     = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
@@ -95,7 +96,8 @@ void macro_print_fullcorrnpairs_data2mc_singletrackcorr(int niter = 15, bool do_
                         hmc[bin]->Fill(R_L_mc);
                 }
                 
-                ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jet_pt_cut[bin]);
+                // ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jet_pt_cut[bin]);
+                ntuple_mc_jet->Project(Form("hmc_jet[%i]", bin),"jet_pt");
                 hmc[bin]->Scale(1./hmc_jet[bin]->Integral());
         }
 
@@ -122,5 +124,5 @@ void macro_print_fullcorrnpairs_data2mc_singletrackcorr(int niter = 15, bool do_
                 // gPad->SetLogy(1);
         }
 
-        c->Print("./plots/data2mc_npairs_multiplicity_singledtrjetsexcluded_eventweightapplied.pdf");
+        c->Print("./plots/data2mc_npairs_fullsim.pdf");
 }

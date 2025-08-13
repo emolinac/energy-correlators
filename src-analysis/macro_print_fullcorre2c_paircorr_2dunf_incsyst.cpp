@@ -6,11 +6,11 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, bool do_print = true)
+void macro_print_fullcorreec_paircorr_2dunf_incsyst(int niter = nominal_niter, bool do_print = true)
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_paircorr).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -22,7 +22,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
         set_data_ntuple_branches(ntuple_data, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror);
         
         // Unfold the purity corrected data
-        TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
         float R_L_reco, R_L_truth, jet_pt_reco, jet_pt_truth, weight_pt_reco, weight_pt_truth;
@@ -53,9 +53,9 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
 
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
-        TH1F* hcorr_e2c[nbin_jet_pt]; 
-        TH1F* hcorr_e2c_syst[nbin_jet_pt]; 
-        TH1F* hcorr_e2c_nounf[nbin_jet_pt]; 
+        TH1F* hcorr_eec[nbin_jet_pt]; 
+        TH1F* hcorr_eec_syst[nbin_jet_pt]; 
+        TH1F* hcorr_eec_nounf[nbin_jet_pt]; 
         TH1F* hcorr_tau[nbin_jet_pt]; 
         TH1F* hcorr_tau_syst[nbin_jet_pt]; 
         TH1F* hcorr_tau_nounf[nbin_jet_pt]; 
@@ -100,20 +100,20 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
                 hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"", 1  ,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
                 hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
 
-                hcorr_e2c[bin]          = new TH1F(Form("hcorr_e2c%i",bin)         ,"", nbin_rl_nominal,rl_nominal_binning );
-                hcorr_e2c_syst[bin]     = new TH1F(Form("hcorr_e2c_syst%i",bin)    ,"", nbin_rl_nominal,rl_nominal_binning );
-                hcorr_e2c_nounf[bin]    = new TH1F(Form("hcorr_e2c_nounf%i",bin)   ,"", nbin_rl_nominal,rl_nominal_binning );
+                hcorr_eec[bin]          = new TH1F(Form("hcorr_eec%i",bin)         ,"", nbin_rl_nominal,rl_nominal_binning );
+                hcorr_eec_syst[bin]     = new TH1F(Form("hcorr_eec_syst%i",bin)    ,"", nbin_rl_nominal,rl_nominal_binning );
+                hcorr_eec_nounf[bin]    = new TH1F(Form("hcorr_eec_nounf%i",bin)   ,"", nbin_rl_nominal,rl_nominal_binning );
                 hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)         ,"", nbin_rl_nominal,tau_nominal_binning);
                 hcorr_tau_syst[bin]     = new TH1F(Form("hcorr_tau_syst%i",bin)    ,"", nbin_rl_nominal,tau_nominal_binning );
                 hcorr_tau_nounf[bin]    = new TH1F(Form("hcorr_tau_nounf%i",bin)   ,"", nbin_rl_nominal,tau_nominal_binning);
 
-                set_histogram_style(hcorr_e2c[bin]     , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
-                set_histogram_style(hcorr_e2c_syst[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size  );
+                set_histogram_style(hcorr_eec[bin]     , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+                set_histogram_style(hcorr_eec_syst[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size  );
                 set_histogram_style(hcorr_tau[bin]     , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
                 set_histogram_style(hcorr_tau_syst[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size  );
         
-                hcorr_e2c[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
-                hcorr_e2c_syst[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                hcorr_eec[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                hcorr_eec_syst[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
                 hcorr_tau[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
                 hcorr_tau_syst[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
                 
@@ -131,17 +131,17 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
                         if (unfolding_weight <= 0) 
                                 unfolding_weight = 1;
 
-                        hcorr_e2c[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_e2c_syst[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_e2c_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
+                        hcorr_eec[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_eec_syst[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
+                        hcorr_eec_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
                         hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
                         hcorr_tau_syst[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
                         hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,purity*weight_pt/efficiency);
                 }
 
-                hcorr_e2c[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-                hcorr_e2c_syst[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-                hcorr_e2c_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_eec_syst[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_eec_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 
                 hcorr_tau[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 hcorr_tau_syst[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
@@ -167,7 +167,7 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                         hdev[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations%i",bin));
 
-                        set_histo_with_systematics(hdev[bin], hcorr_e2c[bin], hcorr_e2c_syst[bin], systematic_errtype[available_systematics[syst_index]]);
+                        set_histo_with_systematics(hdev[bin], hcorr_eec[bin], hcorr_eec_syst[bin], systematic_errtype[available_systematics[syst_index]]);
 
                         if (bin!=nbin_jet_pt-1) 
                                 std::cout<<" & ";
@@ -230,9 +230,9 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                s_data->Add(hcorr_e2c[bin],"E X0");
-                s_data->Add(hcorr_e2c_syst[bin],"E2");
-                l_data->AddEntry(hcorr_e2c[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lpf");
+                s_data->Add(hcorr_eec[bin],"E X0");
+                s_data->Add(hcorr_eec_syst[bin],"E2");
+                l_data->AddEntry(hcorr_eec[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lpf");
         }
         
         s_data->Draw("NOSTACK");
@@ -245,5 +245,5 @@ void macro_print_fullcorre2c_paircorr_2dunf_incsyst(int niter = nominal_niter, b
         draw_lhcb_tag(lhcbprint);
 
         if (do_print) 
-                c->Print(Form("./plots/paircorre2c_niter%i_2dunf_incsyst.pdf",niter));
+                c->Print(Form("./plots/paircorreec_niter%i_2dunf_incsyst.pdf",niter));
 }

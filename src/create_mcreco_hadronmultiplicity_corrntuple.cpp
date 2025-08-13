@@ -26,7 +26,7 @@
 int main()
 {
         // Open correction files
-        TFile* fcorrections    = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+        TFile* fcorrections    = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
         TFile* fpurity_jet     = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -204,8 +204,8 @@ int main()
                                 mpt = h1_4vector->Pt();
                 }
 
-                if (!apply_jet_id_cuts(mpt, mcrecotree->Jet_NTrk, mcrecotree->Jet_CPF, mcrecotree->Jet_MTF))
-                        continue;
+                // if (!apply_jet_id_cuts(mpt, mcrecotree->Jet_NTrk, mcrecotree->Jet_CPF, mcrecotree->Jet_MTF))
+                //         continue;
 
                 double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
                 double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();

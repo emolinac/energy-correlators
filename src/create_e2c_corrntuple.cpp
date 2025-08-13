@@ -26,7 +26,7 @@
 int main()
 {
         // Open correction files
-        TFile* fcorrections    = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str());
+        TFile* fcorrections    = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
         TFile* fpurity_jet     = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -41,7 +41,7 @@ int main()
         TFile* fefficiency_muon_2018_trg = new TFile((muons_folder + "TRGEff_Data_2018.root").c_str());
         
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_e2c_corr).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_corr).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJets2016Data* datatree_2016 = new TZJets2016Data();
@@ -122,6 +122,9 @@ int main()
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
 
+        hpurity->Smooth();
+        hefficiency->Smooth();
+
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector = new TLorentzVector();
         TLorentzVector* Z0_4vector  = new TLorentzVector();
@@ -139,514 +142,514 @@ int main()
         float vars[Nvars_corrdata];
         float vars_jet[Nvars_corrjet];
 
-        // Fill the data TNtuple
-        std::cout<<"Working with 2016 data."<<std::endl;
-        for (int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++) {
-                datatree_2016->GetEntry(evt);
+        // // Fill the data TNtuple
+        // std::cout<<"Working with 2016 data."<<std::endl;
+        // for (int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++) {
+        //         datatree_2016->GetEntry(evt);
 
-                if (evt%10000 == 0) {
-                        double percentage = 100.*evt/datatree_2016->fChain->GetEntries();
-                        std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
-                }
+        //         if (evt%10000 == 0) {
+        //                 double percentage = 100.*evt/datatree_2016->fChain->GetEntries();
+        //                 std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
+        //         }
 
-                if (evt != 0)
-                        if (last_eventNum == datatree_2016->eventNumber) 
-                                continue;
+        //         if (evt != 0)
+        //                 if (last_eventNum == datatree_2016->eventNumber) 
+        //                         continue;
 
-                // Apply PV cut
-                if (datatree_2016->nPV != 1) 
-                        continue;
+        //         // Apply PV cut
+        //         if (datatree_2016->nPV != 1) 
+        //                 continue;
 
-                // Apply trigger cut
-                bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS == 1 && 
-                                    datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
-                                    datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+        //         // Apply trigger cut
+        //         bool mum_trigger = (datatree_2016->mum_L0MuonEWDecision_TOS == 1 && 
+        //                             datatree_2016->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+        //                             datatree_2016->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
-                bool mup_trigger = (datatree_2016->mup_L0MuonEWDecision_TOS == 1 && 
-                                    datatree_2016->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
-                                    datatree_2016->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+        //         bool mup_trigger = (datatree_2016->mup_L0MuonEWDecision_TOS == 1 && 
+        //                             datatree_2016->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+        //                             datatree_2016->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
-                if (!mum_trigger && !mup_trigger) 
-                        continue;
+        //         if (!mum_trigger && !mup_trigger) 
+        //                 continue;
                 
-                // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,
-                                        datatree_2016->Jet_PY/1000.,
-                                        datatree_2016->Jet_PZ/1000.,
-                                        datatree_2016->Jet_PE/1000.);
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
-                        continue;
+        //         // Set Jet-associated 4 vectors and apply cuts
+        //         Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,
+        //                                 datatree_2016->Jet_PY/1000.,
+        //                                 datatree_2016->Jet_PZ/1000.,
+        //                                 datatree_2016->Jet_PE/1000.);
+        //         if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+        //                 continue;
                 
-                mum_4vector->SetPxPyPzE(datatree_2016->mum_PX/1000.,
-                                        datatree_2016->mum_PY/1000.,
-                                        datatree_2016->mum_PZ/1000.,
-                                        datatree_2016->mum_PE/1000.);
+        //         mum_4vector->SetPxPyPzE(datatree_2016->mum_PX/1000.,
+        //                                 datatree_2016->mum_PY/1000.,
+        //                                 datatree_2016->mum_PZ/1000.,
+        //                                 datatree_2016->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
-                        continue;
+        //         if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+        //                 continue;
                 
-                mup_4vector->SetPxPyPzE(datatree_2016->mup_PX/1000.,
-                                        datatree_2016->mup_PY/1000.,
-                                        datatree_2016->mup_PZ/1000.,
-                                        datatree_2016->mup_PE/1000.);
+        //         mup_4vector->SetPxPyPzE(datatree_2016->mup_PX/1000.,
+        //                                 datatree_2016->mup_PY/1000.,
+        //                                 datatree_2016->mup_PZ/1000.,
+        //                                 datatree_2016->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
-                        continue;
+        //         if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+        //                 continue;
                 
-                Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
-                                       mup_4vector->Py()+mum_4vector->Py(),
-                                       mup_4vector->Pz()+mum_4vector->Pz(),
-                                       mup_4vector->E() +mum_4vector->E());
+        //         Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
+        //                                mup_4vector->Py()+mum_4vector->Py(),
+        //                                mup_4vector->Pz()+mum_4vector->Pz(),
+        //                                mup_4vector->E() +mum_4vector->E());
 
-                if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M()))
-                        continue;
+        //         if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M()))
+        //                 continue;
 
-                double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
-                double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
-                double mup_eta = mup_4vector->Eta();
-                double mum_eta = mum_4vector->Eta();
+        //         double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
+        //         double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
+        //         double mup_eta = mup_4vector->Eta();
+        //         double mum_eta = mum_4vector->Eta();
 
-                double mup_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mup_eta, mup_pt));
-                double mup_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mup_eta, mup_pt));
-                double mup_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mup_eta, mup_pt));
+        //         double mup_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mup_eta, mup_pt));
+        //         double mup_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mup_eta, mup_pt));
+        //         double mup_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mup_eta, mup_pt));
 
-                double mum_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mum_eta, mum_pt));
-                double mum_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mum_eta, mum_pt));
-                double mum_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mum_eta, mum_pt));
+        //         double mum_eff_id  = h2_muon_2016_ideff_data->GetBinContent(h2_muon_2016_ideff_data->FindBin(mum_eta, mum_pt));
+        //         double mum_eff_trk = h2_muon_2016_trkeff_data->GetBinContent(h2_muon_2016_trkeff_data->FindBin(mum_eta, mum_pt));
+        //         double mum_eff_trg = h2_muon_2016_trgeff_data->GetBinContent(h2_muon_2016_trgeff_data->FindBin(mum_eta, mum_pt));
 
-                double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
-                double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
+        //         double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
+        //         double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
-                double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
-                double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
+        //         double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
+        //         double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
-                double jet_ndtr_nominal = 0;
+        //         double jet_ndtr_nominal = 0;
                 
-                for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
-                        if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
-                                continue;
+        //         for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
+        //                 if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
+        //                         continue;
 
-                        h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
-                                               datatree_2016->Jet_Dtr_PY[h1_index]/1000.,
-                                               datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,
-                                               datatree_2016->Jet_Dtr_E[h1_index]/1000.);
+        //                 h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_PY[h1_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_E[h1_index]/1000.);
 
-                        if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h1_4vector->P(),
-                                                     h1_4vector->Pt(),
-                                                     datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
-                                                     datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
-                                continue;
+        //                 if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
+        //                                              h1_4vector->P(),
+        //                                              h1_4vector->Pt(),
+        //                                              datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
+        //                                              datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
+        //                                              h1_4vector->Eta())) 
+        //                         continue;
 
-                        jet_ndtr_nominal++;
-                }
+        //                 jet_ndtr_nominal++;
+        //         }
                 
-                if (jet_ndtr_nominal < 2)
-                        continue;
+        //         if (jet_ndtr_nominal < 2)
+        //                 continue;
 
-                // Manual JET ID
-                double mpt = 0; // Min pt at least one track has to have
+        //         // Manual JET ID
+        //         double mpt = 0; // Min pt at least one track has to have
 
-                for (int h_index = 0 ; h_index < datatree_2016->Jet_NDtr ; h_index++) {
-                        // Skip non-hadronic particles
-                        if (datatree_2016->Jet_Dtr_IsMeson[h_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h_index] != 1) 
-                                continue;
+        //         for (int h_index = 0 ; h_index < datatree_2016->Jet_NDtr ; h_index++) {
+        //                 // Skip non-hadronic particles
+        //                 if (datatree_2016->Jet_Dtr_IsMeson[h_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h_index] != 1) 
+        //                         continue;
 
-                         h_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h_index]/1000.,
-                                               datatree_2016->Jet_Dtr_PY[h_index]/1000.,
-                                               datatree_2016->Jet_Dtr_PZ[h_index]/1000.,
-                                               datatree_2016->Jet_Dtr_E[h_index]/1000.);
+        //                  h_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_PY[h_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_PZ[h_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_E[h_index]/1000.);
 
-                        if (h_4vector->Pt() > mpt)
-                                mpt = h_4vector->Pt();
-                }
+        //                 if (h_4vector->Pt() > mpt)
+        //                         mpt = h_4vector->Pt();
+        //         }
 
-                // if (!apply_jet_id_cuts(mpt, datatree_2016->Jet_NTrk, datatree_2016->Jet_CPF, datatree_2016->Jet_MTF))
-                //         continue;
+        //         // if (!apply_jet_id_cuts(mpt, datatree_2016->Jet_NTrk, datatree_2016->Jet_CPF, datatree_2016->Jet_MTF))
+        //         //         continue;
 
-                // Npair loops
-                for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
-                        if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
-                                continue;
+        //         // Npair loops
+        //         for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
+        //                 if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
+        //                         continue;
 
-                        h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
-                                               datatree_2016->Jet_Dtr_PY[h1_index]/1000.,
-                                               datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,
-                                               datatree_2016->Jet_Dtr_E[h1_index]/1000.);
+        //                 h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_PY[h1_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,
+        //                                        datatree_2016->Jet_Dtr_E[h1_index]/1000.);
 
-                        if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h1_4vector->P(),
-                                                     h1_4vector->Pt(),
-                                                     datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
-                                                     datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
-                                continue;
+        //                 if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
+        //                                              h1_4vector->P(),
+        //                                              h1_4vector->Pt(),
+        //                                              datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
+        //                                              datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
+        //                                              h1_4vector->Eta())) 
+        //                         continue;
 
-                        double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                        double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                        if (h1_purity > 1. || h1_efficiency > 1.) 
-                                continue;
+        //                 double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                 double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                 if (h1_purity > 1. || h1_efficiency > 1.) 
+        //                         continue;
 
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
-                                if (datatree_2016->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h2_index] != 1) 
-                                        continue;
+        //                 for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
+        //                         if (datatree_2016->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h2_index] != 1) 
+        //                                 continue;
 
-                                h2_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h2_index]/1000.,
-                                                       datatree_2016->Jet_Dtr_PY[h2_index]/1000.,
-                                                       datatree_2016->Jet_Dtr_PZ[h2_index]/1000.,
-                                                       datatree_2016->Jet_Dtr_E[h2_index]/1000.);
+        //                         h2_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h2_index]/1000.,
+        //                                                datatree_2016->Jet_Dtr_PY[h2_index]/1000.,
+        //                                                datatree_2016->Jet_Dtr_PZ[h2_index]/1000.,
+        //                                                datatree_2016->Jet_Dtr_E[h2_index]/1000.);
 
-                                if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h2_index],
-                                                             h2_4vector->P(),
-                                                             h2_4vector->Pt(),
-                                                             datatree_2016->Jet_Dtr_TrackChi2[h2_index]/datatree_2016->Jet_Dtr_TrackNDF[h2_index],
-                                                             datatree_2016->Jet_Dtr_ProbNNghost[h2_index],
-                                                             h2_4vector->Eta())) 
-                                        continue;
+        //                         if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h2_index],
+        //                                                      h2_4vector->P(),
+        //                                                      h2_4vector->Pt(),
+        //                                                      datatree_2016->Jet_Dtr_TrackChi2[h2_index]/datatree_2016->Jet_Dtr_TrackNDF[h2_index],
+        //                                                      datatree_2016->Jet_Dtr_ProbNNghost[h2_index],
+        //                                                      h2_4vector->Eta())) 
+        //                                 continue;
 
-                                double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                if (h2_purity > 1. || h2_efficiency > 1.) 
-                                        continue;
+        //                         double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         if (h2_purity > 1. || h2_efficiency > 1.) 
+        //                                 continue;
 
-                                double purity_correction = (h1_purity)*(h2_purity);
+        //                         double purity_correction = (h1_purity)*(h2_purity);
 
-                                double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
+        //                         double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
 
-                                double efficiency_correction = (h1_efficiency)*(h2_efficiency);
+        //                         double efficiency_correction = (h1_efficiency)*(h2_efficiency);
 
-                                double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
+        //                         double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
-                                double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
 
-                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+        //                         double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
                                 
-                                vars[0 ] = weight_due_to_jet;
-                                vars[1 ] = efficiency_correction;
-                                vars[2 ] = purity_correction;
-                                vars[3 ] = efficiency_error/efficiency_correction;
-                                vars[4 ] = purity_error/purity_correction;
-                                vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
-                                vars[6 ] = h1_4vector->Eta();
-                                vars[7 ] = h2_4vector->Eta();
-                                vars[8 ] = h1_4vector->Rapidity();
-                                vars[9 ] = h2_4vector->Rapidity();
-                                vars[10] = h1_4vector->P();
-                                vars[11] = h2_4vector->P();
-                                vars[12] = h1_4vector->Pt();
-                                vars[13] = h2_4vector->Pt();
-                                vars[14] = Jet_4vector->Pt();
-                                vars[15] = Jet_4vector->Eta();
-                                vars[16] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
-                                vars[17] = Jet_4vector->E();
-                                vars[18] = h1_4vector->E();
-                                vars[19] = h2_4vector->E();
-                                vars[20] = 2016;
-                                vars[21] = nreco_ok_h1;
-                                vars[22] = nreco_h1;
-                                vars[23] = ntruth_ok_h1;
-                                vars[24] = ntruth_h1;
-                                vars[25] = nreco_ok_h2;
-                                vars[26] = nreco_h2;
-                                vars[27] = ntruth_ok_h2;
-                                vars[28] = ntruth_h2;
+        //                         vars[0 ] = weight_due_to_jet;
+        //                         vars[1 ] = efficiency_correction;
+        //                         vars[2 ] = purity_correction;
+        //                         vars[3 ] = efficiency_error/efficiency_correction;
+        //                         vars[4 ] = purity_error/purity_correction;
+        //                         vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
+        //                         vars[6 ] = h1_4vector->Eta();
+        //                         vars[7 ] = h2_4vector->Eta();
+        //                         vars[8 ] = h1_4vector->Rapidity();
+        //                         vars[9 ] = h2_4vector->Rapidity();
+        //                         vars[10] = h1_4vector->P();
+        //                         vars[11] = h2_4vector->P();
+        //                         vars[12] = h1_4vector->Pt();
+        //                         vars[13] = h2_4vector->Pt();
+        //                         vars[14] = Jet_4vector->Pt();
+        //                         vars[15] = Jet_4vector->Eta();
+        //                         vars[16] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+        //                         vars[17] = Jet_4vector->E();
+        //                         vars[18] = h1_4vector->E();
+        //                         vars[19] = h2_4vector->E();
+        //                         vars[20] = 2016;
+        //                         vars[21] = nreco_ok_h1;
+        //                         vars[22] = nreco_h1;
+        //                         vars[23] = ntruth_ok_h1;
+        //                         vars[24] = ntruth_h1;
+        //                         vars[25] = nreco_ok_h2;
+        //                         vars[26] = nreco_h2;
+        //                         vars[27] = ntruth_ok_h2;
+        //                         vars[28] = ntruth_h2;
                                 
-                                // Fill the TNtuple
-                                ntuple_data->Fill(vars);
-                        }
-                }
+        //                         // Fill the TNtuple
+        //                         ntuple_data->Fill(vars);
+        //                 }
+        //         }
 
-                vars_jet[0]  = Jet_4vector->Pt();
-                vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = datatree_2016->Jet_NDtr;
-                vars_jet[3]  = jet_efficiency;
-                vars_jet[4]  = jet_purity;
-                vars_jet[5]  = jet_efficiency_error;
-                vars_jet[6]  = jet_purity_error;
-                vars_jet[7]  = mup_eff_id;
-                vars_jet[8]  = mup_eff_trk;
-                vars_jet[9]  = mup_eff_trg;
-                vars_jet[10] = mum_eff_id;
-                vars_jet[11] = mum_eff_trk;
-                vars_jet[12] = mum_eff_trg;
-                vars_jet[13] = 2016;
-                vars_jet[14] = Jet_4vector->Eta();
-                vars_jet[15] = Z0_4vector->Pt();
-                vars_jet[16] = Z0_4vector->Eta();
-                vars_jet[17] = Z0_4vector->Rapidity();
+        //         vars_jet[0]  = Jet_4vector->Pt();
+        //         vars_jet[1]  = Jet_4vector->E();
+        //         vars_jet[2]  = datatree_2016->Jet_NDtr;
+        //         vars_jet[3]  = jet_efficiency;
+        //         vars_jet[4]  = jet_purity;
+        //         vars_jet[5]  = jet_efficiency_error;
+        //         vars_jet[6]  = jet_purity_error;
+        //         vars_jet[7]  = mup_eff_id;
+        //         vars_jet[8]  = mup_eff_trk;
+        //         vars_jet[9]  = mup_eff_trg;
+        //         vars_jet[10] = mum_eff_id;
+        //         vars_jet[11] = mum_eff_trk;
+        //         vars_jet[12] = mum_eff_trg;
+        //         vars_jet[13] = 2016;
+        //         vars_jet[14] = Jet_4vector->Eta();
+        //         vars_jet[15] = Z0_4vector->Pt();
+        //         vars_jet[16] = Z0_4vector->Eta();
+        //         vars_jet[17] = Z0_4vector->Rapidity();
                 
-                ntuple_corrjet->Fill(vars_jet);
+        //         ntuple_corrjet->Fill(vars_jet);
 
-                last_eventNum = datatree_2016->eventNumber;
-        }
+        //         last_eventNum = datatree_2016->eventNumber;
+        // }
 
-        last_eventNum = -999;
+        // last_eventNum = -999;
 
-        std::cout<<"Working with 2017 data."<<std::endl;
-        for (int evt = 0 ; evt < datatree_2017->fChain->GetEntries() ; evt++) {
-                datatree_2017->GetEntry(evt);
+        // std::cout<<"Working with 2017 data."<<std::endl;
+        // for (int evt = 0 ; evt < datatree_2017->fChain->GetEntries() ; evt++) {
+        //         datatree_2017->GetEntry(evt);
 
-                if (evt%10000 == 0) {
-                        double percentage = 100.*evt/datatree_2017->fChain->GetEntries();
-                        std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
-                }
+        //         if (evt%10000 == 0) {
+        //                 double percentage = 100.*evt/datatree_2017->fChain->GetEntries();
+        //                 std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
+        //         }
 
-                if (evt != 0)
-                        if (last_eventNum == datatree_2017->eventNumber) 
-                                continue;
+        //         if (evt != 0)
+        //                 if (last_eventNum == datatree_2017->eventNumber) 
+        //                         continue;
 
-                // Apply PV cut
-                if (datatree_2017->nPV != 1)
-                        continue;
+        //         // Apply PV cut
+        //         if (datatree_2017->nPV != 1)
+        //                 continue;
 
-                // Apply trigger cut
-                bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS == 1 && 
-                                    datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
-                                    datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
+        //         // Apply trigger cut
+        //         bool mum_trigger = (datatree_2017->mum_L0MuonEWDecision_TOS == 1 && 
+        //                             datatree_2017->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+        //                             datatree_2017->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
 
-                bool mup_trigger = (datatree_2017->mup_L0MuonEWDecision_TOS == 1 && 
-                                    datatree_2017->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
-                                    datatree_2017->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);                                    
+        //         bool mup_trigger = (datatree_2017->mup_L0MuonEWDecision_TOS == 1 && 
+        //                             datatree_2017->mup_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
+        //                             datatree_2017->mup_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);                                    
 
-                if (!mum_trigger && !mup_trigger)
-                        continue;
+        //         if (!mum_trigger && !mup_trigger)
+        //                 continue;
                 
-                // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,
-                                        datatree_2017->Jet_PY/1000.,
-                                        datatree_2017->Jet_PZ/1000.,
-                                        datatree_2017->Jet_PE/1000.);
+        //         // Set Jet-associated 4 vectors and apply cuts
+        //         Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,
+        //                                 datatree_2017->Jet_PY/1000.,
+        //                                 datatree_2017->Jet_PZ/1000.,
+        //                                 datatree_2017->Jet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
-                        continue;
+        //         if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+        //                 continue;
                 
-                mum_4vector->SetPxPyPzE(datatree_2017->mum_PX/1000.,
-                                        datatree_2017->mum_PY/1000.,
-                                        datatree_2017->mum_PZ/1000.,
-                                        datatree_2017->mum_PE/1000.);
+        //         mum_4vector->SetPxPyPzE(datatree_2017->mum_PX/1000.,
+        //                                 datatree_2017->mum_PY/1000.,
+        //                                 datatree_2017->mum_PZ/1000.,
+        //                                 datatree_2017->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
-                        continue;
+        //         if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+        //                 continue;
                 
-                mup_4vector->SetPxPyPzE(datatree_2017->mup_PX/1000.,
-                                        datatree_2017->mup_PY/1000.,
-                                        datatree_2017->mup_PZ/1000.,
-                                        datatree_2017->mup_PE/1000.);
+        //         mup_4vector->SetPxPyPzE(datatree_2017->mup_PX/1000.,
+        //                                 datatree_2017->mup_PY/1000.,
+        //                                 datatree_2017->mup_PZ/1000.,
+        //                                 datatree_2017->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
-                        continue;
+        //         if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+        //                 continue;
                 
-                Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
-                                       mup_4vector->Py()+mum_4vector->Py(),
-                                       mup_4vector->Pz()+mum_4vector->Pz(),
-                                       mup_4vector->E() +mum_4vector->E());
+        //         Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
+        //                                mup_4vector->Py()+mum_4vector->Py(),
+        //                                mup_4vector->Pz()+mum_4vector->Pz(),
+        //                                mup_4vector->E() +mum_4vector->E());
 
-                if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
-                        continue;
+        //         if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
+        //                 continue;
 
-                double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
-                double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
-                double mup_eta = mup_4vector->Eta();
-                double mum_eta = mum_4vector->Eta();
+        //         double mup_pt  = (mup_4vector->Pt() >= 70.) ? 69. : mup_4vector->Pt();
+        //         double mum_pt  = (mum_4vector->Pt() >= 70.) ? 69. : mum_4vector->Pt();
+        //         double mup_eta = mup_4vector->Eta();
+        //         double mum_eta = mum_4vector->Eta();
 
-                double mup_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mup_eta, mup_pt));
-                double mup_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mup_eta, mup_pt));
-                double mup_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mup_eta, mup_pt));
+        //         double mup_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mup_eta, mup_pt));
+        //         double mup_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mup_eta, mup_pt));
+        //         double mup_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mup_eta, mup_pt));
 
-                double mum_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mum_eta, mum_pt));
-                double mum_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mum_eta, mum_pt));
-                double mum_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mum_eta, mum_pt));
+        //         double mum_eff_id  = h2_muon_2017_ideff_data->GetBinContent(h2_muon_2017_ideff_data->FindBin(mum_eta, mum_pt));
+        //         double mum_eff_trk = h2_muon_2017_trkeff_data->GetBinContent(h2_muon_2017_trkeff_data->FindBin(mum_eta, mum_pt));
+        //         double mum_eff_trg = h2_muon_2017_trgeff_data->GetBinContent(h2_muon_2017_trgeff_data->FindBin(mum_eta, mum_pt));
 
-                double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
-                double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
+        //         double jet_efficiency = hefficiency_jet->GetBinContent(hefficiency_jet->FindBin(Jet_4vector->Pt()));
+        //         double jet_purity     = hpurity_jet->GetBinContent(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
-                double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
-                double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
+        //         double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
+        //         double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
                 
-                double jet_ndtr_nominal = 0;
+        //         double jet_ndtr_nominal = 0;
 
-                for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
-                        if (datatree_2017->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h1_index] != 1)
-                                continue;
+        //         for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
+        //                 if (datatree_2017->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h1_index] != 1)
+        //                         continue;
 
-                        h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
-                                               datatree_2017->Jet_Dtr_PY[h1_index]/1000.,
-                                               datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,
-                                               datatree_2017->Jet_Dtr_E[h1_index]/1000.);
+        //                 h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
+        //                                        datatree_2017->Jet_Dtr_PY[h1_index]/1000.,
+        //                                        datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,
+        //                                        datatree_2017->Jet_Dtr_E[h1_index]/1000.);
 
-                        if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h1_4vector->P(),
-                                                     h1_4vector->Pt(),
-                                                     datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
-                                                     datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
-                                continue;
+        //                 if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
+        //                                              h1_4vector->P(),
+        //                                              h1_4vector->Pt(),
+        //                                              datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
+        //                                              datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
+        //                                              h1_4vector->Eta())) 
+        //                         continue;
 
-                        jet_ndtr_nominal++;
-                }
+        //                 jet_ndtr_nominal++;
+        //         }
                 
-                if (jet_ndtr_nominal < 2)
-                        continue;
+        //         if (jet_ndtr_nominal < 2)
+        //                 continue;
 
-                double mpt = 0; // Min pt at least one track has to have
+        //         double mpt = 0; // Min pt at least one track has to have
 
-                for (int h_index = 0 ; h_index < datatree_2017->Jet_NDtr ; h_index++) {
-                        if (datatree_2017->Jet_Dtr_IsMeson[h_index] != 1&&datatree_2017->Jet_Dtr_IsBaryon[h_index] != 1) 
-                                continue;
+        //         for (int h_index = 0 ; h_index < datatree_2017->Jet_NDtr ; h_index++) {
+        //                 if (datatree_2017->Jet_Dtr_IsMeson[h_index] != 1&&datatree_2017->Jet_Dtr_IsBaryon[h_index] != 1) 
+        //                         continue;
 
-                        h_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h_index]/1000.,
-                                              datatree_2017->Jet_Dtr_PY[h_index]/1000.,
-                                              datatree_2017->Jet_Dtr_PZ[h_index]/1000.,
-                                              datatree_2017->Jet_Dtr_E[h_index]/1000.);
+        //                 h_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h_index]/1000.,
+        //                                       datatree_2017->Jet_Dtr_PY[h_index]/1000.,
+        //                                       datatree_2017->Jet_Dtr_PZ[h_index]/1000.,
+        //                                       datatree_2017->Jet_Dtr_E[h_index]/1000.);
 
-                        if (h_4vector->Pt() > mpt)
-                                mpt = h_4vector->Pt();
-                }
+        //                 if (h_4vector->Pt() > mpt)
+        //                         mpt = h_4vector->Pt();
+        //         }
 
-                // if (!apply_jet_id_cuts(mpt, datatree_2017->Jet_NTrk, datatree_2017->Jet_CPF, datatree_2017->Jet_MTF))
-                //         continue;
+        //         // if (!apply_jet_id_cuts(mpt, datatree_2017->Jet_NTrk, datatree_2017->Jet_CPF, datatree_2017->Jet_MTF))
+        //         //         continue;
 
-                // Npair loop
-                for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
-                        if (datatree_2017->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h1_index] != 1) 
-                                continue;
+        //         // Npair loop
+        //         for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
+        //                 if (datatree_2017->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h1_index] != 1) 
+        //                         continue;
 
-                        h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
-                                               datatree_2017->Jet_Dtr_PY[h1_index]/1000.,
-                                               datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,
-                                               datatree_2017->Jet_Dtr_E[h1_index]/1000.);
+        //                 h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
+        //                                        datatree_2017->Jet_Dtr_PY[h1_index]/1000.,
+        //                                        datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,
+        //                                        datatree_2017->Jet_Dtr_E[h1_index]/1000.);
 
-                        if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h1_4vector->P(),
-                                                     h1_4vector->Pt(),
-                                                     datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
-                                                     datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta()))
-                                continue;
+        //                 if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
+        //                                              h1_4vector->P(),
+        //                                              h1_4vector->Pt(),
+        //                                              datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
+        //                                              datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
+        //                                              h1_4vector->Eta()))
+        //                         continue;
 
-                        double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                        double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                        if (h1_purity > 1. || h1_efficiency > 1.) 
-                                continue;
+        //                 double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                 double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                 if (h1_purity > 1. || h1_efficiency > 1.) 
+        //                         continue;
 
-                        // Loop over hadron 2
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
-                                if (datatree_2017->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h2_index] != 1) 
-                                        continue;
+        //                 // Loop over hadron 2
+        //                 for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
+        //                         if (datatree_2017->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h2_index] != 1) 
+        //                                 continue;
 
-                                h2_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h2_index]/1000.,
-                                                       datatree_2017->Jet_Dtr_PY[h2_index]/1000.,
-                                                       datatree_2017->Jet_Dtr_PZ[h2_index]/1000.,
-                                                       datatree_2017->Jet_Dtr_E[h2_index]/1000.);
+        //                         h2_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h2_index]/1000.,
+        //                                                datatree_2017->Jet_Dtr_PY[h2_index]/1000.,
+        //                                                datatree_2017->Jet_Dtr_PZ[h2_index]/1000.,
+        //                                                datatree_2017->Jet_Dtr_E[h2_index]/1000.);
 
-                                if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h2_index],
-                                                             h2_4vector->P(),
-                                                             h2_4vector->Pt(),
-                                                             datatree_2017->Jet_Dtr_TrackChi2[h2_index]/datatree_2017->Jet_Dtr_TrackNDF[h2_index],
-                                                             datatree_2017->Jet_Dtr_ProbNNghost[h2_index],
-                                                             h2_4vector->Eta())) 
-                                        continue;
+        //                         if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h2_index],
+        //                                                      h2_4vector->P(),
+        //                                                      h2_4vector->Pt(),
+        //                                                      datatree_2017->Jet_Dtr_TrackChi2[h2_index]/datatree_2017->Jet_Dtr_TrackNDF[h2_index],
+        //                                                      datatree_2017->Jet_Dtr_ProbNNghost[h2_index],
+        //                                                      h2_4vector->Eta())) 
+        //                                 continue;
 
-                                double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                if (h2_purity > 1. || h2_efficiency > 1.) 
-                                        continue;
+        //                         double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double h2_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         if (h2_purity > 1. || h2_efficiency > 1.) 
+        //                                 continue;
 
-                                double purity_correction = (h1_purity)*(h2_purity);
+        //                         double purity_correction = (h1_purity)*(h2_purity);
 
-                                double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
+        //                         double h1_purity_err = hpurity->GetBinError(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double h2_purity_err = hpurity->GetBinError(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double purity_error = sqrt(pow((h1_purity)*(h2_purity_err),2) + pow((h1_purity_err)*(h2_purity),2));
 
-                                double efficiency_correction = (h1_efficiency)*(h2_efficiency);
+        //                         double efficiency_correction = (h1_efficiency)*(h2_efficiency);
 
-                                double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
+        //                         double h1_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double h2_efficiency_err = hefficiency->GetBinError(hefficiency->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double efficiency_error = sqrt(pow((h1_efficiency)*(h2_efficiency_err),2) + pow((h1_efficiency_err)*(h2_efficiency),2));
 
-                                double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                                double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
-                                double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double nreco_ok_h1  = hnum_pur->GetBinContent(hnum_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double nreco_h1     = hden_pur->GetBinContent(hden_pur->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double ntruth_ok_h1 = hnum_eff->GetBinContent(hnum_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double ntruth_h1    = hden_eff->GetBinContent(hden_eff->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double nreco_ok_h2  = hnum_pur->GetBinContent(hnum_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double nreco_h2     = hden_pur->GetBinContent(hden_pur->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double ntruth_ok_h2 = hnum_eff->GetBinContent(hnum_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+        //                         double ntruth_h2    = hden_eff->GetBinContent(hden_eff->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
 
-                                double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+        //                         double weight_due_to_jet = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
                                 
-                                vars[0 ] = weight_due_to_jet;
-                                vars[1 ] = efficiency_correction;
-                                vars[2 ] = purity_correction;
-                                vars[3 ] = efficiency_error/efficiency_correction;
-                                vars[4 ] = purity_error/purity_correction;
-                                vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
-                                vars[6 ] = h1_4vector->Eta();
-                                vars[7 ] = h2_4vector->Eta();
-                                vars[8 ] = h1_4vector->Rapidity();
-                                vars[9 ] = h2_4vector->Rapidity();
-                                vars[10] = h1_4vector->P();
-                                vars[11] = h2_4vector->P();
-                                vars[12] = h1_4vector->Pt();
-                                vars[13] = h2_4vector->Pt();
-                                vars[14] = Jet_4vector->Pt();
-                                vars[15] = Jet_4vector->Eta();
-                                vars[16] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
-                                vars[17] = Jet_4vector->E();
-                                vars[18] = h1_4vector->E();
-                                vars[19] = h2_4vector->E();
-                                vars[20] = 2017;
-                                vars[21] = nreco_ok_h1;
-                                vars[22] = nreco_h1;
-                                vars[23] = ntruth_ok_h1;
-                                vars[24] = ntruth_h1;
-                                vars[25] = nreco_ok_h2;
-                                vars[26] = nreco_h2;
-                                vars[27] = ntruth_ok_h2;
-                                vars[28] = ntruth_h2;
+        //                         vars[0 ] = weight_due_to_jet;
+        //                         vars[1 ] = efficiency_correction;
+        //                         vars[2 ] = purity_correction;
+        //                         vars[3 ] = efficiency_error/efficiency_correction;
+        //                         vars[4 ] = purity_error/purity_correction;
+        //                         vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
+        //                         vars[6 ] = h1_4vector->Eta();
+        //                         vars[7 ] = h2_4vector->Eta();
+        //                         vars[8 ] = h1_4vector->Rapidity();
+        //                         vars[9 ] = h2_4vector->Rapidity();
+        //                         vars[10] = h1_4vector->P();
+        //                         vars[11] = h2_4vector->P();
+        //                         vars[12] = h1_4vector->Pt();
+        //                         vars[13] = h2_4vector->Pt();
+        //                         vars[14] = Jet_4vector->Pt();
+        //                         vars[15] = Jet_4vector->Eta();
+        //                         vars[16] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+        //                         vars[17] = Jet_4vector->E();
+        //                         vars[18] = h1_4vector->E();
+        //                         vars[19] = h2_4vector->E();
+        //                         vars[20] = 2017;
+        //                         vars[21] = nreco_ok_h1;
+        //                         vars[22] = nreco_h1;
+        //                         vars[23] = ntruth_ok_h1;
+        //                         vars[24] = ntruth_h1;
+        //                         vars[25] = nreco_ok_h2;
+        //                         vars[26] = nreco_h2;
+        //                         vars[27] = ntruth_ok_h2;
+        //                         vars[28] = ntruth_h2;
                                 
-                                // Fill the TNtuple
-                                ntuple_data->Fill(vars);
-                        }
-                }
+        //                         // Fill the TNtuple
+        //                         ntuple_data->Fill(vars);
+        //                 }
+        //         }
 
-                vars_jet[0]  = Jet_4vector->Pt();
-                vars_jet[1]  = Jet_4vector->E();
-                vars_jet[2]  = datatree_2017->Jet_NDtr;
-                vars_jet[3]  = jet_efficiency;
-                vars_jet[4]  = jet_purity;
-                vars_jet[5]  = jet_efficiency_error;
-                vars_jet[6]  = jet_purity_error;
-                vars_jet[7]  = mup_eff_id;
-                vars_jet[8]  = mup_eff_trk;
-                vars_jet[9]  = mup_eff_trg;
-                vars_jet[10] = mum_eff_id;
-                vars_jet[11] = mum_eff_trk;
-                vars_jet[12] = mum_eff_trg;
-                vars_jet[13] = 2017;
-                vars_jet[14] = Jet_4vector->Eta();
-                vars_jet[15] = Z0_4vector->Pt();
-                vars_jet[16] = Z0_4vector->Eta();
-                vars_jet[17] = Z0_4vector->Rapidity();
+        //         vars_jet[0]  = Jet_4vector->Pt();
+        //         vars_jet[1]  = Jet_4vector->E();
+        //         vars_jet[2]  = datatree_2017->Jet_NDtr;
+        //         vars_jet[3]  = jet_efficiency;
+        //         vars_jet[4]  = jet_purity;
+        //         vars_jet[5]  = jet_efficiency_error;
+        //         vars_jet[6]  = jet_purity_error;
+        //         vars_jet[7]  = mup_eff_id;
+        //         vars_jet[8]  = mup_eff_trk;
+        //         vars_jet[9]  = mup_eff_trg;
+        //         vars_jet[10] = mum_eff_id;
+        //         vars_jet[11] = mum_eff_trk;
+        //         vars_jet[12] = mum_eff_trg;
+        //         vars_jet[13] = 2017;
+        //         vars_jet[14] = Jet_4vector->Eta();
+        //         vars_jet[15] = Z0_4vector->Pt();
+        //         vars_jet[16] = Z0_4vector->Eta();
+        //         vars_jet[17] = Z0_4vector->Rapidity();
                 
-                ntuple_corrjet->Fill(vars_jet);
+        //         ntuple_corrjet->Fill(vars_jet);
 
-                last_eventNum = datatree_2017->eventNumber;
-        }
+        //         last_eventNum = datatree_2017->eventNumber;
+        // }
 
-        last_eventNum = -999;
+        // last_eventNum = -999;
 
         std::cout<<"Working with 2018 data."<<std::endl;
         for (int evt = 0 ; evt < datatree_2018->fChain->GetEntries() ; evt++) {
@@ -662,11 +665,9 @@ int main()
                         if (last_eventNum == datatree_2018->eventNumber) 
                                 continue;
 
-                // Apply PV cut
                 if (datatree_2018->nPV != 1) 
                         continue;
 
-                // Apply trigger cut
                 bool mum_trigger = (datatree_2018->mum_L0MuonEWDecision_TOS == 1 && 
                                     datatree_2018->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
                                     datatree_2018->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
@@ -678,7 +679,6 @@ int main()
                 if (!mum_trigger && !mup_trigger) 
                         continue;
                 
-                // Set Jet-associated 4 vectors and apply cuts
                 Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000.,
                                         datatree_2018->Jet_PY/1000.,
                                         datatree_2018->Jet_PZ/1000.,
@@ -732,7 +732,6 @@ int main()
                 double jet_ndtr_nominal = 0;
                 
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
-                        // Skip non-hadronic particles
                         if (datatree_2018->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2018->Jet_Dtr_IsBaryon[h1_index] != 1)
                                 continue;
 
@@ -746,7 +745,8 @@ int main()
                                                      h1_4vector->Pt(),
                                                      datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h1_4vector))) 
                                 continue;
 
                         jet_ndtr_nominal++;
@@ -788,15 +788,19 @@ int main()
                                                      h1_4vector->Pt(),
                                                      datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h1_4vector))) 
                                 continue;
 
                         double h1_purity     = hpurity->GetBinContent(hpurity->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
                         double h1_efficiency = hefficiency->GetBinContent(hefficiency->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
-                        if (h1_purity > 1. || h1_efficiency > 1.) 
+                        if (h1_purity > 1. || h1_efficiency > 1.) {
+                                std::cout<<"eff = "<<h1_efficiency<<std::endl;
+                                std::cout<<"pur = "<<h1_purity<<std::endl;
                                 continue;
+                        }
 
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++) {
+                        for (int h2_index = h1_index + 1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++) {
                                 if (datatree_2018->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2018->Jet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
 
@@ -810,7 +814,8 @@ int main()
                                                              h2_4vector->Pt(),
                                                              datatree_2018->Jet_Dtr_TrackChi2[h2_index]/datatree_2018->Jet_Dtr_TrackNDF[h2_index],
                                                              datatree_2018->Jet_Dtr_ProbNNghost[h2_index],
-                                                             h2_4vector->Eta())) 
+                                                             h2_4vector->Eta(),
+                                                             Jet_4vector->DeltaR(*h2_4vector))) 
                                         continue;
 
                                 double h2_purity     = hpurity->GetBinContent(hpurity->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
@@ -868,8 +873,8 @@ int main()
                                 vars[24] = ntruth_h1;
                                 vars[25] = nreco_ok_h2;
                                 vars[26] = nreco_h2;
-                                vars[27] = ntruth_ok_h2;
-                                vars[28] = ntruth_h2;
+                                vars[27] = h1_4vector->DeltaPhi(*h2_4vector);
+                                vars[28] = h1_4vector->Eta() - h2_4vector->Eta();
                                 
                                 // Fill the TNtuple
                                 ntuple_data->Fill(vars);

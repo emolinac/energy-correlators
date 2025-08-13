@@ -18,7 +18,7 @@
 int main()
 {
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJetsMCReco* mcrecotree = new TZJetsMCReco();
@@ -40,6 +40,8 @@ int main()
         TLorentzVector* mup_4vector   = new TLorentzVector();
         TLorentzVector* h1_4vector    = new TLorentzVector();
         TLorentzVector* h2_4vector    = new TLorentzVector();
+        TLorentzVector* h_4vector     = new TLorentzVector();
+
 
         TLorentzVector* true_Jet_4vector = new TLorentzVector();
         TLorentzVector* true_Z0_4vector  = new TLorentzVector();
@@ -153,13 +155,64 @@ int main()
 
                 if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
                         continue;
+
+                // Ask for minimum number of dtrs in the MCReco Jet
+                double ndtrs_mcrecojet = 0; 
                 
+                for (int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++) {
+                        if (mcrecotree->Jet_Dtr_IsMeson[h_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h_index] != 1) 
+                                continue;
+
+                        h_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h_index]/1000.,
+                                              mcrecotree->Jet_Dtr_PY[h_index]/1000.,
+                                              mcrecotree->Jet_Dtr_PZ[h_index]/1000.,
+                                              mcrecotree->Jet_Dtr_E[h_index]/1000.);
+
+                        if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h_index],
+                                                     h_4vector->P(),
+                                                     h_4vector->Pt(),
+                                                     mcrecotree->Jet_Dtr_TrackChi2[h_index]/mcrecotree->Jet_Dtr_TrackNDF[h_index],
+                                                     mcrecotree->Jet_Dtr_ProbNNghost[h_index],
+                                                     h_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h_4vector))) 
+                                continue;
+
+                        ndtrs_mcrecojet++;
+                }
+
+                if (ndtrs_mcrecojet < 2)
+                        continue;
+
+
+                // Ask for minimum number of dtrs in the matched MC Jet 
+                int ndtrs_matchedmcjet = 0;
+
+                for (int h_index = 0 ; h_index < mcrecotree->Jet_mcjet_nmcdtrs ; h_index++) {
+                        if (mcrecotree->Jet_mcjet_dtrIsBaryon[h_index] != 1&&mcrecotree->Jet_mcjet_dtrIsMeson[h_index] != 1) 
+                                continue;
+
+                        h_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h_index]/1000.,
+                                              mcrecotree->Jet_mcjet_dtrPY[h_index]/1000.,
+                                              mcrecotree->Jet_mcjet_dtrPZ[h_index]/1000.,
+                                              mcrecotree->Jet_mcjet_dtrE[h_index]/1000.);
+
+                        if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h_index],
+                                                              h_4vector->P(),
+                                                              h_4vector->Pt(),
+                                                              h_4vector->Eta(),
+                                                              true_Jet_4vector->DeltaR(*h_4vector))) 
+                                continue;
+
+                        ndtrs_matchedmcjet++;
+                }
+
+                if (ndtrs_matchedmcjet < 2)
+                        continue;
+
                 double jet_ndtr_mc   = 0;
                 double jet_ndtr_reco = 0;
 
-                // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
-                        // Skip non-hadronic particles
                         if (mcrecotree->Jet_Dtr_IsMeson[h1_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h1_index] != 1) 
                                 continue;
 
@@ -173,7 +226,8 @@ int main()
                                                      h1_4vector->Pt(),
                                                      mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                                      mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h1_4vector))) 
                                 continue;
 
                         jet_ndtr_reco++;
@@ -190,7 +244,8 @@ int main()
                                 if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h1_index],
                                                                       true_h1_4vector->P(),
                                                                       true_h1_4vector->Pt(),
-                                                                      true_h1_4vector->Eta())) 
+                                                                      true_h1_4vector->Eta(),
+                                                                      true_Jet_4vector->DeltaR(*true_h1_4vector))) 
                                         key1_match = 0;
                         } 
 
@@ -209,7 +264,8 @@ int main()
                                                              h2_4vector->Pt(),
                                                              mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
                                                              mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
-                                                             h2_4vector->Eta())) 
+                                                             h2_4vector->Eta(),
+                                                             Jet_4vector->DeltaR(*h2_4vector))) 
                                         continue;
 
                                 int key2_match = 0;
@@ -224,7 +280,8 @@ int main()
                                         if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h2_index],
                                                                               true_h2_4vector->P(),
                                                                               true_h2_4vector->Pt(),
-                                                                              true_h2_4vector->Eta())) 
+                                                                              true_h2_4vector->Eta(),
+                                                                              true_Jet_4vector->DeltaR(*true_h2_4vector))) 
                                                 key2_match = 0;
                                 } 
                         
@@ -265,7 +322,6 @@ int main()
 
                 // Fill the mc ntuple
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++) {
-                        // Skip non-hadronic particles
                         if (mcrecotree->Jet_mcjet_dtrIsMeson[h1_index] != 1 && mcrecotree->Jet_mcjet_dtrIsBaryon[h1_index] != 1) 
                                 continue;
 
@@ -277,13 +333,13 @@ int main()
                         if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h1_index],
                                                               h1_4vector->P(),
                                                               h1_4vector->Pt(),
-                                                              h1_4vector->Eta())) 
+                                                              h1_4vector->Eta(),
+                                                              true_Jet_4vector->DeltaR(*h1_4vector))) 
                                 continue;
 
                         jet_ndtr_mc++;
 
                         for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++) {
-                                // Skip non-hadronic particles
                                 if (mcrecotree->Jet_mcjet_dtrIsMeson[h2_index] != 1 && mcrecotree->Jet_mcjet_dtrIsBaryon[h2_index] != 1) 
                                         continue;
 
@@ -295,7 +351,8 @@ int main()
                                 if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h2_index],
                                                                       h2_4vector->P(),
                                                                       h2_4vector->Pt(),
-                                                                      h2_4vector->Eta())) 
+                                                                      h2_4vector->Eta(),
+                                                                      true_Jet_4vector->DeltaR(*h2_4vector))) 
                                         continue;
 
                                 vars_mc[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
@@ -318,10 +375,13 @@ int main()
                         }
                 }
 
-                last_eventNum = mcrecotree->eventNumber;
+                if (jet_ndtr_reco > 1)
+                        ntuple_reco_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(), jet_ndtr_reco, true_Jet_4vector->Pt(),jet_ndtr_mc);
+                
+                if (jet_ndtr_mc > 1)
+                        ntuple_mc_jet->Fill(true_Jet_4vector->Pt(), true_Jet_4vector->Eta(), jet_ndtr_mc, jet_ndtr_reco);
 
-                ntuple_reco_jet->Fill(Jet_4vector->Pt(), Jet_4vector->Eta(), jet_ndtr_reco, true_Jet_4vector->Pt(),jet_ndtr_mc);
-                ntuple_mc_jet->Fill(true_Jet_4vector->Pt(), true_Jet_4vector->Eta(), jet_ndtr_mc, jet_ndtr_reco);
+                last_eventNum = mcrecotree->eventNumber;
         }
 
         fout->cd();

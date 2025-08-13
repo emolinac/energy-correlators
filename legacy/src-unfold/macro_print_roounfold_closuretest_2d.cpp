@@ -7,7 +7,7 @@
 
 void macro_print_roounfold_closuretest_2d(int niter = nominal_niter)
 {
-    TFile* f = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+    TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
     TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
     float R_L, R_L_truth, jet_pt, jet_pt_truth;

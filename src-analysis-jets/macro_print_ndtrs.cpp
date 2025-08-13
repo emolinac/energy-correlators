@@ -9,8 +9,8 @@
 void macro_print_ndtrs()
 {
         // Open the necessary files
-        TFile* f    = new TFile((output_folder + namef_ntuple_e2c_paircorr).c_str());
-        TFile* fsim = new TFile((output_folder + namef_ntuple_e2c_paircorrections).c_str());
+        TFile* f    = new TFile((output_folder + namef_ntuple_eec_paircorr).c_str());
+        TFile* fsim = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         
         // Get the corresponding Ntuples
         TNtuple* ntuple      = (TNtuple*) f->Get((name_ntuple_corrjet).c_str());

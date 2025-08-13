@@ -4,22 +4,22 @@
 // HADRONIC NTUPLES SPECS
 
 // Names of the files
-std::string namef_ntuple_e2c                = "ntuple_e2c.root";
-std::string namef_ntuple_e2c_corr           = "ntuple_corre2c.root";
-std::string namef_ntuple_e2c_paircorr       = "ntuple_paircorre2c.root";
-std::string namef_ntuple_e2c_hadroncorrections         = "ntuple_e2c_purity.root";
-std::string namef_ntuple_e2c_pairpurity     = "ntuple_e2c_pairpurity.root";
-std::string namef_ntuple_e2c_unfolding      = "ntuple_e2c_unfolding.root";
-std::string namef_ntuple_e2c_hadroncorrections     = "ntuple_e2c_efficiency.root";
-std::string namef_ntuple_e2c_pairefficiency = "ntuple_e2c_pairefficiency.root";
-std::string namef_ntuple_mc_e2c             = "ntuple_mc_e2c.root";
-std::string namef_ntuple_mc_at_e2c          = "ntuple_mc_at_e2c.root";
+std::string namef_ntuple_eec                = "ntuple_eec.root";
+std::string namef_ntuple_eec_corr           = "ntuple_correec.root";
+std::string namef_ntuple_eec_paircorr       = "ntuple_paircorreec.root";
+std::string namef_ntuple_eec_hadroncorrections         = "ntuple_eec_purity.root";
+std::string namef_ntuple_eec_pairpurity     = "ntuple_eec_pairpurity.root";
+std::string namef_ntuple_eec_unfolding      = "ntuple_eec_unfolding.root";
+std::string namef_ntuple_eec_hadroncorrections     = "ntuple_eec_efficiency.root";
+std::string namef_ntuple_eec_pairefficiency = "ntuple_eec_pairefficiency.root";
+std::string namef_ntuple_mc_eec             = "ntuple_mc_eec.root";
+std::string namef_ntuple_mc_at_eec          = "ntuple_mc_at_eec.root";
 std::string namef_ntuple_hadron             = "ntuple_hadron.root";
 
-std::string namef_histos_corr_e2c            = "histos_corr_e2c.root";
-std::string namef_histos_corr_e2c     = "histos_corr_e2c.root";
-std::string namef_histos_paircorr_e2c        = "histos_paircorr_e2c.root";
-std::string namef_histos_paircorr_e2c = "histos_paircorr_e2c.root";
+std::string namef_histos_corr_eec            = "histos_corr_eec.root";
+std::string namef_histos_corr_eec     = "histos_corr_eec.root";
+std::string namef_histos_paircorr_eec        = "histos_paircorr_eec.root";
+std::string namef_histos_paircorr_eec = "histos_paircorr_eec.root";
 
 // Name of the ntuples
 std::string name_ntuple_unfold          = "ntuple_unfold";

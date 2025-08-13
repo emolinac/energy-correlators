@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 
 Niter = 3
 
-file      = uproot.open("../output-files/ntuple_e2c_unfolding.root")
+file      = uproot.open("../output-files/ntuple_eec_unfolding.root")
 root_tree = file["ntuple_unfolding"]
 
 # Synthetic

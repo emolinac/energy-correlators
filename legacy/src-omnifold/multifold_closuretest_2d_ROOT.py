@@ -15,8 +15,8 @@ from sklearn.model_selection import train_test_split
 
 ROOT.gStyle.SetPaintTextFormat(".3f")
 
-file      = uproot.open("../output-files/ntuple_e2c_unfolding.root")
-# file_data = uproot.open("../output-files/ntuple_corre2c.root")
+file      = uproot.open("../output-files/ntuple_eec_unfolding.root")
+# file_data = uproot.open("../output-files/ntuple_correec.root")
 root_tree      = file["ntuple_unfolding"]
 # root_tree_data = file_data["ntuple_hadron"]
 

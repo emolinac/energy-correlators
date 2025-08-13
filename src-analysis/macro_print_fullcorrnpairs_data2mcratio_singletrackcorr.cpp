@@ -10,7 +10,7 @@ void macro_print_fullcorrnpairs_data2mcratio_singletrackcorr(int niter = 15, boo
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TFile* fcorr = new TFile((output_folder + namef_ntuple_e2c_corr).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_corr).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
         
@@ -30,11 +30,10 @@ void macro_print_fullcorrnpairs_data2mcratio_singletrackcorr(int niter = 15, boo
         
         // Fill the histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                hcorr_jet[bin] = new TH1F(Form("hcorr_jet%i" ,bin),"", 1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
+                hcorr_jet[bin]    = new TH1F(Form("hcorr_jet%i" ,bin),"", 1,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
+                hcorr_npairs[bin] = new TH1F(Form("hcorr_npairs%i",bin),"", nbin_rl_nominal, rl_nominal_binning);
                 
-                hcorr_npairs[bin]   = new TH1F(Form("hcorr_npairs%i",bin),"", nbin_rl_nominal, rl_nominal_binning);
-                
-                set_histogram_style(hcorr_npairs[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
+                set_histogram_style(hcorr_npairs[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size);
                 
                 ntuple_jet->Project(Form("hcorr_jet%i" ,bin), "jet_pt", jet_full_corr[bin]);
         
@@ -54,10 +53,11 @@ void macro_print_fullcorrnpairs_data2mcratio_singletrackcorr(int niter = 15, boo
                 }
 
                 hcorr_npairs[bin]->Scale(1./hcorr_jet[bin]->Integral());
+
         }
 
         // Simulations Section
-        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_e2c).c_str());
+        TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_eec).c_str());
         
         TNtuple* ntuple_mc         = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
         TNtuple* ntuple_mc_jet     = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
@@ -119,6 +119,9 @@ void macro_print_fullcorrnpairs_data2mcratio_singletrackcorr(int niter = 15, boo
                 s_data[bin]->Draw("NOSTACK");
                 
                 s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};N_{pairs}", jet_pt_binning[bin], jet_pt_binning[bin+1]));
+
+                s_data[bin]->SetMaximum(2);
+                s_data[bin]->SetMinimum(0.5);
                 
                 l_data[bin]->AddEntry(hdata2mc_ratio[bin], "data/mc", "p");
 
@@ -127,5 +130,5 @@ void macro_print_fullcorrnpairs_data2mcratio_singletrackcorr(int niter = 15, boo
                 gPad->SetLogx(1);
         }
 
-        c->Print("./plots/data2mcratio_npairs_multiplicity_fullconditions_jetid_eventweightapplied.pdf");
+        c->Print("./plots/data2mcratio_npairs_fullsim.pdf");
 }

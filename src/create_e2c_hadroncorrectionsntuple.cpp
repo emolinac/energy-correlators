@@ -18,7 +18,7 @@
 int main()
 {
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_e2c_hadroncorrections).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJetsMCReco* mcrecotree = new TZJetsMCReco();
@@ -119,10 +119,11 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
 
-                double mpt = 0; // Min pt at least one track has to have
+                // Ask for minimum number of dtrs in the MCReco Jet
+                double ndtrs_mcrecojet = 0; 
+                
                 for (int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++) {
-                        // Skip non-hadronic particles
-                        if (mcrecotree->Jet_Dtr_IsMeson[h_index] != 1&&mcrecotree->Jet_Dtr_IsBaryon[h_index] != 1) 
+                        if (mcrecotree->Jet_Dtr_IsMeson[h_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h_index] != 1) 
                                 continue;
 
                         h_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h_index]/1000.,
@@ -130,12 +131,20 @@ int main()
                                               mcrecotree->Jet_Dtr_PZ[h_index]/1000.,
                                               mcrecotree->Jet_Dtr_E[h_index]/1000.);
 
-                        if (h_4vector->Pt() > mpt)
-                                mpt = h_4vector->Pt();
+                        if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h_index],
+                                                     h_4vector->P(),
+                                                     h_4vector->Pt(),
+                                                     mcrecotree->Jet_Dtr_TrackChi2[h_index]/mcrecotree->Jet_Dtr_TrackNDF[h_index],
+                                                     mcrecotree->Jet_Dtr_ProbNNghost[h_index],
+                                                     h_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h_4vector))) 
+                                continue;
+
+                        ndtrs_mcrecojet++;
                 }
 
-                // if (!apply_jet_id_cuts(mpt, mcrecotree->Jet_NTrk, mcrecotree->Jet_CPF, mcrecotree->Jet_MTF))
-                //         continue;
+                if (ndtrs_mcrecojet < 2)
+                        continue;
                 
                 // Apply cuts to MC jets
                 true_Jet_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_PX/1000.,
@@ -169,10 +178,34 @@ int main()
                 
                 if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
                         continue;
+
+                // Ask for minimum number of dtrs in the matched MC Jet 
+                int ndtrs_matchedmcjet = 0;
+
+                for (int h_index = 0 ; h_index < mcrecotree->Jet_mcjet_nmcdtrs ; h_index++) {
+                        if (mcrecotree->Jet_mcjet_dtrIsBaryon[h_index] != 1&&mcrecotree->Jet_mcjet_dtrIsMeson[h_index] != 1) 
+                                continue;
+
+                        h_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h_index]/1000.,
+                                              mcrecotree->Jet_mcjet_dtrPY[h_index]/1000.,
+                                              mcrecotree->Jet_mcjet_dtrPZ[h_index]/1000.,
+                                              mcrecotree->Jet_mcjet_dtrE[h_index]/1000.);
+
+                        if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h_index],
+                                                              h_4vector->P(),
+                                                              h_4vector->Pt(),
+                                                              h_4vector->Eta(),
+                                                              true_Jet_4vector->DeltaR(*h_4vector))) 
+                                continue;
+
+                        ndtrs_matchedmcjet++;
+                }
+
+                if (ndtrs_matchedmcjet < 2)
+                        continue;
                 
                 // Loop over reco
                 for (int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++) {
-                        // Skip non-hadronic particles
                         if (mcrecotree->Jet_Dtr_IsMeson[h_index] != 1&&mcrecotree->Jet_Dtr_IsBaryon[h_index] != 1) 
                                 continue;
 
@@ -186,7 +219,8 @@ int main()
                                                      h_4vector->Pt(),
                                                      mcrecotree->Jet_Dtr_TrackChi2[h_index]/mcrecotree->Jet_Dtr_TrackNDF[h_index],
                                                      mcrecotree->Jet_Dtr_ProbNNghost[h_index],
-                                                     h_4vector->Eta())) 
+                                                     h_4vector->Eta(),
+                                                     Jet_4vector->DeltaR(*h_4vector))) 
                                 continue;
 
                         int key_match = 0;
@@ -201,7 +235,8 @@ int main()
                                 if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h_index],
                                                                       true_h_4vector->P(), 
                                                                       true_h_4vector->Pt(),
-                                                                      true_h_4vector->Eta())) 
+                                                                      true_h_4vector->Eta(),
+                                                                      true_Jet_4vector->DeltaR(*true_h_4vector))) 
                                         key_match = 0;
                         } 
 
@@ -227,7 +262,6 @@ int main()
 
                 // Loop over mc
                 for (int h_index = 0 ; h_index < mcrecotree->Jet_mcjet_nmcdtrs ; h_index++) {
-                        // Skip non-hadronic particles
                         if (mcrecotree->Jet_mcjet_dtrIsMeson[h_index] != 1&&mcrecotree->Jet_mcjet_dtrIsBaryon[h_index] != 1) 
                                 continue;
                         
@@ -239,7 +273,8 @@ int main()
                         if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h_index],
                                                               true_h_4vector->P(),
                                                               true_h_4vector->Pt(),
-                                                              true_h_4vector->Eta())) 
+                                                              true_h_4vector->Eta(),
+                                                              true_Jet_4vector->DeltaR(*true_h_4vector))) 
                                 continue;
 
                         // If all good, fill Ntuple

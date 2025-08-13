@@ -11,8 +11,8 @@ std::string systematic = "probnnghost";
 
 void macro_print_deviation_from_nominal_npair()
 {
-    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_e2c).c_str());
-    TFile* fsystematic = new TFile((systematic+"/output-files/"+namef_histos_paircorr_e2c).c_str());
+    TFile* fnominal    = new TFile(("../output-files/"+namef_histos_paircorr_eec).c_str());
+    TFile* fsystematic = new TFile((systematic+"/output-files/"+namef_histos_paircorr_eec).c_str());
 
     THStack* s = new THStack();
     TLegend* l = new TLegend();
