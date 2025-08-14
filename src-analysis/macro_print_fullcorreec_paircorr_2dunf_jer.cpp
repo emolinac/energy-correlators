@@ -128,10 +128,8 @@ void macro_print_fullcorreec_paircorr_2dunf_jer(int niter = nominal_niter, bool 
                         hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                 }
 
-                // Normalize the distributions
-                
-                // Log binning
                 hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");
                 
                 fout->cd();
                 hcorr_eec[bin]->Write();

@@ -270,13 +270,4 @@ void macro_print_fullcorreec_mc_comp(int niter = 4, bool do_print = true)
         }
 
         c->Print(Form("./plots/fullcorreec_niter%i_data2mc.pdf",niter));
-        
-        // for(int bin = 0 ; bin < nbin_jet_pt ; bin ++) {
-        //         c->cd(bin+1);
-        //         s_data[bin]->SetMaximum(1.7);
-        //         gPad->SetLogx(1);
-        //         gPad->SetLogy(1);
-        // }
-        
-        // c->Print(Form("./plots/fullcorreec_niter%i_norejectjetptdeprelerrorleq%.2f_nomjetptbinning_mccomp_logbinning_logscale.pdf",niter,corr_rel_error));
 }

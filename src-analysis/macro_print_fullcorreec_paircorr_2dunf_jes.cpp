@@ -129,6 +129,7 @@ void macro_print_fullcorreec_paircorr_2dunf_jes(int niter = nominal_niter, bool 
                 }
 
                 hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
+                hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");
                 
                 fout->cd();
                 hcorr_eec[bin]->Write();

@@ -203,6 +203,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
                 if (apply_alice_factor)
                         overall_factor = alice_factor;
 
+                hcorr_tau[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");
                 hcorr_eec[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");
                 hcorr_npair[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");
 

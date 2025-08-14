@@ -102,6 +102,7 @@ void macro_print_fullcorreec(int niter = nominal_niter)
                         hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                 }
 
+                hcorr_tau[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 
                 fout->cd();
