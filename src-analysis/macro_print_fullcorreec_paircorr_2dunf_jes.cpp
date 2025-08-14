@@ -95,7 +95,7 @@ void macro_print_fullcorreec_paircorr_2dunf_jes(int niter = nominal_niter, bool 
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_niter%i_ratio_jes.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_jes.pdf",niter));
 
         // Fill the histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -129,7 +129,7 @@ void macro_print_fullcorreec_paircorr_2dunf_jes(int niter = nominal_niter, bool 
                 }
 
                 hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-                hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");
+                hcorr_tau[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 
                 fout->cd();
                 hcorr_eec[bin]->Write();
@@ -155,7 +155,7 @@ void macro_print_fullcorreec_paircorr_2dunf_jes(int niter = nominal_niter, bool 
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrtau_niter%i_2dunf_jes.pdf",niter));
+                c->Print(Form("./plots/corrtau_unf-niter%i_2dunf_jes.pdf",niter));
 
         s_data = new THStack();
         
@@ -173,7 +173,7 @@ void macro_print_fullcorreec_paircorr_2dunf_jes(int niter = nominal_niter, bool 
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorreec_niter%i_2dunf_jes.pdf",niter));
+                c->Print(Form("./plots/correec_unf-niter%i_2dunf_jes.pdf",niter));
 
         if (compare_to_nominal) {
                 TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_eec).c_str());
@@ -216,6 +216,6 @@ void macro_print_fullcorreec_paircorr_2dunf_jes(int niter = nominal_niter, bool 
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/nom_jes_comp_niter%i_ratio.pdf",niter));
+                if (do_print) c->Print(Form("./plots/nominal_jes_comp_unf-niter%i_ratio.pdf",niter));
         }
 }

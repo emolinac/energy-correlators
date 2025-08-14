@@ -162,5 +162,5 @@ void macro_print_fullcorrnpair_mc_comp(int niter = 4, bool do_print = true)
                 l_data[bin]->Draw("SAME");    
         }
 
-        c->Print("./plots/fullcorrdata2mc_npair_eventweightapplied.pdf");
+        c->Print("./plots/data2mc_corrnpair.pdf");
 }

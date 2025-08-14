@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorreec_mc_comp(int niter = 4, bool do_print = true)
+void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = true)
 {
         gStyle->SetPadTopMargin(0.08);
 
@@ -269,5 +269,5 @@ void macro_print_fullcorreec_mc_comp(int niter = 4, bool do_print = true)
                 l_data[bin]->Draw("SAME");    
         }
 
-        c->Print(Form("./plots/fullcorreec_niter%i_data2mc.pdf",niter));
+        c->Print(Form("./plots/data2mc_correec_unf-niter%i.pdf",niter));
 }

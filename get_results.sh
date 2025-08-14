@@ -3,6 +3,7 @@
 cd ./src-analysis
 
 root -b -q macro_print_fullcorreec.cpp
+root -b -q macro_print_fullcorreec_paircorr_2dunf.cpp
 root -b -q macro_print_fullcorreec_paircorr_2dunf_ct_niter.cpp
 root -b -q macro_print_fullcorreec_paircorr_2dunf_jer.cpp
 root -b -q macro_print_fullcorreec_paircorr_2dunf_jes.cpp

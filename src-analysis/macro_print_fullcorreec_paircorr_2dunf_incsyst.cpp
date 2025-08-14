@@ -94,7 +94,7 @@ void macro_print_fullcorreec_paircorr_2dunf_incsyst(int niter = nominal_niter, b
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_niter%i_ratio_incsyst.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_incsyst.pdf",niter));
 
         // Fill the NOIMNAL histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -222,7 +222,7 @@ void macro_print_fullcorreec_paircorr_2dunf_incsyst(int niter = nominal_niter, b
         draw_lhcb_tag(lhcbprint);
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrtau_niter%i_2dunf_incsyst.pdf",niter));
+                c->Print(Form("./plots/corrtau_unf-niter%i_2dunf_incsyst.pdf",niter));
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -233,7 +233,7 @@ void macro_print_fullcorreec_paircorr_2dunf_incsyst(int niter = nominal_niter, b
         
         s_data->Draw("NOSTACK");
         s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
-        s_data->SetMaximum(0.67);
+        s_data->SetMaximum(1.05);
         l_data->Draw("SAME");
         gPad->SetLogx(1);
         gPad->SetLogy(0);
@@ -241,5 +241,5 @@ void macro_print_fullcorreec_paircorr_2dunf_incsyst(int niter = nominal_niter, b
         draw_lhcb_tag(lhcbprint);
 
         if (do_print) 
-                c->Print(Form("./plots/paircorreec_niter%i_2dunf_incsyst.pdf",niter));
+                c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst.pdf",niter));
 }

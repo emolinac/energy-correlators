@@ -83,7 +83,7 @@ void macro_print_fullcorrchargedeec_paircorr_2dunf(int niter = nominal_niter, bo
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_niter%i_ratio.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio.pdf",niter));
 
         // Fill the histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -119,7 +119,6 @@ void macro_print_fullcorrchargedeec_paircorr_2dunf(int niter = nominal_niter, bo
                         hcorr_eec[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                         hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                         
-                        // Filling the charged eecs
                         if (eq_charge > 0)  
                                 hcorr_eec_eqcharge[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                         else if (eq_charge < 0) 
@@ -166,6 +165,6 @@ void macro_print_fullcorrchargedeec_paircorr_2dunf(int niter = nominal_niter, bo
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrchargedeec_niter%i_2dunf.pdf",niter));
+                c->Print(Form("./plots/corrchargedeec_unf-niter%i_2dunf.pdf",niter));
 }
 

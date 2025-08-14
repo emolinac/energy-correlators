@@ -115,9 +115,12 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
         hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
         hunfolded_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
         hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+        
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        if (do_print) c->Print(Form("./plots/unfolded2d_niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
+        
+        if (do_print) 
+                c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
 
         THStack* s_data     = new THStack();
         TLegend* l_data     = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
@@ -249,6 +252,6 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/closuretest_niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
+                if (do_print) c->Print(Form("./plots/closuretest_unf-niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
         }
 }

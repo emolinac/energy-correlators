@@ -81,40 +81,6 @@ void macro_print_fullcorreec_paircorr_2dunf_prior(int niter = nominal_niter, boo
         hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
         hunfolded_ratio->Smooth();
 
-        // Unfold the purity corrected jets
-        TNtuple* ntuple_jet_unfolding = (TNtuple*) f->Get(name_ntuple_mcreco_jet.c_str());
-        
-        float jet_pt_unfolding_reco, jet_pt_unfolding_truth;
-        set_unfolding_jet_ntuple_branches(ntuple_jet_unfolding, &jet_pt_unfolding_reco, &jet_pt_unfolding_truth);
-        
-        TH1D* hpurcorr_jet = new TH1D("hpurcorr_jet","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH1D* hmeas_jet    = new TH1D("hmeas_jet"   ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH1D* htrue_jet    = new TH1D("htrue_jet"   ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-
-        TH2D* hresponse_jet = new TH2D("hresponse_jet","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        
-        for (int evt = 0 ; evt < ntuple_jet_unfolding->GetEntries() ; evt++) {
-                ntuple_jet_unfolding->GetEntry(evt);
-
-                hresponse_jet->Fill(jet_pt_unfolding_reco, jet_pt_unfolding_truth);
-        }
-
-        RooUnfoldResponse* response_jet = new RooUnfoldResponse(hmeas_jet, htrue_jet, hresponse_jet, "response_jet");
-        
-        TH1D* hunfolded_ratio_jet   = new TH1D("hunfolded_ratio_jet"  ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH1D* hpuritycorrected_jet  = new TH1D("hpuritycorrected_jet" ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH1D* hpuritycorrected_ref_jet = new TH1D("hpuritycorrected_ref_jet","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        
-        ntuple_jet->Project("hpuritycorrected_jet" , "jet_pt", "jet_purity");
-        ntuple_jet->Project("hpuritycorrected_ref_jet", "jet_pt", "jet_purity");
-        
-        RooUnfoldBayes unfold_jet(response_jet, hpuritycorrected_jet, 4);
-
-        TH1D* hunfolded_bayes_jet = (TH1D*) unfold_jet.Hunfold();
-        
-        hunfolded_ratio_jet->Divide(hunfolded_bayes_jet,hpuritycorrected_ref_jet,1,1);
-        hunfolded_ratio_jet->Smooth();
-
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
         TH1F* hcorr_eec_nonorm[nbin_jet_pt]; 
@@ -154,7 +120,7 @@ void macro_print_fullcorreec_paircorr_2dunf_prior(int niter = nominal_niter, boo
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_niter%i_ratio_prior.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_prior.pdf",niter));
 
         // Fill the histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -188,7 +154,7 @@ void macro_print_fullcorreec_paircorr_2dunf_prior(int niter = nominal_niter, boo
                 }
 
                 hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-                hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");
+                hcorr_tau[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 
                 fout->cd();
                 hcorr_eec[bin]->Write();
@@ -214,7 +180,7 @@ void macro_print_fullcorreec_paircorr_2dunf_prior(int niter = nominal_niter, boo
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorrtau_niter%i_2dunf_prior.pdf",niter));
+                c->Print(Form("./plots/corrtau_unf-niter%i_2dunf_prior.pdf",niter));
 
         s_data = new THStack();
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -231,7 +197,7 @@ void macro_print_fullcorreec_paircorr_2dunf_prior(int niter = nominal_niter, boo
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/paircorreec_niter%i_2dunf_prior.pdf",niter));
+                c->Print(Form("./plots/correec_unf-niter%i_2dunf_prior.pdf",niter));
 
         if (compare_to_nominal) {
                 TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_eec).c_str());
@@ -273,6 +239,7 @@ void macro_print_fullcorreec_paircorr_2dunf_prior(int niter = nominal_niter, boo
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/nom_prior_comp_niter%i_ratio.pdf",niter));
+                if (do_print) 
+                        c->Print(Form("./plots/nominal_prior_comp_unf-niter%i_ratio.pdf",niter));
         }
 }

@@ -155,5 +155,5 @@ void macro_print_fullcorrnpair_mc_comp_singletrackcorr(int niter = 4, bool do_pr
                 l_data[bin]->Draw("SAME");    
         }
 
-        c->Print("./plots/fullcorrdata2mc_npair_singletrackcorr_weighteventapplied.pdf");
+        c->Print("./plots/data2mc_corrnpair_singletrackcorr.pdf");
 }
