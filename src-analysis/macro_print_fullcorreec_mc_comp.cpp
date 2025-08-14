@@ -63,10 +63,8 @@ void macro_print_fullcorreec_mc_comp(int niter = 4, bool do_print = true)
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
         TH1F* hcorr_eec[nbin_jet_pt]; 
         TH1F* hcorr_eec_syst[nbin_jet_pt]; 
-        TH1F* hcorr_eec_nounf[nbin_jet_pt]; 
         TH1F* hcorr_tau[nbin_jet_pt]; 
         TH1F* hcorr_tau_syst[nbin_jet_pt]; 
-        TH1F* hcorr_tau_nounf[nbin_jet_pt]; 
         
         gStyle->SetPaintTextFormat("4.2f");
         
@@ -77,11 +75,9 @@ void macro_print_fullcorreec_mc_comp(int niter = 4, bool do_print = true)
 
                 hcorr_eec[bin]          = new TH1F(Form("hcorr_eec%i",bin)         ,"", nbin_rl_nominal,rl_nominal_binning );
                 hcorr_eec_syst[bin]     = new TH1F(Form("hcorr_eec_syst%i",bin)    ,"", nbin_rl_nominal,rl_nominal_binning );
-                hcorr_eec_nounf[bin]    = new TH1F(Form("hcorr_eec_nounf%i",bin)   ,"", nbin_rl_nominal,rl_nominal_binning );
                 hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)         ,"", nbin_rl_nominal,tau_nominal_binning);
                 hcorr_tau_syst[bin]     = new TH1F(Form("hcorr_tau_syst%i",bin)    ,"", nbin_rl_nominal,tau_nominal_binning );
-                hcorr_tau_nounf[bin]    = new TH1F(Form("hcorr_tau_nounf%i",bin)   ,"", nbin_rl_nominal,tau_nominal_binning);
-
+        
                 set_histogram_style(hcorr_eec[bin]     , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
                 set_histogram_style(hcorr_eec_syst[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size  );
                 set_histogram_style(hcorr_tau[bin]     , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
@@ -108,15 +104,12 @@ void macro_print_fullcorreec_mc_comp(int niter = 4, bool do_print = true)
 
                         hcorr_eec[bin]->Fill(R_L,unfolding_weight*weight_pt/efficiency);
                         hcorr_eec_syst[bin]->Fill(R_L,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_eec_nounf[bin]->Fill(R_L,purity*weight_pt/efficiency);
                         hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
                         hcorr_tau_syst[bin]->Fill(R_L*jet_pt_centroid,purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,purity*weight_pt/efficiency);
                 }
 
                 hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 hcorr_eec_syst[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
-                hcorr_eec_nounf[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 
                 hcorr_tau[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");
                 hcorr_tau_syst[bin]->Scale(1./hcorr_jet[bin]->Integral(),"width");

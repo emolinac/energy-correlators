@@ -143,10 +143,8 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
         TH1F* hcorr_eec[nbin_jet_pt]; 
-        TH1F* hcorr_eec_nounf[nbin_jet_pt]; 
         TH1F* hcorr_npair[nbin_jet_pt]; 
         TH1F* hcorr_tau[nbin_jet_pt]; 
-        TH1F* hcorr_tau_nounf[nbin_jet_pt]; 
         
         TH1F* hcorr_eec_eqcharge[nbin_jet_pt]; 
         TH1F* hcorr_eec_neqcharge[nbin_jet_pt]; 
@@ -157,9 +155,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
                 hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"", 200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
 
                 hcorr_eec[bin]          = new TH1F(Form("hcorr_eec%i",bin)         ,"", nbin_rl_nominal,rl_nominal_binning );
-                hcorr_eec_nounf[bin]    = new TH1F(Form("hcorr_eec_nounf%i",bin)   ,"", nbin_rl_nominal,rl_nominal_binning );
                 hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)         ,"", nbin_rl_nominal,tau_nominal_binning);
-                hcorr_tau_nounf[bin]    = new TH1F(Form("hcorr_tau_nounf%i",bin)   ,"", nbin_rl_nominal,tau_nominal_binning);
                 hcorr_npair[bin]        = new TH1F(Form("hcorr_npair%i",bin)       ,"", nbin_rl_nominal,rl_nominal_binning );
 
                 hcorr_eec_eqcharge[bin]  = new TH1F(Form("hcorr_eec_eqcharge%i",bin) ,"",nbin_rl_nominal,rl_chargedeec_binning);
@@ -192,9 +188,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
                                 unfolding_weight = 1;
 
                         hcorr_eec[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_eec_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt/efficiency);
                         hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt/efficiency);
-                        hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*weight_pt/efficiency);
                         hcorr_npair[bin]->Fill(R_L,event_weight*purity*unfolding_weight/efficiency);
                         
                         if (eq_charge > 0)
@@ -210,7 +204,6 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
                         overall_factor = alice_factor;
 
                 hcorr_eec[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");
-                hcorr_eec_nounf[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");                
                 hcorr_npair[bin]->Scale(overall_factor/hcorr_jet[bin]->Integral(),"width");
 
                 hcorr_eec_total[bin]->Add(hcorr_eec_eqcharge[bin],hcorr_eec_neqcharge[bin],1,1);
@@ -219,9 +212,7 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
 
                 fout->cd();
                 hcorr_eec[bin]->Write();
-                hcorr_eec_nounf[bin]->Write();
                 hcorr_tau[bin]->Write();
-                hcorr_tau_nounf[bin]->Write();
                 hcorr_eec_eqcharge[bin]->Write();
                 hcorr_eec_neqcharge[bin]->Write();
                 gROOT->cd();

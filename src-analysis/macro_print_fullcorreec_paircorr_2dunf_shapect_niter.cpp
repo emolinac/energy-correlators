@@ -98,10 +98,8 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
         TH1F* hcorr_eec_nonorm[nbin_jet_pt]; 
         TH1F* hcorr_eec[nbin_jet_pt]; 
-        TH1F* hcorr_eec_nounf[nbin_jet_pt]; 
         TH1F* hcorr_tau[nbin_jet_pt]; 
-        TH1F* hcorr_tau_nounf[nbin_jet_pt]; 
-
+        
         TH1F* hcorr_ratio_eec[nbin_jet_pt][ct_niter]; 
         TH1F* hcorr_ratio_eec_total[nbin_jet_pt]; 
         TH1F* hcorr_ratio_tau[nbin_jet_pt][ct_niter]; 
@@ -175,15 +173,11 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"",1  ,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
                 hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"",200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
+                
                 hcorr_eec_nonorm[bin]   = new TH1F(Form("hcorr_eec_nonorm%i",bin)   ,"",nbin_rl_nominal,rl_nominal_binning );
                 hcorr_eec[bin]          = new TH1F(Form("hcorr_eec%i",bin)          ,"",nbin_rl_nominal,rl_nominal_binning );
-                hcorr_eec_nounf[bin]    = new TH1F(Form("hcorr_eec_nounf%i",bin)    ,"",nbin_rl_nominal,rl_nominal_binning );
                 hcorr_tau[bin]          = new TH1F(Form("hcorr_tau%i",bin)          ,"",nbin_rl_nominal,tau_nominal_binning);
-                hcorr_tau_nounf[bin]    = new TH1F(Form("hcorr_tau_nounf%i",bin)    ,"",nbin_rl_nominal,tau_nominal_binning);
-
-                // set_histogram_style(hcorr_eec[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
-                // set_histogram_style(hcorr_tau[bin]  , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
-        
+                
                 ntuple_jet->Project(Form("hcorr_jet%i" ,bin)         , "jet_pt",jet_full_corr[bin]);
                 ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin), "jet_pt",jet_full_corr[bin]);
 
@@ -236,18 +230,11 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                                 
                                 hcorr_eec_nonorm[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
                                 hcorr_eec[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
-                                hcorr_eec_nounf[bin]->Fill(R_L,event_weight*purity*weight_pt*content_shift/efficiency);
                                 hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
-                                hcorr_tau_nounf[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*weight_pt*content_shift/efficiency);
                         }
                 
-                        // Normalize the distributions to unity
-                        // Log binning
                         hcorr_eec[bin]->Scale(1./hcorr_eec[bin]->Integral(),"width");
-                        hcorr_eec_nounf[bin]->Scale(1./hcorr_eec_nounf[bin]->Integral(),"width");
-
                         hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");
-                        hcorr_tau_nounf[bin]->Scale(1./hcorr_tau_nounf[bin]->Integral(),"width");
                         
                         // Get the delta corresponding to the ith iteration
                         hcorr_ratio_eec[bin][ct_iter]->Divide(hcorr_eec[bin],htruth[bin],1,1);
@@ -258,10 +245,7 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
 
                         // Reset histograms to use again
                         hcorr_eec[bin]->Reset();
-                        hcorr_eec_nounf[bin]->Reset();
-
                         hcorr_tau[bin]->Reset();
-                        hcorr_tau_nounf[bin]->Reset();
                 }
         }
         

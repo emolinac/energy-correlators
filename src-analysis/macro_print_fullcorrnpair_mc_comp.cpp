@@ -58,7 +58,6 @@ void macro_print_fullcorrnpair_mc_comp(int niter = 4, bool do_print = true)
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
         TH1F* hcorr_npair[nbin_jet_pt]; 
         TH1F* hcorr_npair_syst[nbin_jet_pt]; 
-        TH1F* hcorr_npair_nounf[nbin_jet_pt]; 
         
         gStyle->SetPaintTextFormat("4.2f");
         
