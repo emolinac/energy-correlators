@@ -54,8 +54,11 @@ void macro_print_fullcorrchargedeec_paircorr_2dunf(int niter = nominal_niter, bo
         ntuple_data->Project("hpuritycorrected_ref", "jet_pt:R_L","purity");
         
         RooUnfoldBayes unfold(response, hpuritycorrected, niter);
+
         TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
+        
         hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
+        hunfolded_ratio->Smooth();
 
         TH1F* hcorr_eec_eqcharge[nbin_jet_pt]; 
         TH1F* hcorr_eec_neqcharge[nbin_jet_pt]; 

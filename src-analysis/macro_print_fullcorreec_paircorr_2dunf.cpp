@@ -75,21 +75,20 @@ void macro_print_fullcorreec_paircorr_2dunf(int niter = nominal_niter, bool do_p
 
         RooUnfoldResponse* response_jet = new RooUnfoldResponse(hmeas_jet, htrue_jet, hresponse_jet, "response_jet");
         
-        TH1D* hunfolded_ratio_jet   = new TH1D("hunfolded_ratio_jet"  ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH1D* hpuritycorrected_jet  = new TH1D("hpuritycorrected_jet" ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH1D* hunfolded_ratio_jet      = new TH1D("hunfolded_ratio_jet"  ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH1D* hpuritycorrected_jet     = new TH1D("hpuritycorrected_jet" ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         TH1D* hpuritycorrected_ref_jet = new TH1D("hpuritycorrected_ref_jet","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         
         ntuple_jet->Project("hpuritycorrected_jet" , "jet_pt", "jet_purity");
         ntuple_jet->Project("hpuritycorrected_ref_jet", "jet_pt", "jet_purity");
         
         RooUnfoldBayes unfold_jet(response_jet, hpuritycorrected_jet, 4);
+
         TH1D* hunfolded_bayes_jet = (TH1D*) unfold_jet.Hunfold();
+        
         hunfolded_ratio_jet->Divide(hunfolded_bayes_jet,hpuritycorrected_ref_jet,1,1);
         hunfolded_ratio_jet->Smooth();
 
-        hunfolded_bayes_jet->Draw();
-        hpuritycorrected_ref_jet->Draw();
-                
         TCanvas* c = new TCanvas("c", "", 1920, 1080);
         c->Draw();
 

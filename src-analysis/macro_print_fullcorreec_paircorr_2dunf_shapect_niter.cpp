@@ -84,12 +84,15 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
         TH2D* hpuritycorrected    = new TH2D("hpuritycorrected" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         TH2D* hpuritycorrected_ref   = new TH2D("hpuritycorrected_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         
-        ntuple_data->Project("hpuritycorrected" , "jet_pt:R_L","purity");
-        ntuple_data->Project("hpuritycorrected_ref", "jet_pt:R_L","purity");
+        ntuple_data->Project("hpuritycorrected"    ,"jet_pt:R_L","purity");
+        ntuple_data->Project("hpuritycorrected_ref","jet_pt:R_L","purity");
         
         RooUnfoldBayes unfold(response, hpuritycorrected, niter);
+
         TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
+        
         hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
+        hunfolded_ratio->Smooth();
 
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
