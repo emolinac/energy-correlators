@@ -73,7 +73,7 @@ void macro_print_fullcorreec_paircorr_2dunf_jer(int niter = nominal_niter, bool 
         // Adding content with errors
         TLatex latex;
         latex.SetTextAlign(22); // center alignment
-        latex.SetTextSize(rl_resolution);
+        latex.SetTextSize(text_size_correction_plots);
         latex.SetTextColor(kBlack);
 
         gStyle->SetPaintTextFormat("4.2f");
