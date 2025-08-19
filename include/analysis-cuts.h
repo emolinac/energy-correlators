@@ -62,10 +62,16 @@ TCut eec_jet_pt_cut[] = {
         Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut eec_jet_pt_cut_weightpt[] = {
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
+TCut eec_eqcharge_jet_pt_cut[] = {
+        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[0], jet_pt_binning[1]),
+        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[1], jet_pt_binning[2]),
+        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[2], jet_pt_binning[3])
+};
+
+TCut eec_neqcharge_jet_pt_cut[] = {
+        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[0], jet_pt_binning[1]),
+        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[1], jet_pt_binning[2]),
+        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
 TCut eec_zpt_cut_weightpt[] = {
@@ -115,31 +121,31 @@ TCut pair_jet_pt_signal_cut[] = {
 };
 
 // ANALYSIS VARIATIONS CUTS
-TCut eec_jet_pt_cut_weightpt_pp[] = {
+TCut eec_jet_pt_cut_pp[] = {
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut eec_jet_pt_cut_weightpt_mm[] = {
+TCut eec_jet_pt_cut_mm[] = {
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut eec_jet_pt_cut_weightpt_pm[] = {
+TCut eec_jet_pt_cut_pm[] = {
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut eec_jet_pt_cut_weightpt_kaon[] = {
+TCut eec_jet_pt_cut_kaon[] = {
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut eec_jet_pt_cut_weightpt_nokaon[] = {
+TCut eec_jet_pt_cut_nokaon[] = {
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
         Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])

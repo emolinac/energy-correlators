@@ -156,7 +156,7 @@ int main()
                                                                       h2_4vector->Eta())) 
                                         continue;
 
-                                vars_mc[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
+                                vars_mc[0]  = mctree->MCJet_Dtr_ThreeCharge[h1_index]*mctree->MCJet_Dtr_ThreeCharge[h2_index];
                                 vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
                                 vars_mc[2]  = h1_4vector->Eta();
                                 vars_mc[3]  = h2_4vector->Eta();

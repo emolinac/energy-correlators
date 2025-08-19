@@ -342,6 +342,7 @@ int main()
                                 vars[26] = nreco_h2;
                                 vars[27] = ntruth_ok_h2;
                                 vars[28] = ntruth_h2;
+                                vars[29] = datatree_2016->Jet_Dtr_ThreeCharge[h1_index]*datatree_2016->Jet_Dtr_ThreeCharge[h2_index];
                                 
                                 // Fill the TNtuple
                                 ntuple_data->Fill(vars);
@@ -582,6 +583,7 @@ int main()
                                 vars[26] = nreco_h2;
                                 vars[27] = ntruth_ok_h2;
                                 vars[28] = ntruth_h2;
+                                vars[29] = datatree_2017->Jet_Dtr_ThreeCharge[h1_index]*datatree_2017->Jet_Dtr_ThreeCharge[h2_index];
                                 
                                 // Fill the TNtuple
                                 ntuple_data->Fill(vars);
@@ -822,6 +824,7 @@ int main()
                                 vars[26] = nreco_h2;
                                 vars[27] = ntruth_ok_h2;
                                 vars[28] = ntruth_h2;
+                                vars[29] = datatree_2018->Jet_Dtr_ThreeCharge[h1_index]*datatree_2018->Jet_Dtr_ThreeCharge[h2_index];
                                 
                                 // Fill the TNtuple
                                 ntuple_data->Fill(vars);

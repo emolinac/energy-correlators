@@ -133,7 +133,7 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
         //         std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
                 
         //         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-        //                 hdev[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations%i",bin));
+        //                 hdev[bin] = (TH1F*) fsyst[syst_index]->Get(Form("h_deviations_eec%i",bin));
 
         //                 set_histo_with_systematics(hdev[bin], hcorr_eec[bin], hcorr_eec_syst[bin], systematic_errtype[available_systematics[syst_index]]);
 
