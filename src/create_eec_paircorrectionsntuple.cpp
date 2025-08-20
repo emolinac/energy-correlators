@@ -8,17 +8,54 @@
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
+#include "TRandom3.h"
 #include "analysis-constants.h"
 #include "analysis-binning.h"
 #include "analysis-cuts.h"
 #include "analysis-functions.h"
 #include "directories.h"
 #include "names.h"
+#include "syst-jes-jer.h"
 
-int main()
+int main(int argc, char* argv[])
 {
+        bool get_nominal = false;
+        bool get_jes     = false;
+        bool get_jer     = false;
+
+        if (argc < 2 || std::string(argv[1]) == "--help") {
+                std::cout<<"You have to pass one argument to this code. Possible options are:"<<std::endl;
+                std::cout<<"--get-nominal : Gets the nominal pair corrections."<<std::endl;
+                std::cout<<"--get-jes     : Gets the pair corrections with the JES variation."<<std::endl;
+                std::cout<<"--get-jer     : Gets the pair corrections with the JER variation."<<std::endl;
+
+                return 0;
+        }
+
+        if (std::string(argv[1]) == "--get-nominal")
+                get_nominal = true;
+        else if (std::string(argv[1]) == "--get-jes")
+                get_jes = true;
+        else if (std::string(argv[1]) == "--get-jer")
+                get_jer = true;
+        else {
+                std::cout<<"No valid options provided"<<std::endl;
+                return 0;
+        }
+        
+        if ((get_jes && syst_jes_array[0] == -999)||(get_jer && syst_jer_array[0] == -999)) {
+                std::cout<<"No values were found for custom JEC. Set the values related to the JEC:"<<std::endl;
+                std::cout<<"1 - In the bin folder execute: ./create_jes_jer_ntuple"<<std::endl;
+                std::cout<<"2 - In the src-analysis-jets folder execute: root -b -q macro_print_jes_chisquare.cpp"<<std::endl;
+                std::cout<<"3 - Copy the indicated output in include/syst-jes-jer.h"<<std::endl;
+                std::cout<<"4 - In the src-analysis-jets folder execute: root -b -q macro_print_jer_chisquare.cpp"<<std::endl;
+                std::cout<<"5 - Copy the indicated output in include/syst-jes-jer.h"<<std::endl;
+
+                return 0;
+        }
+
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_pair_corrections[argv[1]]).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJetsMCReco* mcrecotree = new TZJetsMCReco();
@@ -56,6 +93,8 @@ int main()
         float vars_reco[Nvars_corrections_mcreco];
         float vars_mc[Nvars_corrections_mc];
 
+        TRandom3* rndm = new TRandom3();
+
         std::cout<<"Processing events ..."<<std::endl;
         for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++) {
                 if (evt%10000 == 0) {
@@ -91,10 +130,46 @@ int main()
                         continue;
 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000.,
-                                        mcrecotree->Jet_PY/1000.,
-                                        mcrecotree->Jet_PZ/1000.,
-                                        mcrecotree->Jet_PE/1000.);
+                double nominal_jec = mcrecotree->Jet_JEC_Cor;
+
+                if (get_nominal)
+                        nominal_jec = 1.;
+
+                Jet_4vector->SetPxPyPzE(mcrecotree->Jet_PX/1000./nominal_jec,
+                                        mcrecotree->Jet_PY/1000./nominal_jec,
+                                        mcrecotree->Jet_PZ/1000./nominal_jec,
+                                        mcrecotree->Jet_PE/1000./nominal_jec);
+
+                if (get_jes) {
+                        double new_jes_cor = -999;
+                        
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
+                                        new_jes_cor = syst_jes_array[jet_pt_bin];
+
+                        Jet_4vector->SetPxPyPzE(new_jes_cor*mcrecotree->Jet_PX/1000./mcrecotree->Jet_JEC_Cor,
+                                                new_jes_cor*mcrecotree->Jet_PY/1000./mcrecotree->Jet_JEC_Cor,
+                                                new_jes_cor*mcrecotree->Jet_PZ/1000./mcrecotree->Jet_JEC_Cor,
+                                                new_jes_cor*mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Cor);
+                } else if (get_jer) {
+                        double new_jer_cor = -999;
+
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
+                                        new_jer_cor = syst_jer_array[jet_pt_bin];
+
+                        if (new_jer_cor < 0) 
+                                continue;
+                        
+                        double smearing_factor = rndm->Gaus(1, new_jer_cor);
+                        
+                        Jet_4vector->SetPxPyPzE(smearing_factor*mcrecotree->Jet_PX/1000./mcrecotree->Jet_JEC_Cor,
+                                                smearing_factor*mcrecotree->Jet_PY/1000./mcrecotree->Jet_JEC_Cor,
+                                                smearing_factor*mcrecotree->Jet_PZ/1000./mcrecotree->Jet_JEC_Cor,
+                                                smearing_factor*mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Cor);
+                }
+
+                // here shoul be the addition of the JES 
                 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;

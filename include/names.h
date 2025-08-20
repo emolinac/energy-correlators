@@ -53,9 +53,16 @@ std::string namef_histos_paircorr_devfromnom_eec_jes     = "histos_paircorr_devf
 std::string namef_histos_paircorr_devfromnom_eec_jer     = "histos_paircorr_devfromnom_eec_jer.root";
 std::string namef_histos_paircorr_devfromnom_eec_ct      = "histos_paircorr_devfromnom_eec_ct.root";
 
+// About names and options
+std::map<std::string, std::string> namef_pair_corrections = {
+        {"--get-nominal", namef_ntuple_eec_paircorrections},
+        {"--get-jes"    , namef_ntuple_eec_paircorrections_jes},
+        {"--get-jer"    , namef_ntuple_eec_paircorrections_jer}
+};
+
 // About systematics
 std::string available_systematics[] = {
-                "corr-paradigm", "ct", "jer", "jes", "prior", "shape-ct"
+        "corr-paradigm", "ct", "jer", "jes", "prior", "shape-ct"
 };
 
 std::map<std::string, std::string> systematic_name  = {
