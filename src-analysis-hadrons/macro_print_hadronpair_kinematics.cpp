@@ -15,21 +15,17 @@ void macro_print_hadronpair_kinematics()
         TNtuple* ntuple_mc     = (TNtuple*) fin->Get(name_ntuple_mc.c_str());
         TNtuple* ntuple_mcreco = (TNtuple*) fin->Get(name_ntuple_mcreco.c_str());
 
-        // TH1F* h_eec_data   = new TH1F("h_eec_data"   ,"",30,rl_min,0.5);
-        // TH1F* h_eec_mc     = new TH1F("h_eec_mc"     ,"",30,rl_min,0.5);
-        // TH1F* h_eec_mcreco = new TH1F("h_eec_mcreco" ,"",30,rl_min,0.5);
-        
         TH1F* h_eec_data   = new TH1F("h_eec_data"   ,"",nbin_rl_nominal,rl_nominal_binning);
         TH1F* h_eec_mc     = new TH1F("h_eec_mc"     ,"",nbin_rl_nominal,rl_nominal_binning);
         TH1F* h_eec_mcreco = new TH1F("h_eec_mcreco" ,"",nbin_rl_nominal,rl_nominal_binning);
         
-        TH1F* h_rl_data   = new TH1F("h_rl_data"   ,"",50,rl_absmin,rl_absmax);
-        TH1F* h_rl_mc     = new TH1F("h_rl_mc"     ,"",50,rl_absmin,rl_absmax);
-        TH1F* h_rl_mcreco = new TH1F("h_rl_mcreco" ,"",50,rl_absmin,rl_absmax);
+        TH1F* h_rl_data   = new TH1F("h_rl_data"   ,"",50,rl_logmin,rl_logmax);
+        TH1F* h_rl_mc     = new TH1F("h_rl_mc"     ,"",50,rl_logmin,rl_logmax);
+        TH1F* h_rl_mcreco = new TH1F("h_rl_mcreco" ,"",50,rl_logmin,rl_logmax);
         
-        TH1F* h_weight_data   = new TH1F("h_weight_data"   ,"",50,weight_min,weight_max);
-        TH1F* h_weight_mc     = new TH1F("h_weight_mc"     ,"",50,weight_min,weight_max);
-        TH1F* h_weight_mcreco = new TH1F("h_weight_mcreco" ,"",50,weight_min,weight_max);
+        TH1F* h_weight_data   = new TH1F("h_weight_data"   ,"",50,weight_min,0.25);
+        TH1F* h_weight_mc     = new TH1F("h_weight_mc"     ,"",50,weight_min,0.25);
+        TH1F* h_weight_mcreco = new TH1F("h_weight_mcreco" ,"",50,weight_min,0.25);
 
         set_histogram_style(h_eec_data     , 875 , std_line_width, std_marker_style, std_marker_size);
         set_histogram_style(h_eec_mc       , 797 , std_line_width, std_marker_style, std_marker_size);
@@ -66,10 +62,6 @@ void macro_print_hadronpair_kinematics()
         ntuple_mc->Project("h_weight_mc","weight_pt");
         ntuple_mcreco->Project("h_weight_mcreco","weight_pt");
         
-        // h_eec_data->Scale(1./h_eec_data->Integral());
-        // h_eec_mc->Scale(1./h_eec_mc->Integral());
-        // h_eec_mcreco->Scale(1./h_eec_mcreco->Integral());
-
         h_eec_data->Scale(1./h_eec_data->Integral(),"width");
         h_eec_mc->Scale(1./h_eec_mc->Integral(),"width");
         h_eec_mcreco->Scale(1./h_eec_mcreco->Integral(),"width");

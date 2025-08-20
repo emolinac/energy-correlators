@@ -291,6 +291,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 }
                 
                 hct_ratio->Draw("col");
+                // hct_ratio->Smooth();
 
                 for (int i = 1; i <= hct_ratio->GetNbinsX(); ++i) {
                         for (int j = 1; j <= hct_ratio->GetNbinsY(); ++j) {

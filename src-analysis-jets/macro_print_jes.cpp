@@ -48,7 +48,7 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
                 
                 hs[bin]->Add(hjes_data[bin]);
                 hs[bin]->Add(hjes_reco[bin]);
-                hs[bin]->SetTitle(";p_{T,jet}/p^{Z}_{t};");
+                hs[bin]->SetTitle(";p_{T,jet}/p^{Z}_{T};");
                 hs[bin]->Draw("NOSTACK");
                 
                 l[bin]->AddEntry(hjes_data[bin],"Normalized Data","p");
@@ -68,7 +68,7 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
                 c->cd(bin + 1);
                 
                 hjes_ratio[bin]->Draw();
-                hjes_ratio[bin]->SetTitle(";p_{T,jet}/p^{Z}_{t};");
+                hjes_ratio[bin]->SetTitle(";p_{T,jet}/p^{Z}_{T};");
                 
                 l[bin]->Clear();
                 l[bin]->SetHeader(Form(" %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));

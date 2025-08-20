@@ -58,10 +58,8 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                 set_histogram_style(halphastar_chisquare[bin], corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[0], std_marker_size);
                 
                 // Undo the JEC
-                ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jet_pt_cut[bin]);
-                ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",pair_jet_pt_cut[bin]);
-                // ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                // ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+                ntuple_jes_data->Project(Form("hdata_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+                ntuple_jes_reco->Project(Form("hreco_nojec[%i]",bin),"(jet_pt/z_pt)/jet_jec_cor",Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
 
                 for (int alpha_star_bin = 0 ; alpha_star_bin < alpha_star_bins ; alpha_star_bin++) {
                         double alpha_star = alpha_star_init + alpha_star_bin*alpha_star_step;
@@ -92,7 +90,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
 
                 l[bin]->Clear();
                 l[bin]->SetHeader(Form(" %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                l[bin]->AddEntry(halphastar_balance[bin],Form("#Delta #sigma(p_{T,jet}/p^{Z}_{t}), #alpha^{*}=%.4f",alpha_star_min),"p");
+                l[bin]->AddEntry(halphastar_balance[bin],Form("#Delta #sigma(p_{T,jet}/p^{Z}_{T}), #alpha^{*}=%.4f",alpha_star_min),"p");
                 l[bin]->Draw("SAME");
         }
 
@@ -114,7 +112,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                 
                 l[bin]->Clear();
                 l[bin]->SetHeader(Form(" %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                l[bin]->AddEntry(halphastar_chisquare[bin],Form("#chi^{2}(p_{T,jet}/p^{Z}_{t}), #alpha^{*}=%.4f",alpha_star_min),"p");
+                l[bin]->AddEntry(halphastar_chisquare[bin],Form("#chi^{2}(p_{T,jet}/p^{Z}_{T}), #alpha^{*}=%.4f",alpha_star_min),"p");
                 l[bin]->Draw("SAME");
         }
 

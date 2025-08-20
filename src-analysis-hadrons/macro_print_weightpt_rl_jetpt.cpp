@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_weightpt_rl_jet_pt()
+void macro_print_weightpt_rl_jetpt()
 {
         TFile* fin = new TFile((output_folder + namef_ntuple_eec_corr).c_str());
 
@@ -19,7 +19,7 @@ void macro_print_weightpt_rl_jet_pt()
         c->Divide(3,1);
         
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                h[bin] = new TH2D(Form("h%i",bin),"",300,0.01,1.2,70000,10E-7,.3);
+                h[bin] = new TH2D(Form("h%i",bin),"",300,0.01,1.2,7000,10E-7,.3);
                 h[bin]->SetTitle(Form("%.0f<p_{T,jet}<%.0f;R_{L};w",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
                 
                 ntuple->Project(Form("h%i",bin),"weight_pt:R_L",pair_jet_pt_cut[bin]);

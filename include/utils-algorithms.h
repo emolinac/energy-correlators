@@ -95,7 +95,7 @@ void regularize_correction_factors(TH3D* h)
         }
 }
 
-void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type = "normal")
+void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type = "normal", bool print_table = true)
 {
         double total_err = 0, total = 0;
 
@@ -125,6 +125,12 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
 
                 total_err += hnominal->GetBinContent(hbin)*syst_error_percentage;
         }
+
+        if (!print_table)
+                return;
+
+        std::cout.setf(std::ios::fixed, std::ios::floatfield);
+        std::cout.precision(2);
 
         if (total > 0)
                 std::cout<<total_err*100./total;

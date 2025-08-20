@@ -93,7 +93,7 @@ void macro_print_jet_kinematics()
         hzpt->Add(h_z_pt_data);
         hzpt->Add(h_z_pt_mc);
         hzpt->Add(h_z_pt_mcreco);
-        hzpt->SetTitle(";p^{Z}_{t}(GeV);Normalized Distributions");
+        hzpt->SetTitle(";p^{Z}_{T}(GeV);Normalized Distributions");
         
         THStack* hzeta = new THStack();
         hzeta->Add(h_z_y_data);
