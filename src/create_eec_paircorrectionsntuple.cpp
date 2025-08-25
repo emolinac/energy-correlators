@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
         float vars_reco[Nvars_corrections_mcreco];
         float vars_mc[Nvars_corrections_mc];
 
-        TRandom3* rndm = new TRandom3();
+        TRandom3* rndm = new TRandom3(0);
 
         std::cout<<"Processing events ..."<<std::endl;
         for (int evt = 0 ; evt < mcrecotree->fChain->GetEntries() ; evt++) {

@@ -43,7 +43,7 @@ void macro_print_responsematrices()
         hresp_weight->Smooth();
         gPad->SetLogx(1);
         gPad->SetLogy(1);
-        c->Print("./plots/responsematrix_weight.pdf");
+        c->Print(Form("./plots/responsematrix_weight_nbinweight%i.pdf",nbin_weight));
         
         hresp_rl->GetXaxis()->SetRangeUser(0.01,1);
         hresp_rl->GetYaxis()->SetRangeUser(0.01,1); 

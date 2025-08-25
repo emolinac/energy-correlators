@@ -184,7 +184,7 @@ int main()
         float vars_jet[Nvars_corrjet];
 
         // Fill the data TNtuple
-        TRandom3* rndm = new TRandom3();
+        TRandom3* rndm = new TRandom3(0);
         
         std::cout<<"Working with 2016 data."<<std::endl;
         for (int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++) {

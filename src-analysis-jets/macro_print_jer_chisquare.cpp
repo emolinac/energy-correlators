@@ -40,7 +40,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
         const int    alpha_star_bins = 30;
         double alpha_star_step = (alpha_star_end - alpha_star_init)/alpha_star_bins;
 
-        TRandom3* rndm = new TRandom3();
+        TRandom3* rndm = new TRandom3(0);
         
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 c->cd(bin + 1);

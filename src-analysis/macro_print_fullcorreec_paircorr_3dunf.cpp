@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorreec_paircorr_3dunf(int niter = nominal_niter, bool do_print = true, bool do_jet_unfolding = false, bool apply_alice_factor = false)
+void macro_print_fullcorreec_paircorr_3dunf(int niter = nominal_niter, bool do_print = true, bool do_jet_unfolding = false, bool do_smooth_unfolding = false)
 {
         // Open the necessary files
         TFile* fout = new TFile((output_folder + namef_histos_paircorr_eec_3dunf).c_str(),"RECREATE");
@@ -51,6 +51,9 @@ void macro_print_fullcorreec_paircorr_3dunf(int niter = nominal_niter, bool do_p
         ntuple_data->Project("hpuritycorrected_ref","weight_pt:jet_pt:R_L","purity");
         
         RooUnfoldBayes unfold(response, hpuritycorrected, niter);
+
+        if (do_smooth_unfolding)
+                unfold.SetSmoothing(do_smooth_unfolding);
 
         TH3D* hunfolded_bayes = (TH3D*) unfold.Hunfold();
         
@@ -235,7 +238,7 @@ void macro_print_fullcorreec_paircorr_3dunf(int niter = nominal_niter, bool do_p
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/corrtau_unf-niter%i_jetptunf-%s_3dunf.pdf",niter,(do_jet_unfolding)?"yes":"no"));
+                c->Print(Form("./plots/corrtau_unf-niter%i_jetptunf-%s_nbinweight%i_3dunf.pdf",niter,(do_jet_unfolding)?"yes":"no",nbin_weight));
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data = new THStack();
@@ -277,5 +280,5 @@ void macro_print_fullcorreec_paircorr_3dunf(int niter = nominal_niter, bool do_p
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/correec_unf-niter%i_jetptunf-%s_3dunf.pdf",niter,(do_jet_unfolding)?"yes":"no"));
+                c->Print(Form("./plots/correec_unf-niter%i_jetptunf-%s_nbinweight%i_smooth-%s_3dunf.pdf",niter,(do_jet_unfolding)?"yes":"no",nbin_weight,(do_smooth_unfolding)?"yes":"no"));
 }

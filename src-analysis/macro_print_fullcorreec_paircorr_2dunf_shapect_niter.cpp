@@ -223,7 +223,7 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
         TH2D* hdatashift   = new TH2D("hdatashift"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);    
         ntuple_data->Project("hdataunf_ref", "jet_pt:R_L");
 
-        TRandom3* rndm = new TRandom3();
+        TRandom3* rndm = new TRandom3(0);
         for (int ct_iter = 0 ; ct_iter < ct_niter ; ct_iter++) {
                 std::cout<<"Iteration "<<ct_iter<<std::endl;
 

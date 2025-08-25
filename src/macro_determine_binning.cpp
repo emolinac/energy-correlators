@@ -7,6 +7,7 @@
 
 void macro_determine_binning()
 {
+        double binning[nbin_chargedeec_nominal + 1];
         double binning_log[nbin_rl_nominal+1];
         double binning_corr_log[nbin_rl_altlogbin + 1];
         double binning_weight[nbin_weight + 1];

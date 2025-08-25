@@ -183,7 +183,7 @@ int main()
         float vars[Nvars_paircorrdata];
         float vars_jet[Nvars_corrjet];
 
-        TRandom3* rndm = new TRandom3();
+        TRandom3* rndm = new TRandom3(0);
 
         // Fill the data TNtuple
         std::cout<<"Working with 2016 data."<<std::endl;
