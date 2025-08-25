@@ -7,46 +7,6 @@
 
 void macro_determine_binning()
 {
-        // // Open data file 
-        // TFile* f = new TFile((output_folder + namef_ntuple_eec_corr).c_str());
-        
-        // // Get TNtuple from file
-        // TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_data.c_str());
-        
-        // // Declare the histos to use
-        // TH1F* h_weight = new TH1F("h_weight","",100000000,weight_min,weight_max);
-
-        // // Put the data into the histos and get the cumulative distributions
-        // ntuple->Project("h_weight","weight_pt",pair_cut);
-
-        // TH1F* h_weight_cumul = (TH1F*) h_weight->GetCumulative();
-
-        // // Determine binning in weights
-        // double entries_bin_weight = h_weight->Integral()/nbin_weight;
-        // std::cout<<"The number of entries for weight is "<<entries_bin_weight<<std::endl;
-        // std::cout<<"const double weight_binning[] = {"<<weight_min<<"";
-        // int counter_weight = 1;
-        // for (int bin = 1 ; bin <= h_weight->GetNbinsX() ; bin++) {
-        //         double q = h_weight_cumul->GetBinContent(bin);
-
-        //         // Exit when determined last bin
-        //         if (counter_weight == nbin_weight) {
-        //                 std::cout<<", "<<weight_max<<"};"<<std::endl;
-        //                 break;
-        //         }
-
-        //         // Condition to determine limit
-        //         if (q > entries_bin_weight * counter_weight) {
-        //                 counter_weight++;
-
-        //                 // Print limits
-        //                 std::cout<<", "<<h_weight_cumul->GetBinCenter(bin-1);
-        //         }
-        // }
-        
-        // // Close file
-        // f->Close();
-
         const int Nbin = nbin_rl_nominal;
         double binning[Nbin + 1];
         
