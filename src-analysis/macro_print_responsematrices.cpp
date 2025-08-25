@@ -15,12 +15,9 @@ void macro_print_responsematrices()
         float jet_pt, jet_pt_truth, R_L, R_L_truth, weight_pt, weight_pt_truth;
         set_unfolding_ntuple_branches(ntuple, &R_L, &R_L_truth, &jet_pt, &jet_pt_truth, &weight_pt, &weight_pt_truth);
         
-        // TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",nbin_rl_nominal      ,rl_nominal_binning          ,nbin_rl_nominal      ,rl_nominal_binning          );
-        // TH2F* hresp_jet_pt = new TH2F("hresp_jet_pt","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        // TH2F* hresp_weight = new TH2F("hresp_weight","",nbin_weight_unfolding,weight_unfoldingbinning,nbin_weight_unfolding,weight_unfoldingbinning);
         TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",200,0.008,0.8,200,0.008,0.8);
         TH2F* hresp_jet_pt = new TH2F("hresp_jet_pt","",200,10,150,200,10,150);
-        TH2F* hresp_weight = new TH2F("hresp_weight","",200,0.00001,0.25,200,0.00001,0.25);
+        TH2F* hresp_weight = new TH2F("hresp_weight","",nbin_weight,weight_binning,nbin_weight,weight_binning);
         
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
                 // Access entry of ntuple
@@ -43,6 +40,7 @@ void macro_print_responsematrices()
         
         hresp_weight->Draw("col");
         hresp_weight->SetTitle("Response matrix of momentum weights;w^{Reco};w^{Truth}");
+        hresp_weight->Smooth();
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         c->Print("./plots/responsematrix_weight.pdf");

@@ -7,7 +7,7 @@
 #include "../include/utils-visual.h"
 #include "TRandom3.h"
 
-void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_niter, int ct_niter = 1, bool do_print = true, bool compare_to_truth = true, bool normalize_to_unity = true)
+void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_niter, int ct_niter = 1, bool do_print = true, bool compare_to_truth = true)
 {
         // Open the necessary files
         std::string systematic = available_systematics[5]; // choose CT systematic
@@ -96,7 +96,6 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
 
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
-        TH1F* hcorr_eec_nonorm[nbin_jet_pt]; 
         TH1F* hcorr_eec[nbin_jet_pt]; 
         TH1F* hcorr_tau[nbin_jet_pt]; 
         TH1F* hcorr_eec_eqcharge[nbin_jet_pt]; 
@@ -189,7 +188,6 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                 ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin), "jet_pt",jet_full_corr[bin]);
                 ntuple_mc_jet->Project(Form("htruth_jet%i" ,bin), "jet_pt");
                 
-                hcorr_eec_nonorm[bin]    = new TH1F(Form("hcorr_eec_nonorm%i",bin)   ,"",nbin_rl_nominal,rl_nominal_binning );
                 hcorr_eec[bin]           = new TH1F(Form("hcorr_eec%i",bin)          ,"",nbin_rl_nominal,rl_nominal_binning );
                 hcorr_tau[bin]           = new TH1F(Form("hcorr_tau%i",bin)          ,"",nbin_rl_nominal,tau_nominal_binning);
                 hcorr_eec_eqcharge[bin]  = new TH1F(Form("hcorr_eec_eqcharge%i",bin) ,"",nbin_chargedeec_nominal,rl_chargedeec_binning);
@@ -216,11 +214,8 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                 htruth_eec_eqcharge[bin]->Divide(htruth_eec_total[bin]);
                 htruth_eec_neqcharge[bin]->Divide(htruth_eec_total[bin]);
 
-                // Normalize the truth distributions to unity for further comparison with corr pseudodata
-                if (normalize_to_unity) {
-                        htruth_eec[bin]->Scale(1./htruth_eec[bin]->Integral(),"width");
-                        htruth_tau[bin]->Scale(1./htruth_tau[bin]->Integral(),"width");
-                }
+                htruth_eec[bin]->Scale(1./hcorr_jet[bin]->Integral());
+                htruth_tau[bin]->Scale(1./hcorr_jet[bin]->Integral());
         }
 
         // Create a data histograma to know how much you have to vary its "content"
@@ -255,7 +250,6 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                 
                                 double content_shift = hdatashift->GetBinContent(hdatashift->FindBin(R_L,jet_pt));
                                 
-                                hcorr_eec_nonorm[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
                                 hcorr_eec[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
                                 hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
 
@@ -265,15 +259,13 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                                         hcorr_eec_neqcharge[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt/efficiency);
                         }
 
+                        hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral());
+                        hcorr_tau[bin]->Scale(1./hcorr_jet[bin]->Integral());
+
                         hcorr_eec_total[bin]->Add(hcorr_eec_eqcharge[bin],hcorr_eec_neqcharge[bin],1,1);
                         hcorr_eec_eqcharge[bin]->Divide(hcorr_eec_total[bin]);
                         hcorr_eec_neqcharge[bin]->Divide(hcorr_eec_total[bin]);
                 
-                        if (normalize_to_unity) {
-                                hcorr_eec[bin]->Scale(1./hcorr_eec[bin]->Integral(),"width");
-                                hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");
-                        }
-                        
                         // Get the delta corresponding to the ith iteration
                         hcorr_ratio_eec[bin][ct_iter]->Divide(hcorr_eec[bin],htruth_eec[bin],1,1);
                         hcorr_ratio_eec_total[bin]->Add(hcorr_ratio_eec[bin][ct_iter],1);
@@ -316,7 +308,7 @@ void macro_print_fullcorreec_paircorr_2dunf_shapect_niter(int niter = nominal_ni
                 
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {   
                         // Normalize both to unity such that we can compare the shapes
-                        for (int bin_rl = 1 ; bin_rl <= hcorr_eec_nonorm[bin]->GetNbinsX() ; bin_rl++) {
+                        for (int bin_rl = 1 ; bin_rl <= hcorr_ratio_eec_total[bin]->GetNbinsX() ; bin_rl++) {
                                 hct_ratio->SetBinContent(bin_rl, bin + 1, hcorr_ratio_eec_total[bin]->GetBinContent(bin_rl));
                                 hct_ratio->SetBinError(bin_rl, bin + 1, hcorr_ratio_eec_total[bin]->GetBinError(bin_rl));
                         } 

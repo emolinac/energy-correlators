@@ -31,7 +31,7 @@ int main()
         ntuple_mcreco_jet->SetAutoSave(0);
 
         // Create Ntuples
-        TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"MC Sim",ntuple_mc_vars);
+        TNtuple* ntuple_mc     = new TNtuple(name_ntuple_mc.c_str()    ,"MC Sim",ntuple_mc_match_vars);
         TNtuple* ntuple_mc_jet = new TNtuple(name_ntuple_mc_jet.c_str(),"MC Sim","jet_pt:jet_eta:z_pt:z_eta:z_y");
         ntuple_mc->SetAutoSave(0);
         ntuple_mc_jet->SetAutoSave(0);
@@ -49,7 +49,7 @@ int main()
         bool maxjetpT_found = false;
         
         // Fill the MC TNtuple
-        float vars_mc[Nvars_mc];
+        float vars_mc[Nvars_mc_match];
         for (int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++) {
                 // Access entry of tree
                 mctree->GetEntry(evt);
@@ -58,6 +58,9 @@ int main()
                         double percentage = 100.*evt/mctree->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
+
+                if (mctree->MCJet_recojet_PHI == -999)
+                        continue;
                 
                 if (evt != 0)
                         if (last_eventNum == mctree->eventNumber) 
@@ -177,6 +180,8 @@ int main()
                                 vars_mc[18] = mup_4vector->Eta();
                                 vars_mc[19] = mctree->MCJet_Dtr_ID[h1_index];
                                 vars_mc[20] = mctree->MCJet_Dtr_ID[h2_index];
+                                vars_mc[21] = (mctree->MCJet_recojet_Dtr_PT[h1_index] == -999 || mctree->MCJet_recojet_Dtr_PT[h2_index] ==-999) ? \
+                                              -999 :  weight(mctree->MCJet_recojet_Dtr_PT[h1_index], mctree->MCJet_recojet_Dtr_PT[h2_index], mctree->MCJet_recojet_PT);
 
                                 // Fill the TNtuple
                                 ntuple_mc->Fill(vars_mc);        

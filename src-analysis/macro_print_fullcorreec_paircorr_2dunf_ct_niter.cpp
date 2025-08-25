@@ -7,7 +7,7 @@
 #include "../include/utils-visual.h"
 #include "TRandom3.h"
 
-void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, int ct_niter = 10, bool do_print = true, bool compare_to_truth = true, bool normalize_to_unity = true)
+void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, int ct_niter = 10, bool do_print = true, bool compare_to_truth = true)
 {
         std::string systematic = available_systematics[1]; // choose CT systematic
         
@@ -24,10 +24,6 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
         if (fcorr->IsZombie()) 
                 return;
 
-        TFile* fnominal = new TFile((output_folder + namef_histos_paircorr_eec).c_str());
-        if (fnominal->IsZombie()) 
-                return;
-        
         TNtuple* ntuple_data   = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
         TNtuple* ntuple_jet    = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
         TNtuple* ntuple_mc     = (TNtuple*) fcorr->Get((name_ntuple_mc).c_str());
@@ -72,7 +68,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
 
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
-        TH1F* hcorr_eec_nonorm[nbin_jet_pt]; 
+        TH1F* hcorr_npair[nbin_jet_pt]; 
         TH1F* hcorr_eec[nbin_jet_pt]; 
         TH1F* hcorr_tau[nbin_jet_pt]; 
         TH1F* hcorr_eec_eqcharge[nbin_jet_pt]; 
@@ -81,6 +77,8 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
         
         TH1F* hcorr_ratio_eec[nbin_jet_pt][ct_niter]; 
         TH1F* hcorr_ratio_eec_total[nbin_jet_pt]; 
+        TH1F* hcorr_ratio_npair[nbin_jet_pt][ct_niter]; 
+        TH1F* hcorr_ratio_npair_total[nbin_jet_pt]; 
         TH1F* hcorr_ratio_tau[nbin_jet_pt][ct_niter]; 
         TH1F* hcorr_ratio_tau_total[nbin_jet_pt]; 
         TH1F* hcorr_ratio_eec_eqcharge[nbin_jet_pt][ct_niter]; 
@@ -92,7 +90,8 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
 
         TH1F* htruth_jet[nbin_jet_pt];
         TH1F* htruth_eec[nbin_jet_pt]; 
-        TH1F* htruth_tau[nbin_jet_pt];     
+        TH1F* htruth_tau[nbin_jet_pt]; 
+        TH1F* htruth_npair[nbin_jet_pt];     
         TH1F* htruth_eec_eqcharge[nbin_jet_pt]; 
         TH1F* htruth_eec_neqcharge[nbin_jet_pt];     
         TH1F* htruth_eec_total[nbin_jet_pt];
@@ -147,9 +146,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 ntuple_jet->Project(Form("hcorr_jet_centroid%i" ,bin), "jet_pt",jet_full_corr[bin]);
                 ntuple_mc_jet->Project(Form("htruth_jet%i" ,bin), "jet_pt");
                 
-                hnominal[bin] = (TH1F*) fnominal->Get(Form("hcorr_eec%i",bin));
-                
-                hcorr_eec_nonorm[bin]    = new TH1F(Form("hcorr_eec_nonorm%i",bin)   ,"",nbin_rl_nominal,rl_nominal_binning );
+                hcorr_npair[bin]         = new TH1F(Form("hcorr_npair%i",bin)        ,"",nbin_rl_nominal,rl_nominal_binning );
                 hcorr_eec[bin]           = new TH1F(Form("hcorr_eec%i",bin)          ,"",nbin_rl_nominal,rl_nominal_binning );
                 hcorr_tau[bin]           = new TH1F(Form("hcorr_tau%i",bin)          ,"",nbin_rl_nominal,tau_nominal_binning);
                 hcorr_eec_eqcharge[bin]  = new TH1F(Form("hcorr_eec_eqcharge%i",bin) ,"",nbin_chargedeec_nominal,rl_chargedeec_binning);
@@ -158,30 +155,31 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 
                 htruth_eec[bin]           = new TH1F(Form("htruth_eec%i",bin)           ,"",nbin_rl_nominal,rl_nominal_binning);
                 htruth_tau[bin]           = new TH1F(Form("htruth_tau%i",bin)           ,"",nbin_rl_nominal,tau_nominal_binning);
+                htruth_npair[bin]         = new TH1F(Form("htruth_npair%i",bin)         ,"",nbin_rl_nominal,rl_nominal_binning);
                 htruth_eec_eqcharge[bin]  = new TH1F(Form("htruth_eec_eqcharge%i",bin)  ,"",nbin_chargedeec_nominal,rl_chargedeec_binning);
                 htruth_eec_neqcharge[bin] = new TH1F(Form("htruth_eec_neqcharge%i",bin) ,"",nbin_chargedeec_nominal,rl_chargedeec_binning);
                 htruth_eec_total[bin]     = new TH1F(Form("htruth_eec_total%i",bin)     ,"",nbin_chargedeec_nominal,rl_chargedeec_binning);
                 
-                hcorr_ratio_eec_total[bin]           = new TH1F(Form("hcorr_ratio_eec_total%i",bin),"",nbin_rl_nominal,rl_nominal_binning);
-                hcorr_ratio_tau_total[bin]           = new TH1F(Form("hcorr_ratio_tau_total%i",bin),"",nbin_rl_nominal,tau_nominal_binning);
+                hcorr_ratio_eec_total[bin]           = new TH1F(Form("hcorr_ratio_eec_total%i",bin)  ,"",nbin_rl_nominal,rl_nominal_binning);
+                hcorr_ratio_npair_total[bin]         = new TH1F(Form("hcorr_ratio_npair_total%i",bin),"",nbin_rl_nominal,rl_nominal_binning);
+                hcorr_ratio_tau_total[bin]           = new TH1F(Form("hcorr_ratio_tau_total%i",bin)  ,"",nbin_rl_nominal,tau_nominal_binning);
                 hcorr_ratio_eec_eqcharge_total[bin]  = new TH1F(Form("hcorr_ratio_eec_eqcharge_total%i",bin) ,"",nbin_chargedeec_nominal,rl_chargedeec_binning);
                 hcorr_ratio_eec_neqcharge_total[bin] = new TH1F(Form("hcorr_ratio_eec_neqcharge_total%i",bin),"",nbin_chargedeec_nominal,rl_chargedeec_binning);
 
                 ntuple_mc->Project(Form("htruth_eec%i",bin),"R_L",eec_jet_pt_cut[bin]);
+                ntuple_mc->Project(Form("htruth_npair%i",bin),"R_L",pair_jet_pt_cut[bin]);
                 ntuple_mc->Project(Form("htruth_tau%i",bin),Form("R_L*%f",htruth_jet[bin]->GetMean()),eec_jet_pt_cut[bin]);
                 ntuple_mc->Project(Form("htruth_eec_eqcharge%i",bin),"R_L",eec_eqcharge_jet_pt_cut[bin]);
                 ntuple_mc->Project(Form("htruth_eec_neqcharge%i",bin),"R_L",eec_neqcharge_jet_pt_cut[bin]);
                 ntuple_mc->Project(Form("htruth_eec_total%i",bin),"R_L",eec_jet_pt_cut[bin]);
 
+                htruth_npair[bin]->Scale(1./htruth_jet[bin]->Integral());
+                htruth_eec[bin]->Scale(1./htruth_jet[bin]->Integral());
+                htruth_tau[bin]->Scale(1./htruth_jet[bin]->Integral());
+
                 htruth_eec_total[bin]->Add(htruth_eec_eqcharge[bin],htruth_eec_neqcharge[bin],1,1);
                 htruth_eec_eqcharge[bin]->Divide(htruth_eec_total[bin]);
                 htruth_eec_neqcharge[bin]->Divide(htruth_eec_total[bin]);
-
-                // Normalize the truth distributions to unity for further comparison with corr pseudodata
-                if (normalize_to_unity) {
-                        htruth_eec[bin]->Scale(1./htruth_eec[bin]->Integral(),"width");
-                        htruth_tau[bin]->Scale(1./htruth_tau[bin]->Integral(),"width");
-                }
         }
 
         // Create a data histograma to know how much you have to vary its "content"
@@ -196,8 +194,9 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 set_shift_histo(hdataunf_ref,hdatashift,rndm);
 
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                        hcorr_ratio_eec[bin][ct_iter] = new TH1F(Form("hcorr_ratio_eec%i%i",bin,ct_iter),"",nbin_rl_nominal,rl_nominal_binning);
-                        hcorr_ratio_tau[bin][ct_iter] = new TH1F(Form("hcorr_ratio_tau%i%i",bin,ct_iter),"",nbin_rl_nominal,tau_nominal_binning);
+                        hcorr_ratio_eec[bin][ct_iter]   = new TH1F(Form("hcorr_ratio_eec%i%i",bin,ct_iter),"",nbin_rl_nominal,rl_nominal_binning);
+                        hcorr_ratio_tau[bin][ct_iter]   = new TH1F(Form("hcorr_ratio_tau%i%i",bin,ct_iter),"",nbin_rl_nominal,tau_nominal_binning);
+                        hcorr_ratio_npair[bin][ct_iter] = new TH1F(Form("hcorr_ratio_npair%i%i",bin,ct_iter),"",nbin_rl_nominal,rl_nominal_binning);
                         hcorr_ratio_eec_eqcharge[bin][ct_iter] = new TH1F(Form("hcorr_ratio_eec_eqcharge%i%i",bin,ct_iter),"",nbin_chargedeec_nominal,rl_chargedeec_binning);
                         hcorr_ratio_eec_neqcharge[bin][ct_iter] = new TH1F(Form("hcorr_ratio_eec_neqcharge%i%i",bin,ct_iter),"",nbin_chargedeec_nominal,rl_chargedeec_binning);
                         
@@ -216,7 +215,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 
                                 double content_shift = hdatashift->GetBinContent(hdatashift->FindBin(R_L,jet_pt));
                 
-                                hcorr_eec_nonorm[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
+                                hcorr_npair[bin]->Fill(R_L,event_weight*purity*unfolding_weight*content_shift/efficiency);
                                 hcorr_eec[bin]->Fill(R_L,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
                                 hcorr_tau[bin]->Fill(R_L*jet_pt_centroid,event_weight*purity*unfolding_weight*weight_pt*content_shift/efficiency);
 
@@ -229,15 +228,17 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                         hcorr_eec_total[bin]->Add(hcorr_eec_eqcharge[bin],hcorr_eec_neqcharge[bin],1,1);
                         hcorr_eec_eqcharge[bin]->Divide(hcorr_eec_total[bin]);
                         hcorr_eec_neqcharge[bin]->Divide(hcorr_eec_total[bin]);
+
+                        hcorr_npair[bin]->Scale(1./hcorr_jet[bin]->Integral());
+                        hcorr_eec[bin]->Scale(1./hcorr_jet[bin]->Integral());
+                        hcorr_tau[bin]->Scale(1./hcorr_jet[bin]->Integral());
                 
-                        if (normalize_to_unity) {
-                                hcorr_eec[bin]->Scale(1./hcorr_eec[bin]->Integral(),"width");
-                                hcorr_tau[bin]->Scale(1./hcorr_tau[bin]->Integral(),"width");
-                        }
-                        
                         // Get the delta corresponding to the ith iteration
                         hcorr_ratio_eec[bin][ct_iter]->Divide(hcorr_eec[bin],htruth_eec[bin],1,1);
                         hcorr_ratio_eec_total[bin]->Add(hcorr_ratio_eec[bin][ct_iter],1);
+
+                        hcorr_ratio_npair[bin][ct_iter]->Divide(hcorr_npair[bin],htruth_npair[bin],1,1);
+                        hcorr_ratio_npair_total[bin]->Add(hcorr_ratio_npair[bin][ct_iter],1);
 
                         hcorr_ratio_tau[bin][ct_iter]->Divide(hcorr_tau[bin],htruth_tau[bin],1,1);
                         hcorr_ratio_tau_total[bin]->Add(hcorr_ratio_tau[bin][ct_iter],1);
@@ -250,6 +251,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
 
                         // Reset histograms to use again
                         hcorr_eec[bin]->Reset();
+                        hcorr_npair[bin]->Reset();
                         hcorr_tau[bin]->Reset();
                         hcorr_eec_eqcharge[bin]->Reset();
                         hcorr_eec_neqcharge[bin]->Reset();
@@ -258,32 +260,40 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
         }
         
         // Scale the relevant histograms
-        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                hcorr_ratio_eec_total[bin]->Scale(1./ct_niter);
-                hcorr_ratio_tau_total[bin]->Scale(1./ct_niter);
-                hcorr_ratio_eec_eqcharge_total[bin]->Scale(1./ct_niter);
-                hcorr_ratio_eec_neqcharge_total[bin]->Scale(1./ct_niter);
-                
-                fout->cd();
-                hcorr_ratio_eec_total[bin]->Write();
-                hcorr_ratio_tau_total[bin]->Write();
-                hcorr_ratio_eec_eqcharge_total[bin]->Write();
-                hcorr_ratio_eec_neqcharge_total[bin]->Write();
-                gROOT->cd();
+        if (ct_niter > 1) {
+                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                        hcorr_ratio_eec_total[bin]->Scale(1./ct_niter);
+                        hcorr_ratio_npair_total[bin]->Scale(1./ct_niter);
+                        hcorr_ratio_tau_total[bin]->Scale(1./ct_niter);
+                        hcorr_ratio_eec_eqcharge_total[bin]->Scale(1./ct_niter);
+                        hcorr_ratio_eec_neqcharge_total[bin]->Scale(1./ct_niter);
+                        
+                        fout->cd();
+                        hcorr_ratio_eec_total[bin]->Write();
+                        hcorr_ratio_npair_total[bin]->Write();
+                        hcorr_ratio_tau_total[bin]->Write();
+                        hcorr_ratio_eec_eqcharge_total[bin]->Write();
+                        hcorr_ratio_eec_neqcharge_total[bin]->Write();
+                        gROOT->cd();
+                }
         }
-
+        
         if (compare_to_truth) {
-                TH2F* hct_ratio = new TH2F("hct_ratio","",nbin_rl_nominal,rl_nominal_binning,nbin_jet_pt,jet_pt_binning);
+                TH2F* hct_ratio        = new TH2F("hct_ratio"       ,"",nbin_rl_nominal,rl_nominal_binning,nbin_jet_pt,jet_pt_binning);
+                TH2F* hct_npairs_ratio = new TH2F("hct_npairs_ratio","",nbin_rl_nominal,rl_nominal_binning,nbin_jet_pt,jet_pt_binning);
                 
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {   
-                        // Normalize both to unity such that we can compare the shapes
-                        for (int bin_rl = 1 ; bin_rl <= hcorr_eec_nonorm[bin]->GetNbinsX() ; bin_rl++) {
+                        for (int bin_rl = 1 ; bin_rl <= hcorr_npair[bin]->GetNbinsX() ; bin_rl++) {
                                 hct_ratio->SetBinContent(bin_rl, bin + 1, hcorr_ratio_eec_total[bin]->GetBinContent(bin_rl));
                                 hct_ratio->SetBinError(bin_rl, bin + 1, hcorr_ratio_eec_total[bin]->GetBinError(bin_rl));
+
+                                hct_npairs_ratio->SetBinContent(bin_rl, bin + 1, hcorr_ratio_npair_total[bin]->GetBinContent(bin_rl));
+                                hct_npairs_ratio->SetBinError(bin_rl, bin + 1, hcorr_ratio_npair_total[bin]->GetBinError(bin_rl));
                         } 
 
                         fout_dev->cd();
                         hcorr_ratio_eec_total[bin]->Write(Form("h_deviations_eec%i",bin));
+                        hcorr_ratio_npair_total[bin]->Write(Form("h_deviations_npair%i",bin));
                         hcorr_ratio_tau_total[bin]->Write(Form("h_deviations_tau%i",bin));
                         hcorr_ratio_eec_eqcharge_total[bin]->Write(Form("h_deviations_eec_eqcharge%i",bin));
                         hcorr_ratio_eec_neqcharge_total[bin]->Write(Form("h_deviations_eec_neqcharge%i",bin));
@@ -291,8 +301,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 }
                 
                 hct_ratio->Draw("col");
-                // hct_ratio->Smooth();
-
+                
                 for (int i = 1; i <= hct_ratio->GetNbinsX(); ++i) {
                         for (int j = 1; j <= hct_ratio->GetNbinsY(); ++j) {
                                 double x = hct_ratio->GetXaxis()->GetBinCenter(i);
@@ -309,6 +318,28 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
-                if (do_print) c->Print(Form("./plots/closuretest_unf-niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
+                if (do_print) 
+                        c->Print(Form("./plots/closuretest_unf-niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
+
+                hct_npairs_ratio->Draw("col");
+                
+                for (int i = 1; i <= hct_npairs_ratio->GetNbinsX(); ++i) {
+                        for (int j = 1; j <= hct_npairs_ratio->GetNbinsY(); ++j) {
+                                double x = hct_npairs_ratio->GetXaxis()->GetBinCenter(i);
+                                double y = hct_npairs_ratio->GetYaxis()->GetBinCenter(j);
+                                double content = hct_npairs_ratio->GetBinContent(i, j);
+                                double error = hct_npairs_ratio->GetBinError(i, j);
+                                // Draw content and error in the format "content ± error"
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+
+                hct_npairs_ratio->SetTitle("Closure Test Npairs: Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p_{T,jet} (GeV)");
+                hct_npairs_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hct_npairs_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                if (do_print) 
+                        c->Print(Form("./plots/closuretest_unf-niter%i_ratio_ctniter%i_npairs.pdf",niter,ct_niter));
         }
 }

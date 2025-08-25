@@ -57,15 +57,15 @@ int main()
         TH2D* h2_muon_2017_trgeff_data = (TH2D*) fefficiency_muon_2017_trg->Get("Hist_ALL_2017_ETA_PT_Eff");
 
         // Jet corrections
-        TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", nbin_jet_pt_corrections, jet_pt_binning);
+        TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", nbin_jet_pt_corrections, jet_pt_binning);
+        TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", nbin_jet_pt_corrections, jet_pt_binning);
         hnum_pur_jet->Sumw2();
         hden_pur_jet->Sumw2();
 
-        TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", nbin_jet_pt_corrections, jet_pt_binning);
+        TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", nbin_jet_pt_corrections, jet_pt_binning);
+        TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", nbin_jet_pt_corrections, jet_pt_binning);
         hnum_eff_jet->Sumw2();
         hden_eff_jet->Sumw2();
 
@@ -173,14 +173,13 @@ int main()
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
 
-                // Access entry of tree
-                pseudodata->GetEntry(evt);
-
                 if (evt != 0)
                         if (last_eventNum == pseudodata->eventNumber)
                                 continue;
                 
-                // Apply PV cut
+                if (pseudodata->Jet_mcjet_nmcdtrs == -999)
+                        continue;
+                
                 if (pseudodata->nPV != 1) 
                         continue;
 
@@ -393,6 +392,9 @@ int main()
                         double percentage = 100.*evt/truthdata->fChain->GetEntries();
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
+
+                if (truthdata->MCJet_recojet_PX == -999)
+                        continue;
 
                 if (evt != 0)
                         if (last_eventNum == truthdata->eventNumber) 

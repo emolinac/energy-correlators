@@ -7,45 +7,45 @@
 
 void macro_determine_binning()
 {
-        // Open data file 
-        TFile* f = new TFile((output_folder + namef_ntuple_eec_corr).c_str());
+        // // Open data file 
+        // TFile* f = new TFile((output_folder + namef_ntuple_eec_corr).c_str());
         
-        // Get TNtuple from file
-        TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_data.c_str());
+        // // Get TNtuple from file
+        // TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_data.c_str());
         
-        // Declare the histos to use
-        TH1F* h_weight = new TH1F("h_weight","",100000000,weight_min,weight_max);
+        // // Declare the histos to use
+        // TH1F* h_weight = new TH1F("h_weight","",100000000,weight_min,weight_max);
 
-        // Put the data into the histos and get the cumulative distributions
-        ntuple->Project("h_weight","weight_pt",pair_cut);
+        // // Put the data into the histos and get the cumulative distributions
+        // ntuple->Project("h_weight","weight_pt",pair_cut);
 
-        TH1F* h_weight_cumul = (TH1F*) h_weight->GetCumulative();
+        // TH1F* h_weight_cumul = (TH1F*) h_weight->GetCumulative();
 
-        // Determine binning in weights
-        double entries_bin_weight = h_weight->Integral()/nbin_weight;
-        std::cout<<"The number of entries for weight is "<<entries_bin_weight<<std::endl;
-        std::cout<<"const double weight_binning[] = {"<<weight_min<<"";
-        int counter_weight = 1;
-        for (int bin = 1 ; bin <= h_weight->GetNbinsX() ; bin++) {
-                double q = h_weight_cumul->GetBinContent(bin);
+        // // Determine binning in weights
+        // double entries_bin_weight = h_weight->Integral()/nbin_weight;
+        // std::cout<<"The number of entries for weight is "<<entries_bin_weight<<std::endl;
+        // std::cout<<"const double weight_binning[] = {"<<weight_min<<"";
+        // int counter_weight = 1;
+        // for (int bin = 1 ; bin <= h_weight->GetNbinsX() ; bin++) {
+        //         double q = h_weight_cumul->GetBinContent(bin);
 
-                // Exit when determined last bin
-                if (counter_weight == nbin_weight) {
-                        std::cout<<", "<<weight_max<<"};"<<std::endl;
-                        break;
-                }
+        //         // Exit when determined last bin
+        //         if (counter_weight == nbin_weight) {
+        //                 std::cout<<", "<<weight_max<<"};"<<std::endl;
+        //                 break;
+        //         }
 
-                // Condition to determine limit
-                if (q > entries_bin_weight * counter_weight) {
-                        counter_weight++;
+        //         // Condition to determine limit
+        //         if (q > entries_bin_weight * counter_weight) {
+        //                 counter_weight++;
 
-                        // Print limits
-                        std::cout<<", "<<h_weight_cumul->GetBinCenter(bin-1);
-                }
-        }
+        //                 // Print limits
+        //                 std::cout<<", "<<h_weight_cumul->GetBinCenter(bin-1);
+        //         }
+        // }
         
-        // Close file
-        f->Close();
+        // // Close file
+        // f->Close();
 
         const int Nbin = nbin_rl_nominal;
         double binning[Nbin + 1];
@@ -53,14 +53,24 @@ void macro_determine_binning()
         const int nbin_log = nbin_rl_nominal;
         double binning_log[nbin_log+1];
         double binning_corr_log[nbin_rl_altlogbin + 1];
+        double binning_weight[nbin_weight + 1];
 
         double binning_tau_log[nbin_tau_logbin + 1];
 
         determine_eqsizebinning(nbin_chargedeec_nominal, rl_logmin, rl_logmax, binning);
+        determine_log10binning(nbin_weight, weight_absmin, weight_absmax, binning_weight);
         determine_log10binning(nbin_log, rl_logmin, rl_logmax, binning_log);
         determine_log10binning(nbin_tau_logbin, tau_min, tau_max, binning_tau_log);
         determine_log10binning(nbin_rl_altlogbin, rl_logmin, rl_logmax, binning_corr_log);
         
+        // Weight
+        std::cout<<"const double weight_binning[] = {weight_absmin";
+        
+        for (int i = 1 ; i < nbin_weight ; i++)
+                std::cout<<", "<<binning_weight[i];
+
+        std::cout<<", weight_absmax};"<<std::endl;
+
         // rl binning
         std::cout<<"const double charged_rl_chargedeec_binning[]              = {rl_logmin";
         

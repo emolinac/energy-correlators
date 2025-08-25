@@ -146,11 +146,20 @@ int main(int argc, char* argv[])
                         for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
                                 if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
                                         new_jes_cor = syst_jes_array[jet_pt_bin];
+                                else
+                                        new_jes_cor = 1;
 
-                        Jet_4vector->SetPxPyPzE(new_jes_cor*mcrecotree->Jet_PX/1000./mcrecotree->Jet_JEC_Cor,
-                                                new_jes_cor*mcrecotree->Jet_PY/1000./mcrecotree->Jet_JEC_Cor,
-                                                new_jes_cor*mcrecotree->Jet_PZ/1000./mcrecotree->Jet_JEC_Cor,
-                                                new_jes_cor*mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Cor);
+                        double new_jes_cor_effect = abs(1. - new_jes_cor);
+
+                        if(rndm->Integer(2))
+                                new_jes_cor = 1 + new_jes_cor_effect;
+                        else
+                                new_jes_cor = 1 - new_jes_cor_effect;
+
+                        Jet_4vector->SetPxPyPzE(new_jes_cor*mcrecotree->Jet_PX/1000.,
+                                                new_jes_cor*mcrecotree->Jet_PY/1000.,
+                                                new_jes_cor*mcrecotree->Jet_PZ/1000.,
+                                                new_jes_cor*mcrecotree->Jet_PE/1000.);
                 } else if (get_jer) {
                         double new_jer_cor = -999;
 
@@ -163,10 +172,10 @@ int main(int argc, char* argv[])
                         
                         double smearing_factor = rndm->Gaus(1, new_jer_cor);
                         
-                        Jet_4vector->SetPxPyPzE(smearing_factor*mcrecotree->Jet_PX/1000./mcrecotree->Jet_JEC_Cor,
-                                                smearing_factor*mcrecotree->Jet_PY/1000./mcrecotree->Jet_JEC_Cor,
-                                                smearing_factor*mcrecotree->Jet_PZ/1000./mcrecotree->Jet_JEC_Cor,
-                                                smearing_factor*mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Cor);
+                        Jet_4vector->SetPxPyPzE(smearing_factor*mcrecotree->Jet_PX/1000.,
+                                                smearing_factor*mcrecotree->Jet_PY/1000.,
+                                                smearing_factor*mcrecotree->Jet_PZ/1000.,
+                                                smearing_factor*mcrecotree->Jet_PE/1000.);
                 }
 
                 // here shoul be the addition of the JES 

@@ -45,6 +45,9 @@ std::string namef_histos_paircorr_eec_jes     = "histos_paircorr_eec_jes.root";
 std::string namef_histos_paircorr_eec_prior   = "histos_paircorr_eec_prior.root";
 std::string namef_histos_paircorr_eec_shapect = "histos_paircorr_eec_shapect.root";
 std::string namef_histos_paircorr_eec_jer     = "histos_paircorr_eec_jer.root";
+std::string namef_histos_paircorr_eec_3dunf   = "histos_paircorr_eec_3dunf.root";
+
+std::string namef_histos_weight_corr          = "histos_weightcorr.root";
 
 std::string namef_histos_devfromnom_eec                  = "histos_devfromnom_eec.root";
 std::string namef_histos_paircorr_devfromnom_eec_prior   = "histos_paircorr_devfromnom_eec_prior.root";
@@ -52,6 +55,7 @@ std::string namef_histos_paircorr_devfromnom_eec_shapect = "histos_paircorr_devf
 std::string namef_histos_paircorr_devfromnom_eec_jes     = "histos_paircorr_devfromnom_eec_jes.root";
 std::string namef_histos_paircorr_devfromnom_eec_jer     = "histos_paircorr_devfromnom_eec_jer.root";
 std::string namef_histos_paircorr_devfromnom_eec_ct      = "histos_paircorr_devfromnom_eec_ct.root";
+std::string namef_histos_paircorr_devfromnom_eec_3dunf   = "histos_paircorr_devfromnom_eec_3dunf.root";
 
 // About names and options
 std::map<std::string, std::string> namef_pair_corrections = {
@@ -62,7 +66,7 @@ std::map<std::string, std::string> namef_pair_corrections = {
 
 // About systematics
 std::string available_systematics[] = {
-        "corr-paradigm", "ct", "jer", "jes", "prior", "shape-ct"
+        "corr-paradigm", "ct", "jer", "jes", "prior", "shape-ct", "3dunf"
 };
 
 std::map<std::string, std::string> systematic_name  = {
@@ -71,7 +75,8 @@ std::map<std::string, std::string> systematic_name  = {
         {available_systematics[2],"JER"},
         {available_systematics[3],"JES"},
         {available_systematics[4],"Prior Variation"},
-        {available_systematics[5],"Shape Closure Test"}
+        {available_systematics[5],"Shape Closure Test"},
+        {available_systematics[6],"3D Unfolding"}
 };
 
 std::map<std::string, std::string> systematic_namef = {
@@ -80,7 +85,8 @@ std::map<std::string, std::string> systematic_namef = {
         {available_systematics[2],namef_histos_paircorr_eec_jer},
         {available_systematics[3],namef_histos_paircorr_eec_jes},
         {available_systematics[4],namef_histos_paircorr_eec_prior},
-        {available_systematics[5],namef_histos_paircorr_eec_shapect}
+        {available_systematics[5],namef_histos_paircorr_eec_shapect},
+        {available_systematics[6],namef_histos_paircorr_eec_3dunf}
 };
 
 std::map<std::string, std::string> devfromnom_namef = {
@@ -89,7 +95,8 @@ std::map<std::string, std::string> devfromnom_namef = {
         {available_systematics[2],namef_histos_paircorr_devfromnom_eec_jer},
         {available_systematics[3],namef_histos_paircorr_devfromnom_eec_jes},
         {available_systematics[4],namef_histos_paircorr_devfromnom_eec_prior},
-        {available_systematics[5],namef_histos_paircorr_devfromnom_eec_shapect}
+        {available_systematics[5],namef_histos_paircorr_devfromnom_eec_shapect},
+        {available_systematics[6],namef_histos_paircorr_devfromnom_eec_3dunf}
 };
 
 std::map<std::string, std::string> systematic_errtype = {
@@ -98,12 +105,14 @@ std::map<std::string, std::string> systematic_errtype = {
         {available_systematics[2],"uniform"},
         {available_systematics[3],"uniform"},
         {available_systematics[4],"uniform"},
-        {available_systematics[5],"uniform"}
+        {available_systematics[5],"uniform"},
+        {available_systematics[6],"uniform"}
 };
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_mcreco          = 21; 
 const int Nvars_mc              = 21; 
+const int Nvars_mc_match        = 22; 
 const int Nvars_data            = 17; 
 const int Nvars_paircorrdata    = 26; 
 
@@ -111,6 +120,7 @@ const char* ntuple_mcreco_vars       = "weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_ch
 const char* ntuple_data_vars         = "event_weight:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:mum_pt:mum_eta:mup_pt:mup_eta:jet_e";
 const char* ntuple_paircorrdata_vars = "event_weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_reco_ok:n_reco:n_truth_ok:n_truth:eq_charge";
 const char* ntuple_mc_vars           = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
+const char* ntuple_mc_match_vars     = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid:weight_pt_reco";
 
 //--------------------------------------------------------------------------------------//
 const int   Nvars_corrections_mc         = 13;

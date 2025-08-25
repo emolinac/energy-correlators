@@ -32,8 +32,8 @@ int main()
         std::cout<<"- The pair corrections are changed due to the JER"<<std::endl;
         
         // Open correction files
-        // TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections_jes).c_str());
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections_jes).c_str());
+        // TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -78,15 +78,15 @@ int main()
         TH2D* h2_muon_2018_trgeff_data = (TH2D*) fefficiency_muon_2018_trg->Get("Hist_ALL_2018_ETA_PT_Eff");
 
         // Jet corrections
-        TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH1F* hnum_pur_jet = new TH1F("hnum_pur_jet", "", nbin_jet_pt_corrections, jet_pt_binning);
+        TH1F* hden_pur_jet = new TH1F("hden_pur_jet", "", nbin_jet_pt_corrections, jet_pt_binning);
+        TH1F* hpurity_jet  = new TH1F("hpurity_jet" , "", nbin_jet_pt_corrections, jet_pt_binning);
         hnum_pur_jet->Sumw2();
         hden_pur_jet->Sumw2();
 
-        TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
-        TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", nbin_jet_pt_corrections, jet_pt_corrections_binning);
+        TH1F* hnum_eff_jet    = new TH1F("hnum_eff_jet"   , "", nbin_jet_pt_corrections, jet_pt_binning);
+        TH1F* hden_eff_jet    = new TH1F("hden_eff_jet"   , "", nbin_jet_pt_corrections, jet_pt_binning);
+        TH1F* hefficiency_jet = new TH1F("hefficiency_jet", "", nbin_jet_pt_corrections, jet_pt_binning);
         hnum_eff_jet->Sumw2();
         hden_eff_jet->Sumw2();
 
@@ -220,10 +220,10 @@ int main()
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PY/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PZ/1000./datatree_2016->Jet_JEC_Cor,
-                                        datatree_2016->Jet_PE/1000./datatree_2016->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,
+                                        datatree_2016->Jet_PY/1000.,
+                                        datatree_2016->Jet_PZ/1000.,
+                                        datatree_2016->Jet_PE/1000.);
 
                 double new_jer_cor = -999;
                 for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
@@ -233,10 +233,10 @@ int main()
                 if (new_jer_cor<0)
                         continue;
                 double smearing_factor = rndm->Gaus(1, new_jer_cor);
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2016->Jet_PX/1000./datatree_2016->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2016->Jet_PY/1000./datatree_2016->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2016->Jet_PZ/1000./datatree_2016->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2016->Jet_PE/1000./datatree_2016->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2016->Jet_PX/1000.,
+                                        smearing_factor*datatree_2016->Jet_PY/1000.,
+                                        smearing_factor*datatree_2016->Jet_PZ/1000.,
+                                        smearing_factor*datatree_2016->Jet_PE/1000.);
 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt()))
                         continue;
@@ -451,10 +451,10 @@ int main()
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PY/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PZ/1000./datatree_2017->Jet_JEC_Cor,
-                                        datatree_2017->Jet_PE/1000./datatree_2017->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,
+                                        datatree_2017->Jet_PY/1000.,
+                                        datatree_2017->Jet_PZ/1000.,
+                                        datatree_2017->Jet_PE/1000.);
 
                 double new_jer_cor = -999;
                 for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
@@ -464,10 +464,10 @@ int main()
                 if (new_jer_cor<0) 
                         continue;
                 double smearing_factor = rndm->Gaus(1,new_jer_cor);
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000./datatree_2017->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2017->Jet_PY/1000./datatree_2017->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2017->Jet_PZ/1000./datatree_2017->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2017->Jet_PE/1000./datatree_2017->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000.,
+                                        smearing_factor*datatree_2017->Jet_PY/1000.,
+                                        smearing_factor*datatree_2017->Jet_PZ/1000.,
+                                        smearing_factor*datatree_2017->Jet_PE/1000.);
 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
@@ -683,10 +683,10 @@ int main()
                         continue;
                 
                 // Set Jet-associated 4 vectors and apply cuts
-                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PY/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PZ/1000./datatree_2018->Jet_JEC_Cor,
-                                        datatree_2018->Jet_PE/1000./datatree_2018->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000.,
+                                        datatree_2018->Jet_PY/1000.,
+                                        datatree_2018->Jet_PZ/1000.,
+                                        datatree_2018->Jet_PE/1000.);
 
                 double new_jer_cor = -999;
                 for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
@@ -696,10 +696,10 @@ int main()
                 if (new_jer_cor<0) 
                         continue;
                 double smearing_factor = rndm->Gaus(1,new_jer_cor);
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2018->Jet_PX/1000./datatree_2018->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2018->Jet_PY/1000./datatree_2018->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2018->Jet_PZ/1000./datatree_2018->Jet_JEC_Cor,
-                                        smearing_factor*datatree_2018->Jet_PE/1000./datatree_2018->Jet_JEC_Cor);
+                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2018->Jet_PX/1000.,
+                                        smearing_factor*datatree_2018->Jet_PY/1000.,
+                                        smearing_factor*datatree_2018->Jet_PZ/1000.,
+                                        smearing_factor*datatree_2018->Jet_PE/1000.);
 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;

@@ -18,7 +18,7 @@ void macro_print_deviation_from_nominal(bool normalize = true, bool do_print = f
         gROOT->cd();
 
         TFile* fnominal    = new TFile((output_folder + namef_histos_paircorr_eec).c_str());
-        TFile* fsystematic = new TFile((output_folder+systematic_namef[systematic]).c_str());
+        TFile* fsystematic = new TFile((output_folder + systematic_namef[systematic]).c_str());
 
         TH1F* h_nominal_eec[nbin_jet_pt];
         TH1F* h_systematic_eec[nbin_jet_pt];
