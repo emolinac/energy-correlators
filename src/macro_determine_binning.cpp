@@ -7,11 +7,7 @@
 
 void macro_determine_binning()
 {
-        const int Nbin = nbin_rl_nominal;
-        double binning[Nbin + 1];
-        
-        const int nbin_log = nbin_rl_nominal;
-        double binning_log[nbin_log+1];
+        double binning_log[nbin_rl_nominal+1];
         double binning_corr_log[nbin_rl_altlogbin + 1];
         double binning_weight[nbin_weight + 1];
 
@@ -19,7 +15,7 @@ void macro_determine_binning()
 
         determine_eqsizebinning(nbin_chargedeec_nominal, rl_logmin, rl_logmax, binning);
         determine_log10binning(nbin_weight, weight_absmin, weight_absmax, binning_weight);
-        determine_log10binning(nbin_log, rl_logmin, rl_logmax, binning_log);
+        determine_log10binning(nbin_rl_nominal, rl_logmin, rl_logmax, binning_log);
         determine_log10binning(nbin_tau_logbin, tau_min, tau_max, binning_tau_log);
         determine_log10binning(nbin_rl_altlogbin, rl_logmin, rl_logmax, binning_corr_log);
         
@@ -42,7 +38,7 @@ void macro_determine_binning()
         // rl log bin
         std::cout<<"const double rl_nominal_binning[]           = {rl_logmin";
         
-        for (int i = 1 ; i < nbin_log ; i++)
+        for (int i = 1 ; i < nbin_rl_nominal ; i++)
                 std::cout<<", "<<binning_log[i];
 
         std::cout<<", rl_logmax};"<<std::endl;
