@@ -158,7 +158,7 @@ void set_shift_histo(TH2F* href, TH2F* hshift, TRandom3* rndm)
                 for (int ybin = 1 ; ybin <= href->GetNbinsY() ; ybin++) {
                         double shift_window = href->GetBinError(href->GetBin(xbin, ybin));
                         double refdata      = href->GetBinContent(href->GetBin(xbin, ybin));
-                        double shift        = rndm->Gaus(1, abs(shift_window/refdata));
+                        double shift        = rndm->Gaus(refdata, shift_window)/refdata;
                         hshift->SetBinContent(xbin, ybin, shift);
                 }
         }
@@ -170,8 +170,10 @@ void set_shift_histo(TH2D* href, TH2D* hshift, TRandom3* rndm)
                 for (int ybin = 1 ; ybin <= href->GetNbinsY() ; ybin++) {
                         double shift_window = href->GetBinError(href->GetBin(xbin, ybin));
                         double refdata      = href->GetBinContent(href->GetBin(xbin, ybin));
-                        double shift        = rndm->Gaus(refdata, shift_window)/refdata; //rndm->Gaus(1,abs(shift_window/refdata));
+                        double shift        = rndm->Gaus(refdata, shift_window)/refdata;
+
                         hshift->SetBinContent(xbin, ybin, shift);
+                        hshift->SetBinError(xbin, ybin, shift_window/refdata);
                 }
         }
 }

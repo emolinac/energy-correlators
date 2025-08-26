@@ -62,6 +62,8 @@ void macro_makeclasses()
         sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
         sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
         sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
+        sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
         sim_mc_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
         sim_mc_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
         sim_mc_ct->MakeClass("TZJetsMCCTCorr");
@@ -70,6 +72,8 @@ void macro_makeclasses()
         sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
         sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
         sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
+        sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
         sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
         sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
         sim_mcreco_ct->MakeClass("TZJetsMCRecoCTCorr");

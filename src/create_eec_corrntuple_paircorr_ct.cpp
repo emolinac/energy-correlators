@@ -3,11 +3,14 @@
 #include "TZJetsTruth.C"
 #include "TZJetsPseudoData.h"
 #include "TZJetsPseudoData.C"
+#include "TZJets2016Data.h"
+#include "TZJets2016Data.C"
 #include "TROOT.h"
 #include "TNtuple.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
+#include "TRandom3.h"
 #include "TH3.h"
 #include "analysis-constants.h"
 #include "analysis-binning.h"
@@ -161,6 +164,8 @@ int main()
         // Define array carrying the variables
         float vars[Nvars_paircorrdata];
         float vars_jet[Nvars_corrjet];
+
+        TRandom3* rndm = new TRandom3(0);
 
         // Fill the data TNtuple
         std::cout<<"Working with 2017 data."<<std::endl;

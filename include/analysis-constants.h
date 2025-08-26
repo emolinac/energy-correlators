@@ -27,6 +27,8 @@ const double rl_resolution = 0.015;
 
 const int nominal_niter = 4;
 
+const int smearing_constant = 10;
+
 // Visual constants
 const double std_marker_size  = 1.0;
 const int    std_marker_style = 8;

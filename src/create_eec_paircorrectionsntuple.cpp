@@ -170,7 +170,12 @@ int main(int argc, char* argv[])
                         if (new_jer_cor < 0) 
                                 continue;
                         
-                        double smearing_factor = rndm->Gaus(1, new_jer_cor);
+                        double smearing_factor;
+
+                        for (int i = 0 ; i < smearing_constant ; i++)
+                                smearing_factor += rndm->Gaus(1, new_jer_cor);
+
+                        smearing_factor /= smearing_constant;
                         
                         Jet_4vector->SetPxPyPzE(smearing_factor*mcrecotree->Jet_PX/1000.,
                                                 smearing_factor*mcrecotree->Jet_PY/1000.,

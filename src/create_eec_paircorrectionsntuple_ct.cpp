@@ -8,6 +8,7 @@
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
+#include "TRandom3.h"
 #include "analysis-constants.h"
 #include "analysis-binning.h"
 #include "analysis-cuts.h"
@@ -30,6 +31,8 @@ int main()
         ntuple_reco->SetAutoSave(0);
         ntuple_mc->SetAutoSave(0);
         
+        TRandom3* rndm = new TRandom3(0);
+
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector   = new TLorentzVector();
         TLorentzVector* Z0_4vector    = new TLorentzVector();

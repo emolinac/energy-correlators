@@ -5,6 +5,8 @@
 #include "../include/names.h"
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
+#include "../include/TZJets2016Data.h"
+#include "../include/TZJets2016Data.C"
 #include "TRandom3.h"
 
 void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, int ct_niter = 10, bool do_print = true, bool compare_to_truth = true)
@@ -24,16 +26,16 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
         if (fcorr->IsZombie()) 
                 return;
 
-        TNtuple* ntuple_data   = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
+        TNtuple* ntuple_pseudodata   = (TNtuple*) fcorr->Get((name_ntuple_data).c_str());
         TNtuple* ntuple_jet    = (TNtuple*) fcorr->Get((name_ntuple_corrjet).c_str());
         TNtuple* ntuple_mc     = (TNtuple*) fcorr->Get((name_ntuple_mc).c_str());
         TNtuple* ntuple_mc_jet = (TNtuple*) fcorr->Get((name_ntuple_mc_jet).c_str());
-        
+
         // Set the branches of data
         float R_L, jet_pt, weight_pt, event_weight, efficiency, purity, efficiency_relerror, purity_relerror, eq_charge;
-        set_data_ntuple_branches(ntuple_data, &event_weight, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror, &eq_charge);
+        set_data_ntuple_branches(ntuple_pseudodata, &event_weight, &R_L, &jet_pt, &weight_pt, &efficiency, &purity, &efficiency_relerror, &purity_relerror, &eq_charge);
         
-        // Unfold the purity corrected data
+        // Set the response matrix to unfold down the road
         TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections_ct).c_str());
         TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
 
@@ -52,19 +54,23 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                         response->Fill(R_L_reco, jet_pt_reco, R_L_truth, jet_pt_truth);
         }
 
-        TH2D* hunfolded_ratio      = new TH2D("hunfolded_ratio"     ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected     = new TH2D("hpuritycorrected"    ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hpuritycorrected_ref = new TH2D("hpuritycorrected_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        
-        ntuple_data->Project("hpuritycorrected"    ,"jet_pt:R_L","purity");
-        ntuple_data->Project("hpuritycorrected_ref","jet_pt:R_L","purity");
-        
-        RooUnfoldBayes unfold(response, hpuritycorrected, niter);
+        TCanvas* c = new TCanvas("c", "", 1920, 1080);
+        c->Draw();
 
-        TH2D* hunfolded_bayes = (TH2D*) unfold.Hunfold();
+        TLatex* tex = new TLatex();
+        set_lhcb_watermark_properties(tex);
+
+        // Adding content with errors
+        TLatex latex;
+        latex.SetTextAlign(22); // center alignment
+        latex.SetTextSize(text_size_correction_plots);
+        latex.SetTextColor(kBlack);
+
+        gStyle->SetPaintTextFormat("4.2f");
         
-        hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
-        hunfolded_ratio->Smooth();
+        THStack* s_data     = new THStack();
+        TLegend* l_data     = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
+        TLegend* l_data_tau = new TLegend(gPad->GetLeftMargin()+0.01,1-gPad->GetTopMargin()-0.01,gPad->GetLeftMargin()+0.21,1-gPad->GetTopMargin()-0.21);
 
         TH1F* hcorr_jet[nbin_jet_pt];
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
@@ -96,47 +102,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
         TH1F* htruth_eec_neqcharge[nbin_jet_pt];     
         TH1F* htruth_eec_total[nbin_jet_pt];
 
-        TCanvas* c = new TCanvas("c", "", 1920, 1080);
-        c->Draw();
-
-        TLatex* tex = new TLatex();
-        set_lhcb_watermark_properties(tex);
-
-        // Adding content with errors
-        TLatex latex;
-        latex.SetTextAlign(22); // center alignment
-        latex.SetTextSize(text_size_correction_plots);
-        latex.SetTextColor(kBlack);
-
-        gStyle->SetPaintTextFormat("4.2f");
-        hunfolded_ratio->Draw("col");
-
-        for (int i = 2; i < hunfolded_ratio->GetNbinsX(); ++i) {
-                for (int j = 2; j < hunfolded_ratio->GetNbinsY(); ++j) {
-                        double x = hunfolded_ratio->GetXaxis()->GetBinCenter(i);
-                        double y = hunfolded_ratio->GetYaxis()->GetBinCenter(j);
-                        double content = hunfolded_ratio->GetBinContent(i, j);
-                        double error = hunfolded_ratio->GetBinError(i, j);
-                        // Draw content and error in the format "content ± error"
-                        latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-                }
-        }
-
-        hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
-        hunfolded_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
-        hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        
-        gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        
-        if (do_print) 
-                c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
-
-        THStack* s_data     = new THStack();
-        TLegend* l_data     = new TLegend(0.4,gPad->GetBottomMargin()+0.01,0.6,0.2+gPad->GetBottomMargin()+0.01);
-        TLegend* l_data_tau = new TLegend(gPad->GetLeftMargin()+0.01,1-gPad->GetTopMargin()-0.01,gPad->GetLeftMargin()+0.21,1-gPad->GetTopMargin()-0.21);
-
-        // Construct the histograms you will use in order to avoid memory leaks
+        // Initialize the histograms you will use in order to avoid memory leaks
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 hcorr_jet[bin]          = new TH1F(Form("hcorr_jet%i" ,bin)         ,"",1  ,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
                 hcorr_jet_centroid[bin] = new TH1F(Form("hcorr_jet_centroid%i" ,bin),"",200,jet_pt_binning[bin],jet_pt_binning[bin + 1]); 
@@ -182,16 +148,81 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 htruth_eec_neqcharge[bin]->Divide(htruth_eec_total[bin]);
         }
 
-        // Create a data histograma to know how much you have to vary its "content"
-        TH2D* hdataunf_ref = new TH2D("hdataunf_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* hdatashift   = new TH2D("hdatashift"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);    
-        ntuple_data->Project("hdataunf_ref", "jet_pt:R_L");
+        TFile* fdata = new TFile((output_folder + namef_ntuple_eec_paircorr).c_str());
+
+        TNtuple* ntuple_data = (TNtuple*) fdata->Get(name_ntuple_data.c_str());
 
         TRandom3* rndm = new TRandom3(0);
         for (int ct_iter = 0 ; ct_iter < ct_niter ; ct_iter++) {
                 std::cout<<"Iteration "<<ct_iter<<std::endl;
 
+                TH2D* hdataunf_ref = new TH2D("hdataunf_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+                TH2D* hdatashift   = new TH2D("hdatashift"  ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);    
+                
+                TH2D* hunfolded_ratio      = new TH2D("hunfolded_ratio"     ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+                TH2D* hpuritycorrected     = new TH2D("hpuritycorrected"    ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+                TH2D* hpuritycorrected_ref = new TH2D("hpuritycorrected_ref","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+                
+                ntuple_data->Project("hdataunf_ref", "jet_pt:R_L");
                 set_shift_histo(hdataunf_ref,hdatashift,rndm);
+
+                hdatashift->Draw("col");
+
+                for (int i = 2; i < hdatashift->GetNbinsX(); ++i) {
+                        for (int j = 2; j < hdatashift->GetNbinsY(); ++j) {
+                                double x = hdatashift->GetXaxis()->GetBinCenter(i);
+                                double y = hdatashift->GetYaxis()->GetBinCenter(j);
+                                double content = hdatashift->GetBinContent(i, j);
+                                double error = hdatashift->GetBinError(i, j);
+                                // Draw content and error in the format "content ± error"
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+
+                hdatashift->SetTitle("MCReco shift;R_{L};p_{T,jet} (GeV)");
+                hdatashift->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hdatashift->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+
+                if (do_print)
+                        c->Print(Form("./plots/mcrecoshift_ctiter%i.pdf",ct_iter));
+
+                ntuple_pseudodata->Project("hpuritycorrected"    ,"jet_pt:R_L","purity");
+                ntuple_pseudodata->Project("hpuritycorrected_ref","jet_pt:R_L","purity");
+
+                hpuritycorrected->Multiply(hdatashift);
+                hpuritycorrected_ref->Multiply(hdatashift);
+                
+                RooUnfoldBayes* unfold = new RooUnfoldBayes(response, hpuritycorrected, niter);
+
+                TH2D* hunfolded_bayes = (TH2D*) unfold->Hunfold();
+                
+                hunfolded_ratio->Divide(hunfolded_bayes,hpuritycorrected_ref,1,1);
+                hunfolded_ratio->Smooth();
+                hunfolded_ratio->Draw("col");
+
+                for (int i = 2; i < hunfolded_ratio->GetNbinsX(); ++i) {
+                        for (int j = 2; j < hunfolded_ratio->GetNbinsY(); ++j) {
+                                double x = hunfolded_ratio->GetXaxis()->GetBinCenter(i);
+                                double y = hunfolded_ratio->GetYaxis()->GetBinCenter(j);
+                                double content = hunfolded_ratio->GetBinContent(i, j);
+                                double error = hunfolded_ratio->GetBinError(i, j);
+                                // Draw content and error in the format "content ± error"
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+
+                hunfolded_ratio->SetTitle("Purity Corrected Unfolded/Purity Corrected;R_{L};p_{T,jet} (GeV)");
+                hunfolded_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hunfolded_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                
+                if (do_print) 
+                        c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_ctiter%i.pdf",niter,ct_iter));
 
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                         hcorr_ratio_eec[bin][ct_iter]   = new TH1F(Form("hcorr_ratio_eec%i%i",bin,ct_iter),"",nbin_rl_nominal,rl_nominal_binning);
@@ -202,8 +233,8 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                         
                         double jet_pt_centroid = hcorr_jet_centroid[bin]->GetMean();
 
-                        for (int entry = 0 ; entry < ntuple_data->GetEntries() ; entry++) {
-                                ntuple_data->GetEntry(entry);
+                        for (int entry = 0 ; entry < ntuple_pseudodata->GetEntries() ; entry++) {
+                                ntuple_pseudodata->GetEntry(entry);
                 
                                 if (jet_pt < jet_pt_binning[bin] || jet_pt > jet_pt_binning[bin + 1]) 
                                         continue;
@@ -257,6 +288,14 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                         hcorr_eec_neqcharge[bin]->Reset();
                         hcorr_eec_total[bin]->Reset();
                 }
+
+                hdataunf_ref->Delete();
+                hdatashift->Delete();
+                hunfolded_ratio->Delete();
+                hpuritycorrected->Delete();
+                hpuritycorrected_ref->Delete();
+                hunfolded_bayes->Delete();
+                unfold->Delete();
         }
         
         // Scale the relevant histograms
@@ -337,6 +376,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 hct_npairs_ratio->SetTitle("Closure Test Npairs: Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p_{T,jet} (GeV)");
                 hct_npairs_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
                 hct_npairs_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                // hct_npairs_ratio->Smooth();
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
                 if (do_print) 

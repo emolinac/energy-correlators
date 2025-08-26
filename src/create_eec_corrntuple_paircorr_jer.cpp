@@ -457,13 +457,21 @@ int main()
                                         datatree_2017->Jet_PE/1000.);
 
                 double new_jer_cor = -999;
+                
                 for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
                         if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
                                 new_jer_cor = syst_jer_array[jet_pt_bin];
 
                 if (new_jer_cor<0) 
                         continue;
-                double smearing_factor = rndm->Gaus(1,new_jer_cor);
+                
+                double smearing_factor;
+
+                for (int i = 0 ; i < smearing_constant ; i++)
+                        smearing_factor += rndm->Gaus(1, new_jer_cor);
+
+                smearing_factor /= smearing_constant;
+                
                 Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000.,
                                         smearing_factor*datatree_2017->Jet_PY/1000.,
                                         smearing_factor*datatree_2017->Jet_PZ/1000.,

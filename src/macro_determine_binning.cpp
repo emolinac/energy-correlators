@@ -11,15 +11,25 @@ void macro_determine_binning()
         double binning_log[nbin_rl_nominal+1];
         double binning_corr_log[nbin_rl_altlogbin + 1];
         double binning_weight[nbin_weight + 1];
+        double binning_ptprod[nbin_weight + 1];
 
         double binning_tau_log[nbin_tau_logbin + 1];
 
         determine_eqsizebinning(nbin_chargedeec_nominal, rl_logmin, rl_logmax, binning);
         determine_log10binning(nbin_weight, weight_absmin, weight_absmax, binning_weight);
+        determine_log10binning(nbin_weight, ptprod_absmin, ptprod_absmax, binning_ptprod);
         determine_log10binning(nbin_rl_nominal, rl_logmin, rl_logmax, binning_log);
         determine_log10binning(nbin_tau_logbin, tau_min, tau_max, binning_tau_log);
         determine_log10binning(nbin_rl_altlogbin, rl_logmin, rl_logmax, binning_corr_log);
         
+        // Pt prod
+        std::cout<<"const double ptprod_binning[] = {ptprod_absmin";
+        
+        for (int i = 1 ; i < nbin_weight ; i++)
+                std::cout<<", "<<binning_ptprod[i];
+
+        std::cout<<", ptprod_absmax};"<<std::endl;
+
         // Weight
         std::cout<<"const double weight_binning[] = {weight_absmin";
         
