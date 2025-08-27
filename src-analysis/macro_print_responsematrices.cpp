@@ -63,7 +63,7 @@ void macro_print_responsematrices()
         hresp_ptprod->GetXaxis()->SetRangeUser(0.05,1000);
         hresp_ptprod->GetYaxis()->SetRangeUser(0.05,1000); 
         hresp_ptprod->Draw("col");
-        hresp_ptprod->SetTitle("Response matrix of p_{1}p_{2};{p_{1}p_{2}}^{Reco};{p_{1}p_{2}}^{Truth}");
+        hresp_ptprod->SetTitle("Response matrix of p_{1}p_{2};p_{1}p_{2}^{Reco};p_{1}p_{2}^{Truth}");
         hresp_ptprod->Smooth();
         gPad->SetLogx(1);
         gPad->SetLogy(1);

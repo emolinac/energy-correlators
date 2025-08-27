@@ -22,6 +22,7 @@ std::string namef_ntuple_eec                = "ntuple_eec.root";
 std::string namef_ntuple_eec_corr           = "ntuple_correec.root";
 
 std::string namef_ntuple_eec_paircorr       = "ntuple_paircorreec.root";
+std::string namef_ntuple_eec_paircorr_3d    = "ntuple_paircorreec_3d.root";
 std::string namef_ntuple_eec_paircorr_ct    = "ntuple_paircorreec_ct.root";
 std::string namef_ntuple_eec_paircorr_jes   = "ntuple_paircorreec_jes.root";
 std::string namef_ntuple_eec_paircorr_jer   = "ntuple_paircorreec_jer.root";
@@ -38,14 +39,16 @@ std::string namef_ntuple_mc_eec    = "ntuple_mc_eec.root";
 std::string namef_ntuple_mc_at_eec = "ntuple_mc_at_eec.root";
 std::string namef_ntuple_hadron    = "ntuple_hadron.root";
 
-std::string namef_histos_corr_eec             = "histos_corr_eec.root";
-std::string namef_histos_paircorr_eec         = "histos_paircorr_eec.root";
-std::string namef_histos_paircorr_eec_ct      = "histos_paircorr_eec_ct.root";
-std::string namef_histos_paircorr_eec_jes     = "histos_paircorr_eec_jes.root";
-std::string namef_histos_paircorr_eec_prior   = "histos_paircorr_eec_prior.root";
-std::string namef_histos_paircorr_eec_shapect = "histos_paircorr_eec_shapect.root";
-std::string namef_histos_paircorr_eec_jer     = "histos_paircorr_eec_jer.root";
-std::string namef_histos_paircorr_eec_3dunf   = "histos_paircorr_eec_3dunf.root";
+std::string namef_histos_corr_eec              = "histos_corr_eec.root";
+std::string namef_histos_paircorr_eec          = "histos_paircorr_eec.root";
+std::string namef_histos_paircorr_eec_3d       = "histos_paircorr_eec_3d.root";
+std::string namef_histos_paircorr_eec_ct       = "histos_paircorr_eec_ct.root";
+std::string namef_histos_paircorr_eec_jes      = "histos_paircorr_eec_jes.root";
+std::string namef_histos_paircorr_eec_prior    = "histos_paircorr_eec_prior.root";
+std::string namef_histos_paircorr_eec_shapect  = "histos_paircorr_eec_shapect.root";
+std::string namef_histos_paircorr_eec_jer      = "histos_paircorr_eec_jer.root";
+std::string namef_histos_paircorr_eec_3dunf    = "histos_paircorr_eec_3dunf.root";
+std::string namef_histos_paircorr_eec_3dunf_3d = "histos_paircorr_eec_3dunf_3d.root";
 
 std::string namef_histos_weight_corr          = "histos_weightcorr.root";
 

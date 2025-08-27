@@ -33,10 +33,12 @@ const double rl_min_at     = rl_min;
 const double rl_max_at     = TMath::Pi();
 
 // Binning
-const int nbin_jet_pt            = 3;
-const int nbin_weight            = 25;
-const int nbin_jet_e             = 3;
-const int nbin_z_pt              = 3;
+const int nbin_jet_pt = 3;
+const int nbin_weight = 25;
+const int nbin_ptprod = 25;
+const int nbin_jet_e  = 3;
+const int nbin_z_pt   = 3;
+
 const int nbin_jet_pt_corrections = 3;
 const int nbin_jet_pt_unfolding  = nbin_jet_pt+2;
 
