@@ -9,7 +9,7 @@
 #include "../include/TZJets2016Data.C"
 #include "TRandom3.h"
 
-void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, int ct_niter = 10, bool do_print = true, bool compare_to_truth = true)
+void macro_print_fullcorreec_paircorr_2dunf_ct_niter_wweights(int niter = nominal_niter, int ct_niter = 10, bool do_print = true, bool compare_to_truth = true)
 {
         std::string systematic = available_systematics[1]; // choose CT systematic
         
@@ -22,7 +22,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
         TFile* fout     = new TFile((output_folder + namef_histos_paircorr_eec_ct).c_str(),"RECREATE");
         gROOT->cd();
 
-        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_paircorr_ct).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_ntuple_eec_paircorr_ct_wweights).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
 
@@ -187,7 +187,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 gPad->SetLogy(1);
 
                 if (do_print)
-                        c->Print(Form("./plots/mcrecoshift_ctiter%i.pdf",ct_iter));
+                        c->Print(Form("./plots/mcrecoshift_ctiter%i_wweights.pdf",ct_iter));
 
                 ntuple_pseudodata->Project("hpuritycorrected"    ,"jet_pt:R_L","purity");
                 ntuple_pseudodata->Project("hpuritycorrected_ref","jet_pt:R_L","purity");
@@ -222,7 +222,7 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                 gPad->SetLogy(1);
                 
                 if (do_print) 
-                        c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_ctiter%i.pdf",niter,ct_iter));
+                        c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_ctiter%i_wweights.pdf",niter,ct_iter));
 
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                         hcorr_ratio_eec[bin][ct_iter]   = new TH1F(Form("hcorr_ratio_eec%i%i",bin,ct_iter),"",nbin_rl_nominal,rl_nominal_binning);
@@ -352,13 +352,13 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                         }
                 }
 
-                hct_ratio->SetTitle("Closure Test: Corr. Pseudodata / Truth ;R_{L};p_{T,jet} (GeV)");
+                hct_ratio->SetTitle("Closure Test: Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p_{T,jet} (GeV)");
                 hct_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
                 hct_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
                 if (do_print) 
-                        c->Print(Form("./plots/closuretest_unf-niter%i_ratio_ctniter%i.pdf",niter,ct_niter));
+                        c->Print(Form("./plots/closuretest_unf-niter%i_ratio_ctniter%i_wweights.pdf",niter,ct_niter));
 
                 hct_npairs_ratio->Draw("col");
                 
@@ -373,13 +373,13 @@ void macro_print_fullcorreec_paircorr_2dunf_ct_niter(int niter = nominal_niter, 
                         }
                 }
 
-                hct_npairs_ratio->SetTitle("Closure Test Npairs: Corr. Pseudodata / Truth ;R_{L};p_{T,jet} (GeV)");
+                hct_npairs_ratio->SetTitle("Closure Test Npairs: Norm. Corr. Pseudodata / Norm. Truth ;R_{L};p_{T,jet} (GeV)");
                 hct_npairs_ratio->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
                 hct_npairs_ratio->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
                 // hct_npairs_ratio->Smooth();
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
                 if (do_print) 
-                        c->Print(Form("./plots/closuretest_unf-niter%i_ratio_ctniter%i_npairs.pdf",niter,ct_niter));
+                        c->Print(Form("./plots/closuretest_unf-niter%i_ratio_ctniter%i_npairs_wweights.pdf",niter,ct_niter));
         }
 }

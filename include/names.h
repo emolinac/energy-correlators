@@ -28,6 +28,11 @@ std::string namef_ntuple_eec_paircorr_jes   = "ntuple_paircorreec_jes.root";
 std::string namef_ntuple_eec_paircorr_jer   = "ntuple_paircorreec_jer.root";
 std::string namef_ntuple_eec_paircorr_prior = "ntuple_paircorreec_prior.root";
 
+std::string namef_ntuple_eec_paircorrwweights     = "ntuple_paircorreecwweights.root";
+std::string namef_ntuple_eec_paircorr_ct_wweights = "ntuple_paircorreec_ct_wweights.root";
+
+std::string namef_ntuple_eec_pairandsinglecorr    = "ntuple_pairandsinglecorreec.root";
+
 std::string namef_ntuple_eec_hadroncorrections   = "ntuple_eec_hadroncorrections.root";
 
 std::string namef_ntuple_eec_paircorrections       = "ntuple_eec_paircorrections.root";
@@ -41,6 +46,7 @@ std::string namef_ntuple_hadron    = "ntuple_hadron.root";
 
 std::string namef_histos_corr_eec              = "histos_corr_eec.root";
 std::string namef_histos_paircorr_eec          = "histos_paircorr_eec.root";
+std::string namef_histos_paircorr_eec_wweights = "histos_paircorr_eec_wweights.root";
 std::string namef_histos_paircorr_eec_3d       = "histos_paircorr_eec_3d.root";
 std::string namef_histos_paircorr_eec_ct       = "histos_paircorr_eec_ct.root";
 std::string namef_histos_paircorr_eec_jes      = "histos_paircorr_eec_jes.root";
@@ -49,6 +55,7 @@ std::string namef_histos_paircorr_eec_shapect  = "histos_paircorr_eec_shapect.ro
 std::string namef_histos_paircorr_eec_jer      = "histos_paircorr_eec_jer.root";
 std::string namef_histos_paircorr_eec_3dunf    = "histos_paircorr_eec_3dunf.root";
 std::string namef_histos_paircorr_eec_3dunf_3d = "histos_paircorr_eec_3dunf_3d.root";
+std::string namef_histos_pairandsinglecorr_eec = "histos_pairandsinglecorr_eec.root";
 
 std::string namef_histos_weight_corr          = "histos_weightcorr.root";
 
@@ -124,6 +131,9 @@ const char* ntuple_data_vars         = "event_weight:R_L:h1_eta:h2_eta:h1_y:h2_y
 const char* ntuple_paircorrdata_vars = "event_weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_reco_ok:n_reco:n_truth_ok:n_truth:eq_charge";
 const char* ntuple_mc_vars           = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid";
 const char* ntuple_mc_match_vars     = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_charge:h2_charge:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:mum_pt:mum_eta:mup_pt:mup_eta:h1_pid:h2_pid:weight_pt_reco";
+
+const int Nvars_pairandsinglecorrdata = 28;
+const char* ntuple_pairandsinglecorrdata_vars = "event_weight:efficiency:purity:h1_efficiency:h2_efficiency:h1_purity:h2_purity:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_reco_ok:n_reco:n_truth_ok:n_truth:eq_charge";
 
 //--------------------------------------------------------------------------------------//
 const int   Nvars_corrections_mc         = 13;

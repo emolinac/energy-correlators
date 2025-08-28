@@ -32,7 +32,7 @@ int main()
         TFile* fefficiency_muon_2017_trg = new TFile((muons_folder + "TRGEff_Data_2017.root").c_str());
 
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr_ct).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr_ct_wweights).c_str(),"RECREATE");
 
         // Declare the TTrees to be used to build the ntuples
         TZJetsPseudoData* pseudodata = new TZJetsPseudoData();
@@ -93,10 +93,10 @@ int main()
         hnum_eff->Sumw2();
         hden_eff->Sumw2();
 
-        ntuple_purity->Project("hnum_pur", "jet_pt:R_L", pair_matching_cut);
-        ntuple_purity->Project("hden_pur", "jet_pt:R_L");
-        ntuple_efficiency_reco->Project("hnum_eff", "jet_pt_truth:R_L_truth", pair_matching_cut);
-        ntuple_efficiency_mc->Project("hden_eff", "jet_pt:R_L");
+        ntuple_purity->Project("hnum_pur", "jet_pt:R_L", Form("weight_pt*(TMath::Abs(R_L-R_L_truth)<%f)",rl_resolution));
+        ntuple_purity->Project("hden_pur", "jet_pt:R_L", "weight_pt");
+        ntuple_efficiency_reco->Project("hnum_eff", "jet_pt_truth:R_L_truth", Form("weight_pt*(TMath::Abs(R_L-R_L_truth)<%f)",rl_resolution));
+        ntuple_efficiency_mc->Project("hden_eff", "jet_pt:R_L", "weight_pt");
 
         hpurity->Divide(hnum_pur, hden_pur, 1, 1, "B");
         hefficiency->Divide(hnum_eff, hden_eff, 1, 1, "B");
@@ -443,8 +443,8 @@ int main()
                         continue;
 
                 double jet_ndtr_nominal = 0;
-
                 for (int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++) {
+                        // Skip non-hadronic particles
                         if (truthdata->MCJet_Dtr_IsMeson[h1_index] != 1 && truthdata->MCJet_Dtr_IsBaryon[h1_index] != 1) 
                                 continue;
 
@@ -461,11 +461,11 @@ int main()
                         
                         jet_ndtr_nominal++;
                 }
-
                 if (jet_ndtr_nominal < 2)
                         continue;
 
                 for (int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++) {
+                        // Skip non-hadronic particles
                         if (truthdata->MCJet_Dtr_IsMeson[h1_index] != 1 && truthdata->MCJet_Dtr_IsBaryon[h1_index] != 1) 
                                 continue;
 
@@ -481,6 +481,7 @@ int main()
                                 continue;
 
                         for (int h2_index = h1_index+1 ; h2_index < truthdata->MCJet_Dtr_nmcdtrs ; h2_index++) {
+                                // Skip non-hadronic particles
                                 if (truthdata->MCJet_Dtr_IsMeson[h2_index] != 1 && truthdata->MCJet_Dtr_IsBaryon[h2_index] != 1)
                                         continue;
 

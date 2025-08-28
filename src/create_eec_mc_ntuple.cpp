@@ -51,7 +51,6 @@ int main()
         // Fill the MC TNtuple
         float vars_mc[Nvars_mc_match];
         for (int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++) {
-                // Access entry of tree
                 mctree->GetEntry(evt);
 
                 if (evt%10000 == 0) {
@@ -59,18 +58,13 @@ int main()
                         std::cout<<"\r"<<percentage<<"\% jets processed."<< std::flush;
                 }
 
-                if (mctree->MCJet_recojet_PHI == -999)
-                        continue;
-                
                 if (evt != 0)
                         if (last_eventNum == mctree->eventNumber) 
                                 continue;
                 
-                // Apply PV cut
                 if (mctree->nPVs != 1)
                         continue;
 
-                // Set Jet-associated 4 vectors and apply cuts
                 Jet_4vector->SetPxPyPzE(mctree->MCJet_PX/1000.,
                                         mctree->MCJet_PY/1000.,
                                         mctree->MCJet_PZ/1000.,
@@ -106,7 +100,6 @@ int main()
                 double jet_ndtr_nominal = 0;
                 
                 for (int h1_index = 0 ; h1_index < mctree->MCJet_Dtr_nmcdtrs ; h1_index++) {
-                        // Skip non-hadronic particles
                         if (mctree->MCJet_Dtr_IsMeson[h1_index] != 1 && mctree->MCJet_Dtr_IsBaryon[h1_index] != 1) 
                                 continue;
 
@@ -128,7 +121,6 @@ int main()
                         continue;
 
                 for (int h1_index = 0 ; h1_index < mctree->MCJet_Dtr_nmcdtrs ; h1_index++) {
-                        // Skip non-hadronic particles
                         if (mctree->MCJet_Dtr_IsMeson[h1_index] != 1 && mctree->MCJet_Dtr_IsBaryon[h1_index] != 1) 
                                 continue;
 
@@ -144,7 +136,6 @@ int main()
                                 continue;
 
                         for (int h2_index = h1_index+1 ; h2_index < mctree->MCJet_Dtr_nmcdtrs ; h2_index++) {
-                                // Skip non-hadronic particles
                                 if (mctree->MCJet_Dtr_IsMeson[h2_index] != 1 && mctree->MCJet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
 
@@ -207,10 +198,6 @@ int main()
                 if (evt != 0)
                         if (last_eventNum == mcrecotree->eventNumber) 
                                 continue;
-
-                // -999 means there is not matched jet
-                if (mcrecotree->Jet_mcjet_nmcdtrs == -999) 
-                        continue;
 
                 // Apply PV cut
                 if (mcrecotree->nPV != 1) 

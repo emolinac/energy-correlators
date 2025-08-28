@@ -93,8 +93,8 @@ TCut pair_zpt_cut[] = {
 };
 
 // _______________________________ Purity Analysis Cuts _______________________________ //
-TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution,jet_pt_min_nom,jet_pt_max);
-TCut single_signal_cut = Form("key_match==1&&jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max); // This was designed for single particle tuples
+TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f",rl_resolution);
+TCut single_signal_cut = "key_match==1";
 
 TCut purity_corr_singletrack     = Form("purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
 TCut efficiency_corr_singletrack = Form("(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);

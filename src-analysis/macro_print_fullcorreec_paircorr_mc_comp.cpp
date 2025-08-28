@@ -20,21 +20,28 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
 
                 set_histogram_style(hcorr_eec[i], corr_marker_color_jet_pt[i], std_line_width, corr_marker_style_jet_pt[i] , std_marker_size);
         }
+
         // Simulations Section
         TFile* fmc   = new TFile((output_folder+namef_ntuple_mc_eec).c_str());
         
         TNtuple* ntuple_mc     = (TNtuple*) fmc->Get((name_ntuple_mc).c_str());
         TNtuple* ntuple_mc_jet = (TNtuple*) fmc->Get((name_ntuple_mc_jet).c_str());
         
-        // Set the branches of data
-        float R_L_mc, jet_pt_mc, weight_pt_mc;
-        ntuple_mc->SetBranchAddress("R_L",&R_L_mc);
-        ntuple_mc->SetBranchAddress("jet_pt",&jet_pt_mc);
-        ntuple_mc->SetBranchAddress("weight_pt",&weight_pt_mc);
+        TH1F* htruth_eec[nbin_jet_pt]; 
+        TH1F* htruth_jet[nbin_jet_pt]; 
         
-        TH1F* hmc[nbin_jet_pt]; 
-        TH1F* hmc_jet[nbin_jet_pt]; 
-        
+        for(int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                htruth_jet[bin] = new TH1F(Form("htruth_jet%i" ,bin),"",200,jet_pt_binning[bin],jet_pt_binning[bin + 1]);
+                ntuple_mc_jet->Project(Form("htruth_jet%i" ,bin),"jet_pt");
+
+                htruth_eec[bin] = new TH1F(Form("htruth_eec%i",bin),"",nbin_rl_nominal,rl_nominal_binning);
+                ntuple_mc->Project(Form("htruth_eec%i",bin),"R_L",eec_jet_pt_cut[bin]);
+
+                htruth_eec[bin]->Scale(1./htruth_jet[bin]->Integral(),"width");
+
+                set_histogram_style(htruth_eec[bin], corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
+        }
+
         TCanvas* c = new TCanvas("c","",1800,600);
         c->Draw();
         c->Divide(3,1);
@@ -48,40 +55,19 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
         THStack* s_data[3];
         TLegend* l_data[3];
 
-        for(int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                hmc[bin]     = new TH1F(Form("hmc[%i]" ,bin)      ,"",nbin_rl_nominal,rl_nominal_binning);
-                hmc_jet[bin] = new TH1F(Form("hmc_jet[%i]" ,bin)     ,"",1,jet_pt_binning[bin],jet_pt_binning[bin+1]);
-                
-                set_histogram_style(hmc[bin], corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
-                
-                // Fill and normalize MC        
-                for(int entry = 0 ; entry < ntuple_mc->GetEntries() ; entry++) {
-                        ntuple_mc->GetEntry(entry);
-
-                        if(jet_pt_mc<jet_pt_binning[bin]||jet_pt_mc>jet_pt_binning[bin+1]) 
-                                continue;
-                        
-                        hmc[bin]->Fill(R_L_mc,weight_pt_mc);
-                }
-                
-                ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jet_pt_cut[bin]);
-                hmc[bin]->Scale(1./hmc_jet[bin]->Integral(),"width");
-        }
-
-        // Draw the log binning histos
         for(int bin = 0 ; bin < nbin_jet_pt ; bin ++) {
                 c->cd(bin+1);
                 s_data[bin] = new THStack();
                 l_data[bin] = new TLegend(1-gPad->GetRightMargin()-0.21,1-gPad->GetTopMargin()-0.15,1-gPad->GetRightMargin()-0.01,1-gPad->GetTopMargin()-0.01);
 
-                s_data[bin]->Add(hmc[bin],"E");
+                s_data[bin]->Add(htruth_eec[bin],"E");
                 s_data[bin]->Add(hcorr_eec[bin],"E");
                 s_data[bin]->Draw("NOSTACK");
                 s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
                 s_data[bin]->SetMaximum(1.7);
                 s_data[bin]->SetMinimum(40E-03);
 
-                l_data[bin]->AddEntry(hmc[bin]      ,"mc"    ,"p");
+                l_data[bin]->AddEntry(htruth_eec[bin],"mc"    ,"p");
                 l_data[bin]->AddEntry(hcorr_eec[bin],"data"  ,"p");
                 gPad->SetLogx(1);
                 l_data[bin]->Draw("SAME");    
@@ -98,7 +84,7 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
                 s_data[bin] = new THStack();
                 l_data[bin] = new TLegend(1-gPad->GetRightMargin()-0.21,1-gPad->GetTopMargin()-0.15,1-gPad->GetRightMargin()-0.01,1-gPad->GetTopMargin()-0.01);
 
-                hcorr_eec[bin]->Divide(hmc[bin]);
+                hcorr_eec[bin]->Divide(htruth_eec[bin]);
                 
                 s_data[bin]->Add(hcorr_eec[bin],"E");
                 s_data[bin]->Draw("NOSTACK");
@@ -106,7 +92,7 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
                 s_data[bin]->SetMaximum(1.5);
                 s_data[bin]->SetMinimum(0.5);
 
-                l_data[bin]->AddEntry(hmc[bin],"data/mc","p");
+                l_data[bin]->AddEntry(htruth_eec[bin],"data/mc","p");
                 gPad->SetLogx(1);
                 l_data[bin]->Draw("SAME");    
         }

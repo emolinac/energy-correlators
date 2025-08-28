@@ -13,27 +13,22 @@
 #include "TNtuple.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
-#include "TRandom3.h"
 #include "TVector3.h"
 #include "TH3.h"
+#include "TLatex.h"
 #include "analysis-constants.h"
 #include "analysis-binning.h"
 #include "analysis-cuts.h"
 #include "analysis-functions.h"
 #include "directories.h"
 #include "names.h"
-#include "syst-jes-jer.h"
 #include "utils-algorithms.h"
 
 int main()
 {
-        std::cout<<"Current paradigm of this the JER systematic code:"<<std::endl;
-        std::cout<<"- The jet corrections are not changed due to the JER"<<std::endl;
-        std::cout<<"- The pair corrections are changed due to the JER"<<std::endl;
-        
         // Open correction files
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections_jes).c_str());
-        // TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
+        TFile* fcorrections      = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -48,7 +43,7 @@ int main()
         TFile* fefficiency_muon_2018_trg = new TFile((muons_folder + "TRGEff_Data_2018.root").c_str());
         
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr_jer).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_pairandsinglecorr).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJets2016Data* datatree_2016 = new TZJets2016Data();
@@ -59,10 +54,16 @@ int main()
         TNtuple* ntuple_purity          = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
         TNtuple* ntuple_efficiency_mc   = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_mc.c_str()));
         TNtuple* ntuple_efficiency_reco = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
+        
+        TNtuple* ntuple_purity_single          = (TNtuple*) fcorrections->Get((name_ntuple_correction_reco.c_str()));
+        TNtuple* ntuple_efficiency_single_mc   = (TNtuple*) fcorrections->Get((name_ntuple_correction_mc.c_str()));
+        TNtuple* ntuple_efficiency_single_reco = (TNtuple*) fcorrections->Get((name_ntuple_correction_reco.c_str()));
+        
         TNtuple* ntuple_purity_jet      = (TNtuple*) fpurity_jet->Get((name_ntuple_jetpurity.c_str()));
         TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jetefficiency.c_str()));
-        TNtuple* ntuple_data            = new TNtuple(name_ntuple_data.c_str(),"All Data",ntuple_paircorrdata_vars); 
-        TNtuple* ntuple_corrjet         = new TNtuple(name_ntuple_corrjet.c_str(),"All Data",ntuple_jet_vars); 
+
+        TNtuple* ntuple_data    = new TNtuple(name_ntuple_data.c_str(),"All Data",ntuple_pairandsinglecorrdata_vars); 
+        TNtuple* ntuple_corrjet = new TNtuple(name_ntuple_corrjet.c_str(),"All Data",ntuple_jet_vars); 
         ntuple_data->SetAutoSave(0);
         ntuple_corrjet->SetAutoSave(0);
 
@@ -98,13 +99,13 @@ int main()
         hpurity_jet->Divide(hnum_pur_jet, hden_pur_jet, 1, 1, "B");
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
-        // Hadron corrections
-        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        // Pair corrections
+        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
@@ -125,19 +126,47 @@ int main()
         hpurity->Smooth();
         hefficiency->Smooth();
 
-        TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        // Single track corrections
+        TH3F* hnum_pur_single    = new TH3F("hnum_pur_single"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH3F* hden_pur_single    = new TH3F("hden_pur_single"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH3F* hpurity_single     = new TH3F("hpurity_single"    , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH3F* hnum_eff_single    = new TH3F("hnum_eff_single"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH3F* hden_eff_single    = new TH3F("hden_eff_single"   , "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH3F* hefficiency_single = new TH3F("hefficiency_single", "", ic_p_nbins, ic_p_binning, sl_eta_nbins, sl_eta_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
-        TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
-        TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        hnum_pur_single->Sumw2();
+        hden_pur_single->Sumw2();
+        hnum_eff_single->Sumw2();
+        hden_eff_single->Sumw2();
+        
+        ntuple_purity_single->Project("hnum_pur_single","jet_pt:h_eta:h_p",single_signal_cut);
+        ntuple_purity_single->Project("hden_pur_single","jet_pt:h_eta:h_p");
+        ntuple_efficiency_single_reco->Project("hnum_eff_single","jet_pt_truth:h_eta_truth:h_p_truth",single_signal_cut);
+        ntuple_efficiency_single_mc->Project("hden_eff_single","jet_pt:h_eta:h_p");
+
+        hpurity_single->Divide(hnum_pur_single, hden_pur_single, 1, 1, "B");
+        hefficiency_single->Divide(hnum_eff_single, hden_eff_single, 1, 1, "B");
+
+        regularize_correction_factors(hpurity_single);
+        regularize_correction_factors(hefficiency_single);
+
+        hpurity_single->Smooth();
+        hefficiency_single->Smooth();
+
+        // DELETE LATER
+        TH2F* hnum_pur_eqcharge    = new TH2F("hnum_pur_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur_eqcharge    = new TH2F("hden_pur_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity_eqcharge     = new TH2F("hpurity_eqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff_eqcharge    = new TH2F("hnum_eff_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff_eqcharge    = new TH2F("hden_eff_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency_eqcharge = new TH2F("hefficiency_eqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        
+        TH2F* hnum_pur_neqcharge    = new TH2F("hnum_pur_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur_neqcharge    = new TH2F("hden_pur_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity_neqcharge     = new TH2F("hpurity_neqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff_neqcharge    = new TH2F("hnum_eff_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff_neqcharge    = new TH2F("hden_eff_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency_neqcharge = new TH2F("hefficiency_neqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
         ntuple_purity->Project("hnum_pur_eqcharge", "jet_pt:R_L",pair_matching_cut + "eq_charge>1");
         ntuple_purity->Project("hden_pur_eqcharge", "jet_pt:R_L","eq_charge>1");
@@ -157,7 +186,7 @@ int main()
 
         hpurity_eqcharge->Smooth();
         hefficiency_eqcharge->Smooth();
-
+        
         hpurity_neqcharge->Divide(hnum_pur_neqcharge, hden_pur_neqcharge, 1, 1, "B");
         hefficiency_neqcharge->Divide(hnum_eff_neqcharge, hden_eff_neqcharge, 1, 1, "B");
 
@@ -167,6 +196,125 @@ int main()
         hpurity_neqcharge->Smooth();
         hefficiency_neqcharge->Smooth();
 
+        TCanvas* c = new TCanvas("c", "", 1920, 1080);
+        c->Draw();
+
+        gStyle->SetOptStat("");
+        gStyle->SetPaintTextFormat("4.2f");        
+        
+        TLatex latex;
+        latex.SetTextAlign(22); // center alignment
+        latex.SetTextSize(text_size_correction_plots);
+        latex.SetTextColor(kBlack);
+
+        hpurity->Draw("col");
+        for (int i = 2; i < hpurity->GetNbinsX(); ++i) {
+                for (int j = 2; j < hpurity->GetNbinsY(); ++j) {
+                        double x = hpurity->GetXaxis()->GetBinCenter(i);
+                        double y = hpurity->GetYaxis()->GetBinCenter(j);
+                        double content = hpurity->GetBinContent(i, j);
+                        double error = hpurity->GetBinError(i, j);
+
+                        latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                }
+        }
+        hpurity->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
+        hpurity->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+        hpurity->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        c->Print("../src-analysis/plots/pair_purity_correction_smooth.pdf");
+
+        hefficiency->Draw("col");
+        for (int i = 2; i < hefficiency->GetNbinsX(); ++i) {
+                for (int j = 2; j < hefficiency->GetNbinsY(); ++j) {
+                        double x = hefficiency->GetXaxis()->GetBinCenter(i);
+                        double y = hefficiency->GetYaxis()->GetBinCenter(j);
+                        double content = hefficiency->GetBinContent(i, j);
+                        double error = hefficiency->GetBinError(i, j);
+
+                        latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                }
+        }
+        hefficiency->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
+        hefficiency->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+        hefficiency->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        c->Print("../src-analysis/plots/pair_efficiency_correction_smooth.pdf");
+
+        hpurity_eqcharge->Draw("col");
+        for (int i = 2; i < hpurity_eqcharge->GetNbinsX(); ++i) {
+                for (int j = 2; j < hpurity_eqcharge->GetNbinsY(); ++j) {
+                        double x = hpurity_eqcharge->GetXaxis()->GetBinCenter(i);
+                        double y = hpurity_eqcharge->GetYaxis()->GetBinCenter(j);
+                        double content = hpurity_eqcharge->GetBinContent(i, j);
+                        double error = hpurity_eqcharge->GetBinError(i, j);
+
+                        latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                }
+        }
+        hpurity_eqcharge->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
+        hpurity_eqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+        hpurity_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        c->Print("../src-analysis/plots/pair_purity_correction_eqcharge_smooth.pdf");
+
+        hefficiency_eqcharge->Draw("col");
+        for (int i = 2; i < hefficiency_eqcharge->GetNbinsX(); ++i) {
+                for (int j = 2; j < hefficiency_eqcharge->GetNbinsY(); ++j) {
+                        double x = hefficiency_eqcharge->GetXaxis()->GetBinCenter(i);
+                        double y = hefficiency_eqcharge->GetYaxis()->GetBinCenter(j);
+                        double content = hefficiency_eqcharge->GetBinContent(i, j);
+                        double error = hefficiency_eqcharge->GetBinError(i, j);
+
+                        latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                }
+        }
+        hefficiency_eqcharge->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
+        hefficiency_eqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+        hefficiency_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        c->Print("../src-analysis/plots/pair_efficiency_correction_eqcharge_smooth.pdf");
+
+        hpurity_neqcharge->Draw("col");
+        for (int i = 2; i < hpurity_neqcharge->GetNbinsX(); ++i) {
+                for (int j = 2; j < hpurity_neqcharge->GetNbinsY(); ++j) {
+                        double x = hpurity_neqcharge->GetXaxis()->GetBinCenter(i);
+                        double y = hpurity_neqcharge->GetYaxis()->GetBinCenter(j);
+                        double content = hpurity_neqcharge->GetBinContent(i, j);
+                        double error = hpurity_neqcharge->GetBinError(i, j);
+
+                        latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                }
+        }
+        hpurity_neqcharge->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
+        hpurity_neqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+        hpurity_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        c->Print("../src-analysis/plots/pair_purity_correction_neqcharge_smooth.pdf");
+
+        hefficiency_neqcharge->Draw("col");
+        for (int i = 2; i < hefficiency_neqcharge->GetNbinsX(); ++i) {
+                for (int j = 2; j < hefficiency_neqcharge->GetNbinsY(); ++j) {
+                        double x = hefficiency_neqcharge->GetXaxis()->GetBinCenter(i);
+                        double y = hefficiency_neqcharge->GetYaxis()->GetBinCenter(j);
+                        double content = hefficiency_neqcharge->GetBinContent(i, j);
+                        double error = hefficiency_neqcharge->GetBinError(i, j);
+
+                        latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                }
+        }
+        hefficiency_neqcharge->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
+        hefficiency_neqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+        hefficiency_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        c->Print("../src-analysis/plots/pair_efficiency_correction_neqcharge_smooth.pdf");
+        
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector = new TLorentzVector();
         TLorentzVector* Z0_4vector  = new TLorentzVector();
@@ -180,10 +328,8 @@ int main()
         bool maxjetpT_found = false;
           
         // Define array carrying the variables
-        float vars[Nvars_paircorrdata];
+        float vars[Nvars_pairandsinglecorrdata];
         float vars_jet[Nvars_corrjet];
-
-        TRandom3* rndm = new TRandom3(0);
 
         // Fill the data TNtuple
         std::cout<<"Working with 2016 data."<<std::endl;
@@ -224,28 +370,7 @@ int main()
                                         datatree_2016->Jet_PY/1000.,
                                         datatree_2016->Jet_PZ/1000.,
                                         datatree_2016->Jet_PE/1000.);
-
-                double new_jer_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1])
-                                new_jer_cor = syst_jer_array[jet_pt_bin];
-
-                if (new_jer_cor<0)
-                        continue;
-
-                double smearing_factor;
-
-                for (int i = 0 ; i < smearing_constant ; i++)
-                        smearing_factor += rndm->Gaus(1, new_jer_cor);
-
-                smearing_factor /= smearing_constant;
-                
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2016->Jet_PX/1000.,
-                                        smearing_factor*datatree_2016->Jet_PY/1000.,
-                                        smearing_factor*datatree_2016->Jet_PZ/1000.,
-                                        smearing_factor*datatree_2016->Jet_PE/1000.);
-
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt()))
+                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(datatree_2016->mum_PX/1000.,
@@ -313,7 +438,7 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
-                
+
                 if (jet_ndtr_nominal < 2)
                         continue;
                 
@@ -332,9 +457,9 @@ int main()
                                                      h1_4vector->Pt(),
                                                      datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta()))
+                                                     h1_4vector->Eta())) 
                                 continue;
-
+                
                         // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
@@ -355,45 +480,52 @@ int main()
                                         continue;
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);
-
+                                
                                 double purity           = hpurity->GetBinContent(hpurity->FindBin(R_L, Jet_4vector->Pt()));        
                                 double efficiency       = hefficiency->GetBinContent(hefficiency->FindBin(R_L, Jet_4vector->Pt()));
                                 double purity_error     = hpurity->GetBinError(hpurity->FindBin(R_L, Jet_4vector->Pt()));        
                                 double efficiency_error = hefficiency->GetBinError(hefficiency->FindBin(R_L, Jet_4vector->Pt()));
 
+                                double h1_efficiency = hefficiency_single->GetBinContent(hefficiency_single->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+                                double h2_efficiency = hefficiency_single->GetBinContent(hefficiency_single->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+                                double h1_purity     = hpurity_single->GetBinContent(hpurity_single->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+                                double h2_purity     = hpurity_single->GetBinContent(hpurity_single->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+                                
                                 double nreco_ok  = hnum_pur->GetBinContent(hnum_pur->FindBin(R_L, Jet_4vector->Pt()));
                                 double nreco     = hden_pur->GetBinContent(hden_pur->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth    = hden_eff->GetBinContent(hden_eff->FindBin(R_L, Jet_4vector->Pt()));
-                                
+
                                 double event_weight = jet_purity/jet_efficiency/(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
                                 
                                 vars[0 ] = event_weight;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
-                                vars[3 ] = efficiency_error/efficiency;
-                                vars[4 ] = purity_error/purity;
-                                vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
-                                vars[6 ] = h1_4vector->Eta();
-                                vars[7 ] = h2_4vector->Eta();
-                                vars[8 ] = h1_4vector->Rapidity();
-                                vars[9 ] = h2_4vector->Rapidity();
-                                vars[10] = h1_4vector->P();
-                                vars[11] = h2_4vector->P();
-                                vars[12] = h1_4vector->Pt();
-                                vars[13] = h2_4vector->Pt();
-                                vars[14] = Jet_4vector->Pt();
-                                vars[15] = Jet_4vector->Eta();
-                                vars[16] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
-                                vars[17] = Jet_4vector->E();
-                                vars[18] = h1_4vector->E();
-                                vars[19] = h2_4vector->E();
-                                vars[20] = 2016;
-                                vars[21] = nreco_ok;
-                                vars[22] = nreco;
-                                vars[23] = ntruth_ok;
-                                vars[24] = ntruth;
-                                vars[25] = datatree_2016->Jet_Dtr_ThreeCharge[h1_index]*datatree_2016->Jet_Dtr_ThreeCharge[h2_index];
+                                vars[3 ] = h1_efficiency;
+                                vars[4 ] = h2_efficiency;
+                                vars[5 ] = h1_purity;
+                                vars[6 ] = h2_purity;
+                                vars[7 ] = h1_4vector->DeltaR(*h2_4vector);
+                                vars[8 ] = h1_4vector->Eta();
+                                vars[9 ] = h2_4vector->Eta();
+                                vars[10] = h1_4vector->Rapidity();
+                                vars[11] = h2_4vector->Rapidity();
+                                vars[12] = h1_4vector->P();
+                                vars[13] = h2_4vector->P();
+                                vars[14] = h1_4vector->Pt();
+                                vars[15] = h2_4vector->Pt();
+                                vars[16] = Jet_4vector->Pt();
+                                vars[17] = Jet_4vector->Eta();
+                                vars[18] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars[19] = Jet_4vector->E();
+                                vars[20] = h1_4vector->E();
+                                vars[21] = h2_4vector->E();
+                                vars[22] = 2016;
+                                vars[23] = nreco_ok;
+                                vars[24] = nreco;
+                                vars[25] = ntruth_ok;
+                                vars[26] = ntruth;
+                                vars[27] = datatree_2016->Jet_Dtr_ThreeCharge[h1_index]*datatree_2016->Jet_Dtr_ThreeCharge[h2_index];
                                 
                                 // Fill the TNtuple
                                 ntuple_data->Fill(vars);
@@ -440,7 +572,7 @@ int main()
                 if (evt != 0)
                         if (last_eventNum == datatree_2017->eventNumber) 
                                 continue;
-                
+
                 // Apply PV cut
                 if (datatree_2017->nPV != 1)
                         continue;
@@ -462,28 +594,6 @@ int main()
                                         datatree_2017->Jet_PY/1000.,
                                         datatree_2017->Jet_PZ/1000.,
                                         datatree_2017->Jet_PE/1000.);
-
-                double new_jer_cor = -999;
-                
-                for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
-                                new_jer_cor = syst_jer_array[jet_pt_bin];
-
-                if (new_jer_cor<0) 
-                        continue;
-                
-                double smearing_factor;
-
-                for (int i = 0 ; i < smearing_constant ; i++)
-                        smearing_factor += rndm->Gaus(1, new_jer_cor);
-
-                smearing_factor /= smearing_constant;
-                
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000.,
-                                        smearing_factor*datatree_2017->Jet_PY/1000.,
-                                        smearing_factor*datatree_2017->Jet_PZ/1000.,
-                                        smearing_factor*datatree_2017->Jet_PE/1000.);
-
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
@@ -529,7 +639,7 @@ int main()
                 
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
-                
+
                 double jet_ndtr_nominal = 0;
 
                 for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
@@ -552,10 +662,10 @@ int main()
 
                         jet_ndtr_nominal++;
                 }
-                
+
                 if (jet_ndtr_nominal < 2)
                         continue;
-
+                
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
@@ -572,9 +682,9 @@ int main()
                                                      h1_4vector->Pt(),
                                                      datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta()))
+                                                     h1_4vector->Eta())) 
                                 continue;
-
+                        
                         // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
@@ -601,6 +711,11 @@ int main()
                                 double purity_error     = hpurity->GetBinError(hpurity->FindBin(R_L, Jet_4vector->Pt()));        
                                 double efficiency_error = hefficiency->GetBinError(hefficiency->FindBin(R_L, Jet_4vector->Pt()));
 
+                                double h1_efficiency = hefficiency_single->GetBinContent(hefficiency_single->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+                                double h2_efficiency = hefficiency_single->GetBinContent(hefficiency_single->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+                                double h1_purity     = hpurity_single->GetBinContent(hpurity_single->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+                                double h2_purity     = hpurity_single->GetBinContent(hpurity_single->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+                                
                                 double nreco_ok  = hnum_pur->GetBinContent(hnum_pur->FindBin(R_L, Jet_4vector->Pt()));
                                 double nreco     = hden_pur->GetBinContent(hden_pur->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
@@ -611,29 +726,31 @@ int main()
                                 vars[0 ] = event_weight;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
-                                vars[3 ] = efficiency_error/efficiency;
-                                vars[4 ] = purity_error/purity;
-                                vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
-                                vars[6 ] = h1_4vector->Eta();
-                                vars[7 ] = h2_4vector->Eta();
-                                vars[8 ] = h1_4vector->Rapidity();
-                                vars[9 ] = h2_4vector->Rapidity();
-                                vars[10] = h1_4vector->P();
-                                vars[11] = h2_4vector->P();
-                                vars[12] = h1_4vector->Pt();
-                                vars[13] = h2_4vector->Pt();
-                                vars[14] = Jet_4vector->Pt();
-                                vars[15] = Jet_4vector->Eta();
-                                vars[16] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
-                                vars[17] = Jet_4vector->E();
-                                vars[18] = h1_4vector->E();
-                                vars[19] = h2_4vector->E();
-                                vars[20] = 2017;
-                                vars[21] = nreco_ok;
-                                vars[22] = nreco;
-                                vars[23] = ntruth_ok;
-                                vars[24] = ntruth;
-                                vars[25] = datatree_2017->Jet_Dtr_ThreeCharge[h1_index]*datatree_2017->Jet_Dtr_ThreeCharge[h2_index];
+                                vars[3 ] = h1_efficiency;
+                                vars[4 ] = h2_efficiency;
+                                vars[5 ] = h1_purity;
+                                vars[6 ] = h2_purity;
+                                vars[7 ] = h1_4vector->DeltaR(*h2_4vector);
+                                vars[8 ] = h1_4vector->Eta();
+                                vars[9 ] = h2_4vector->Eta();
+                                vars[10] = h1_4vector->Rapidity();
+                                vars[11] = h2_4vector->Rapidity();
+                                vars[12] = h1_4vector->P();
+                                vars[13] = h2_4vector->P();
+                                vars[14] = h1_4vector->Pt();
+                                vars[15] = h2_4vector->Pt();
+                                vars[16] = Jet_4vector->Pt();
+                                vars[17] = Jet_4vector->Eta();
+                                vars[18] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars[19] = Jet_4vector->E();
+                                vars[20] = h1_4vector->E();
+                                vars[21] = h2_4vector->E();
+                                vars[22] = 2017;
+                                vars[23] = nreco_ok;
+                                vars[24] = nreco;
+                                vars[25] = ntruth_ok;
+                                vars[26] = ntruth;
+                                vars[27] = datatree_2017->Jet_Dtr_ThreeCharge[h1_index]*datatree_2017->Jet_Dtr_ThreeCharge[h2_index];
                                 
                                 // Fill the TNtuple
                                 ntuple_data->Fill(vars);
@@ -702,27 +819,6 @@ int main()
                                         datatree_2018->Jet_PY/1000.,
                                         datatree_2018->Jet_PZ/1000.,
                                         datatree_2018->Jet_PE/1000.);
-
-                double new_jer_cor = -999;
-                for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                        if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1])
-                                new_jer_cor = syst_jer_array[jet_pt_bin];
-
-                if (new_jer_cor<0) 
-                        continue;
-
-                double smearing_factor;
-
-                for (int i = 0 ; i < smearing_constant ; i++)
-                        smearing_factor += rndm->Gaus(1, new_jer_cor);
-
-                smearing_factor /= smearing_constant;
-                
-                Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2018->Jet_PX/1000.,
-                                        smearing_factor*datatree_2018->Jet_PY/1000.,
-                                        smearing_factor*datatree_2018->Jet_PZ/1000.,
-                                        smearing_factor*datatree_2018->Jet_PE/1000.);
-
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
@@ -768,7 +864,7 @@ int main()
                 
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
-                
+
                 double jet_ndtr_nominal = 0;
 
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
@@ -794,7 +890,7 @@ int main()
                 
                 if (jet_ndtr_nominal < 2)
                         continue;
-
+                
                 // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
                         // Skip non-hadronic particles
@@ -811,7 +907,7 @@ int main()
                                                      h1_4vector->Pt(),
                                                      datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
+                                                     h1_4vector->Eta()))
                                 continue;
 
                         // Loop over hadron 2
@@ -830,7 +926,7 @@ int main()
                                                              h2_4vector->Pt(),
                                                              datatree_2018->Jet_Dtr_TrackChi2[h2_index]/datatree_2018->Jet_Dtr_TrackNDF[h2_index],
                                                              datatree_2018->Jet_Dtr_ProbNNghost[h2_index],
-                                                             h2_4vector->Eta())) 
+                                                             h2_4vector->Eta()))
                                         continue;
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);
@@ -840,6 +936,11 @@ int main()
                                 double purity_error     = hpurity->GetBinError(hpurity->FindBin(R_L, Jet_4vector->Pt()));        
                                 double efficiency_error = hefficiency->GetBinError(hefficiency->FindBin(R_L, Jet_4vector->Pt()));
 
+                                double h1_efficiency = hefficiency_single->GetBinContent(hefficiency_single->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+                                double h2_efficiency = hefficiency_single->GetBinContent(hefficiency_single->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+                                double h1_purity     = hpurity_single->GetBinContent(hpurity_single->FindBin(h1_4vector->P(),h1_4vector->Eta(), Jet_4vector->Pt()));
+                                double h2_purity     = hpurity_single->GetBinContent(hpurity_single->FindBin(h2_4vector->P(),h2_4vector->Eta(), Jet_4vector->Pt()));
+                                
                                 double nreco_ok  = hnum_pur->GetBinContent(hnum_pur->FindBin(R_L, Jet_4vector->Pt()));
                                 double nreco     = hden_pur->GetBinContent(hden_pur->FindBin(R_L, Jet_4vector->Pt()));
                                 double ntruth_ok = hnum_eff->GetBinContent(hnum_eff->FindBin(R_L, Jet_4vector->Pt()));
@@ -850,29 +951,31 @@ int main()
                                 vars[0 ] = event_weight;
                                 vars[1 ] = efficiency;
                                 vars[2 ] = purity;
-                                vars[3 ] = efficiency_error/efficiency;
-                                vars[4 ] = purity_error/purity;
-                                vars[5 ] = h1_4vector->DeltaR(*h2_4vector);
-                                vars[6 ] = h1_4vector->Eta();
-                                vars[7 ] = h2_4vector->Eta();
-                                vars[8 ] = h1_4vector->Rapidity();
-                                vars[9 ] = h2_4vector->Rapidity();
-                                vars[10] = h1_4vector->P();
-                                vars[11] = h2_4vector->P();
-                                vars[12] = h1_4vector->Pt();
-                                vars[13] = h2_4vector->Pt();
-                                vars[14] = Jet_4vector->Pt();
-                                vars[15] = Jet_4vector->Eta();
-                                vars[16] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
-                                vars[17] = Jet_4vector->E();
-                                vars[18] = h1_4vector->E();
-                                vars[19] = h2_4vector->E();
-                                vars[20] = 2018;
-                                vars[21] = nreco_ok;
-                                vars[22] = nreco;
-                                vars[23] = ntruth_ok;
-                                vars[24] = ntruth;
-                                vars[25] = datatree_2018->Jet_Dtr_ThreeCharge[h1_index]*datatree_2018->Jet_Dtr_ThreeCharge[h2_index];
+                                vars[3 ] = h1_efficiency;
+                                vars[4 ] = h2_efficiency;
+                                vars[5 ] = h1_purity;
+                                vars[6 ] = h2_purity;
+                                vars[7 ] = h1_4vector->DeltaR(*h2_4vector);
+                                vars[8 ] = h1_4vector->Eta();
+                                vars[9 ] = h2_4vector->Eta();
+                                vars[10] = h1_4vector->Rapidity();
+                                vars[11] = h2_4vector->Rapidity();
+                                vars[12] = h1_4vector->P();
+                                vars[13] = h2_4vector->P();
+                                vars[14] = h1_4vector->Pt();
+                                vars[15] = h2_4vector->Pt();
+                                vars[16] = Jet_4vector->Pt();
+                                vars[17] = Jet_4vector->Eta();
+                                vars[18] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars[19] = Jet_4vector->E();
+                                vars[20] = h1_4vector->E();
+                                vars[21] = h2_4vector->E();
+                                vars[22] = 2018;
+                                vars[23] = nreco_ok;
+                                vars[24] = nreco;
+                                vars[25] = ntruth_ok;
+                                vars[26] = ntruth;
+                                vars[27] = datatree_2018->Jet_Dtr_ThreeCharge[h1_index]*datatree_2018->Jet_Dtr_ThreeCharge[h2_index];
                                 
                                 // Fill the TNtuple
                                 ntuple_data->Fill(vars);
