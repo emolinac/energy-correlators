@@ -148,8 +148,6 @@ int main()
 
                 double coords[4] = {jet_pt_eff_reco, R_L_purity, h1_p_eff_reco, h2_p_eff_reco};
 
-                std::cout<<jet_pt_eff_reco<<" ; "<<R_L_purity<<" ; "<<h1_p_eff_reco<<" ; "<<h2_p_eff_reco<<std::endl;
-
                 if(abs(R_L_purity - R_L_truth_purity) < rl_resolution)
                         hnum_eff->Fill(coords);
         }
@@ -218,115 +216,6 @@ int main()
         latex.SetTextAlign(22); // center alignment
         latex.SetTextSize(text_size_correction_plots);
         latex.SetTextColor(kBlack);
-
-        // hpurity->Draw("col");
-        // for (int i = 2; i < hpurity->GetNbinsX(); ++i) {
-        //         for (int j = 2; j < hpurity->GetNbinsY(); ++j) {
-        //                 double x = hpurity->GetXaxis()->GetBinCenter(i);
-        //                 double y = hpurity->GetYaxis()->GetBinCenter(j);
-        //                 double content = hpurity->GetBinContent(i, j);
-        //                 double error = hpurity->GetBinError(i, j);
-
-        //                 latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-        //         }
-        // }
-        // hpurity->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        // hpurity->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
-        // hpurity->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(1);
-        // c->Print("../src-analysis/plots/pair_purity_correction_smooth.pdf");
-
-        // hefficiency->Draw("col");
-        // for (int i = 2; i < hefficiency->GetNbinsX(); ++i) {
-        //         for (int j = 2; j < hefficiency->GetNbinsY(); ++j) {
-        //                 double x = hefficiency->GetXaxis()->GetBinCenter(i);
-        //                 double y = hefficiency->GetYaxis()->GetBinCenter(j);
-        //                 double content = hefficiency->GetBinContent(i, j);
-        //                 double error = hefficiency->GetBinError(i, j);
-
-        //                 latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-        //         }
-        // }
-        // hefficiency->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        // hefficiency->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
-        // hefficiency->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(1);
-        // c->Print("../src-analysis/plots/pair_efficiency_correction_smooth.pdf");
-
-
-        // hpurity_eqcharge->Draw("col");
-        // for (int i = 2; i < hpurity_eqcharge->GetNbinsX(); ++i) {
-        //         for (int j = 2; j < hpurity_eqcharge->GetNbinsY(); ++j) {
-        //                 double x = hpurity_eqcharge->GetXaxis()->GetBinCenter(i);
-        //                 double y = hpurity_eqcharge->GetYaxis()->GetBinCenter(j);
-        //                 double content = hpurity_eqcharge->GetBinContent(i, j);
-        //                 double error = hpurity_eqcharge->GetBinError(i, j);
-
-        //                 latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-        //         }
-        // }
-        // hpurity_eqcharge->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        // hpurity_eqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
-        // hpurity_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(1);
-        // c->Print("../src-analysis/plots/pair_purity_correction_eqcharge_smooth.pdf");
-
-        // hefficiency_eqcharge->Draw("col");
-        // for (int i = 2; i < hefficiency_eqcharge->GetNbinsX(); ++i) {
-        //         for (int j = 2; j < hefficiency_eqcharge->GetNbinsY(); ++j) {
-        //                 double x = hefficiency_eqcharge->GetXaxis()->GetBinCenter(i);
-        //                 double y = hefficiency_eqcharge->GetYaxis()->GetBinCenter(j);
-        //                 double content = hefficiency_eqcharge->GetBinContent(i, j);
-        //                 double error = hefficiency_eqcharge->GetBinError(i, j);
-
-        //                 latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-        //         }
-        // }
-        // hefficiency_eqcharge->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        // hefficiency_eqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
-        // hefficiency_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(1);
-        // c->Print("../src-analysis/plots/pair_efficiency_correction_eqcharge_smooth.pdf");
-
-        // hpurity_neqcharge->Draw("col");
-        // for (int i = 2; i < hpurity_neqcharge->GetNbinsX(); ++i) {
-        //         for (int j = 2; j < hpurity_neqcharge->GetNbinsY(); ++j) {
-        //                 double x = hpurity_neqcharge->GetXaxis()->GetBinCenter(i);
-        //                 double y = hpurity_neqcharge->GetYaxis()->GetBinCenter(j);
-        //                 double content = hpurity_neqcharge->GetBinContent(i, j);
-        //                 double error = hpurity_neqcharge->GetBinError(i, j);
-
-        //                 latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-        //         }
-        // }
-        // hpurity_neqcharge->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
-        // hpurity_neqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
-        // hpurity_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(1);
-        // c->Print("../src-analysis/plots/pair_purity_correction_neqcharge_smooth.pdf");
-
-        // hefficiency_neqcharge->Draw("col");
-        // for (int i = 2; i < hefficiency_neqcharge->GetNbinsX(); ++i) {
-        //         for (int j = 2; j < hefficiency_neqcharge->GetNbinsY(); ++j) {
-        //                 double x = hefficiency_neqcharge->GetXaxis()->GetBinCenter(i);
-        //                 double y = hefficiency_neqcharge->GetYaxis()->GetBinCenter(j);
-        //                 double content = hefficiency_neqcharge->GetBinContent(i, j);
-        //                 double error = hefficiency_neqcharge->GetBinError(i, j);
-
-        //                 latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
-        //         }
-        // }
-        // hefficiency_neqcharge->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
-        // hefficiency_neqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
-        // hefficiency_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(1);
-        // c->Print("../src-analysis/plots/pair_efficiency_correction_neqcharge_smooth.pdf");
         
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector = new TLorentzVector();
@@ -474,7 +363,7 @@ int main()
                                 continue;
                 
                         // Loop over hadron 2
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
+                        for (int h2_index = 0 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
                                 if (datatree_2016->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
@@ -701,7 +590,7 @@ int main()
                                 continue;
                         
                         // Loop over hadron 2
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
+                        for (int h2_index = 0 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
                                 if (datatree_2017->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2017->Jet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
@@ -928,7 +817,7 @@ int main()
                                 continue;
 
                         // Loop over hadron 2
-                        for (int h2_index = h1_index+1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++) {
+                        for (int h2_index = 0 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++) {
                                 // Skip non-hadronic particles
                                 if (datatree_2018->Jet_Dtr_IsMeson[h2_index] != 1 && datatree_2018->Jet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
