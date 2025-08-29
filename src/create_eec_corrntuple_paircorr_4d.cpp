@@ -28,7 +28,7 @@
 int main()
 {
         // Open correction files
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + "ntuple_eec_paircorrections_4d.root").c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         

@@ -55,7 +55,8 @@ int main(int argc, char* argv[])
         }
 
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_pair_corrections[argv[1]]).c_str(),"RECREATE");
+        // TFile* fout = new TFile((output_folder + namef_pair_corrections[argv[1]]).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + "ntuple_eec_paircorrections_4d.root").c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJetsMCReco* mcrecotree = new TZJetsMCReco();
