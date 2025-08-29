@@ -15,6 +15,7 @@ all: ${BIN}/create_jet_purityntuple ${BIN}/create_jet_efficiencyntuple \
 	 ${BIN}/create_eec_corrntuple_pairandsinglecorr \
 	 ${BIN}/create_eec_corrntuple_paircorr_3d \
 	 ${BIN}/create_eec_corrntuple_paircorr_4d \
+	 ${BIN}/create_eec_corrntuple_paircorr_5d \
 	 ${BIN}/create_eec_corrntuple_paircorr_3d_alt \
 	 ${BIN}/create_eec_corrntuple_paircorrwweights \
 	 ${BIN}/create_eec_corrntuple_paircorr_ct \
@@ -63,6 +64,9 @@ ${BIN}/create_eec_corrntuple_paircorr_3d: ${SRC}/create_eec_corrntuple_paircorr_
 
 ${BIN}/create_eec_corrntuple_paircorr_4d: ${SRC}/create_eec_corrntuple_paircorr_4d.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_eec_corrntuple_paircorr_4d.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_eec_corrntuple_paircorr_4d
+
+${BIN}/create_eec_corrntuple_paircorr_5d: ${SRC}/create_eec_corrntuple_paircorr_5d.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_eec_corrntuple_paircorr_5d.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_eec_corrntuple_paircorr_5d
 
 ${BIN}/create_eec_corrntuple_paircorr_3d_alt: ${SRC}/create_eec_corrntuple_paircorr_3d_alt.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_eec_corrntuple_paircorr_3d_alt.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_eec_corrntuple_paircorr_3d_alt

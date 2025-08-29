@@ -10,9 +10,9 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TString variation = "4dcorr_h_p_doublecount";
+        TString variation = "5dcorr_h_p_doublecount";
 
-        TFile* fdata = new TFile((output_folder + namef_histos_paircorr_eec_4d).c_str());
+        TFile* fdata = new TFile((output_folder + namef_histos_paircorr_eec_5d).c_str());
 
         TH1F* hcorr_eec[nbin_jet_pt];
         for (int i = 0 ; i < nbin_jet_pt ; i++) {
@@ -37,7 +37,8 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
                 htruth_eec[bin] = new TH1F(Form("htruth_eec%i",bin),"",nbin_rl_nominal,rl_nominal_binning);
                 ntuple_mc->Project(Form("htruth_eec%i",bin),"R_L",eec_jet_pt_cut[bin]);
 
-                htruth_eec[bin]->Scale(1./htruth_jet[bin]->Integral(),"width");
+                // htruth_eec[bin]->Scale(1./htruth_jet[bin]->Integral(),"width");
+                htruth_eec[bin]->Scale(2./htruth_jet[bin]->Integral(),"width"); // For 4d and 5d 
 
                 set_histogram_style(htruth_eec[bin], corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
         }

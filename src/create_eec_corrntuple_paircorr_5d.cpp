@@ -43,7 +43,7 @@ int main()
         TFile* fefficiency_muon_2018_trg = new TFile((muons_folder + "TRGEff_Data_2018.root").c_str());
         
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr_4d).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_eec_paircorr_5d).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJets2016Data* datatree_2016 = new TZJets2016Data();
@@ -93,23 +93,21 @@ int main()
         hpurity_jet->Divide(hnum_pur_jet, hden_pur_jet, 1, 1, "B");
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
-        int nbins[4] = {nbin_jet_pt_unfolding, nbin_rl_nominal_unfolding, ic_p_nbins, ic_p_nbins};
+        int nbins[5] = {nbin_jet_pt_unfolding, sl_eta_nbins, sl_eta_nbins, ic_p_nbins, ic_p_nbins};
         
-        std::vector<std::vector<double>> bins(4);
+        std::vector<std::vector<double>> bins(5);
         bins[0] = {15,20,30,50,100,150};
-        bins[1] = {rl_absmin,rl_logmin, 0.0247871, 0.0307201, 0.0380731, 0.0471861, 0.0584804, 0.072478, 0.089826, 0.111326, 0.137973, 0.170998, 0.211927, 0.262653, 0.32552, 0.403435, rl_logmax, rl_absmax};
-        // bins[2] = {0.25, 0.32583, 0.424662, 0.553471, 0.72135, 0.940151, 1.22532, 1.59698, 2.08138, 2.71271, 3.53553, 4.60794, 6.00562, 7.82726, 10.2014, 13.2957, 17.3286, 22.5848, 29.4352, 38.3635, 50};
-        // bins[3] = {0.25, 0.32583, 0.424662, 0.553471, 0.72135, 0.940151, 1.22532, 1.59698, 2.08138, 2.71271, 3.53553, 4.60794, 6.00562, 7.82726, 10.2014, 13.2957, 17.3286, 22.5848, 29.4352, 38.3635, 50};
-
-        bins[2] = {4, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 250, 300, 500, 1000};
+        bins[1] = {2.,2.25,2.5,2.75,3.,3.25,3.5,3.75,4.,4.25,4.5};
+        bins[2] = {2.,2.25,2.5,2.75,3.,3.25,3.5,3.75,4.,4.25,4.5};
         bins[3] = {4, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 250, 300, 500, 1000};
+        bins[4] = {4, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 250, 300, 500, 1000};
 
-        THnT<Float_t>* hnum_pur    = new THnT<Float_t>("hnum_pur"   , "", 4, nbins, bins);
-        THnT<Float_t>* hden_pur    = new THnT<Float_t>("hden_pur"   , "", 4, nbins, bins);
-        THnT<Float_t>* hpurity     = new THnT<Float_t>("hpurity"    , "", 4, nbins, bins);
-        THnT<Float_t>* hnum_eff    = new THnT<Float_t>("hnum_eff"   , "", 4, nbins, bins);
-        THnT<Float_t>* hden_eff    = new THnT<Float_t>("hden_eff"   , "", 4, nbins, bins);
-        THnT<Float_t>* hefficiency = new THnT<Float_t>("hefficiency", "", 4, nbins, bins);
+        THnT<Float_t>* hnum_pur    = new THnT<Float_t>("hnum_pur"   , "", 5, nbins, bins);
+        THnT<Float_t>* hden_pur    = new THnT<Float_t>("hden_pur"   , "", 5, nbins, bins);
+        THnT<Float_t>* hpurity     = new THnT<Float_t>("hpurity"    , "", 5, nbins, bins);
+        THnT<Float_t>* hnum_eff    = new THnT<Float_t>("hnum_eff"   , "", 5, nbins, bins);
+        THnT<Float_t>* hden_eff    = new THnT<Float_t>("hden_eff"   , "", 5, nbins, bins);
+        THnT<Float_t>* hefficiency = new THnT<Float_t>("hefficiency", "", 5, nbins, bins);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
@@ -117,25 +115,34 @@ int main()
         hden_eff->Sumw2();
 
         float jet_pt_purity, R_L_purity, R_L_truth_purity, h1_p_purity, h2_p_purity,jet_pt_eff_reco, h1_p_eff_reco, h2_p_eff_reco;
+        float h1_eta_purity, h2_eta_purity, h1_eta_eff_reco, h2_eta_eff_reco;
+        
         ntuple_purity->SetBranchAddress("jet_pt",&jet_pt_purity);
-        ntuple_purity->SetBranchAddress("R_L",&R_L_purity);
-        ntuple_purity->SetBranchAddress("R_L_truth",&R_L_truth_purity);
+        ntuple_purity->SetBranchAddress("h1_eta",&h1_eta_purity);
+        ntuple_purity->SetBranchAddress("h2_eta",&h2_eta_purity);
         ntuple_purity->SetBranchAddress("h1_p",&h1_p_purity);
         ntuple_purity->SetBranchAddress("h2_p",&h2_p_purity);
+        ntuple_purity->SetBranchAddress("R_L",&R_L_purity);
+
         ntuple_purity->SetBranchAddress("jet_pt_truth",&jet_pt_eff_reco);
+        ntuple_purity->SetBranchAddress("R_L_truth",&R_L_truth_purity);
+        ntuple_purity->SetBranchAddress("h1_eta_truth",&h1_eta_eff_reco);
+        ntuple_purity->SetBranchAddress("h2_eta_truth",&h2_eta_eff_reco);
         ntuple_purity->SetBranchAddress("h1_p_truth",&h1_p_eff_reco);
         ntuple_purity->SetBranchAddress("h2_p_truth",&h2_p_eff_reco);
         
-        float jet_pt_eff_mc, R_L_eff_mc, R_L_truth_eff_mc, h1_p_eff_mc, h2_p_eff_mc;
+        float jet_pt_eff_mc, R_L_eff_mc, R_L_truth_eff_mc, h1_p_eff_mc, h2_p_eff_mc, h1_eta_eff_mc, h2_eta_eff_mc;
         ntuple_efficiency_mc->SetBranchAddress("jet_pt",&jet_pt_eff_mc);
         ntuple_efficiency_mc->SetBranchAddress("R_L",&R_L_eff_mc);
+        ntuple_efficiency_mc->SetBranchAddress("h1_eta",&h1_eta_eff_mc);
+        ntuple_efficiency_mc->SetBranchAddress("h2_eta",&h2_eta_eff_mc);
         ntuple_efficiency_mc->SetBranchAddress("h1_p",&h1_p_eff_mc);
         ntuple_efficiency_mc->SetBranchAddress("h2_p",&h2_p_eff_mc);
         
         for(int entry = 0 ; entry < ntuple_purity->GetEntries() ; entry++) {
                 ntuple_purity->GetEntry(entry);
 
-                double coords[4] = {jet_pt_purity, R_L_truth_purity, h1_p_purity, h2_p_purity};
+                double coords[5] = {jet_pt_purity, h1_eta_purity, h2_eta_purity, h1_p_purity, h2_p_purity};
 
                 hden_pur->Fill(coords);
 
@@ -146,7 +153,7 @@ int main()
         for(int entry = 0 ; entry < ntuple_efficiency_reco->GetEntries() ; entry++) {
                 ntuple_efficiency_reco->GetEntry(entry);
 
-                double coords[4] = {jet_pt_eff_reco, R_L_purity, h1_p_eff_reco, h2_p_eff_reco};
+                double coords[5] = {jet_pt_eff_reco, h1_eta_eff_reco, h2_eta_eff_reco, h1_p_eff_reco, h2_p_eff_reco};
 
                 if(abs(R_L_purity - R_L_truth_purity) < rl_resolution)
                         hnum_eff->Fill(coords);
@@ -155,7 +162,7 @@ int main()
         for(int entry = 0 ; entry < ntuple_efficiency_mc->GetEntries() ; entry++) {
                 ntuple_efficiency_mc->GetEntry(entry);
 
-                double coords[4] = {jet_pt_eff_mc, R_L_eff_mc, h1_p_eff_mc, h2_p_eff_mc};
+                double coords[5] = {jet_pt_eff_mc, h1_eta_eff_mc, h2_eta_eff_mc, h1_p_eff_mc, h2_p_eff_mc};
 
                 hden_eff->Fill(coords);
         }
@@ -383,12 +390,13 @@ int main()
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);
 
-                                int bin_x = hpurity->GetAxis(0)->FindBin(Jet_4vector->Pt());
-                                int bin_y = hpurity->GetAxis(1)->FindBin(R_L);
-                                int bin_z = hpurity->GetAxis(2)->FindBin(h1_4vector->P());
-                                int bin_w = hpurity->GetAxis(3)->FindBin(h2_4vector->P());
+                                int bin_i = hpurity->GetAxis(0)->FindBin(Jet_4vector->Pt());
+                                int bin_j = hpurity->GetAxis(1)->FindBin(h1_4vector->Eta());
+                                int bin_k = hpurity->GetAxis(2)->FindBin(h2_4vector->Eta());
+                                int bin_l = hpurity->GetAxis(3)->FindBin(h1_4vector->P());
+                                int bin_m = hpurity->GetAxis(4)->FindBin(h2_4vector->P());
 
-                                int bin[4] =  {bin_x, bin_y, bin_z, bin_w};
+                                int bin[5] =  {bin_i, bin_j, bin_j, bin_l, bin_m};
 
                                 int globalbin = hpurity->GetBin(bin);
 
@@ -610,13 +618,14 @@ int main()
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);
 
-                                int bin_x = hpurity->GetAxis(0)->FindBin(Jet_4vector->Pt());
-                                int bin_y = hpurity->GetAxis(1)->FindBin(R_L);
-                                int bin_z = hpurity->GetAxis(2)->FindBin(h1_4vector->P());
-                                int bin_w = hpurity->GetAxis(3)->FindBin(h2_4vector->P());
+                                int bin_i = hpurity->GetAxis(0)->FindBin(Jet_4vector->Pt());
+                                int bin_j = hpurity->GetAxis(1)->FindBin(h1_4vector->Eta());
+                                int bin_k = hpurity->GetAxis(2)->FindBin(h2_4vector->Eta());
+                                int bin_l = hpurity->GetAxis(3)->FindBin(h1_4vector->P());
+                                int bin_m = hpurity->GetAxis(4)->FindBin(h2_4vector->P());
 
-                                int bin[4] =  {bin_x, bin_y, bin_z, bin_w};
-                                
+                                int bin[5] =  {bin_i, bin_j, bin_j, bin_l, bin_m};
+
                                 int globalbin = hpurity->GetBin(bin);
 
                                 double purity           = hpurity->GetBinContent(globalbin);        
@@ -837,13 +846,14 @@ int main()
 
                                 double R_L = h1_4vector->DeltaR(*h2_4vector);
 
-                                int bin_x = hpurity->GetAxis(0)->FindBin(Jet_4vector->Pt());
-                                int bin_y = hpurity->GetAxis(1)->FindBin(R_L);
-                                int bin_z = hpurity->GetAxis(2)->FindBin(h1_4vector->P());
-                                int bin_w = hpurity->GetAxis(3)->FindBin(h2_4vector->P());
+                                int bin_i = hpurity->GetAxis(0)->FindBin(Jet_4vector->Pt());
+                                int bin_j = hpurity->GetAxis(1)->FindBin(h1_4vector->Eta());
+                                int bin_k = hpurity->GetAxis(2)->FindBin(h2_4vector->Eta());
+                                int bin_l = hpurity->GetAxis(3)->FindBin(h1_4vector->P());
+                                int bin_m = hpurity->GetAxis(4)->FindBin(h2_4vector->P());
 
-                                int bin[4] =  {bin_x, bin_y, bin_z, bin_w};
-                                
+                                int bin[5] =  {bin_i, bin_j, bin_j, bin_l, bin_m};
+
                                 int globalbin = hpurity->GetBin(bin);
 
                                 double purity           = hpurity->GetBinContent(globalbin);        
