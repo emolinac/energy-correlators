@@ -10,7 +10,7 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TString variation = "4dcorr_h_p";
+        TString variation = "4dcorr_h_p_doublecount";
 
         TFile* fdata = new TFile((output_folder + namef_histos_paircorr_eec_4d).c_str());
 
@@ -64,8 +64,8 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
                 s_data[bin]->Add(hcorr_eec[bin],"E");
                 s_data[bin]->Draw("NOSTACK");
                 s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
-                s_data[bin]->SetMaximum(1.7);
-                s_data[bin]->SetMinimum(40E-03);
+                // s_data[bin]->SetMaximum(1.7);
+                // s_data[bin]->SetMinimum(40E-03);
 
                 l_data[bin]->AddEntry(htruth_eec[bin],"mc"    ,"p");
                 l_data[bin]->AddEntry(hcorr_eec[bin],"data"  ,"p");

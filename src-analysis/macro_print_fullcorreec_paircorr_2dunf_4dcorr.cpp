@@ -124,7 +124,7 @@ void macro_print_fullcorreec_paircorr_2dunf_4dcorr(int niter = nominal_niter, bo
         gPad->SetLogy(1);
         
         if (do_print) 
-                c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_4dcorr.pdf",niter));
+                c->Print(Form("./plots/unfolded2d_unf-niter%i_ratio_4dcorrwdoublecount.pdf",niter));
 
         // hunfolded_ratio_jet->Draw("col");
         // hunfolded_ratio_jet->SetTitle("Jet : Purity Corrected Unfolded/Purity Corrected;p_{T,jet} (GeV);");
@@ -133,13 +133,13 @@ void macro_print_fullcorreec_paircorr_2dunf_4dcorr(int niter = nominal_niter, bo
         // gPad->SetLogy(0);
         
         // if (do_print) 
-        //         c->Print(Form("./plots/unfolded1d_jetpt_unf-niter%i_ratio_4dcorr.pdf",niter));
+        //         c->Print(Form("./plots/unfolded1d_jetpt_unf-niter%i_ratio_4dcorrwdoublecount.pdf",niter));
 
         // hresponse_jet->Draw("col text");
         // gPad->SetLogx(1);
         // gPad->SetLogy(1);
         // if (do_print) 
-        //         c->Print("./plots/jet_pt_response_matrix_4dcorr.pdf");
+        //         c->Print("./plots/jet_pt_response_matrix_4dcorrwdoublecount.pdf");
 
         // Fill the histograms
         TH1F* hcorr_jet[nbin_jet_pt];
@@ -247,7 +247,7 @@ void macro_print_fullcorreec_paircorr_2dunf_4dcorr(int niter = nominal_niter, bo
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/corrtau_unf-niter%i_jetptunf-%s_2dunf_4dcorr.pdf",niter,(do_jet_unfolding)?"yes":"no"));
+                c->Print(Form("./plots/corrtau_unf-niter%i_jetptunf-%s_2dunf_4dcorrwdoublecount.pdf",niter,(do_jet_unfolding)?"yes":"no"));
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data = new THStack();
@@ -271,7 +271,7 @@ void macro_print_fullcorreec_paircorr_2dunf_4dcorr(int niter = nominal_niter, bo
                 tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
                 if (do_print)
-                        c->Print(Form("./plots/corrchargedeec_jetptbin%i_unf-niter%i_jetptunf-%s_2dunf_4dcorr.pdf", bin, niter,(do_jet_unfolding)?"yes":"no"));
+                        c->Print(Form("./plots/corrchargedeec_jetptbin%i_unf-niter%i_jetptunf-%s_2dunf_4dcorrwdoublecount.pdf", bin, niter,(do_jet_unfolding)?"yes":"no"));
         }
 
         s_data = new THStack();
@@ -291,5 +291,5 @@ void macro_print_fullcorreec_paircorr_2dunf_4dcorr(int niter = nominal_niter, bo
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
         if (do_print) 
-                c->Print(Form("./plots/correec_unf-niter%i_jetptunf-%s_2dunf_4dcorr.pdf",niter,(do_jet_unfolding)?"yes":"no"));
+                c->Print(Form("./plots/correec_unf-niter%i_jetptunf-%s_2dunf_4dcorrwdoublecount.pdf",niter,(do_jet_unfolding)?"yes":"no"));
 }

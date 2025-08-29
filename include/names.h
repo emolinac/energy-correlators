@@ -145,7 +145,7 @@ const char* ntuple_pairandsinglecorrdata_vars = "event_weight:efficiency:purity:
 const int   Nvars_corrections_mc         = 13;
 const int   Nvars_corrections_mcreco     = 25;
 const char* ntuple_corrections_mc_vars   = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:jet_pt:weight_pt";
-const char* ntuple_corrections_reco_vars = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:h1_p_truth:h2_p_truth:h1_pt_truth:h2_pt_truth:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_y_truth:h2_y_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
+const char* ntuple_corrections_reco_vars = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:h1_p_truth:h2_p_truth:h1_pt_truth:h2_pt_truth:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_eta_truth:h2_eta_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
 
 //--------------------------------------------------------------------------------------//
 const int   Nvars_hadroncorrections_mc         = 8;

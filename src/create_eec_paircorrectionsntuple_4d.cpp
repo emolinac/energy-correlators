@@ -389,8 +389,8 @@ int main(int argc, char* argv[])
                                 vars_reco[16] = true_Jet_4vector->Pt();
                                 vars_reco[17] = (key1_match==0) ? -999 : true_h1_4vector->DeltaR(*h1_4vector);
                                 vars_reco[18] = (key2_match==0) ? -999 : true_h2_4vector->DeltaR(*h2_4vector);
-                                vars_reco[19] = (key1_match==0) ? -999 : true_h1_4vector->Rapidity();
-                                vars_reco[20] = (key2_match==0) ? -999 : true_h2_4vector->Rapidity();
+                                vars_reco[19] = (key1_match==0) ? -999 : true_h1_4vector->Eta();
+                                vars_reco[20] = (key2_match==0) ? -999 : true_h2_4vector->Eta();
                                 vars_reco[21] = (key1_match==0||key2_match==0) ? -999 : true_h1_4vector->DeltaR(*true_h2_4vector);
 
                                 double weight_truth = weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E());

@@ -135,7 +135,7 @@ int main()
                                                               h1_4vector->Eta())) 
                                 continue;
 
-                        for (int h2_index = h1_index+1 ; h2_index < mctree->MCJet_Dtr_nmcdtrs ; h2_index++) {
+                        for (int h2_index = h1_index + 1 ; h2_index < mctree->MCJet_Dtr_nmcdtrs ; h2_index++) {
                                 if (mctree->MCJet_Dtr_IsMeson[h2_index] != 1 && mctree->MCJet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
 
