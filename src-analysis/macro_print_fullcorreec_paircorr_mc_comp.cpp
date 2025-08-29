@@ -10,9 +10,9 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TString variation = "nominal";
+        TString variation = "4dcorr_h_p";
 
-        TFile* fdata = new TFile((output_folder + namef_histos_paircorr_eec).c_str());
+        TFile* fdata = new TFile((output_folder + namef_histos_paircorr_eec_4d).c_str());
 
         TH1F* hcorr_eec[nbin_jet_pt];
         for (int i = 0 ; i < nbin_jet_pt ; i++) {

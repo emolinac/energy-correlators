@@ -23,6 +23,8 @@ std::string namef_ntuple_eec_corr           = "ntuple_correec.root";
 
 std::string namef_ntuple_eec_paircorr       = "ntuple_paircorreec.root";
 std::string namef_ntuple_eec_paircorr_3d    = "ntuple_paircorreec_3d.root";
+std::string namef_ntuple_eec_paircorr_3d_alt= "ntuple_paircorreec_3d_alt.root";
+std::string namef_ntuple_eec_paircorr_4d    = "ntuple_paircorreec_4d.root";
 std::string namef_ntuple_eec_paircorr_ct    = "ntuple_paircorreec_ct.root";
 std::string namef_ntuple_eec_paircorr_jes   = "ntuple_paircorreec_jes.root";
 std::string namef_ntuple_eec_paircorr_jer   = "ntuple_paircorreec_jer.root";
@@ -30,6 +32,8 @@ std::string namef_ntuple_eec_paircorr_prior = "ntuple_paircorreec_prior.root";
 
 std::string namef_ntuple_eec_paircorrwweights     = "ntuple_paircorreecwweights.root";
 std::string namef_ntuple_eec_paircorr_ct_wweights = "ntuple_paircorreec_ct_wweights.root";
+
+std::string namef_ntuple_eec_paircorr_h1h2    = "ntuple_paircorreec_h1h2.root";
 
 std::string namef_ntuple_eec_pairandsinglecorr    = "ntuple_pairandsinglecorreec.root";
 
@@ -46,8 +50,10 @@ std::string namef_ntuple_hadron    = "ntuple_hadron.root";
 
 std::string namef_histos_corr_eec              = "histos_corr_eec.root";
 std::string namef_histos_paircorr_eec          = "histos_paircorr_eec.root";
+std::string namef_histos_paircorr_eec_h1h2     = "histos_paircorr_eec_h1h2.root";
 std::string namef_histos_paircorr_eec_wweights = "histos_paircorr_eec_wweights.root";
 std::string namef_histos_paircorr_eec_3d       = "histos_paircorr_eec_3d.root";
+std::string namef_histos_paircorr_eec_4d       = "histos_paircorr_eec_4d.root";
 std::string namef_histos_paircorr_eec_ct       = "histos_paircorr_eec_ct.root";
 std::string namef_histos_paircorr_eec_jes      = "histos_paircorr_eec_jes.root";
 std::string namef_histos_paircorr_eec_prior    = "histos_paircorr_eec_prior.root";

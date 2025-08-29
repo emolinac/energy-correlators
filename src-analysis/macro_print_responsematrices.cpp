@@ -22,7 +22,7 @@ void macro_print_responsematrices()
         TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",200,0.008,0.8,200,0.008,0.8);
         TH2F* hresp_jet_pt = new TH2F("hresp_jet_pt","",200,10,150,200,10,150);
         TH2F* hresp_weight = new TH2F("hresp_weight","",nbin_weight,weight_binning,nbin_weight,weight_binning);
-        TH2F* hresp_ptprod = new TH2F("hresp_ptprod","",nbin_weight,ptprod_binning,nbin_weight,ptprod_binning);
+        TH2F* hresp_ptprod = new TH2F("hresp_ptprod","",nbin_ptprod,ptprod_binning,nbin_ptprod,ptprod_binning);
 
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
                 // Access entry of ntuple

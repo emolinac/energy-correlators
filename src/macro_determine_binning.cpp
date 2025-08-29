@@ -11,21 +11,31 @@ void macro_determine_binning()
         double binning_log[nbin_rl_nominal+1];
         double binning_corr_log[nbin_rl_altlogbin + 1];
         double binning_weight[nbin_weight + 1];
-        double binning_ptprod[nbin_weight + 1];
+        double binning_ptprod[nbin_ptprod + 1];
+        double binning_h_pt[nbin_h_pt + 1];
 
         double binning_tau_log[nbin_tau_logbin + 1];
 
         determine_eqsizebinning(nbin_chargedeec_nominal, rl_logmin, rl_logmax, binning);
+        determine_log10binning(nbin_h_pt, track_pt_min, 50., binning_h_pt);
         determine_log10binning(nbin_weight, weight_absmin, weight_absmax, binning_weight);
-        determine_log10binning(nbin_weight, ptprod_absmin, ptprod_absmax, binning_ptprod);
+        determine_log10binning(nbin_ptprod, ptprod_absmin, ptprod_absmax, binning_ptprod);
         determine_log10binning(nbin_rl_nominal, rl_logmin, rl_logmax, binning_log);
         determine_log10binning(nbin_tau_logbin, tau_min, tau_max, binning_tau_log);
         determine_log10binning(nbin_rl_altlogbin, rl_logmin, rl_logmax, binning_corr_log);
         
         // Pt prod
+        std::cout<<"const double h_pt_binning[] = {track_pt_min";
+        
+        for (int i = 1 ; i < nbin_h_pt ; i++)
+                std::cout<<", "<<binning_h_pt[i];
+
+        std::cout<<", 50};"<<std::endl;
+
+        // Pt prod
         std::cout<<"const double ptprod_binning[] = {ptprod_absmin";
         
-        for (int i = 1 ; i < nbin_weight ; i++)
+        for (int i = 1 ; i < nbin_ptprod ; i++)
                 std::cout<<", "<<binning_ptprod[i];
 
         std::cout<<", ptprod_absmax};"<<std::endl;
