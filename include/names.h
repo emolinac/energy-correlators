@@ -65,7 +65,7 @@ std::string namef_histos_paircorr_eec_3dunf    = "histos_paircorr_eec_3dunf.root
 std::string namef_histos_paircorr_eec_3dunf_3d = "histos_paircorr_eec_3dunf_3d.root";
 std::string namef_histos_pairandsinglecorr_eec = "histos_pairandsinglecorr_eec.root";
 
-std::string namef_histos_weight_corr          = "histos_weightcorr.root";
+std::string namef_histos_weight_corr = "histos_weightcorr.root";
 
 std::string namef_histos_devfromnom_eec                  = "histos_devfromnom_eec.root";
 std::string namef_histos_paircorr_devfromnom_eec_prior   = "histos_paircorr_devfromnom_eec_prior.root";

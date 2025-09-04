@@ -136,7 +136,8 @@ void macro_print_fullcorrnpair_mc_comp(int niter = 4, bool do_print = true)
                         hmc[bin]->Fill(R_L_mc);
                 }
                 
-                ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jet_pt_cut[bin]);hmc[bin]->Scale(1./hmc_jet[bin]->Integral(),"width");
+                ntuple_mc_jet->Project(Form("hmc_jet[%i]" ,bin),"jet_pt",pair_jet_pt_cut[bin]);
+                hmc[bin]->Scale(1./hmc_jet[bin]->Integral(),"width");
         }
 
         // Draw the log binning histos

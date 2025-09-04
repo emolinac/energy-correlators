@@ -178,6 +178,29 @@ void set_shift_histo(TH2D* href, TH2D* hshift, TRandom3* rndm)
         }
 }
 
+void set_shift_histo(TH3D* href, TH3D* hshift, TRandom3* rndm)
+{
+        for (int xbin = 1 ; xbin <= href->GetNbinsX() ; xbin++) {
+                for (int ybin = 1 ; ybin <= href->GetNbinsY() ; ybin++) {
+                        for (int zbin = 1 ; zbin <= href->GetNbinsZ() ; zbin++) {
+                                double shift_window = href->GetBinError(href->GetBin(xbin, ybin, zbin));
+                                double refdata      = href->GetBinContent(href->GetBin(xbin, ybin, zbin));
+                                double shift        = rndm->Gaus(refdata, shift_window)/refdata;
+
+                                if (std::isnan(shift)){
+                                        hshift->SetBinContent(xbin, ybin, zbin, 0);
+                                        hshift->SetBinError(xbin, ybin, zbin, 0);
+
+                                        continue;
+                                }
+                                
+                                hshift->SetBinContent(xbin, ybin, zbin, shift);
+                                hshift->SetBinError(xbin, ybin, zbin, shift_window/refdata);
+                        }
+                }
+        }
+}
+
 void set_data_ntuple_branches(TNtuple* ntuple, float* event_weight, float* R_L, float* jet_pt, float* weight_pt, float* efficiency, float* purity, float* efficiency_relerror, float* purity_relerror)
 {
         ntuple->SetBranchAddress("event_weight", event_weight);
