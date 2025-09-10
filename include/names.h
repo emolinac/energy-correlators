@@ -18,6 +18,18 @@ std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
 
 
 // Names of the files
+std::string namef_paircorr_histos    = "histos_paircorr_eec.root";
+std::string namef_paircorr_histos_ct = "histos_paircorr_eec_ct.root";
+
+std::string namef_3dpaircorr_histos    = "histos_3dpaircorr_eec.root";
+std::string namef_3dpaircorr_histos_ct = "histos_3dpaircorr_eec_ct.root";
+
+std::string namef_histopaircorr_eec    = "histos_histopaircorr_eec.root";
+std::string namef_histopaircorr_eec_ct = "histos_histopaircorr_eec_ct.root";
+
+std::string namef_histopaircorr_eec_3dunf    = "histos_histopaircorr_eec_3dunf.root";
+std::string namef_histopaircorr_eec_3dunf_ct = "histos_histopaircorr_eec_3dunf_ct.root";
+
 std::string namef_ntuple_eec                = "ntuple_eec.root";
 std::string namef_ntuple_eec_corr           = "ntuple_correec.root";
 
@@ -164,6 +176,9 @@ std::string namef_ntuple_jet_corr       = "ntuple_corrjet.root";
 std::string namef_ntuple_jet_purity     = "ntuple_jet_purity.root";
 std::string namef_ntuple_jet_efficiency = "ntuple_jet_efficiency.root";
 std::string namef_ntuple_jes_jer        = "ntuple_jes_jer.root";
+
+std::string namef_ntuple_jet_purity_ct     = "ntuple_jet_purity_ct.root";
+std::string namef_ntuple_jet_efficiency_ct = "ntuple_jet_efficiency_ct.root";
 
 std::string name_ntuple_corrjet       = "ntuple_jet";
 std::string name_ntuple_jetpurity     = "ntuple_jetpurity";

@@ -6,13 +6,13 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = true, bool apply_weight_corr = false)
+void macro_print_fullcorreec_paircorr_mc_comp()
 {
         gStyle->SetPadTopMargin(0.08);
 
-        TString variation = "3dunf";
+        TString variation = "3dunf-7niter-ct";
 
-        TFile* fdata = new TFile((output_folder + namef_histos_paircorr_eec_3dunf).c_str());
+        TFile* fdata = new TFile((output_folder + "histos_histopaircorr_eec_3dunf-niter7_ct.root").c_str());
 
         TH1F* hcorr_eec[nbin_jet_pt];
         for (int i = 0 ; i < nbin_jet_pt ; i++) {
@@ -34,11 +34,19 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
                 htruth_jet[bin] = new TH1F(Form("htruth_jet%i" ,bin),"",200,jet_pt_binning[bin],jet_pt_binning[bin + 1]);
                 ntuple_mc_jet->Project(Form("htruth_jet%i" ,bin),"jet_pt");
 
-                htruth_eec[bin] = new TH1F(Form("htruth_eec%i",bin),"",nbin_rl_nominal,rl_nominal_binning);
+                htruth_eec[bin] = new TH1F(Form("htruth_eec%i",bin),"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
                 ntuple_mc->Project(Form("htruth_eec%i",bin),"R_L",eec_jet_pt_cut[bin]);
 
+                for (int i = 1 ; i <= htruth_eec[bin]->GetNbinsX(); i++) {
+                        if (i == 1 || i == htruth_eec[bin]->GetNbinsX()) {
+                                htruth_eec[bin]->SetBinContent(i, 0);
+                                htruth_eec[bin]->SetBinError(i, 0);        
+
+                                continue;
+                        }
+                }
+
                 htruth_eec[bin]->Scale(1./htruth_jet[bin]->Integral(),"width");
-                // htruth_eec[bin]->Scale(2./htruth_jet[bin]->Integral(),"width"); // For 4d and 5d 
 
                 set_histogram_style(htruth_eec[bin], corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size);
         }
@@ -65,16 +73,18 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
                 s_data[bin]->Add(hcorr_eec[bin],"E");
                 s_data[bin]->Draw("NOSTACK");
                 s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
-                // s_data[bin]->SetMaximum(1.7);
-                // s_data[bin]->SetMinimum(40E-03);
-
+                s_data[bin]->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                
+                s_data[bin]->SetMaximum(1.3);
+                // s_data[bin]->SetMinimum(0.5);
+                
                 l_data[bin]->AddEntry(htruth_eec[bin],"mc"    ,"p");
                 l_data[bin]->AddEntry(hcorr_eec[bin],"data"  ,"p");
                 gPad->SetLogx(1);
                 l_data[bin]->Draw("SAME");    
         }
 
-        c->Print(Form("./plots/data2mc_correec_unf-niter%i_"+variation+".pdf",niter));
+        c->Print("./plots/data2mc_correec_"+variation+".pdf");
 
         TCanvas* c_ratio = new TCanvas("c_ratio","",1800,400);
         c_ratio->Draw();
@@ -92,11 +102,12 @@ void macro_print_fullcorreec_paircorr_mc_comp(int niter = 4, bool do_print = tru
                 s_data[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};#Sigma_{EEC}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
                 s_data[bin]->SetMaximum(1.5);
                 s_data[bin]->SetMinimum(0.5);
+                s_data[bin]->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
 
                 l_data[bin]->AddEntry(htruth_eec[bin],"data/mc","p");
                 gPad->SetLogx(1);
                 l_data[bin]->Draw("SAME");    
         }
 
-        c_ratio->Print(Form("./plots/data2mcratio_correec_unf-niter%i_"+variation+".pdf",niter));
+        c_ratio->Print("./plots/data2mcratio_correec_"+variation+".pdf");
 }
