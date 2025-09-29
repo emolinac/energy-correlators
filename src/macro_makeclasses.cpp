@@ -59,40 +59,68 @@ void macro_makeclasses()
         
         // CT Correction Files
         sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
-        sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
         sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
-        sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
-        sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
-        sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
-        sim_mc_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
-        sim_mc_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
+
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
+        
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MD_04142025.root").c_str());
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
+        // sim_mc_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
         sim_mc_ct->MakeClass("TZJetsMCCTCorr");
         
         sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
-        sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
         sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
-        sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
-        sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
-        sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
-        sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
-        sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
+        
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
+
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MD_04142025.root").c_str());
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MD_04142025.root").c_str());
+        // sim_mcreco_ct->Add((input_folder + "Zjet_MC_Sim10a_2018_MU_04142025.root").c_str());
         sim_mcreco_ct->MakeClass("TZJetsMCRecoCTCorr");
         
         // PseudoData
-        pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
-        pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
-        pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MD_04142025.root").c_str());
-        pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
-        pseudodata_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
-        pseudodata_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
+        pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
+        pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
+        
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
+        
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MD_04142025.root").c_str());
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        // pseudodata_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
         pseudodata_ct->MakeClass("TZJetsPseudoData");
         
         //Truth 
-        truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
-        truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
-        truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MD_04142025.root").c_str());
-        truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
-        truth_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
-        truth_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MD_04112025.root").c_str());
+        truth_ct->Add((input_folder + "Zjet_MC_Sim09j_2016_MU_04112025.root").c_str());
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MD_04112025.root").c_str());
+        truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2016_MU_04112025.root").c_str());
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MD_04142025.root").c_str());
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim10a_2016_MU_04142025.root").c_str());
+        
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
+        
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MD_04142025.root").c_str());
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2018_MU_04142025.root").c_str());
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MD_04142025.root").c_str());
+        // truth_ct->Add((input_folder + "Zjet_MC_Sim09l_2017_MU_04142025.root").c_str());
         truth_ct->MakeClass("TZJetsTruth");
 }

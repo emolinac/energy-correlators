@@ -23,7 +23,7 @@
 int main()
 {
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_3dpaircorr_histos_ct).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_paircorr_histos_ct).c_str(),"RECREATE");
         gROOT->cd();
         
         // Declare the TTrees to be used to build the ntuples
@@ -73,22 +73,22 @@ int main()
         hefficiency_jet->Divide(hnum_eff_jet, hden_eff_jet, 1, 1, "B");
 
         // Pair corrections
-        TH3F* hnum_pur    = new TH3F("hnum_pur"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
-        TH3F* hden_pur    = new TH3F("hden_pur"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
-        TH3F* hpurity     = new TH3F("hpurity"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
-        TH3F* hnum_eff    = new TH3F("hnum_eff"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
-        TH3F* hden_eff    = new TH3F("hden_eff"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
-        TH3F* hefficiency = new TH3F("hefficiency", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
+        TH2F* hnum_pur    = new TH2F("hnum_pur"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_pur    = new TH2F("hden_pur"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hpurity     = new TH2F("hpurity"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hnum_eff    = new TH2F("hnum_eff"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hden_eff    = new TH2F("hden_eff"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* hefficiency = new TH2F("hefficiency", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
         hnum_pur->Sumw2();
         hden_pur->Sumw2();
         hnum_eff->Sumw2();
         hden_eff->Sumw2();
         
-        ntuple_purity->Project("hnum_pur", "h1_pt*h2_pt:jet_pt:R_L", pair_matching_cut);
-        ntuple_purity->Project("hden_pur", "h1_pt*h2_pt:jet_pt:R_L");
-        ntuple_efficiency_reco->Project("hnum_eff", "h1_pt_truth*h2_pt_truth:jet_pt_truth:R_L_truth", pair_matching_cut);
-        ntuple_efficiency_mc->Project("hden_eff", "h1_pt*h2_pt:jet_pt:R_L");
+        ntuple_purity->Project("hnum_pur", "jet_pt:R_L", pair_matching_cut);
+        ntuple_purity->Project("hden_pur", "jet_pt:R_L");
+        ntuple_efficiency_reco->Project("hnum_eff", "jet_pt_truth:R_L_truth", pair_matching_cut);
+        ntuple_efficiency_mc->Project("hden_eff", "jet_pt:R_L");
 
         hpurity->Divide(hnum_pur, hden_pur, 1, 1, "B");
         hefficiency->Divide(hnum_eff, hden_eff, 1, 1, "B");
@@ -108,11 +108,11 @@ int main()
         TLorentzVector* h2_4vector  = new TLorentzVector();
         
         // EEC histo
-        TH3F* h_eec       = new TH3F("h_eec"      ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
-        TH3F* h_eec_truth = new TH3F("h_eec_truth","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
+        TH2F* h_eec       = new TH2F("h_eec"      ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* h_eec_truth = new TH2F("h_eec_truth","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
-        TH3F* h_npair       = new TH3F("h_npair"      ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
-        TH3F* h_npair_truth = new TH3F("h_npair_truth","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
+        TH2F* h_npair       = new TH2F("h_npair"      ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH2F* h_npair_truth = new TH2F("h_npair_truth","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         h_npair->Sumw2();
         h_npair_truth->Sumw2();
         
@@ -126,7 +126,6 @@ int main()
         
         std::cout<<"Working with Pseudata."<<std::endl;
         for (int evt = 0 ; evt < pseudodata->fChain->GetEntries() ; evt++) {
-                // Access entry of tree
                 pseudodata->GetEntry(evt);
 
                 if (evt%10000 == 0) {
@@ -138,11 +137,9 @@ int main()
                         if (last_eventNum == pseudodata->eventNumber) 
                                 continue;
 
-                // Apply PV cut
                 if (pseudodata->nPV != 1)
                         continue;
 
-                // Apply trigger cut
                 bool mum_trigger = (pseudodata->mum_L0MuonEWDecision_TOS == 1 && 
                                     pseudodata->mum_Hlt1SingleMuonHighPTDecision_TOS == 1 && 
                                     pseudodata->mum_Hlt2EWSingleMuonVHighPtDecision_TOS == 1);
@@ -154,11 +151,11 @@ int main()
                 if (!mum_trigger && !mup_trigger)
                         continue;
                 
-                // Set Jet-associated 4 vectors and apply cuts
                 Jet_4vector->SetPxPyPzE(pseudodata->Jet_PX/1000.,
                                         pseudodata->Jet_PY/1000.,
                                         pseudodata->Jet_PZ/1000.,
                                         pseudodata->Jet_PE/1000.);
+                
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
@@ -206,36 +203,8 @@ int main()
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
                 double muon_weight = 1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
-
-                double jet_ndtr_nominal = 0;
-
-                for (int h1_index = 0 ; h1_index < pseudodata->Jet_NDtr ; h1_index++) {
-                        // Skip non-hadronic particles
-                        if (pseudodata->Jet_Dtr_IsMeson[h1_index] != 1 && pseudodata->Jet_Dtr_IsBaryon[h1_index] != 1)
-                                continue;
-
-                        h1_4vector->SetPxPyPzE(pseudodata->Jet_Dtr_PX[h1_index]/1000.,
-                                               pseudodata->Jet_Dtr_PY[h1_index]/1000.,
-                                               pseudodata->Jet_Dtr_PZ[h1_index]/1000.,
-                                               pseudodata->Jet_Dtr_E[h1_index]/1000.);
-
-                        if (!apply_chargedtrack_cuts(pseudodata->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h1_4vector->P(),
-                                                     h1_4vector->Pt(),
-                                                     pseudodata->Jet_Dtr_TrackChi2[h1_index]/pseudodata->Jet_Dtr_TrackNDF[h1_index],
-                                                     pseudodata->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h1_4vector->Eta())) 
-                                continue;
-
-                        jet_ndtr_nominal++;
-                }
-
-                if (jet_ndtr_nominal < 2)
-                        continue;
                 
-                // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < pseudodata->Jet_NDtr ; h1_index++) {
-                        // Skip non-hadronic particles
                         if (pseudodata->Jet_Dtr_IsMeson[h1_index] != 1 && pseudodata->Jet_Dtr_IsBaryon[h1_index] != 1) 
                                 continue;
 
@@ -252,9 +221,7 @@ int main()
                                                      h1_4vector->Eta())) 
                                 continue;
                         
-                        // Loop over hadron 2
                         for (int h2_index = h1_index+1 ; h2_index < pseudodata->Jet_NDtr ; h2_index++) {
-                                // Skip non-hadronic particles
                                 if (pseudodata->Jet_Dtr_IsMeson[h2_index] != 1 && pseudodata->Jet_Dtr_IsBaryon[h2_index] != 1) 
                                         continue;
 
@@ -273,8 +240,8 @@ int main()
 
                                 double momentum_weight = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
-                                h_eec->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), h1_4vector->Pt() * h2_4vector->Pt(), momentum_weight);
-                                h_npair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), h1_4vector->Pt() * h2_4vector->Pt());
+                                h_eec->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                h_npair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt());
                         }
                 }
 
@@ -283,6 +250,8 @@ int main()
                 
                 last_eventNum = pseudodata->eventNumber;
         }
+
+        last_eventNum = 0;
 
         std::cout<<std::endl;
         std::cout<<"Working the Truth"<<std::endl;
@@ -301,11 +270,9 @@ int main()
                         if (last_eventNum == truthdata->eventNumber) 
                                 continue;
 
-                // Apply PV cut
                 if (truthdata->nPVs != 1)
                         continue;
 
-                // Set Jet-associated 4 vectors and apply cuts
                 Jet_4vector->SetPxPyPzE(truthdata->MCJet_PX/1000.,
                                         truthdata->MCJet_PY/1000.,
                                         truthdata->MCJet_PZ/1000.,
@@ -336,29 +303,6 @@ int main()
                                        mup_4vector->E() +mum_4vector->E());
 
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
-                        continue;
-
-                double jet_ndtr_nominal = 0;
-
-                for (int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++) {
-                        if (truthdata->MCJet_Dtr_IsMeson[h1_index] != 1 && truthdata->MCJet_Dtr_IsBaryon[h1_index] != 1) 
-                                continue;
-
-                        h1_4vector->SetPxPyPzE(truthdata->MCJet_Dtr_PX[h1_index]/1000.,
-                                               truthdata->MCJet_Dtr_PY[h1_index]/1000.,
-                                               truthdata->MCJet_Dtr_PZ[h1_index]/1000., 
-                                               truthdata->MCJet_Dtr_E[h1_index]/1000.);
-
-                        if (!apply_chargedtrack_momentum_cuts(truthdata->MCJet_Dtr_ThreeCharge[h1_index],
-                                                              h1_4vector->P(),
-                                                              h1_4vector->Pt(),
-                                                              h1_4vector->Eta())) 
-                                continue;
-                        
-                        jet_ndtr_nominal++;
-                }
-
-                if (jet_ndtr_nominal < 2)
                         continue;
 
                 for (int h1_index = 0 ; h1_index < truthdata->MCJet_Dtr_nmcdtrs ; h1_index++) {
@@ -393,8 +337,8 @@ int main()
 
                                 double momentum_weight = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
-                                h_eec_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), h1_4vector->Pt() * h2_4vector->Pt(), momentum_weight);
-                                h_npair_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), h1_4vector->Pt() * h2_4vector->Pt());
+                                h_eec_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                h_npair_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt());
                         }   
                 }
                 h_njet_truth->Fill(Jet_4vector->Pt());

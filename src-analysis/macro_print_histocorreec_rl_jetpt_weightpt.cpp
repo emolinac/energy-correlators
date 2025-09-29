@@ -6,32 +6,34 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_print = true)
+void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 5, int niter_jet = 5)
 {
         // Open the necessary files
-        TFile* fout = new TFile((output_folder + namef_histopaircorr_eec_3dunf).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i.root",niter,niter_jet)).c_str(),"RECREATE");
         gROOT->cd();
 
-        TFile* fcorr = new TFile((output_folder + namef_3dpaircorr_histos).c_str()); 
+        TFile* fcorr = new TFile((output_folder + namef_3dpaircorr_rl_jetpt_weightpt_histos).c_str()); 
         if (fcorr->IsZombie()) 
                 return;
 
-        TH3F* h_eec        = (TH3F*) fcorr->Get("h_eec");
-        TH3F* h_efficiency = (TH3F*) fcorr->Get("hefficiency");
-        TH3F* h_purity     = (TH3F*) fcorr->Get("hpurity");
+        TH3F* h_eec         = (TH3F*) fcorr->Get("h_eec");
+        TH3F* h_npair       = (TH3F*) fcorr->Get("h_npair");
+        TH3F* h_eec_wmuon   = (TH3F*) fcorr->Get("h_eec_wmuon");
+        TH3F* h_npair_wmuon = (TH3F*) fcorr->Get("h_npair_wmuon");
+        TH3F* h_efficiency  = (TH3F*) fcorr->Get("hefficiency");
+        TH3F* h_purity      = (TH3F*) fcorr->Get("hpurity");
 
         TH1F* h_njet           = (TH1F*) fcorr->Get("h_njet");
         TH1F* h_njet_wmuoneff  = (TH1F*) fcorr->Get("h_njet_wmuoneff");
         TH1F* h_efficiency_jet = (TH1F*) fcorr->Get("hefficiency_jet");
         TH1F* h_purity_jet     = (TH1F*) fcorr->Get("hpurity_jet");
 
-        TH1F* h_muon_eff = new TH1F("h_muon_eff","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        h_muon_eff->Divide(h_njet, h_njet_wmuoneff);
-        
         // Correct the jets
         TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
 
-        TNtuple* ntuple_jet_unfolding = (TNtuple*) f->Get(name_ntuple_mcreco_jet.c_str());
+        TFile* fjet = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
+
+        TNtuple* ntuple_jet_unfolding = (TNtuple*) fjet->Get(name_ntuple_jetpurity.c_str());
         
         float jet_pt_unfolding_reco, jet_pt_unfolding_truth;
         set_unfolding_jet_ntuple_branches(ntuple_jet_unfolding, &jet_pt_unfolding_reco, &jet_pt_unfolding_truth);
@@ -43,7 +45,8 @@ void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_
         for (int evt = 0 ; evt < ntuple_jet_unfolding->GetEntries() ; evt++) {
                 ntuple_jet_unfolding->GetEntry(evt);
 
-                hresp_jet->Fill(jet_pt_unfolding_reco, jet_pt_unfolding_truth);
+                if (jet_pt_unfolding_truth != -999)
+                        hresp_jet->Fill(jet_pt_unfolding_reco, jet_pt_unfolding_truth);
         }
 
         RooUnfoldResponse* response_jet = new RooUnfoldResponse(hmeas_jet, htrue_jet, hresp_jet, "response_jet");
@@ -51,11 +54,14 @@ void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_
         TH1F* h_njet_purity_corrected = new TH1F("h_njet_purity_corrected","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         h_njet_purity_corrected->Multiply(h_njet,h_purity_jet,1,1);
 
-        RooUnfoldBayes unfold_jet(response_jet, h_njet_purity_corrected, 4);
+        RooUnfoldBayes unfold_jet(response_jet, h_njet_purity_corrected, niter_jet);
 
         TH1D* h_njet_unfolded = (TH1D*) unfold_jet.Hunfold();
 
         h_njet_unfolded->Divide(h_efficiency_jet);
+
+        TH1F* h_muon_eff = new TH1F("h_muon_eff","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        h_muon_eff->Divide(h_njet, h_njet_wmuoneff);
 
         h_njet_unfolded->Divide(h_muon_eff);
         
@@ -69,19 +75,25 @@ void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_
         ntuple->SetBranchAddress("h1_pt_truth",&h1_pt_truth);
         ntuple->SetBranchAddress("h2_pt_truth",&h2_pt_truth);
         
-        TH3D* hmeas = new TH3D("hmeas" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
-        TH3D* htrue = new TH3D("htrue" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
+        TH3D* hmeas = new TH3D("hmeas" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* htrue = new TH3D("htrue" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+
+        TH3D* hmeas_npair = new TH3D("hmeas_npair" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* htrue_npair = new TH3D("htrue_npair" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
 
         RooUnfoldResponse* response = new RooUnfoldResponse(hmeas, htrue, "response");
-        
+        RooUnfoldResponse* response_npair = new RooUnfoldResponse(hmeas_npair, htrue_npair, "response_npair");
+
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
                 ntuple->GetEntry(evt);
 
-                if (abs(R_L_truth - R_L_reco) < rl_resolution) 
-                        response->Fill(R_L_reco, jet_pt_reco, h1_pt_reco*h2_pt_reco, R_L_truth, jet_pt_truth, h1_pt_truth*h2_pt_truth, weight_pt_truth);
+                if (R_L_truth != -999) {
+                        response->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth, weight_pt_truth);
+                        response_npair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
+                }
         }
 
-        TH3F* h_eec_purity_corrected = new TH3F("h_eec_purity_corrected","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_ptprod, ptprod_binning);
+        TH3F* h_eec_purity_corrected = new TH3F("h_eec_purity_corrected","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
         h_eec_purity_corrected->Multiply(h_eec,h_purity,1,1);
         
         RooUnfoldBayes unfold(response, h_eec_purity_corrected, niter);
@@ -93,7 +105,7 @@ void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_
         for (int i = 1 ; i <= h_eec_unfolded->GetNbinsX(); i++) {
                 for (int j = 1 ; j <= h_eec_unfolded->GetNbinsY(); j++) {
                         for (int k = 1 ; k <= h_eec_unfolded->GetNbinsZ() ; k++) {
-                                double reweight = h_purity_jet->GetBinContent(j)/h_efficiency_jet->GetBinContent(j)/h_muon_eff->GetBinContent(j);
+                                double reweight = h_purity_jet->GetBinContent(j)/h_efficiency_jet->GetBinContent(j);
 
                                 h_eec_unfolded->SetBinContent(i, j, k, h_eec_unfolded->GetBinContent(i, j, k) * reweight);
                                 h_eec_unfolded->SetBinError(i, j, k, h_eec_unfolded->GetBinError(i, j, k) * reweight);
@@ -101,7 +113,40 @@ void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_
                 }
         }
 
+        TH3F* h_eec_muoneffcorr = new TH3F("h_eec_muoneffcorr","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        h_eec_muoneffcorr->Divide(h_eec_wmuon,h_eec);
+
+        h_eec_unfolded->Multiply(h_eec_muoneffcorr);
+
+        // Correct the number of pairs
+        TH3F* h_npair_purity_corrected = new TH3F("h_npair_purity_corrected","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        h_npair_purity_corrected->Multiply(h_npair,h_purity,1,1);
+        
+        RooUnfoldBayes unfold_npair(response_npair, h_npair_purity_corrected, niter);
+
+        TH3D* h_npair_unfolded = (TH3D*) unfold_npair.Hunfold();
+
+        h_npair_unfolded->Divide(h_efficiency);
+
+        for (int i = 1 ; i <= h_npair_unfolded->GetNbinsX(); i++) {
+                for (int j = 1 ; j <= h_npair_unfolded->GetNbinsY(); j++) {
+                        for (int k = 1 ; k <= h_npair_unfolded->GetNbinsZ() ; k++) {
+                                double reweight = h_purity_jet->GetBinContent(j)/h_efficiency_jet->GetBinContent(j);
+                                
+                                h_npair_unfolded->SetBinContent(i, j, k, h_npair_unfolded->GetBinContent(i, j, k) * reweight);
+                                h_npair_unfolded->SetBinError(i, j, k, h_npair_unfolded->GetBinError(i, j, k) * reweight);
+                        }
+                }
+        }
+
+        TH3F* h_npair_muoneffcorr = new TH3F("h_npair_muoneffcorr","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        h_npair_muoneffcorr->Divide(h_npair_wmuon,h_npair);
+
+        h_npair_unfolded->Multiply(h_npair_muoneffcorr);
+
+        // Integrate the third dimension
         TH2D* h_eec_unfolded_2d   = (TH2D*) h_eec_unfolded->Project3D("yx");
+        TH2D* h_npair_unfolded_2d = (TH2D*) h_npair_unfolded->Project3D("yx");
 
         // Fill the histograms
         TH1F* hcorr_jet_centroid[nbin_jet_pt];
@@ -119,18 +164,24 @@ void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_
                         if (i == 1 || i == hcorr_eec[bin]->GetNbinsX()) {
                                 hcorr_eec[bin]->SetBinContent(i, 0);
                                 hcorr_eec[bin]->SetBinError(i, 0);        
+                                hcorr_npair[bin]->SetBinContent(i, 0);
+                                hcorr_npair[bin]->SetBinError(i, 0);        
 
                                 continue;
                         }
 
-                        hcorr_eec[bin]->SetBinContent(i, h_eec_unfolded_2d->GetBinContent(i, bin + 2));
-                        hcorr_eec[bin]->SetBinError(i, h_eec_unfolded_2d->GetBinError(i, bin + 2));
+                        hcorr_eec[bin]->SetBinContent(i, h_eec_unfolded_2d->GetBinContent(i, bin + 3));
+                        hcorr_eec[bin]->SetBinError(i, h_eec_unfolded_2d->GetBinError(i, bin + 3));
+                        hcorr_npair[bin]->SetBinContent(i, h_npair_unfolded_2d->GetBinContent(i, bin + 3));
+                        hcorr_npair[bin]->SetBinError(i, h_npair_unfolded_2d->GetBinError(i, bin + 3));
                 }        
 
-                hcorr_eec[bin]->Scale(1./h_njet_unfolded->GetBinContent(bin + 2),"width");
+                hcorr_eec[bin]->Scale(1./h_njet_unfolded->GetBinContent(bin + 3),"width");
+                hcorr_npair[bin]->Scale(1./h_njet_unfolded->GetBinContent(bin + 3),"width");
 
                 fout->cd();
                 hcorr_eec[bin]->Write();
+                hcorr_npair[bin]->Write();
                 gROOT->cd();
         }
 
@@ -150,7 +201,7 @@ void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_
         
         s_data->Draw("NOSTACK");
         s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
-        s_data->SetMaximum(1.2);
+        // s_data->SetMaximum(1.2);
         s_data->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
         l_data->Draw("SAME");
         gPad->SetLogx(1);
@@ -158,6 +209,5 @@ void macro_print_histocorreec_paircorr_3dunf(int niter = nominal_niter, bool do_
         
         tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
 
-        if (do_print) 
-                c->Print(Form("./plots/correec_unf-niter%i_3dunf_avgeeventweight.pdf",niter));
+        c->Print(Form("./plots/correec_rl_jetpt_weightpt_unf-niter%i.pdf",niter));
 }

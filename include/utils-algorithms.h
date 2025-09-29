@@ -152,7 +152,7 @@ void set_histo_null_errors(TH1F* h)
                 h->SetBinError(i, 0);
 }
 
-void set_shift_histo(TH2F* href, TH2F* hshift, TRandom3* rndm)
+void set_shift_histo(TH2F* href, TH2F* hshift, TRandom3* rndm) // CHECK THIS FUNCTION!!
 {
         for (int xbin = 1 ; xbin <= href->GetNbinsX() ; xbin++) {
                 for (int ybin = 1 ; ybin <= href->GetNbinsY() ; ybin++) {
@@ -164,7 +164,7 @@ void set_shift_histo(TH2F* href, TH2F* hshift, TRandom3* rndm)
         }
 }
 
-void set_shift_histo(TH2D* href, TH2D* hshift, TRandom3* rndm)
+void set_shift_histo(TH2D* href, TH2D* hshift, TRandom3* rndm) // CHECK THIS FUNCTION!!
 {
         for (int xbin = 1 ; xbin <= href->GetNbinsX() ; xbin++) {
                 for (int ybin = 1 ; ybin <= href->GetNbinsY() ; ybin++) {
@@ -178,7 +178,7 @@ void set_shift_histo(TH2D* href, TH2D* hshift, TRandom3* rndm)
         }
 }
 
-void set_shift_histo(TH3D* href, TH3D* hshift, TRandom3* rndm)
+void set_shift_histo(TH3D* href, TH3D* hshift, TRandom3* rndm) // CHECK THIS FUNCTION!!
 {
         for (int xbin = 1 ; xbin <= href->GetNbinsX() ; xbin++) {
                 for (int ybin = 1 ; ybin <= href->GetNbinsY() ; ybin++) {
@@ -197,6 +197,118 @@ void set_shift_histo(TH3D* href, TH3D* hshift, TRandom3* rndm)
                                 hshift->SetBinContent(xbin, ybin, zbin, shift);
                                 hshift->SetBinError(xbin, ybin, zbin, shift_window/refdata);
                         }
+                }
+        }
+}
+
+void smear_pseudodata(TH1F* hpseudodata, TH1F* hrealdata, TRandom3* rndm)
+{
+        for (int xbin = 1 ; xbin <= hpseudodata->GetNbinsX() ; xbin++) {
+                double shift_window = hrealdata->GetBinError(hrealdata->GetBin(xbin));
+                double refdata      = hrealdata->GetBinContent(hrealdata->GetBin(xbin));
+                double shift        = rndm->Gaus(refdata, shift_window)/refdata;
+
+                if (std::isnan(shift)){
+                        hpseudodata->SetBinContent(xbin, 0);
+                        hpseudodata->SetBinError(xbin, 0);
+
+                        continue;
+                }
+
+                double pseudodata_content = shift * hpseudodata->GetBinContent(hpseudodata->GetBin(xbin));
+                
+                hpseudodata->SetBinContent(xbin, pseudodata_content);
+        }
+}
+
+void smear_pseudodata(TH3D* hpseudodata, TH3D* hrealdata, TRandom3* rndm)
+{
+        for (int xbin = 1 ; xbin <= hpseudodata->GetNbinsX() ; xbin++) {
+                for (int ybin = 1 ; ybin <= hpseudodata->GetNbinsY() ; ybin++) {
+                        for (int zbin = 1 ; zbin <= hpseudodata->GetNbinsZ() ; zbin++) {
+                                double shift_window = hrealdata->GetBinError(hrealdata->GetBin(xbin, ybin, zbin));
+                                double refdata      = hrealdata->GetBinContent(hrealdata->GetBin(xbin, ybin, zbin));
+                                double shift        = rndm->Gaus(refdata, shift_window)/refdata;
+
+                                if (std::isnan(shift)){
+                                        hpseudodata->SetBinContent(xbin, ybin, zbin, 0);
+                                        hpseudodata->SetBinError(xbin, ybin, zbin, 0);
+
+                                        continue;
+                                }
+
+                                double pseudodata_content = shift * hpseudodata->GetBinContent(hpseudodata->GetBin(xbin, ybin, zbin));
+                                
+                                hpseudodata->SetBinContent(xbin, ybin, zbin, pseudodata_content);
+                        }
+                }
+        }
+}
+
+void smear_pseudodata(TH3F* hpseudodata, TH3F* hrealdata, TRandom3* rndm)
+{
+        for (int xbin = 1 ; xbin <= hpseudodata->GetNbinsX() ; xbin++) {
+                for (int ybin = 1 ; ybin <= hpseudodata->GetNbinsY() ; ybin++) {
+                        for (int zbin = 1 ; zbin <= hpseudodata->GetNbinsZ() ; zbin++) {
+                                double shift_window = hrealdata->GetBinError(hrealdata->GetBin(xbin, ybin, zbin));
+                                double refdata      = hrealdata->GetBinContent(hrealdata->GetBin(xbin, ybin, zbin));
+                                double shift        = rndm->Gaus(refdata, shift_window)/refdata;
+
+                                if (std::isnan(shift)){
+                                        hpseudodata->SetBinContent(xbin, ybin, zbin, 0);
+                                        hpseudodata->SetBinError(xbin, ybin, zbin, 0);
+
+                                        continue;
+                                }
+
+                                double pseudodata_content = shift * hpseudodata->GetBinContent(hpseudodata->GetBin(xbin, ybin, zbin));
+                                
+                                hpseudodata->SetBinContent(xbin, ybin, zbin, pseudodata_content);
+                        }
+                }
+        }
+}
+
+void smear_pseudodata(TH2D* hpseudodata, TH2D* hrealdata, TRandom3* rndm)
+{
+        for (int xbin = 1 ; xbin <= hpseudodata->GetNbinsX() ; xbin++) {
+                for (int ybin = 1 ; ybin <= hpseudodata->GetNbinsY() ; ybin++) {
+                        double shift_window = hrealdata->GetBinError(hrealdata->GetBin(xbin, ybin));
+                        double refdata      = hrealdata->GetBinContent(hrealdata->GetBin(xbin, ybin));
+                        double shift        = rndm->Gaus(refdata, shift_window)/refdata;
+
+                        if (std::isnan(shift)){
+                                hpseudodata->SetBinContent(xbin, ybin, 0);
+                                hpseudodata->SetBinError(xbin, ybin, 0);
+
+                                continue;
+                        }
+
+                        double pseudodata_content = shift * hpseudodata->GetBinContent(hpseudodata->GetBin(xbin, ybin));
+                        
+                        hpseudodata->SetBinContent(xbin, ybin, pseudodata_content);
+                }
+        }
+}
+
+void smear_pseudodata(TH2F* hpseudodata, TH2F* hrealdata, TRandom3* rndm)
+{
+        for (int xbin = 1 ; xbin <= hpseudodata->GetNbinsX() ; xbin++) {
+                for (int ybin = 1 ; ybin <= hpseudodata->GetNbinsY() ; ybin++) {
+                        double shift_window = hrealdata->GetBinError(hrealdata->GetBin(xbin, ybin));
+                        double refdata      = hrealdata->GetBinContent(hrealdata->GetBin(xbin, ybin));
+                        double shift        = rndm->Gaus(refdata, shift_window)/refdata;
+
+                        if (std::isnan(shift)){
+                                hpseudodata->SetBinContent(xbin, ybin, 0);
+                                hpseudodata->SetBinError(xbin, ybin, 0);
+
+                                continue;
+                        }
+
+                        double pseudodata_content = shift * hpseudodata->GetBinContent(hpseudodata->GetBin(xbin, ybin));
+                        
+                        hpseudodata->SetBinContent(xbin, ybin, pseudodata_content);
                 }
         }
 }

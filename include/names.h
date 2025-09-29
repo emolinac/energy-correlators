@@ -21,8 +21,14 @@ std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
 std::string namef_paircorr_histos    = "histos_paircorr_eec.root";
 std::string namef_paircorr_histos_ct = "histos_paircorr_eec_ct.root";
 
-std::string namef_3dpaircorr_histos    = "histos_3dpaircorr_eec.root";
-std::string namef_3dpaircorr_histos_ct = "histos_3dpaircorr_eec_ct.root";
+std::string namef_3dpaircorr_rl_jetpt_ptprod_histos    = "histos_3dpaircorr_rl_jetpt_ptprod_eec.root";
+std::string namef_3dpaircorr_rl_jetpt_ptprod_histos_ct = "histos_3dpaircorr_rl_jetpt_ptprod_eec_ct.root";
+
+std::string namef_3dpaircorr_rl_jetpt_weightpt_histos    = "histos_3dpaircorr_rl_jetpt_weightpt_eec.root";
+std::string namef_3dpaircorr_rl_jetpt_weightpt_histos_ct = "histos_3dpaircorr_rl_jetpt_weightpt_eec_ct.root";
+
+std::string namef_3dpaircorr_nojetmatch_rl_jetpt_ptprod_histos_ct   = "histos_3dpaircorr_nojetmatch_rl_jetpt_ptprod_eec_ct.root";
+std::string namef_3dpaircorr_nojetmatch_rl_jetpt_weightpt_histos_ct = "histos_3dpaircorr_nojetmatch_rl_jetpt_weightpt_eec_ct.root";
 
 std::string namef_histopaircorr_eec    = "histos_histopaircorr_eec.root";
 std::string namef_histopaircorr_eec_ct = "histos_histopaircorr_eec_ct.root";
@@ -56,6 +62,8 @@ std::string namef_ntuple_eec_paircorrections       = "ntuple_eec_paircorrections
 std::string namef_ntuple_eec_paircorrections_ct    = "ntuple_eec_paircorrections_ct.root";
 std::string namef_ntuple_eec_paircorrections_jes   = "ntuple_eec_paircorrections_jes.root";
 std::string namef_ntuple_eec_paircorrections_jer   = "ntuple_eec_paircorrections_jer.root";
+
+std::string namef_ntuple_eec_paircorrections_nojetmatch_ct    = "ntuple_eec_paircorrections_nojetmatch_ct.root";
 
 std::string namef_ntuple_mc_eec    = "ntuple_mc_eec.root";
 std::string namef_ntuple_mc_at_eec = "ntuple_mc_at_eec.root";
