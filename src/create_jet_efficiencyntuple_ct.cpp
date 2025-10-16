@@ -1,6 +1,8 @@
 #include <iostream>
 #include "TZJetsMC.h"
 #include "TZJetsMC.C"
+#include "TZJetsMCCTCorr.h"
+#include "TZJetsMCCTCorr.C"
 #include "TZJetsMCReco.h"
 #include "TZJetsMCReco.C"
 #include "TROOT.h"
@@ -18,10 +20,10 @@
 int main()
 {
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_jet_efficiency_ct).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
-        TZJetsMC* mctree = new TZJetsMC();
+        TZJetsMCCTCorr* mctree = new TZJetsMCCTCorr();
 
         // Create Ntuples
         TNtuple* ntuple = new TNtuple(name_ntuple_jetefficiency.c_str(),"",ntuple_jetefficiency_vars); 
@@ -59,9 +61,11 @@ int main()
                         if (last_eventNum == mctree->eventNumber) 
                                 continue;
                 
+                // Apply PV cut
                 if (mctree->nPVs!=1) 
                         continue;
 
+                // Set Jet-associated 4 vectors and apply cuts
                 true_Jet_4vector->SetPxPyPzE(mctree->MCJet_PX/1000.,
                                              mctree->MCJet_PY/1000.,
                                              mctree->MCJet_PZ/1000.,
@@ -93,7 +97,6 @@ int main()
 
                 if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
                         continue;
-
 
                 bool reco_passed = false;
 

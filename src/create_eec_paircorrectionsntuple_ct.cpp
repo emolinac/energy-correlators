@@ -25,7 +25,7 @@ int main()
         TZJetsMCRecoCTCorr* mcrecotree = new TZJetsMCRecoCTCorr();
 
         // Create Ntuples
-        TNtuple* ntuple_reco = new TNtuple(name_ntuple_correction_reco.c_str(),"",ntuple_corrections_reco_vars); 
+        TNtuple* ntuple_reco = new TNtuple(name_ntuple_correction_reco.c_str(),"",ntuple_corrections_reco_vars_plus); 
         TNtuple* ntuple_mc   = new TNtuple(name_ntuple_correction_mc.c_str()  ,"",ntuple_corrections_mc_vars); 
         
         ntuple_reco->SetAutoSave(0);
@@ -43,9 +43,6 @@ int main()
         TLorentzVector* h_4vector     = new TLorentzVector();
 
         TLorentzVector* true_Jet_4vector = new TLorentzVector();
-        TLorentzVector* true_Z0_4vector  = new TLorentzVector();
-        TLorentzVector* true_mum_4vector = new TLorentzVector();
-        TLorentzVector* true_mup_4vector = new TLorentzVector();
         TLorentzVector* true_h1_4vector  = new TLorentzVector();
         TLorentzVector* true_h2_4vector  = new TLorentzVector();
         
@@ -53,7 +50,7 @@ int main()
         bool maxjetpT_found = false;
         
         // Define array carrying the variables
-        float vars_reco[Nvars_corrections_mcreco];
+        float vars_reco[Nvars_corrections_mcreco_plus];
         float vars_mc[Nvars_corrections_mc];
 
         std::cout<<"Processing events ..."<<std::endl;
@@ -123,22 +120,6 @@ int main()
                 if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
-                true_mum_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mum_PX/1000.,
-                                             mcrecotree->Jet_mcjet_mum_PY/1000.,
-                                             mcrecotree->Jet_mcjet_mum_PZ/1000.,
-                                             mcrecotree->Jet_mcjet_mum_PE/1000.);
-
-                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) 
-                        continue;
-                
-                true_mup_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_mup_PX/1000.,
-                                             mcrecotree->Jet_mcjet_mup_PY/1000.,
-                                             mcrecotree->Jet_mcjet_mup_PZ/1000.,
-                                             mcrecotree->Jet_mcjet_mup_PE/1000.);
-
-                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) 
-                        continue;
-                
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
                                        mup_4vector->Py()+mum_4vector->Py(),
                                        mup_4vector->Pz()+mum_4vector->Pz(),
@@ -147,71 +128,12 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
                 
-                true_Z0_4vector->SetPxPyPzE(true_mup_4vector->Px()+true_mum_4vector->Px(),
-                                            true_mup_4vector->Py()+true_mum_4vector->Py(),
-                                            true_mup_4vector->Pz()+true_mum_4vector->Pz(),
-                                            true_mup_4vector->E() +true_mum_4vector->E());
-
-                if (!apply_zboson_cuts(TMath::Abs(true_Jet_4vector->DeltaPhi(*true_Z0_4vector)),true_Z0_4vector->M())) 
-                        continue;
-                
-                
-                // Ask for minimum number of dtrs in the MCReco Jet
-                double ndtrs_mcrecojet = 0; 
-                
-                for (int h_index = 0 ; h_index < mcrecotree->Jet_NDtr ; h_index++) {
-                        if (mcrecotree->Jet_Dtr_IsMeson[h_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h_index] != 1) 
-                                continue;
-
-                        h_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h_index]/1000.,
-                                              mcrecotree->Jet_Dtr_PY[h_index]/1000.,
-                                              mcrecotree->Jet_Dtr_PZ[h_index]/1000.,
-                                              mcrecotree->Jet_Dtr_E[h_index]/1000.);
-
-                        if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h_index],
-                                                     h_4vector->P(),
-                                                     h_4vector->Pt(),
-                                                     mcrecotree->Jet_Dtr_TrackChi2[h_index]/mcrecotree->Jet_Dtr_TrackNDF[h_index],
-                                                     mcrecotree->Jet_Dtr_ProbNNghost[h_index],
-                                                     h_4vector->Eta())) 
-                                continue;
-
-                        ndtrs_mcrecojet++;
-                }
-
-                if (ndtrs_mcrecojet < 2)
-                        continue;
-
-
-                // Ask for minimum number of dtrs in the matched MC Jet 
-                int ndtrs_matchedmcjet = 0;
-
-                for (int h_index = 0 ; h_index < mcrecotree->Jet_mcjet_nmcdtrs ; h_index++) {
-                        if (mcrecotree->Jet_mcjet_dtrIsBaryon[h_index] != 1&&mcrecotree->Jet_mcjet_dtrIsMeson[h_index] != 1) 
-                                continue;
-
-                        h_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h_index]/1000.,
-                                              mcrecotree->Jet_mcjet_dtrPY[h_index]/1000.,
-                                              mcrecotree->Jet_mcjet_dtrPZ[h_index]/1000.,
-                                              mcrecotree->Jet_mcjet_dtrE[h_index]/1000.);
-
-                        if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_mcjet_dtrThreeCharge[h_index],
-                                                              h_4vector->P(),
-                                                              h_4vector->Pt(),
-                                                              h_4vector->Eta())) 
-                                continue;
-
-                        ndtrs_matchedmcjet++;
-                }
-
-                if (ndtrs_matchedmcjet < 2)
-                        continue;
-
-                // Loop over hadron 1
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_NDtr ; h1_index++) {
-                        // Skip non-hadronic particles
-                        if (mcrecotree->Jet_Dtr_IsMeson[h1_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h1_index] != 1) 
+                        if (abs(mcrecotree->Jet_Dtr_ID[h1_index]) < 100) 
                                 continue;
+
+                        if(mcrecotree->Jet_Dtr_ID[h1_index] == -999)
+                                std::cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<<std::endl;
 
                         h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,
                                                mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
@@ -227,8 +149,20 @@ int main()
                                 continue;
 
                         int key1_match = 0;
-                        if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index] != -999) {
+                        int key1_sim   = 0;
+                        if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index] != -999 && abs(mcrecotree->Jet_Dtr_TRUE_ID[h1_index]) > 100) {
                                 key1_match++;
+
+                                for(int i = 0 ; i < mcrecotree->Jet_mcjet_nmcdtrs ; i++) {
+                                        if(mcrecotree->Jet_Dtr_TRUE_KEY[h1_index] == mcrecotree->Jet_mcjet_dtrKeys[i]) {
+                                                key1_sim++;
+                                                break;
+                                        }
+                                }
+
+                                // Verifies if the matched particle is in the matched jet
+                                if (key1_sim == 0) 
+                                        key1_match = 0;
 
                                 true_h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_TRUE_PX[h1_index]/1000.,
                                                             mcrecotree->Jet_Dtr_TRUE_PY[h1_index]/1000.,
@@ -243,9 +177,11 @@ int main()
                         } 
 
                         for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++) {
-                                // Skip non-hadronic particles
-                                if (mcrecotree->Jet_Dtr_IsMeson[h2_index] != 1 && mcrecotree->Jet_Dtr_IsBaryon[h2_index] != 1) 
+                                if (abs(mcrecotree->Jet_Dtr_ID[h2_index]) < 100)
                                         continue;
+
+                                if(mcrecotree->Jet_Dtr_ID[h2_index] == -999)
+                                        std::cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<<std::endl;
 
                                 h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,
                                                        mcrecotree->Jet_Dtr_PY[h2_index]/1000.,
@@ -261,8 +197,20 @@ int main()
                                         continue;
 
                                 int key2_match = 0;
-                                if (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index] != -999) {
+                                int key2_sim   = 0;
+                                if (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index] != -999 && abs(mcrecotree->Jet_Dtr_TRUE_ID[h2_index]) > 100) {
                                         key2_match++;
+
+                                        for(int i = 0 ; i < mcrecotree->Jet_mcjet_nmcdtrs ; i++) {
+                                                if(mcrecotree->Jet_Dtr_TRUE_KEY[h2_index] == mcrecotree->Jet_mcjet_dtrKeys[i]) {
+                                                        key2_sim++;
+                                                        break;
+                                                }
+                                        }
+
+                                        // Verifies if the matched particle is in the matched jet
+                                        if (key2_sim == 0) 
+                                                key2_match = 0;
 
                                         true_h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_TRUE_PX[h2_index]/1000.,
                                                                     mcrecotree->Jet_Dtr_TRUE_PY[h2_index]/1000.,
@@ -299,11 +247,19 @@ int main()
                                 vars_reco[20] = (key2_match==0) ? -999 : true_h2_4vector->Eta();
                                 vars_reco[21] = (key1_match==0||key2_match==0) ? -999 : true_h1_4vector->DeltaR(*true_h2_4vector);
 
-                                double weight_truth = weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E());
-                                double weight_pt_truth = weight(true_h1_4vector->Pt(), true_h2_4vector->Pt(), true_Jet_4vector->Pt());
+                                double weight_truth    = (weight_absmax > 0.5) ? sqrt_weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E()) : 
+                                                                                 weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E());
+                                
+                                double weight_pt_truth = (weight_absmax > 0.5) ? sqrt_weight(true_h1_4vector->Pt(), true_h2_4vector->Pt(), true_Jet_4vector->Pt()) : 
+                                                                                 weight(true_h1_4vector->Pt(), true_h2_4vector->Pt(), true_Jet_4vector->Pt());
+                                
+                                double weight_pt       = (weight_absmax > 0.5) ? sqrt_weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt()) : 
+                                                                                 weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                
                                 vars_reco[22] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
                                 vars_reco[23] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
-                                vars_reco[24] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars_reco[24] = weight_pt;
+                                vars_reco[25] = true_Jet_4vector->Eta();
 
                                 // Fill the TNtuple
                                 ntuple_reco->Fill(vars_reco);
@@ -312,9 +268,11 @@ int main()
 
                 // Fill the mc ntuple
                 for (int h1_index = 0 ; h1_index < mcrecotree->Jet_mcjet_nmcdtrs ; h1_index++) {
-                        // Skip non-hadronic particles
-                        if (mcrecotree->Jet_mcjet_dtrIsMeson[h1_index] != 1 && mcrecotree->Jet_mcjet_dtrIsBaryon[h1_index] != 1) 
+                        if (abs(mcrecotree->Jet_mcjet_dtrID[h1_index]) < 100)
                                 continue;
+
+                        if (abs(mcrecotree->Jet_mcjet_dtrID[h1_index]) == -999)
+                                std::cout<<"AAAAAAAAAA"<<std::endl;
 
                         h1_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h1_index]/1000.,
                                                mcrecotree->Jet_mcjet_dtrPY[h1_index]/1000.,
@@ -328,9 +286,11 @@ int main()
                                 continue;
 
                         for (int h2_index = h1_index+1 ; h2_index < mcrecotree->Jet_mcjet_nmcdtrs ; h2_index++) {
-                                // Skip non-hadronic particles
-                                if (mcrecotree->Jet_mcjet_dtrIsMeson[h2_index] != 1 && mcrecotree->Jet_mcjet_dtrIsBaryon[h2_index] != 1) 
+                                if (abs(mcrecotree->Jet_mcjet_dtrID[h2_index]) < 100)
                                         continue;
+
+                                if (abs(mcrecotree->Jet_mcjet_dtrID[h2_index]) == -999)
+                                        std::cout<<"AAAAAAAAAA"<<std::endl;
 
                                 h2_4vector->SetPxPyPzE(mcrecotree->Jet_mcjet_dtrPX[h2_index]/1000.,
                                                        mcrecotree->Jet_mcjet_dtrPY[h2_index]/1000.,
@@ -355,7 +315,8 @@ int main()
                                 vars_mc[9]  = h2_4vector->Pt();
                                 vars_mc[10] = Jet_4vector->Eta();
                                 vars_mc[11] = Jet_4vector->Pt();
-                                vars_mc[12] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars_mc[12] = (weight_absmax > 0.5) ? sqrt_weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt()) : 
+                                                                      weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
                                 // Fill the TNtuple
                                 ntuple_mc->Fill(vars_mc);

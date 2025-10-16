@@ -29,6 +29,13 @@ const int nominal_niter = 4;
 
 const int smearing_constant = 30;
 
+// Weight mapping
+const double slope = 1.0382;
+const double intercept = 0.000147376;
+
+const double slope_jetpt[]     = {1.08357, 1.08947, 1.1131};
+const double intercept_jetpt[] = {0.000161732, -4.37428e-06, 5.46739e-06};
+
 // Visual constants
 const double std_marker_size  = 1.0;
 const int    std_marker_style = 8;

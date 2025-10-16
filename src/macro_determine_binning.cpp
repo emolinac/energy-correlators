@@ -80,5 +80,17 @@ void macro_determine_binning()
         
         std::cout<<", tau_max};"<<std::endl;
 
-        return 0;
+        // TFile* f = new TFile((output_folder + namef_ntuple_mc_eec).c_str());
+        // TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_mc.c_str());
+
+        // TH1F* h = new TH1F("h","", nbin_ptprod, ptprod_binning);
+        // // TH1F* h = new TH1F("h","", nbin_weight, weight_binning);
+
+        // ntuple->Project("h","h1_pt*h2_pt");
+
+        // h->Draw();
+
+        // TH1F* h_cumulative = (TH1F*) h->GetCumulative();
+
+        // h_cumulative->Draw();
 }

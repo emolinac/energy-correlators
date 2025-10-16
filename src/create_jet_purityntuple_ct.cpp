@@ -1,8 +1,8 @@
 #include <iostream>
 #include "TZJetsMC.h"
 #include "TZJetsMC.C"
-#include "TZJetsMCReco.h"
-#include "TZJetsMCReco.C"
+#include "TZJetsMCRecoCTCorr.h"
+#include "TZJetsMCRecoCTCorr.C"
 #include "TROOT.h"
 #include "TNtuple.h"
 #include "TFile.h"
@@ -18,10 +18,10 @@
 int main()
 {
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_jet_purity).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_jet_purity_ct).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
-        TZJetsMCReco* mcrecotree = new TZJetsMCReco();
+        TZJetsMCRecoCTCorr* mcrecotree = new TZJetsMCRecoCTCorr();
 
         // Create Ntuples
         TNtuple* ntuple_jet_match = new TNtuple(name_ntuple_jetpurity.c_str(),"Reco jet matched 2 MC",ntuple_jetpurity_vars); 
@@ -120,10 +120,10 @@ int main()
                         
                 vars[0] = Jet_4vector->Pt();
                 vars[1] = Jet_4vector->E();
-                vars[2] = mcrecotree->Jet_NDtr;
+                vars[2] = -999; //mcrecotree->Jet_NDtr;
                 vars[3] = (truth_passed) ? true_Jet_4vector->Pt() : -999 ;
                 vars[4] = (truth_passed) ? true_Jet_4vector->E()  : -999 ;
-                vars[5] = (truth_passed) ? mcrecotree->Jet_mcjet_nmcdtrs : -999 ;
+                vars[5] = -999;//(truth_passed) ? mcrecotree->Jet_mcjet_nmcdtrs : -999 ;
                 vars[6] = (truth_passed) ? Jet_4vector->DeltaR(*true_Jet_4vector) : -999;
                 vars[7] = Jet_4vector->Eta();
 

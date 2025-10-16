@@ -47,11 +47,10 @@ const double min_efficiency[] = {0.14,0.10,0.05};
 const double max_relerror[]   = {0.50,0.35,0.45};
 
 // Misc analysis cuts
-// TCut pair_matching_cut = "R_L_truth!=-999";
-TCut pair_matching_cut = Form("TMath::Abs(R_L-R_L_truth)<%f",rl_resolution);
+TCut pair_matching_cut = "R_L_truth!=-999";
+// TCut pair_matching_cut = Form("TMath::Abs(R_L-R_L_truth)<%f",rl_resolution);
 
 // Nominal Analysis Cuts
-
 TCut eec_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
 

@@ -18,6 +18,24 @@ std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
 
 
 // Names of the files
+std::string namef_paircorr_histos    = "histos_paircorr_eec.root";
+std::string namef_paircorr_histos_ct = "histos_paircorr_eec_ct.root";
+
+std::string namef_3dpaircorr_rl_jetpt_ptprod_histos    = "histos_3dpaircorr_rl_jetpt_ptprod_eec.root";
+std::string namef_3dpaircorr_rl_jetpt_ptprod_histos_ct = "histos_3dpaircorr_rl_jetpt_ptprod_eec_ct.root";
+
+std::string namef_3dpaircorr_rl_jetpt_weightpt_histos    = "histos_3dpaircorr_rl_jetpt_weightpt_eec.root";
+std::string namef_3dpaircorr_rl_jetpt_weightpt_histos_ct = "histos_3dpaircorr_rl_jetpt_weightpt_eec_ct.root";
+
+std::string namef_3dpaircorr_nojetmatch_rl_jetpt_ptprod_histos_ct   = "histos_3dpaircorr_nojetmatch_rl_jetpt_ptprod_eec_ct.root";
+std::string namef_3dpaircorr_nojetmatch_rl_jetpt_weightpt_histos_ct = "histos_3dpaircorr_nojetmatch_rl_jetpt_weightpt_eec_ct.root";
+
+std::string namef_histopaircorr_eec    = "histos_histopaircorr_eec.root";
+std::string namef_histopaircorr_eec_ct = "histos_histopaircorr_eec_ct.root";
+
+std::string namef_histopaircorr_eec_3dunf    = "histos_histopaircorr_eec_3dunf.root";
+std::string namef_histopaircorr_eec_3dunf_ct = "histos_histopaircorr_eec_3dunf_ct.root";
+
 std::string namef_ntuple_eec                = "ntuple_eec.root";
 std::string namef_ntuple_eec_corr           = "ntuple_correec.root";
 
@@ -44,6 +62,8 @@ std::string namef_ntuple_eec_paircorrections       = "ntuple_eec_paircorrections
 std::string namef_ntuple_eec_paircorrections_ct    = "ntuple_eec_paircorrections_ct.root";
 std::string namef_ntuple_eec_paircorrections_jes   = "ntuple_eec_paircorrections_jes.root";
 std::string namef_ntuple_eec_paircorrections_jer   = "ntuple_eec_paircorrections_jer.root";
+
+std::string namef_ntuple_eec_paircorrections_nojetmatch_ct    = "ntuple_eec_paircorrections_nojetmatch_ct.root";
 
 std::string namef_ntuple_mc_eec    = "ntuple_mc_eec.root";
 std::string namef_ntuple_mc_at_eec = "ntuple_mc_at_eec.root";
@@ -146,8 +166,10 @@ const char* ntuple_pairandsinglecorrdata_vars = "event_weight:efficiency:purity:
 //--------------------------------------------------------------------------------------//
 const int   Nvars_corrections_mc         = 13;
 const int   Nvars_corrections_mcreco     = 25;
+const int   Nvars_corrections_mcreco_plus= 26;
 const char* ntuple_corrections_mc_vars   = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:jet_pt:weight_pt";
 const char* ntuple_corrections_reco_vars = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:h1_p_truth:h2_p_truth:h1_pt_truth:h2_pt_truth:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_eta_truth:h2_eta_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt";
+const char* ntuple_corrections_reco_vars_plus = "eq_charge:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_eta:h1_p_truth:h2_p_truth:h1_pt_truth:h2_pt_truth:jet_pt:jet_pt_truth:deltaR_h1:deltaR_h2:h1_eta_truth:h2_eta_truth:R_L_truth:weight_truth:weight_pt_truth:weight_pt:jet_eta_truth";
 
 //--------------------------------------------------------------------------------------//
 const int   Nvars_hadroncorrections_mc         = 8;
@@ -164,6 +186,9 @@ std::string namef_ntuple_jet_corr       = "ntuple_corrjet.root";
 std::string namef_ntuple_jet_purity     = "ntuple_jet_purity.root";
 std::string namef_ntuple_jet_efficiency = "ntuple_jet_efficiency.root";
 std::string namef_ntuple_jes_jer        = "ntuple_jes_jer.root";
+
+std::string namef_ntuple_jet_purity_ct     = "ntuple_jet_purity_ct.root";
+std::string namef_ntuple_jet_efficiency_ct = "ntuple_jet_efficiency_ct.root";
 
 std::string name_ntuple_corrjet       = "ntuple_jet";
 std::string name_ntuple_jetpurity     = "ntuple_jetpurity";
