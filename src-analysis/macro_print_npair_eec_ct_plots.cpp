@@ -27,6 +27,8 @@ void macro_print_npair_eec_ct_plots()
         TH1F* hnpair_ct[nbin_jet_pt];
         TH1F* heec_ct[nbin_jet_pt];
 
+        TLine* line = new TLine(unfolding_rl_nominal_binning[1], 1, unfolding_rl_nominal_binning[nbin_rl_nominal_unfolding-1], 1);
+
         for(int bin = 0 ; bin < nbin_jet_pt ; bin ++) {
                 hnpair_ct[bin] = (TH1F*) f->Get(Form("pseudodata_to_truth_npair%i",bin));
                 set_histogram_style(hnpair_ct[bin], corr_marker_color_jet_pt[bin], std_line_width-1, std_marker_style_jet_pt[bin] , std_marker_size);
@@ -43,7 +45,7 @@ void macro_print_npair_eec_ct_plots()
                 
                 s[bin]->Draw("NOSTACK");
                 
-                s[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};N_{pair}(R_{L})",jet_pt_binning[bin],jet_pt_binning[bin+1]));
+                s[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};Corr. Pseudodata / Truth)",jet_pt_binning[bin],jet_pt_binning[bin+1]));
                 s[bin]->SetMaximum(1.4);
                 s[bin]->SetMinimum(0.6);
                 s[bin]->GetXaxis()->SetRangeUser(unfolding_rl_nominal_binning[1],unfolding_rl_nominal_binning[nbin_rl_nominal_unfolding-1]);
@@ -54,6 +56,7 @@ void macro_print_npair_eec_ct_plots()
                 gPad->SetLogx(1);
                 
                 l[bin]->Draw("SAME");    
+                line->Draw("SAME")
         }
 
         c->Print(out_plot.c_str());

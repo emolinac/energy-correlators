@@ -105,13 +105,22 @@ int main()
         TLorentzVector* h1_4vector  = new TLorentzVector();
         TLorentzVector* h2_4vector  = new TLorentzVector();
         
-        TH3F* h_eec_truth    = new TH3F("h_eec_truth"   ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
-        
         TH3F* h_npair       = new TH3F("h_npair"      ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3F* h_npair_wmuon = new TH3F("h_npair_wmuon","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3F* h_npair_truth = new TH3F("h_npair_truth","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
         h_npair->Sumw2();
         h_npair_truth->Sumw2();
+        
+        TH3F* h_eqchnpair        = new TH3F("h_eqchnpair"       ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* h_eqchnpair_wmuon  = new TH3F("h_eqchnpair_wmuon" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* h_neqchnpair       = new TH3F("h_neqchnpair"      ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* h_neqchnpair_wmuon = new TH3F("h_neqchnpair_wmuon","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* h_eqchnpair_truth  = new TH3F("h_eqchnpair_truth" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* h_neqchnpair_truth = new TH3F("h_neqchnpair_truth","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        h_eqchnpair->Sumw2();
+        h_neqchnpair->Sumw2();
+        h_eqchnpair_truth->Sumw2();
+        h_neqchnpair_truth->Sumw2();
         
         TH1F* h_njet          = new TH1F("h_njet"         ,"",nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         TH1F* h_njet_wmuoneff = new TH1F("h_njet_wmuoneff","",nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
@@ -239,6 +248,15 @@ int main()
 
                                 h_npair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
                                 h_npair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+
+                                if (pseudodata->Jet_Dtr_ThreeCharge[h1_index] * pseudodata->Jet_Dtr_ThreeCharge[h2_index] > 0) {
+                                        h_eqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_eqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                }
+                                else if (pseudodata->Jet_Dtr_ThreeCharge[h1_index] * pseudodata->Jet_Dtr_ThreeCharge[h2_index] < 0) {
+                                        h_neqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_neqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                }
                         }
                 }
 
@@ -331,8 +349,12 @@ int main()
 
                                 double momentum_weight = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
-                                h_eec_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, momentum_weight);
                                 h_npair_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+
+                                if (truthdata->MCJet_Dtr_ThreeCharge[h1_index] * truthdata->MCJet_Dtr_ThreeCharge[h2_index] > 0)
+                                        h_eqchnpair_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                else if (truthdata->MCJet_Dtr_ThreeCharge[h1_index] * truthdata->MCJet_Dtr_ThreeCharge[h2_index] < 0)
+                                        h_neqchnpair_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
                         }   
                 }
                 
@@ -348,11 +370,16 @@ int main()
         hefficiency->Write();
         h_njet->Write();
         h_njet_wmuoneff->Write();
-        h_eec_truth->Write();
         h_njet_truth->Write();
         h_npair->Write();
         h_npair_truth->Write();
         h_npair_wmuon->Write();
+        h_eqchnpair->Write();
+        h_eqchnpair_wmuon->Write();
+        h_neqchnpair->Write();
+        h_neqchnpair_wmuon->Write();
+        h_eqchnpair_truth->Write();
+        h_neqchnpair_truth->Write();
         fout->Close();
         
         std::cout<<std::endl;
