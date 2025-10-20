@@ -14,6 +14,7 @@
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
+#include "TRandom3.h"
 #include "TH3.h"
 #include "TLatex.h"
 #include "analysis-constants.h"
@@ -22,12 +23,37 @@
 #include "analysis-functions.h"
 #include "directories.h"
 #include "names.h"
+#include "syst-jes-jer.h"
 #include "utils-algorithms.h"
 
-int main()
+int main(int argc, char* argv[])
 {
+        bool get_nominal = false;
+        bool get_jes     = false;
+        bool get_jer     = false;
+
+        if (argc < 2 || std::string(argv[1]) == "--help") {
+                std::cout<<"You have to pass one argument to this code. Possible options are:"<<std::endl;
+                std::cout<<"--get-nominal : Gets the nominal pair corrections."<<std::endl;
+                std::cout<<"--get-jes     : Gets the pair corrections with the JES variation."<<std::endl;
+                std::cout<<"--get-jer     : Gets the pair corrections with the JER variation."<<std::endl;
+
+                return 0;
+        }
+
+        if (std::string(argv[1]) == "--get-nominal")
+                get_nominal = true;
+        else if (std::string(argv[1]) == "--get-jes")
+                get_jes = true;
+        else if (std::string(argv[1]) == "--get-jer")
+                get_jer = true;
+        else {
+                std::cout<<"No valid options provided"<<std::endl;
+                return 0;
+        }
+        
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_3dpaircorr_rl_jetpt_weightpt_histos).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_all_corrections[argv[1]]).c_str(),"RECREATE");
         gROOT->cd();
         
         // Declare the TTrees to be used to build the ntuples
@@ -36,7 +62,7 @@ int main()
         TZJets2018Data* datatree_2018 = new TZJets2018Data();
         
         // Open correction files
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_pair_corrections[argv[1]]).c_str());
         TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
         
@@ -136,6 +162,8 @@ int main()
         TH1F* h_njet_wmuoneff = new TH1F("h_njet_wmuoneff","",nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         h_njet->Sumw2();
 
+        TRandom3* rndm = new TRandom3();
+
         unsigned long long last_eventNum = 0;
         
         std::cout<<"Working with 2016 data."<<std::endl;
@@ -165,10 +193,59 @@ int main()
                 if (!mum_trigger && !mup_trigger) 
                         continue;
                 
-                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,
-                                        datatree_2016->Jet_PY/1000.,
-                                        datatree_2016->Jet_PZ/1000.,
-                                        datatree_2016->Jet_PE/1000.);
+                double nominal_jec = datatree_2016->Jet_JEC_Cor;
+
+                if (get_nominal)
+                        nominal_jec = 1.;
+
+                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000./nominal_jec,
+                                        datatree_2016->Jet_PY/1000./nominal_jec,
+                                        datatree_2016->Jet_PZ/1000./nominal_jec,
+                                        datatree_2016->Jet_PE/1000./nominal_jec);
+
+                if (get_jes) {
+                        double new_jes_cor = -999;
+                        
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) {
+                                        new_jes_cor = syst_jes_array[jet_pt_bin];
+                                        break;
+                                }
+                                else
+                                        new_jes_cor = 1;
+
+                        double new_jes_cor_effect = abs(1. - new_jes_cor);
+
+                        if(rndm->Integer(2))
+                                new_jes_cor = 1 + new_jes_cor_effect;
+                        else
+                                new_jes_cor = 1 - new_jes_cor_effect;
+
+                        Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2016->Jet_PX/1000.,
+                                                new_jes_cor*datatree_2016->Jet_PY/1000.,
+                                                new_jes_cor*datatree_2016->Jet_PZ/1000.,
+                                                new_jes_cor*datatree_2016->Jet_PE/1000.);
+                } else if (get_jer) {
+                        double new_jer_cor = -999;
+
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
+                                        new_jer_cor = syst_jer_array[jet_pt_bin];
+                                if (new_jer_cor < 0) 
+                                        new_jer_cor = 1;
+                        }
+                        double smearing_factor;
+
+                        for (int i = 0 ; i < smearing_constant ; i++)
+                                smearing_factor += rndm->Gaus(1, new_jer_cor);
+
+                        smearing_factor /= smearing_constant;
+                        
+                        Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2016->Jet_PX/1000.,
+                                                smearing_factor*datatree_2016->Jet_PY/1000.,
+                                                smearing_factor*datatree_2016->Jet_PZ/1000.,
+                                                smearing_factor*datatree_2016->Jet_PE/1000.);
+                }
 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
@@ -303,10 +380,59 @@ int main()
                 if (!mum_trigger && !mup_trigger)
                         continue;
                 
-                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,
-                                        datatree_2017->Jet_PY/1000.,
-                                        datatree_2017->Jet_PZ/1000.,
-                                        datatree_2017->Jet_PE/1000.);
+                double nominal_jec = datatree_2017->Jet_JEC_Cor;
+
+                if (get_nominal)
+                        nominal_jec = 1.;
+
+                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000./nominal_jec,
+                                        datatree_2017->Jet_PY/1000./nominal_jec,
+                                        datatree_2017->Jet_PZ/1000./nominal_jec,
+                                        datatree_2017->Jet_PE/1000./nominal_jec);
+
+                if (get_jes) {
+                        double new_jes_cor = -999;
+                        
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) {
+                                        new_jes_cor = syst_jes_array[jet_pt_bin];
+                                        break;
+                                }
+                                else
+                                        new_jes_cor = 1;
+
+                        double new_jes_cor_effect = abs(1. - new_jes_cor);
+
+                        if(rndm->Integer(2))
+                                new_jes_cor = 1 + new_jes_cor_effect;
+                        else
+                                new_jes_cor = 1 - new_jes_cor_effect;
+
+                        Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2017->Jet_PX/1000.,
+                                                new_jes_cor*datatree_2017->Jet_PY/1000.,
+                                                new_jes_cor*datatree_2017->Jet_PZ/1000.,
+                                                new_jes_cor*datatree_2017->Jet_PE/1000.);
+                } else if (get_jer) {
+                        double new_jer_cor = -999;
+
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
+                                        new_jer_cor = syst_jer_array[jet_pt_bin];
+                                if (new_jer_cor < 0) 
+                                        new_jer_cor = 1;
+                        }
+                        double smearing_factor;
+
+                        for (int i = 0 ; i < smearing_constant ; i++)
+                                smearing_factor += rndm->Gaus(1, new_jer_cor);
+
+                        smearing_factor /= smearing_constant;
+                        
+                        Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000.,
+                                                smearing_factor*datatree_2017->Jet_PY/1000.,
+                                                smearing_factor*datatree_2017->Jet_PZ/1000.,
+                                                smearing_factor*datatree_2017->Jet_PE/1000.);
+                }
                 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
@@ -442,10 +568,59 @@ int main()
                 if (!mum_trigger && !mup_trigger) 
                         continue;
                 
-                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000.,
-                                        datatree_2018->Jet_PY/1000.,
-                                        datatree_2018->Jet_PZ/1000.,
-                                        datatree_2018->Jet_PE/1000.);
+                double nominal_jec = datatree_2018->Jet_JEC_Cor;
+
+                if (get_nominal)
+                        nominal_jec = 1.;
+
+                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000./nominal_jec,
+                                        datatree_2018->Jet_PY/1000./nominal_jec,
+                                        datatree_2018->Jet_PZ/1000./nominal_jec,
+                                        datatree_2018->Jet_PE/1000./nominal_jec);
+
+                if (get_jes) {
+                        double new_jes_cor = -999;
+                        
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) {
+                                        new_jes_cor = syst_jes_array[jet_pt_bin];
+                                        break;
+                                }
+                                else
+                                        new_jes_cor = 1;
+
+                        double new_jes_cor_effect = abs(1. - new_jes_cor);
+
+                        if(rndm->Integer(2))
+                                new_jes_cor = 1 + new_jes_cor_effect;
+                        else
+                                new_jes_cor = 1 - new_jes_cor_effect;
+
+                        Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2018->Jet_PX/1000.,
+                                                new_jes_cor*datatree_2018->Jet_PY/1000.,
+                                                new_jes_cor*datatree_2018->Jet_PZ/1000.,
+                                                new_jes_cor*datatree_2018->Jet_PE/1000.);
+                } else if (get_jer) {
+                        double new_jer_cor = -999;
+
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
+                                        new_jer_cor = syst_jer_array[jet_pt_bin];
+                                if (new_jer_cor < 0) 
+                                        new_jer_cor = 1;
+                        }
+                        double smearing_factor;
+
+                        for (int i = 0 ; i < smearing_constant ; i++)
+                                smearing_factor += rndm->Gaus(1, new_jer_cor);
+
+                        smearing_factor /= smearing_constant;
+                        
+                        Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2018->Jet_PX/1000.,
+                                                smearing_factor*datatree_2018->Jet_PY/1000.,
+                                                smearing_factor*datatree_2018->Jet_PZ/1000.,
+                                                smearing_factor*datatree_2018->Jet_PE/1000.);
+                }
                 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;

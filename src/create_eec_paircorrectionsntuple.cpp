@@ -140,8 +140,10 @@ int main(int argc, char* argv[])
                         double new_jes_cor = -999;
                         
                         for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) {
                                         new_jes_cor = syst_jes_array[jet_pt_bin];
+                                        break;
+                                }
                                 else
                                         new_jes_cor = 1;
 
@@ -159,13 +161,12 @@ int main(int argc, char* argv[])
                 } else if (get_jer) {
                         double new_jer_cor = -999;
 
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
                                 if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
                                         new_jer_cor = syst_jer_array[jet_pt_bin];
-
-                        if (new_jer_cor < 0) 
-                                continue;
-                        
+                                if (new_jer_cor < 0) 
+                                        new_jer_cor = 1;
+                        }
                         double smearing_factor;
 
                         for (int i = 0 ; i < smearing_constant ; i++)
@@ -179,8 +180,6 @@ int main(int argc, char* argv[])
                                                 smearing_factor*mcrecotree->Jet_PE/1000.);
                 }
 
-                // here shoul be the addition of the JES 
-                
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 

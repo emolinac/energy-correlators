@@ -8,12 +8,14 @@
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
+#include "TRandom3.h"
 #include "analysis-constants.h"
 #include "analysis-binning.h"
 #include "analysis-cuts.h"
 #include "analysis-functions.h"
 #include "directories.h"
 #include "names.h"
+#include "syst-jes-jer.h"
 
 int main()
 {
@@ -44,7 +46,6 @@ int main()
         float vars[Nvars_jetefficiency];
         
         // Fill the matched jets Ntuple
-        
         for (int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++)
         {
                 // Access entry of tree
