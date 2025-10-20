@@ -29,10 +29,10 @@ void macro_print_npair_eec_ct_plots()
 
         for(int bin = 0 ; bin < nbin_jet_pt ; bin ++) {
                 hnpair_ct[bin] = (TH1F*) f->Get(Form("pseudodata_to_truth_npair%i",bin));
-                set_histogram_style(hnpair_ct[bin], corr_marker_color_jet_pt[bin], std_line_width-2, std_marker_style_jet_pt[bin] , std_marker_size);
+                set_histogram_style(hnpair_ct[bin], corr_marker_color_jet_pt[bin], std_line_width-1, std_marker_style_jet_pt[bin] , std_marker_size);
 
                 heec_ct[bin] = (TH1F*) f->Get(Form("pseudodata_to_truth_eec%i",bin));
-                set_histogram_style(heec_ct[bin], corr_marker_color_jet_pt[bin], std_line_width-2, corr_marker_style_jet_pt[bin] , std_marker_size);                
+                set_histogram_style(heec_ct[bin], corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[bin] , std_marker_size);                
                 
                 c->cd(bin+1);
                 s[bin] = new THStack();

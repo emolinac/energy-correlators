@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptratio_max = 1.6, bool do_print = false)
+void macro_print_jetptbalance(const int nbin = 40, double ptratio_min = 0.4 , double ptratio_max = 1.6)
 {
         // Open the necessary files
         TFile* f = new TFile((output_folder + namef_ntuple_jes_jer).c_str());
@@ -35,8 +35,8 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
         
                 // set_histogram_style(hjes_data[bin],corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[0], std_marker_size);
                 // set_histogram_style(hjes_reco[bin],std_marker_color_jet_pt[bin] , std_line_width, std_marker_style_jet_pt[0] , std_marker_size);
-                set_histogram_style(hjes_data[bin],1, std_line_width, corr_marker_style_jet_pt[0], std_marker_size);
-                set_histogram_style(hjes_reco[bin],2, std_line_width, corr_marker_style_jet_pt[0], std_marker_size);
+                set_histogram_style(hjes_data[bin],1, std_line_width-1, corr_marker_style_jet_pt[0], std_marker_size);
+                set_histogram_style(hjes_reco[bin],2, std_line_width-1, corr_marker_style_jet_pt[0], std_marker_size);
 
                 ntuple_jes_data->Project(Form("hjes_data[%i]",bin) ,"jet_pt/z_pt",pair_jet_pt_cut[bin]);
                 ntuple_jes_reco->Project(Form("hjes_reco[%i]" ,bin),"jet_pt/z_pt",pair_jet_pt_cut[bin]);
@@ -56,8 +56,7 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
                 l[bin]->Draw("SAME");
         }
 
-        if (do_print) 
-                c->Print(Form("./plots/jet_jes_ptratios.pdf"));
+        c->Print(Form("./plots/jet_jes_ptratios.pdf"));
 
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 hjes_ratio[bin] = new TH1F(Form("hjes_ratio[%i]",bin) ,"",nbin , ptratio_min , ptratio_max);
@@ -76,6 +75,5 @@ void macro_print_jes(const int nbin = 40, double ptratio_min = 0.4 , double ptra
                 l[bin]->Draw("SAME");
         }
 
-        if (do_print) 
-                c->Print(Form("./plots/jet_jes_datareco_ratio.pdf"));
+        c->Print(Form("./plots/jet_jes_datareco_ratio.pdf"));
 }

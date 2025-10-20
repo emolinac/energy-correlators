@@ -28,10 +28,10 @@ const double jet_radius = 0.5;
 
 // Z boson cuts
 const double muon_pt_min  = 20.;
-const double muon_eta_min = 2;
-const double muon_eta_max = 4.5;
-const double muonmuon_mass_min = 60;
-const double muonmuon_mass_max = 120;
+const double lhcb_eta_min = 2;
+const double lhcb_eta_max = 4.5;
+const double dimuon_mass_min = 60;
+const double dimuon_mass_max = 120;
 const double muon_trackprob_min = 0.001;
 
 // Track cuts
@@ -95,15 +95,15 @@ TCut pair_zpt_cut[] = {
 TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f",rl_resolution);
 TCut single_signal_cut = "key_match==1";
 
-TCut purity_corr_singletrack     = Form("purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
-TCut efficiency_corr_singletrack = Form("(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
-TCut full_corr_singletrack       = Form("purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut purity_corr_singletrack     = Form("purity*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut efficiency_corr_singletrack = Form("(1./efficiency)*(et_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut full_corr_singletrack       = Form("purity*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 
-TCut eec_purity_corr_singletrack     = Form("weight*purity*(purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
-TCut eec_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(efficiency_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,jet_pt_min_nom,jet_pt_max);
-TCut eec_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(efficiency_relerror<%f&&purity_relerror<%f&&jet_pt>%f&&jet_pt<%f)",corr_rel_error,corr_rel_error,jet_pt_min_nom,jet_pt_max);
+TCut eec_purity_corr_singletrack     = Form("weight*purity*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut eec_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+TCut eec_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 
-TCut pair_purity_corr_singletrack_weightpt = Form("purity*(purity_relerror<%f)",corr_rel_error);
+TCut pair_purity_corr_singletrack_weightpt = "purity";
 
 TString muons_eff = "1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))";
 
@@ -187,7 +187,7 @@ bool apply_muon_cuts(double deltaR_mu_jet, double mu_pt, double mu_eta)
         if (mu_pt < muon_pt_min)
                 return false;
 
-        if (mu_eta < muon_eta_min || mu_eta > muon_eta_max) 
+        if (mu_eta < lhcb_eta_min || mu_eta > lhcb_eta_max) 
                 return false;
 
         return true;
@@ -198,7 +198,7 @@ bool apply_zboson_cuts(double deltaphi_zboson_jet, double zboson_mass)
     if (deltaphi_zboson_jet < deltaphi_z_jet_min) 
             return false;
 
-    if (zboson_mass < muonmuon_mass_min || zboson_mass > muonmuon_mass_max) 
+    if (zboson_mass < dimuon_mass_min || zboson_mass > dimuon_mass_max) 
             return false;
 
     return true;
@@ -221,7 +221,7 @@ bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf,
         if (probnnghost > track_probnnghost_max)
                 return false;
 
-        if (eta < muon_eta_min || eta > muon_eta_max)
+        if (eta < lhcb_eta_min || eta > lhcb_eta_max)
                 return false;
 
         return true;
@@ -244,7 +244,7 @@ bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf,
         if (probnnghost > track_probnnghost_max)
                 return false;
 
-        if (eta < muon_eta_min || eta > muon_eta_max)
+        if (eta < lhcb_eta_min || eta > lhcb_eta_max)
                 return false;
 
         if (deltaR_h_jet > jet_radius)
@@ -264,7 +264,7 @@ bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double
         if (pt < track_pt_min)
                 return false;
 
-        if (eta < muon_eta_min || eta > muon_eta_max)
+        if (eta < lhcb_eta_min || eta > lhcb_eta_max)
                 return false;
 
         return true;
@@ -281,7 +281,7 @@ bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double
         if (pt < track_pt_min)
                 return false;
 
-        if (eta < muon_eta_min || eta > muon_eta_max)
+        if (eta < lhcb_eta_min || eta > lhcb_eta_max)
                 return false;
 
         if (deltaR_h_jet > jet_radius)

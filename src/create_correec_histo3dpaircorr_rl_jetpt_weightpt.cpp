@@ -125,6 +125,13 @@ int main()
         TH3F* h_npair_wmuon = new TH3F("h_npair_wmuon","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
         h_npair->Sumw2();
         
+        TH3F* h_eqchnpair        = new TH3F("h_eqchnpair"       ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* h_eqchnpair_wmuon  = new TH3F("h_eqchnpair_wmuon" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* h_neqchnpair       = new TH3F("h_neqchnpair"      ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* h_neqchnpair_wmuon = new TH3F("h_neqchnpair_wmuon","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        h_eqchnpair->Sumw2();
+        h_neqchnpair->Sumw2();
+        
         TH1F* h_njet          = new TH1F("h_njet"         ,"",nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         TH1F* h_njet_wmuoneff = new TH1F("h_njet_wmuoneff","",nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         h_njet->Sumw2();
@@ -249,12 +256,20 @@ int main()
 
                                 h_npair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
                                 h_npair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+
+                                if (datatree_2016->Jet_Dtr_ThreeCharge[h1_index] * datatree_2016->Jet_Dtr_ThreeCharge[h2_index] > 0) {
+                                        h_eqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_eqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                }
+                                else if (datatree_2016->Jet_Dtr_ThreeCharge[h1_index] * datatree_2016->Jet_Dtr_ThreeCharge[h2_index] < 0) {
+                                        h_neqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_neqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                }
                         }
                 }
-
                 h_njet->Fill(Jet_4vector->Pt());
                 h_njet_wmuoneff->Fill(Jet_4vector->Pt(), muon_weight);
-                
+
                 last_eventNum = datatree_2016->eventNumber;
         }
 
@@ -379,6 +394,15 @@ int main()
 
                                 h_npair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
                                 h_npair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+
+                                if (datatree_2017->Jet_Dtr_ThreeCharge[h1_index] * datatree_2017->Jet_Dtr_ThreeCharge[h2_index] > 0) {
+                                        h_eqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_eqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                }
+                                else if (datatree_2017->Jet_Dtr_ThreeCharge[h1_index] * datatree_2017->Jet_Dtr_ThreeCharge[h2_index] < 0) {
+                                        h_neqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_neqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                }
                         }
                 }
 
@@ -509,6 +533,15 @@ int main()
 
                                 h_npair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
                                 h_npair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+
+                                if (datatree_2018->Jet_Dtr_ThreeCharge[h1_index] * datatree_2018->Jet_Dtr_ThreeCharge[h2_index] > 0) {
+                                        h_eqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_eqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                }
+                                else if (datatree_2018->Jet_Dtr_ThreeCharge[h1_index] * datatree_2018->Jet_Dtr_ThreeCharge[h2_index] < 0) {
+                                        h_neqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_neqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                }
                         }
                 }
 
@@ -527,6 +560,10 @@ int main()
         h_njet_wmuoneff->Write();
         h_npair->Write();
         h_npair_wmuon->Write();
+        h_eqchnpair->Write();
+        h_eqchnpair_wmuon->Write();
+        h_neqchnpair->Write();
+        h_neqchnpair_wmuon->Write();
         fout->Close();
         
         std::cout<<std::endl;

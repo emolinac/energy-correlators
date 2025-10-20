@@ -12,9 +12,17 @@ ROOTLIBS    := $(shell root-config --libs) -lEG
 
 all: ${BIN}/create_jet_purityntuple ${BIN}/create_jet_efficiencyntuple \
      ${BIN}/create_jet_purityntuple_ct ${BIN}/create_jet_efficiencyntuple_ct \
+     ${BIN}/create_eec_mc_ntuple \
+     ${BIN}/create_jes_jer_ntuple \
      ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt \
      ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt_ct \
      ${BIN}/create_eec_paircorrectionsntuple ${BIN}/create_eec_paircorrectionsntuple_ct 
+
+${BIN}/create_eec_mc_ntuple: ${SRC}/create_eec_mc_ntuple.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_eec_mc_ntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_eec_mc_ntuple
+
+${BIN}/create_jes_jer_ntuple: ${SRC}/create_jes_jer_ntuple.cpp
+	${CXX} ${ROOTCFLAGS} ${SRC}/create_jes_jer_ntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_jes_jer_ntuple
 
 ${BIN}/create_jet_purityntuple: ${SRC}/create_jet_purityntuple.cpp
 	${CXX} ${ROOTCFLAGS} ${SRC}/create_jet_purityntuple.cpp -I${INC} ${ROOTLIBS} -o ${BIN}/create_jet_purityntuple

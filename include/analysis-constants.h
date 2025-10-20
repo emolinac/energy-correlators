@@ -17,26 +17,13 @@ const double pi_mass       = 0.134977;
 const double phi_mass      = 1.019455;
 const double mass_res      = 0.008; // Mass resolution parameter (see src-resolution)
 
-// Correction-related constants
-// const double corr_rel_error = 0.05;
-// const double corr_rel_error = 0.2; // nominal
-const double corr_rel_error = 0.5;
-const int ndim_corr = 50;
-
+// Analysis
 const double rl_resolution = 0.015;
 
 const int nominal_niter = 4;
-
 const int smearing_constant = 30;
 
-// Weight mapping
-const double slope = 1.0382;
-const double intercept = 0.000147376;
-
-const double slope_jetpt[]     = {1.08357, 1.08947, 1.1131};
-const double intercept_jetpt[] = {0.000161732, -4.37428e-06, 5.46739e-06};
-
-// Visual constants
+// Visual
 const double std_marker_size  = 1.0;
 const int    std_marker_style = 8;
 const int    std_line_width   = 3;

@@ -13,6 +13,14 @@ void apply_unfolded_weights(TH3F* h_rl_jetpt_weight, TH2F* h_rl_jetpt);
 
 void apply_unfolded_weights(TH3D* h_rl_jetpt_weight, TH2D* h_rl_jetpt);
 
+void apply_jet_weight_to_npairs(TH3D* h_npair, TH1F* h_purity_jet, TH1F* h_efficiency_jet);
+
+void project_nominal_phase_space(TH2D* h_2d, TH1F* h_1d);
+
+void get_tau_from_uoflow_eec(TH1F* h_eec, TH1F* h_tau);
+
+void get_tau_binning_from_eec_binning(double* tau_binning, double* eec_binning, double average_pt2_jet);
+
 void normalize_by_njets(TH1F* h, double h_njet_content, double h_njet_error);
 
 void normalize_by_njets(TH1D* h, double h_njet_content, double h_njet_error);

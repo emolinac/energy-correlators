@@ -97,6 +97,53 @@ void apply_unfolded_weights(TH3D* h_rl_jetpt_weight, TH2D* h_rl_jetpt)
         }
 }
 
+void apply_jet_weight_to_npairs(TH3D* h_npair, TH1F* h_purity_jet, TH1F* h_efficiency_jet)
+{
+        for (int i = 1 ; i <= h_npair->GetNbinsX(); i++) {
+                for (int j = 1 ; j <= h_npair->GetNbinsY(); j++) {
+                        for (int k = 1 ; k <= h_npair->GetNbinsZ() ; k++) {
+                                double reweight = h_purity_jet->GetBinContent(j)/h_efficiency_jet->GetBinContent(j);
+                                
+                                h_npair->SetBinContent(i, j, k, h_npair->GetBinContent(i, j, k) * reweight);
+                                h_npair->SetBinError(i, j, k, h_npair->GetBinError(i, j, k) * reweight);
+                        }
+                }
+        }
+}
+
+void project_nominal_phase_space(TH2D* h_2d, TH1F* h_1d, int nominal_jet_pt_bin)
+{
+        // This function should be used only in the case of two jetpt underflow bins and one underflow/overflow for RL
+        for (int i = 1 ; i <= h_1d->GetNbinsX(); i++) {
+                if (i == 1 || i == h_1d->GetNbinsX()) {
+                        h_1d->SetBinContent(i, 0);
+                        h_1d->SetBinError(i, 0);
+                        continue;
+                }
+                h_1d->SetBinContent(i, h_2d->GetBinContent(i, nominal_jet_pt_bin));
+                h_1d->SetBinError(i, h_2d->GetBinError(i, nominal_jet_pt_bin));
+        }
+}
+
+void get_tau_from_uoflow_eec(TH1F* h_eec, TH1F* h_tau, double avge_pt2_jet)
+{
+        for (int i = 1 ; i <= h_eec->GetNbinsX() ; i++) {
+                if (i == 1 || i == h_eec->GetNbinsX())
+                        continue;
+                
+                h_tau->SetBinContent(i - 1, h_eec->GetBinContent(i));
+                h_tau->SetBinError(i -1, h_eec->GetBinError(i));
+        }
+
+        h_tau->Scale(log(avge_pt2_jet) / avge_pt2_jet);
+}
+
+void get_tau_binning_from_eec_binning(double* tau_binning, const double* eec_binning, double average_pt2_jet)
+{
+        for(int i = 0 ; i <= nbin_rl_nominal ; i++)
+                tau_binning[i] = eec_binning[i] * average_pt2_jet;
+}
+
 void normalize_by_njets(TH1F* h, double h_njet_content, double h_njet_error)
 {
         if (h_njet_content < h_njet_error)
