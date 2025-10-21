@@ -150,7 +150,7 @@ int main()
 
                         int key1_match = 0;
                         int key1_sim   = 0;
-                        if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index] != -999 && abs(mcrecotree->Jet_Dtr_TRUE_ID[h1_index]) > 100) {
+                        if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index] != -999 && std::abs(mcrecotree->Jet_Dtr_TRUE_ID[h1_index]) > 100) {
                                 key1_match++;
 
                                 for(int i = 0 ; i < mcrecotree->Jet_mcjet_nmcdtrs ; i++) {
@@ -198,7 +198,7 @@ int main()
 
                                 int key2_match = 0;
                                 int key2_sim   = 0;
-                                if (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index] != -999 && abs(mcrecotree->Jet_Dtr_TRUE_ID[h2_index]) > 100) {
+                                if (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index] != -999 && std::abs(mcrecotree->Jet_Dtr_TRUE_ID[h2_index]) > 100) {
                                         key2_match++;
 
                                         for(int i = 0 ; i < mcrecotree->Jet_mcjet_nmcdtrs ; i++) {

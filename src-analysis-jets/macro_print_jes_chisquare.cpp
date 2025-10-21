@@ -60,7 +60,7 @@ void macro_print_jes_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                         // ntuple_jes_reco->Project(Form("hreco_newjec[%i]",bin),Form("%f*(jet_pt/z_pt)/jet_jec_cor",beta_star),pair_jet_pt_cut[bin]);
                         ntuple_jes_reco->Project(Form("hreco_newjec[%i]",bin),Form("%f*(jet_pt/z_pt)/jet_jec_cor",beta_star),Form("(jet_pt/jet_jec_cor)>%f&&(jet_pt/jet_jec_cor)<%f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
                         
-                        double delta_mean = abs(hreco_newjec[bin]->GetMean() - hdata_nojec[bin]->GetMean());
+                        double delta_mean = std::abs(hreco_newjec[bin]->GetMean() - hdata_nojec[bin]->GetMean());
                         double chisquare  = hreco_newjec[bin]->Chi2Test(hdata_nojec[bin],"CHI2");
 
                         hbetastar_balance[bin]->SetBinContent(beta_star_bin + 1, delta_mean);

@@ -206,15 +206,14 @@ int main(int argc, char* argv[])
                 if (get_jes) {
                         double new_jes_cor = -999;
                         
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) {
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
+                                if (Jet_4vector->Pt() > jet_pt_binning[jet_pt_bin] && Jet_4vector->Pt() < jet_pt_binning[jet_pt_bin + 1])
                                         new_jes_cor = syst_jes_array[jet_pt_bin];
-                                        break;
-                                }
-                                else
+                                if (new_jes_cor < 0)
                                         new_jes_cor = 1;
+                        }
 
-                        double new_jes_cor_effect = abs(1. - new_jes_cor);
+                        double new_jes_cor_effect = std::abs(1. - new_jes_cor);
 
                         if(rndm->Integer(2))
                                 new_jes_cor = 1 + new_jes_cor_effect;
@@ -234,12 +233,13 @@ int main(int argc, char* argv[])
                                 if (new_jer_cor < 0) 
                                         new_jer_cor = 1;
                         }
+
                         double smearing_factor;
 
-                        for (int i = 0 ; i < smearing_constant ; i++)
+                        for (int i = 0 ; i < niter_smear ; i++)
                                 smearing_factor += rndm->Gaus(1, new_jer_cor);
 
-                        smearing_factor /= smearing_constant;
+                        smearing_factor /= niter_smear;
                         
                         Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2016->Jet_PX/1000.,
                                                 smearing_factor*datatree_2016->Jet_PY/1000.,
@@ -393,15 +393,14 @@ int main(int argc, char* argv[])
                 if (get_jes) {
                         double new_jes_cor = -999;
                         
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) {
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1])
                                         new_jes_cor = syst_jes_array[jet_pt_bin];
-                                        break;
-                                }
-                                else
+                                if (new_jes_cor < 0)
                                         new_jes_cor = 1;
-
-                        double new_jes_cor_effect = abs(1. - new_jes_cor);
+                        }
+                        
+                        double new_jes_cor_effect = std::abs(1. - new_jes_cor);
 
                         if(rndm->Integer(2))
                                 new_jes_cor = 1 + new_jes_cor_effect;
@@ -421,12 +420,13 @@ int main(int argc, char* argv[])
                                 if (new_jer_cor < 0) 
                                         new_jer_cor = 1;
                         }
+
                         double smearing_factor;
 
-                        for (int i = 0 ; i < smearing_constant ; i++)
+                        for (int i = 0 ; i < niter_smear ; i++)
                                 smearing_factor += rndm->Gaus(1, new_jer_cor);
 
-                        smearing_factor /= smearing_constant;
+                        smearing_factor /= niter_smear;
                         
                         Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000.,
                                                 smearing_factor*datatree_2017->Jet_PY/1000.,
@@ -581,15 +581,14 @@ int main(int argc, char* argv[])
                 if (get_jes) {
                         double new_jes_cor = -999;
                         
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++)
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) {
+                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
+                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1])
                                         new_jes_cor = syst_jes_array[jet_pt_bin];
-                                        break;
-                                }
-                                else
+                                if (new_jes_cor < 0)
                                         new_jes_cor = 1;
-
-                        double new_jes_cor_effect = abs(1. - new_jes_cor);
+                        }
+                        
+                        double new_jes_cor_effect = std::abs(1. - new_jes_cor);
 
                         if(rndm->Integer(2))
                                 new_jes_cor = 1 + new_jes_cor_effect;
@@ -609,12 +608,13 @@ int main(int argc, char* argv[])
                                 if (new_jer_cor < 0) 
                                         new_jer_cor = 1;
                         }
+
                         double smearing_factor;
 
-                        for (int i = 0 ; i < smearing_constant ; i++)
+                        for (int i = 0 ; i < niter_smear ; i++)
                                 smearing_factor += rndm->Gaus(1, new_jer_cor);
 
-                        smearing_factor /= smearing_constant;
+                        smearing_factor /= niter_smear;
                         
                         Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2018->Jet_PX/1000.,
                                                 smearing_factor*datatree_2018->Jet_PY/1000.,

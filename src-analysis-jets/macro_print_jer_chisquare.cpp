@@ -73,7 +73,7 @@ void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , d
                                 hreco_newjec[bin]->Fill(rndm->Gaus(1,alpha_star)*jet_pt_reco/z_pt_reco/jet_jec_cor_reco);
                         }
 
-                        double delta_mean = abs(hreco_newjec[bin]->GetStdDev() - hdata_nojec[bin]->GetStdDev());
+                        double delta_mean = std::abs(hreco_newjec[bin]->GetStdDev() - hdata_nojec[bin]->GetStdDev());
                         double chisquare  = hreco_newjec[bin]->Chi2Test(hdata_nojec[bin],"CHI2");
 
                         halphastar_balance[bin]->SetBinContent(alpha_star_bin + 1, delta_mean);

@@ -6,16 +6,16 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4)
+void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4, std::string analysis_variation = "--get-nominal")
 {
         // Open the necessary files
-        TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i.root",niter,niter_jet)).c_str(),"RECREATE");
-        TFile* f    = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
-        TFile* fjet = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
+        TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i%s.root",niter,niter_jet,analysis_variation.c_str())).c_str(),"RECREATE");
         gROOT->cd();
 
-        TFile* fcorr = new TFile((output_folder + namef_3dpaircorr_rl_jetpt_weightpt_histos).c_str()); 
-        if (fcorr->IsZombie()) 
+        TFile* f     = new TFile((output_folder + namef_pair_corrections[analysis_variation]).c_str());
+        TFile* fjet  = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
+        TFile* fcorr = new TFile((output_folder + namef_all_corrections[analysis_variation]).c_str()); 
+        if (fcorr->IsZombie() || fcorr == NULL) 
                 return;
 
         TH3F* h_npair            = (TH3F*) fcorr->Get("h_npair");
@@ -172,83 +172,86 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
                 gROOT->cd();
         }
 
-        TCanvas* c = new TCanvas("c", "", 1920, 1480);
-        c->Draw();
+        // Only print nominal results
+        if (analysis_variation == "--get-nominal") {
+                TCanvas* c = new TCanvas("c", "", 1920, 1480);
+                c->Draw();
 
-        TLatex* tex = new TLatex();
-        TLatex* lhcbprint = new TLatex();
-        set_lhcb_watermark_properties(tex);
+                TLatex* tex = new TLatex();
+                TLatex* lhcbprint = new TLatex();
+                set_lhcb_watermark_properties(tex);
 
-        // Print EEC
-        THStack* s_data = new THStack();
-        TLegend* l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.21 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
-        
-        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                s_data->Add(hcorr_eec[bin],"EP");
-                l_data->AddEntry(hcorr_eec[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"p");
+                // Print EEC
+                THStack* s_data = new THStack();
+                TLegend* l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.21 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
+                
+                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                        s_data->Add(hcorr_eec[bin],"EP");
+                        l_data->AddEntry(hcorr_eec[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"p");
+                }
+                
+                s_data->Draw("NOSTACK");
+                s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
+                s_data->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
+                s_data->SetMaximum(1.3);
+                l_data->Draw("SAME");
+                gPad->SetLogx(1);
+                gPad->SetLogy(0);
+                
+                tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
+                draw_lhcb_tag(lhcbprint);
+
+                c->Print(Form("./plots/correec_rl_jetpt_weightpt_unf-niter%i.pdf",niter));
+
+                // Print EEC as a function of R_l * <p^2_{T,jet}>
+                s_data = new THStack();
+                l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.21 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
+                
+                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                        s_data->Add(hcorr_tau[bin],"EP");
+                        l_data->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"p");
+                }
+
+                TH1F* frame = gPad->DrawFrame(tau_binning[0][0], 0.0, tau_binning[2][nbin_rl_nominal], 0.08);
+                
+                s_data->Draw("NOSTACK SAME");
+                frame->SetTitle(";R_{L}#LT p_{T,jet} #GT;#Sigma_{EEC}(R_{L})#times ln(#LT p_{T,jet} #GT)/#LT p_{T,jet} #GT");
+                l_data->Draw("SAME");
+                gPad->SetLogx(1);
+                gPad->SetLogy(0);
+                
+                tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
+
+                draw_lhcb_tag(lhcbprint);
+
+                c->Print(Form("./plots/corrtau_rl_jetpt_weightpt_unf-niter%i.pdf",niter));
+
+                // Print the charged EECs
+                s_data = new THStack();
+                l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.21 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
+                
+                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                        s_data->Add(hcorr_eqcheec[bin],"EP X0");
+                        s_data->Add(hcorr_eqcheec[bin],"HIST L");
+                        s_data->Add(hcorr_neqcheec[bin],"EP X0 C");
+                        s_data->Add(hcorr_neqcheec[bin],"HIST L");
+                        l_data->AddEntry(hcorr_eqcheec[bin],Form("eq. charge: %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"p");
+                        l_data->AddEntry(hcorr_neqcheec[bin],Form("neq. charge: %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"p");
+                }
+
+                s_data->Draw("NOSTACK");
+                s_data->SetTitle(";R_{L};");
+                s_data->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
+                s_data->SetMaximum(1.05);
+                s_data->SetMinimum(0.21);
+                l_data->Draw("SAME");
+                gPad->SetLogx(1);
+                gPad->SetLogy(0);
+                
+                tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
+
+                draw_lhcb_tag(lhcbprint);
+
+                c->Print(Form("./plots/corrchargedeec_rl_jetpt_weightpt_unf-niter%i.pdf",niter));
         }
-        
-        s_data->Draw("NOSTACK");
-        s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
-        s_data->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
-        s_data->SetMaximum(1.3);
-        l_data->Draw("SAME");
-        gPad->SetLogx(1);
-        gPad->SetLogy(0);
-        
-        tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
-        draw_lhcb_tag(lhcbprint);
-
-        c->Print(Form("./plots/correec_rl_jetpt_weightpt_unf-niter%i.pdf",niter));
-
-        // Print EEC as a function of R_l * <p^2_{T,jet}>
-        s_data = new THStack();
-        l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.21 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
-        
-        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                s_data->Add(hcorr_tau[bin],"EP");
-                l_data->AddEntry(hcorr_tau[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"p");
-        }
-
-        TH1F* frame = gPad->DrawFrame(tau_binning[0][0], 0.0, tau_binning[2][nbin_rl_nominal], 0.08);
-        
-        s_data->Draw("NOSTACK SAME");
-        frame->SetTitle(";R_{L}#LT p_{T,jet} #GT;#Sigma_{EEC}(R_{L})#times ln(#LT p_{T,jet} #GT)/#LT p_{T,jet} #GT");
-        l_data->Draw("SAME");
-        gPad->SetLogx(1);
-        gPad->SetLogy(0);
-        
-        tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
-
-        draw_lhcb_tag(lhcbprint);
-
-        c->Print(Form("./plots/corrtau_rl_jetpt_weightpt_unf-niter%i.pdf",niter));
-
-        // Print the charged EECs
-        s_data = new THStack();
-        l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.21 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
-        
-        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                s_data->Add(hcorr_eqcheec[bin],"EP X0");
-                s_data->Add(hcorr_eqcheec[bin],"HIST L");
-                s_data->Add(hcorr_neqcheec[bin],"EP X0 C");
-                s_data->Add(hcorr_neqcheec[bin],"HIST L");
-                l_data->AddEntry(hcorr_eqcheec[bin],Form("eq. charge: %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"p");
-                l_data->AddEntry(hcorr_neqcheec[bin],Form("neq. charge: %.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"p");
-        }
-
-        s_data->Draw("NOSTACK");
-        s_data->SetTitle(";R_{L};");
-        s_data->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
-        s_data->SetMaximum(1.05);
-        s_data->SetMinimum(0.21);
-        l_data->Draw("SAME");
-        gPad->SetLogx(1);
-        gPad->SetLogy(0);
-        
-        tex->DrawLatexNDC(0.25,0.25,"LHCb Internal");
-
-        draw_lhcb_tag(lhcbprint);
-
-        c->Print(Form("./plots/corrchargedeec_rl_jetpt_weightpt_unf-niter%i.pdf",niter));
 }

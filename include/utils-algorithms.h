@@ -17,7 +17,7 @@ double get_hwhm(TH1F* h)
         
         
         // Return the Half width at half maximum value
-        return abs(h->GetBinCenter(h->GetMaximumBin()) - h->GetBinCenter(halfwidth_bin));
+        return std::abs(h->GetBinCenter(h->GetMaximumBin()) - h->GetBinCenter(halfwidth_bin));
 }
 
 double get_median_from_cumulative(TH1F* h)
@@ -205,20 +205,10 @@ void regularize_correction_factors(TH3F* h)
                                 double bin_content = h->GetBinContent(i, j, k);
 
                                 if (bin_content < 0)
-                                        std::cout<<"Corr factor = "<<bin_content<<std::endl;
-
-                                if (bin_content > 1)
-                                        std::cout<<"Corr factor = "<<bin_content<<std::endl;
-
-                                if (bin_content < 0){
                                         h->SetBinContent(i, j, k, 0.);
-                                        std::cout<<"New bin content = "<<h->GetBinContent(i, j, k)<<std::endl;
-                                }
-
-                                if (bin_content > 1){
+                                        
+                                if (bin_content > 1)
                                         h->SetBinContent(i, j, k, 1.);
-                                        std::cout<<"New bin content = "<<h->GetBinContent(i, j, k)<<std::endl;
-                                }
                         }
                 }
         }
@@ -250,18 +240,18 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
                 total += hnominal->GetBinContent(hbin);
 
                 // Demand more than one sigma to be considered
-                if ((dev+dev_err > 1 && dev < 1) || (dev-dev_err < 1 && dev > 1)) 
-                        continue;
+                // if ((dev+dev_err > 1 && dev < 1) || (dev-dev_err < 1 && dev > 1)) 
+                //         continue;
 
                 double syst_error;
                 double syst_error_percentage;
                 
                 if (err_type=="uniform") {
-                        syst_error            = abs(1. - dev)*hnominal->GetBinContent(hbin)/sqrt(12.);
-                        syst_error_percentage = abs(1. - dev)/sqrt(12.);
+                        syst_error            = std::abs(1. - dev)*hnominal->GetBinContent(hbin)/sqrt(12.);
+                        syst_error_percentage = std::abs(1. - dev)/sqrt(12.);
                 } else {
-                        syst_error            = abs(1. - dev)*hnominal->GetBinContent(hbin);
-                        syst_error_percentage = abs(1. - dev);
+                        syst_error            = std::abs(1. - dev)*hnominal->GetBinContent(hbin);
+                        syst_error_percentage = std::abs(1. - dev);
                 }
                 
                 hsystematic->SetBinError(hbin, sqrt(syst_error*syst_error + hnominal->GetBinError(hbin)*hnominal->GetBinError(hbin)));

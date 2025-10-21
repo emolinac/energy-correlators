@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
                                 else
                                         new_jes_cor = 1;
 
-                        double new_jes_cor_effect = abs(1. - new_jes_cor);
+                        double new_jes_cor_effect = std::abs(1. - new_jes_cor);
 
                         if(rndm->Integer(2))
                                 new_jes_cor = 1 + new_jes_cor_effect;
@@ -169,10 +169,10 @@ int main(int argc, char* argv[])
                         }
                         double smearing_factor;
 
-                        for (int i = 0 ; i < smearing_constant ; i++)
+                        for (int i = 0 ; i < niter_smear ; i++)
                                 smearing_factor += rndm->Gaus(1, new_jer_cor);
 
-                        smearing_factor /= smearing_constant;
+                        smearing_factor /= niter_smear;
                         
                         Jet_4vector->SetPxPyPzE(smearing_factor*mcrecotree->Jet_PX/1000.,
                                                 smearing_factor*mcrecotree->Jet_PY/1000.,
@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
 
                         int key1_match = 0;
                         int key1_sim   = 0;
-                        if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index] != -999 && abs(mcrecotree->Jet_Dtr_TRUE_ID[h1_index]) > 100) {
+                        if (mcrecotree->Jet_Dtr_TRUE_ETA[h1_index] != -999 && std::abs(mcrecotree->Jet_Dtr_TRUE_ID[h1_index]) > 100) {
                                 key1_match++;
 
                                 for(int i = 0 ; i < mcrecotree->Jet_mcjet_nmcdtrs ; i++) {
@@ -283,7 +283,7 @@ int main(int argc, char* argv[])
 
                                 int key2_match = 0;
                                 int key2_sim   = 0;
-                                if (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index] != -999 && abs(mcrecotree->Jet_Dtr_TRUE_ID[h2_index]) > 100) {
+                                if (mcrecotree->Jet_Dtr_TRUE_ETA[h2_index] != -999 && std::abs(mcrecotree->Jet_Dtr_TRUE_ID[h2_index]) > 100) {
                                         key2_match++;
 
                                         for(int i = 0 ; i < mcrecotree->Jet_mcjet_nmcdtrs ; i++) {

@@ -106,47 +106,47 @@ std::map<std::string, std::string> namef_all_corrections = {
 
 // About systematics
 std::string available_systematics[] = {
-        "corr-paradigm", "ct", "jer", "jes", "prior", "shape-ct", "3dunf"
+        "ct", "jer", "jes", "prior", "shape-ct"
 };
 
 std::map<std::string, std::string> systematic_name  = {
-        {available_systematics[0],"Correction Paradigm"},
-        {available_systematics[1],"Closure Test"},
-        {available_systematics[2],"JER"},
-        {available_systematics[3],"JES"},
-        {available_systematics[4],"Prior Variation"},
-        {available_systematics[5],"Shape Closure Test"},
-        {available_systematics[6],"3D Unfolding"}
+        {available_systematics[0],"Closure Test"},
+        {available_systematics[1],"JER"},
+        {available_systematics[2],"JES"},
+        {available_systematics[3],"Prior Variation"},
+        {available_systematics[4],"Shape Closure Test"}
 };
 
+// std::map<std::string, std::string> systematic_namef = {
+//         {available_systematics[0],namef_histos_paircorr_eec_ct},
+//         {available_systematics[1],namef_histos_paircorr_eec_jer},
+//         {available_systematics[2],namef_histos_paircorr_eec_jes},
+//         {available_systematics[3],namef_histos_paircorr_eec_prior},
+//         {available_systematics[4],namef_histos_paircorr_eec_shapect}
+// };
+
 std::map<std::string, std::string> systematic_namef = {
-        {available_systematics[0],namef_histos_corr_eec},
-        {available_systematics[1],namef_histos_paircorr_eec_ct},
-        {available_systematics[2],namef_histos_paircorr_eec_jer},
-        {available_systematics[3],namef_histos_paircorr_eec_jes},
-        {available_systematics[4],namef_histos_paircorr_eec_prior},
-        {available_systematics[5],namef_histos_paircorr_eec_shapect},
-        {available_systematics[6],namef_histos_paircorr_eec_3dunf}
+        {available_systematics[0],namef_histos_paircorr_eec_ct},
+        {available_systematics[1],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-jer.root"},
+        {available_systematics[2],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-jes.root"},
+        {available_systematics[3],namef_histos_paircorr_eec_prior},
+        {available_systematics[4],namef_histos_paircorr_eec_shapect}
 };
 
 std::map<std::string, std::string> devfromnom_namef = {
-        {available_systematics[0],namef_histos_devfromnom_eec},
-        {available_systematics[1],namef_histos_paircorr_devfromnom_eec_ct},
-        {available_systematics[2],namef_histos_paircorr_devfromnom_eec_jer},
-        {available_systematics[3],namef_histos_paircorr_devfromnom_eec_jes},
-        {available_systematics[4],namef_histos_paircorr_devfromnom_eec_prior},
-        {available_systematics[5],namef_histos_paircorr_devfromnom_eec_shapect},
-        {available_systematics[6],namef_histos_paircorr_devfromnom_eec_3dunf}
+        {available_systematics[0],namef_histos_paircorr_devfromnom_eec_ct},
+        {available_systematics[1],namef_histos_paircorr_devfromnom_eec_jer},
+        {available_systematics[2],namef_histos_paircorr_devfromnom_eec_jes},
+        {available_systematics[3],namef_histos_paircorr_devfromnom_eec_prior},
+        {available_systematics[4],namef_histos_paircorr_devfromnom_eec_shapect}
 };
 
 std::map<std::string, std::string> systematic_errtype = {
-        {available_systematics[0],"uniform"},
+        {available_systematics[0],"normal"},
         {available_systematics[1],"normal"},
-        {available_systematics[2],"uniform"},
+        {available_systematics[2],"normal"},
         {available_systematics[3],"uniform"},
-        {available_systematics[4],"uniform"},
-        {available_systematics[5],"uniform"},
-        {available_systematics[6],"uniform"}
+        {available_systematics[4],"uniform"}
 };
 
 //--------------------------------------------------------------------------------------//
