@@ -18,84 +18,31 @@ std::string name_ntuple_mcreco_jet      = "ntuple_mcreco_jet";
 
 
 // Names of the files
-std::string namef_paircorr_histos    = "histos_paircorr_eec.root";
-std::string namef_paircorr_histos_ct = "histos_paircorr_eec_ct.root";
+std::string namef_ntuple_reco2truth_match       = "ntuple_reco2truth_match.root";
+std::string namef_ntuple_reco2truth_match_ct    = "ntuple_reco2truth_match_ct.root";
+std::string namef_ntuple_reco2truth_match_jes   = "ntuple_reco2truth_match_jes.root";
+std::string namef_ntuple_reco2truth_match_jer   = "ntuple_reco2truth_match_jer.root";
 
-std::string namef_ntuple_eec_paircorrections       = "ntuple_eec_paircorrections.root";
-std::string namef_ntuple_eec_paircorrections_ct    = "ntuple_eec_paircorrections_ct.root";
-std::string namef_ntuple_eec_paircorrections_jes   = "ntuple_eec_paircorrections_jes.root";
-std::string namef_ntuple_eec_paircorrections_jer   = "ntuple_eec_paircorrections_jer.root";
+std::string namef_ntuple_truth2reco_match     = "ntuple_truth2reco_match.root";
+std::string namef_ntuple_truth2reco_match_ct  = "ntuple_truth2reco_match_ct.root";
 
 std::string namef_3dpaircorr_rl_jetpt_weightpt_histos     = "histos_3dpaircorr_rl_jetpt_weightpt_eec.root";
 std::string namef_3dpaircorr_rl_jetpt_weightpt_histos_jes = "histos_3dpaircorr_rl_jetpt_weightpt_eec_jes.root";
 std::string namef_3dpaircorr_rl_jetpt_weightpt_histos_jer = "histos_3dpaircorr_rl_jetpt_weightpt_eec_jer.root";
 std::string namef_3dpaircorr_rl_jetpt_weightpt_histos_ct  = "histos_3dpaircorr_rl_jetpt_weightpt_eec_ct.root";
 
-std::string namef_histopaircorr_eec    = "histos_histopaircorr_eec.root";
-std::string namef_histopaircorr_eec_ct = "histos_histopaircorr_eec_ct.root";
-
-std::string namef_histopaircorr_eec_3dunf    = "histos_histopaircorr_eec_3dunf.root";
-std::string namef_histopaircorr_eec_3dunf_ct = "histos_histopaircorr_eec_3dunf_ct.root";
-
-std::string namef_ntuple_eec                = "ntuple_eec.root";
-std::string namef_ntuple_eec_corr           = "ntuple_correec.root";
-
-std::string namef_ntuple_eec_paircorr       = "ntuple_paircorreec.root";
-std::string namef_ntuple_eec_paircorr_3d    = "ntuple_paircorreec_3d.root";
-std::string namef_ntuple_eec_paircorr_3d_alt= "ntuple_paircorreec_3d_alt.root";
-std::string namef_ntuple_eec_paircorr_4d    = "ntuple_paircorreec_4d.root";
-std::string namef_ntuple_eec_paircorr_5d    = "ntuple_paircorreec_5d.root";
-std::string namef_ntuple_eec_paircorr_ct    = "ntuple_paircorreec_ct.root";
-std::string namef_ntuple_eec_paircorr_jes   = "ntuple_paircorreec_jes.root";
-std::string namef_ntuple_eec_paircorr_jer   = "ntuple_paircorreec_jer.root";
-std::string namef_ntuple_eec_paircorr_prior = "ntuple_paircorreec_prior.root";
-
-std::string namef_ntuple_eec_paircorrwweights     = "ntuple_paircorreecwweights.root";
-std::string namef_ntuple_eec_paircorr_ct_wweights = "ntuple_paircorreec_ct_wweights.root";
-
-std::string namef_ntuple_eec_paircorr_h1h2    = "ntuple_paircorreec_h1h2.root";
-
-std::string namef_ntuple_eec_pairandsinglecorr    = "ntuple_pairandsinglecorreec.root";
-
-std::string namef_ntuple_eec_hadroncorrections   = "ntuple_eec_hadroncorrections.root";
-
-std::string namef_ntuple_eec_paircorrections_nojetmatch_ct    = "ntuple_eec_paircorrections_nojetmatch_ct.root";
+std::string namef_ntuple_eec      = "ntuple_eec.root";
+std::string namef_ntuple_eec_corr = "ntuple_correec.root";
 
 std::string namef_ntuple_mc_eec    = "ntuple_mc_eec.root";
 std::string namef_ntuple_mc_at_eec = "ntuple_mc_at_eec.root";
 std::string namef_ntuple_hadron    = "ntuple_hadron.root";
 
-std::string namef_histos_corr_eec              = "histos_corr_eec.root";
-std::string namef_histos_paircorr_eec          = "histos_paircorr_eec.root";
-std::string namef_histos_paircorr_eec_h1h2     = "histos_paircorr_eec_h1h2.root";
-std::string namef_histos_paircorr_eec_wweights = "histos_paircorr_eec_wweights.root";
-std::string namef_histos_paircorr_eec_3d       = "histos_paircorr_eec_3d.root";
-std::string namef_histos_paircorr_eec_4d       = "histos_paircorr_eec_4d.root";
-std::string namef_histos_paircorr_eec_5d       = "histos_paircorr_eec_5d.root";
-std::string namef_histos_paircorr_eec_ct       = "histos_paircorr_eec_ct.root";
-std::string namef_histos_paircorr_eec_jes      = "histos_paircorr_eec_jes.root";
-std::string namef_histos_paircorr_eec_prior    = "histos_paircorr_eec_prior.root";
-std::string namef_histos_paircorr_eec_shapect  = "histos_paircorr_eec_shapect.root";
-std::string namef_histos_paircorr_eec_jer      = "histos_paircorr_eec_jer.root";
-std::string namef_histos_paircorr_eec_3dunf    = "histos_paircorr_eec_3dunf.root";
-std::string namef_histos_paircorr_eec_3dunf_3d = "histos_paircorr_eec_3dunf_3d.root";
-std::string namef_histos_pairandsinglecorr_eec = "histos_pairandsinglecorr_eec.root";
-
-std::string namef_histos_weight_corr = "histos_weightcorr.root";
-
-std::string namef_histos_devfromnom_eec                  = "histos_devfromnom_eec.root";
-std::string namef_histos_paircorr_devfromnom_eec_prior   = "histos_paircorr_devfromnom_eec_prior.root";
-std::string namef_histos_paircorr_devfromnom_eec_shapect = "histos_paircorr_devfromnom_eec_shapect.root";
-std::string namef_histos_paircorr_devfromnom_eec_jes     = "histos_paircorr_devfromnom_eec_jes.root";
-std::string namef_histos_paircorr_devfromnom_eec_jer     = "histos_paircorr_devfromnom_eec_jer.root";
-std::string namef_histos_paircorr_devfromnom_eec_ct      = "histos_paircorr_devfromnom_eec_ct.root";
-std::string namef_histos_paircorr_devfromnom_eec_3dunf   = "histos_paircorr_devfromnom_eec_3dunf.root";
-
 // About names and options
-std::map<std::string, std::string> namef_pair_corrections = {
-        {"--get-nominal", namef_ntuple_eec_paircorrections},
-        {"--get-jes"    , namef_ntuple_eec_paircorrections_jes},
-        {"--get-jer"    , namef_ntuple_eec_paircorrections_jer}
+std::map<std::string, std::string> namef_reco_corrections = {
+        {"--get-nominal", namef_ntuple_reco2truth_match},
+        {"--get-jes"    , namef_ntuple_reco2truth_match_jes},
+        {"--get-jer"    , namef_ntuple_reco2truth_match_jer}
 };
 
 std::map<std::string, std::string> namef_all_corrections = {
@@ -106,48 +53,41 @@ std::map<std::string, std::string> namef_all_corrections = {
 
 // About systematics
 std::string available_systematics[] = {
-        "ct", "jer", "jes", "prior", "shape-ct"
+        "ct-stat", "jer", "jes", "ct-prior", "ct-regpar"
 };
 
 std::map<std::string, std::string> systematic_name  = {
-        {available_systematics[0],"Closure Test"},
+        {available_systematics[0],"Statistical Closure Test"},
         {available_systematics[1],"JER"},
         {available_systematics[2],"JES"},
         {available_systematics[3],"Prior Variation"},
-        {available_systematics[4],"Shape Closure Test"}
+        {available_systematics[4],"Regularization Parameter"}
 };
-
-// std::map<std::string, std::string> systematic_namef = {
-//         {available_systematics[0],namef_histos_paircorr_eec_ct},
-//         {available_systematics[1],namef_histos_paircorr_eec_jer},
-//         {available_systematics[2],namef_histos_paircorr_eec_jes},
-//         {available_systematics[3],namef_histos_paircorr_eec_prior},
-//         {available_systematics[4],namef_histos_paircorr_eec_shapect}
-// };
 
 std::map<std::string, std::string> systematic_namef = {
-        {available_systematics[0],namef_histos_paircorr_eec_ct},
+        {available_systematics[0],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4_statct_niterct10.root"},
         {available_systematics[1],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-jer.root"},
         {available_systematics[2],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-jes.root"},
-        {available_systematics[3],namef_histos_paircorr_eec_prior},
-        {available_systematics[4],namef_histos_paircorr_eec_shapect}
-};
-
-std::map<std::string, std::string> devfromnom_namef = {
-        {available_systematics[0],namef_histos_paircorr_devfromnom_eec_ct},
-        {available_systematics[1],namef_histos_paircorr_devfromnom_eec_jer},
-        {available_systematics[2],namef_histos_paircorr_devfromnom_eec_jes},
-        {available_systematics[3],namef_histos_paircorr_devfromnom_eec_prior},
-        {available_systematics[4],namef_histos_paircorr_devfromnom_eec_shapect}
+        {available_systematics[3],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4_shapect.root"},
+        {available_systematics[4],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4_regparct.root"}
 };
 
 std::map<std::string, std::string> systematic_errtype = {
         {available_systematics[0],"normal"},
         {available_systematics[1],"normal"},
         {available_systematics[2],"normal"},
-        {available_systematics[3],"uniform"},
-        {available_systematics[4],"uniform"}
+        {available_systematics[3],"normal"},
+        {available_systematics[4],"normal"}
 };
+
+std::string namef_ntuple_jes_jer        = "ntuple_jes_jer.root";
+
+std::string name_ntuple_corrjet              = "ntuple_jet";
+std::string name_ntuple_jet_reco2truth_match = "ntuple_jetpurity";
+std::string name_ntuple_jet_truth2reco_match = "ntuple_jetefficiency";
+std::string name_ntuple_jes_data             = "ntuple_jes_data";
+std::string name_ntuple_jes_reco             = "ntuple_jes_reco";
+
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_mcreco          = 21; 
@@ -181,38 +121,6 @@ const char* ntuple_hadroncorrections_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_
 
 const int   Nvars_corrdata       = 30; 
 const char* ntuple_corrdata_vars = "event_weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth:eq_charge";
-
-
-// JET NTUPLES SPECS
-std::string namef_ntuple_jet_purity     = "ntuple_jet_purity.root";
-std::string namef_ntuple_jet_purity_jes = "ntuple_jet_purity_jes.root";
-std::string namef_ntuple_jet_purity_jer = "ntuple_jet_purity_jer.root";
-std::string namef_ntuple_jet_purity_ct  = "ntuple_jet_purity_ct.root";
-
-std::string namef_ntuple_jet_efficiency     = "ntuple_jet_efficiency.root";
-std::string namef_ntuple_jet_efficiency_jes = "ntuple_jet_efficiency_jes.root";
-std::string namef_ntuple_jet_efficiency_jer = "ntuple_jet_efficiency_jer.root";
-std::string namef_ntuple_jet_efficiency_ct  = "ntuple_jet_efficiency_ct.root";
-
-std::map<std::string, std::string> namef_jet_purity_correction = {
-        {"--get-nominal", namef_ntuple_jet_purity},
-        {"--get-jes"    , namef_ntuple_jet_purity_jes},
-        {"--get-jer"    , namef_ntuple_jet_purity_jer}
-};
-
-std::map<std::string, std::string> namef_jet_efficiency_correction = {
-        {"--get-nominal", namef_ntuple_jet_efficiency},
-        {"--get-jes"    , namef_ntuple_jet_efficiency_jes},
-        {"--get-jer"    , namef_ntuple_jet_efficiency_jer}
-};
-
-std::string namef_ntuple_jes_jer        = "ntuple_jes_jer.root";
-
-std::string name_ntuple_corrjet       = "ntuple_jet";
-std::string name_ntuple_jetpurity     = "ntuple_jetpurity";
-std::string name_ntuple_jetefficiency = "ntuple_jetefficiency";
-std::string name_ntuple_jes_data      = "ntuple_jes_data";
-std::string name_ntuple_jes_reco      = "ntuple_jes_reco";
 
 //--------------------------------------------------------------------------------------//
 const int Nvars_corrjet         = 18;

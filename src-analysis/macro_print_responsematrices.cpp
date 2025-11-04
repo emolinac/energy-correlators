@@ -6,12 +6,12 @@
 
 void macro_print_responsematrices()
 {
-        TCanvas* c = new TCanvas("","",1080,1080);
+        TCanvas* c = new TCanvas("","",1080,720);
         c->Draw();
 
-        TFile* f = new TFile((output_folder + namef_ntuple_eec_paircorrections_ct).c_str());
+        TFile* f = new TFile((output_folder + namef_ntuple_reco2truth_match).c_str());
         TNtuple* ntuple     = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
-        // TNtuple* ntuple_jet = (TNtuple*) f->Get(name_ntuple_mcreco_jet.c_str());
+        TNtuple* ntuple_jet = (TNtuple*) f->Get(name_ntuple_mcreco_jet.c_str());
 
         float jet_pt, jet_pt_truth, R_L, R_L_truth, weight_pt, weight_pt_truth, h1_pt, h1_pt_truth, h2_pt, h2_pt_truth;
         set_unfolding_ntuple_branches(ntuple, &R_L, &R_L_truth, &jet_pt, &jet_pt_truth, &weight_pt, &weight_pt_truth);
@@ -20,11 +20,11 @@ void macro_print_responsematrices()
         ntuple->SetBranchAddress("h2_pt",&h2_pt);
         ntuple->SetBranchAddress("h2_pt_truth",&h2_pt_truth);
 
-        // float jet_pt_reco_jetunf, jet_pt_truth_jetunf;
-        // ntuple_jet->SetBranchAddress("jet_pt",&jet_pt_reco_jetunf);
-        // ntuple_jet->SetBranchAddress("jet_pt_truth",&jet_pt_truth_jetunf);
+        float jet_pt_reco_jetunf, jet_pt_truth_jetunf;
+        ntuple_jet->SetBranchAddress("jet_pt",&jet_pt_reco_jetunf);
+        ntuple_jet->SetBranchAddress("jet_pt_truth",&jet_pt_truth_jetunf);
         
-        TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",200,0.008,0.8,200,0.008,0.8);
+        TH2F* hresp_rl     = new TH2F("hresp_rl"    ,"",nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning,nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
         // TH2F* hresp_jet_pt = new TH2F("hresp_jet_pt","",200,10,150,200,10,150);
         TH2F* hresp_jet_pt = new TH2F("hresp_jet_pt","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
         TH2F* hresp_weight = new TH2F("hresp_weight","",nbin_weight,weight_binning,nbin_weight,weight_binning);
@@ -42,34 +42,34 @@ void macro_print_responsematrices()
                 }
         }
 
-        // for (int evt = 0 ; evt < ntuple_jet->GetEntries() ; evt++) {
-        //         ntuple_jet->GetEntry(evt);
+        for (int evt = 0 ; evt < ntuple_jet->GetEntries() ; evt++) {
+                ntuple_jet->GetEntry(evt);
 
-        //         hresp_jet_pt->Fill(jet_pt_reco_jetunf, jet_pt_truth_jetunf);
-        // }
+                hresp_jet_pt->Fill(jet_pt_reco_jetunf, jet_pt_truth_jetunf);
+        }
 
         gStyle->SetPaintTextFormat("1.f");
-        // hresp_jet_pt->Draw("col text");
-        // hresp_jet_pt->SetTitle("Response matrix of p_{T,jet};p_{T,jet}^{Reco}(GeV);p_{T,jet}^{Truth}(GeV)");
-        // hresp_jet_pt->Smooth();
-        // gPad->SetLogx(1);
-        // gPad->SetLogy(1);
-        // c->Print("./plots/responsematrix_jet_pt_smooth_altbin.pdf");
+        hresp_jet_pt->Draw("colz");
+        hresp_jet_pt->SetTitle("Response matrix of p_{T,jet};p_{T,jet}^{reco}(GeV);p_{T,jet}^{truth}(GeV)");
+        gPad->SetRightMargin(0.15);
+        // gPad->SetGridx(1);
+        // gPad->SetGridy(1);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        c->Print("./plots/responsematrix_jet_pt.pdf");
         gStyle->SetOptStat(0);
         
-        hresp_weight->Draw("col");
-        hresp_weight->SetTitle("Response matrix of momentum weights;w^{Reco};w^{Truth}");
-        // hresp_weight->Smooth();
-        gPad->SetGridx(1);
-        gPad->SetGridy(1);
+        hresp_weight->Draw("colz");
+        hresp_weight->SetTitle("Response matrix of momentum weights;w^{reco};w^{truth}");
+        gPad->SetRightMargin(0.1);
         gPad->SetLogx(1);
         gPad->SetLogy(1);
         c->Print(Form("./plots/responsematrix_weight_nbinweight%i.pdf",nbin_weight));
         
+        hresp_rl->Draw("colz");
         hresp_rl->GetXaxis()->SetRangeUser(0.01,1);
         hresp_rl->GetYaxis()->SetRangeUser(0.01,1); 
-        hresp_rl->Draw("col");
-        hresp_rl->SetTitle("Response matrix of R_{L};R_{L}^{Reco};R_{L}^{Truth}");
+        hresp_rl->SetTitle("Response matrix of R_{L};R_{L}^{reco};R_{L}^{truth}");
         // hresp_rl->Smooth();
         gPad->SetLogx(1);
         gPad->SetLogy(1);
@@ -78,7 +78,7 @@ void macro_print_responsematrices()
         hresp_ptprod->GetXaxis()->SetRangeUser(0.05,1000);
         hresp_ptprod->GetYaxis()->SetRangeUser(0.05,1000); 
         hresp_ptprod->Draw("col text");
-        hresp_ptprod->SetTitle("Response matrix of p_{1}p_{2};p_{1}p_{2}^{Reco};p_{1}p_{2}^{Truth}");
+        hresp_ptprod->SetTitle("Response matrix of p_{1}p_{2};p_{1}p_{2}^{reco};p_{1}p_{2}^{truth}");
         // hresp_ptprod->Smooth();
         gPad->SetLogx(1);
         gPad->SetLogy(1);

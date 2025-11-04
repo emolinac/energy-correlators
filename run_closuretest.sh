@@ -6,7 +6,7 @@ make
 cd ./bin
 
 echo "Creating corrections ntuple"
-./create_eec_paircorrectionsntuple_ct
+./create_ntuple_reco2truth_match_ct
 echo "Corrections ntuple ready!"
 
 echo "Creating corr data ntuple"

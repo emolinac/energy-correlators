@@ -62,9 +62,8 @@ int main(int argc, char* argv[])
         TZJets2018Data* datatree_2018 = new TZJets2018Data();
         
         // Open correction files
-        TFile* fcorrections_pair = new TFile((output_folder + namef_pair_corrections[argv[1]]).c_str());
-        TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
-        TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_reco_corrections[argv[1]]).c_str());
+        TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_truth2reco_match).c_str());
         
         TFile* fefficiency_muon_2016_id  = new TFile((muons_folder + "IDEff_Data_2016.root").c_str());
         TFile* fefficiency_muon_2016_trk = new TFile((muons_folder + "TRKEff_Data_2016.root").c_str());
@@ -80,8 +79,8 @@ int main(int argc, char* argv[])
         TNtuple* ntuple_purity          = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
         TNtuple* ntuple_efficiency_mc   = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_mc.c_str()));
         TNtuple* ntuple_efficiency_reco = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
-        TNtuple* ntuple_purity_jet      = (TNtuple*) fpurity_jet->Get((name_ntuple_jetpurity.c_str()));
-        TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jetefficiency.c_str()));
+        TNtuple* ntuple_purity_jet      = (TNtuple*) fcorrections_pair->Get((name_ntuple_jet_reco2truth_match.c_str()));
+        TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jet_truth2reco_match.c_str()));
         
         // Muon corrections
         TH2D* h2_muon_2016_ideff_data  = (TH2D*) fefficiency_muon_2016_id->Get("Hist_ALL_2016_ETA_PT_Eff");
@@ -139,6 +138,240 @@ int main(int argc, char* argv[])
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
 
+        // Charged config pair corrections
+        TH3F* hnum_pur_eqcharge    = new TH3F("hnum_pur_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hden_pur_eqcharge    = new TH3F("hden_pur_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hpurity_eqcharge     = new TH3F("hpurity_eqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hnum_eff_eqcharge    = new TH3F("hnum_eff_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hden_eff_eqcharge    = new TH3F("hden_eff_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hefficiency_eqcharge = new TH3F("hefficiency_eqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        
+        hnum_pur_eqcharge->Sumw2();
+        hden_pur_eqcharge->Sumw2();
+        hnum_eff_eqcharge->Sumw2();
+        hden_eff_eqcharge->Sumw2();
+        
+        ntuple_purity->Project("hnum_pur_eqcharge", "weight_pt:jet_pt:R_L", pair_matching_cut + "eq_charge > 0");
+        ntuple_purity->Project("hden_pur_eqcharge", "weight_pt:jet_pt:R_L", "eq_charge > 0");
+        ntuple_efficiency_reco->Project("hnum_eff_eqcharge", "weight_pt_truth:jet_pt_truth:R_L_truth", pair_matching_cut + "eq_charge > 0");
+        ntuple_efficiency_mc->Project("hden_eff_eqcharge", "weight_pt:jet_pt:R_L", "eq_charge > 0");
+
+        hpurity_eqcharge->Divide(hnum_pur_eqcharge, hden_pur_eqcharge, 1, 1, "B");
+        hefficiency_eqcharge->Divide(hnum_eff_eqcharge, hden_eff_eqcharge, 1, 1, "B");
+
+        regularize_correction_factors(hpurity_eqcharge);
+        regularize_correction_factors(hefficiency_eqcharge);
+
+        TH3F* hnum_pur_neqcharge    = new TH3F("hnum_pur_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hden_pur_neqcharge    = new TH3F("hden_pur_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hpurity_neqcharge     = new TH3F("hpurity_neqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hnum_eff_neqcharge    = new TH3F("hnum_eff_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hden_eff_neqcharge    = new TH3F("hden_eff_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hefficiency_neqcharge = new TH3F("hefficiency_neqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        
+        hnum_pur_neqcharge->Sumw2();
+        hden_pur_neqcharge->Sumw2();
+        hnum_eff_neqcharge->Sumw2();
+        hden_eff_neqcharge->Sumw2();
+        
+        ntuple_purity->Project("hnum_pur_neqcharge", "weight_pt:jet_pt:R_L", pair_matching_cut + "eq_charge < 0");
+        ntuple_purity->Project("hden_pur_neqcharge", "weight_pt:jet_pt:R_L", "eq_charge < 0");
+        ntuple_efficiency_reco->Project("hnum_eff_neqcharge", "weight_pt_truth:jet_pt_truth:R_L_truth", pair_matching_cut + "eq_charge < 0");
+        ntuple_efficiency_mc->Project("hden_eff_neqcharge", "weight_pt:jet_pt:R_L", "eq_charge < 0");
+
+        hpurity_neqcharge->Divide(hnum_pur_neqcharge, hden_pur_neqcharge, 1, 1, "B");
+        hefficiency_neqcharge->Divide(hnum_eff_neqcharge, hden_eff_neqcharge, 1, 1, "B");
+
+        regularize_correction_factors(hpurity_neqcharge);
+        regularize_correction_factors(hefficiency_neqcharge);
+
+        // Print the corrections effect as a of function RL and jet pt
+        if (get_nominal) {
+                TCanvas* c = new TCanvas("c", "", 1920, 1080);
+                c->Draw();
+
+                gStyle->SetOptStat("");
+                gStyle->SetPaintTextFormat("4.2f");        
+                
+                TLatex latex;
+                latex.SetTextAlign(22); // center alignment
+                latex.SetTextSize(text_size_correction_plots);
+                latex.SetTextColor(kBlack);
+
+                // Inclusive
+                TH2F* hnum_pur_rl_jetpt    = new TH2F("hnum_pur_rl_jetpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hden_pur_rl_jetpt    = new TH2F("hden_pur_rl_jetpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hpurity_rl_jetpt     = new TH2F("hpurity_rl_jetpt"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hnum_eff_rl_jetpt    = new TH2F("hnum_eff_rl_jetpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hden_eff_rl_jetpt    = new TH2F("hden_eff_rl_jetpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hefficiency_rl_jetpt = new TH2F("hefficiency_rl_jetpt", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                
+                hnum_pur_rl_jetpt->Sumw2();
+                hden_pur_rl_jetpt->Sumw2();
+                hnum_eff_rl_jetpt->Sumw2();
+                hden_eff_rl_jetpt->Sumw2();
+                
+                ntuple_purity->Project("hnum_pur_rl_jetpt", "jet_pt:R_L", pair_matching_cut);
+                ntuple_purity->Project("hden_pur_rl_jetpt", "jet_pt:R_L");
+                ntuple_efficiency_reco->Project("hnum_eff_rl_jetpt", "jet_pt_truth:R_L_truth", pair_matching_cut);
+                ntuple_efficiency_mc->Project("hden_eff_rl_jetpt", "jet_pt:R_L");
+
+                hpurity_rl_jetpt->Divide(hnum_pur_rl_jetpt, hden_pur_rl_jetpt, 1, 1, "B");
+                hefficiency_rl_jetpt->Divide(hnum_eff_rl_jetpt, hden_eff_rl_jetpt, 1, 1, "B");
+
+                hpurity_rl_jetpt->Draw("col");
+                for (int i = 2; i < hpurity_rl_jetpt->GetNbinsX(); ++i) {
+                        for (int j = 3; j <= hpurity_rl_jetpt->GetNbinsY(); ++j) {
+                                double x = hpurity_rl_jetpt->GetXaxis()->GetBinCenter(i);
+                                double y = hpurity_rl_jetpt->GetYaxis()->GetBinCenter(j);
+                                double content = hpurity_rl_jetpt->GetBinContent(i, j);
+                                double error = hpurity_rl_jetpt->GetBinError(i, j);
+
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+                hpurity_rl_jetpt->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
+                hpurity_rl_jetpt->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hpurity_rl_jetpt->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                c->Print("../src-analysis/plots/pair_purity_correction_rl_jetpt.pdf");
+
+                hefficiency_rl_jetpt->Draw("col");
+                for (int i = 2; i < hefficiency_rl_jetpt->GetNbinsX(); ++i) {
+                        for (int j = 3; j <= hefficiency_rl_jetpt->GetNbinsY(); ++j) {
+                                double x = hefficiency_rl_jetpt->GetXaxis()->GetBinCenter(i);
+                                double y = hefficiency_rl_jetpt->GetYaxis()->GetBinCenter(j);
+                                double content = hefficiency_rl_jetpt->GetBinContent(i, j);
+                                double error = hefficiency_rl_jetpt->GetBinError(i, j);
+
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+                hefficiency_rl_jetpt->SetTitle("Efficiency Correction;R_{L};p_{T,jet}(GeV)");
+                hefficiency_rl_jetpt->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hefficiency_rl_jetpt->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                c->Print("../src-analysis/plots/pair_efficiency_correction_rl_jetpt.pdf");
+
+                // Eq. charged EECs
+                TH2F* hnum_pur_rl_jetpt_eqcharge    = new TH2F("hnum_pur_rl_jetpt_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hden_pur_rl_jetpt_eqcharge    = new TH2F("hden_pur_rl_jetpt_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hpurity_rl_jetpt_eqcharge     = new TH2F("hpurity_rl_jetpt_eqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hnum_eff_rl_jetpt_eqcharge    = new TH2F("hnum_eff_rl_jetpt_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hden_eff_rl_jetpt_eqcharge    = new TH2F("hden_eff_rl_jetpt_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hefficiency_rl_jetpt_eqcharge = new TH2F("hefficiency_rl_jetpt_eqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                
+                hnum_pur_rl_jetpt_eqcharge->Sumw2();
+                hden_pur_rl_jetpt_eqcharge->Sumw2();
+                hnum_eff_rl_jetpt_eqcharge->Sumw2();
+                hden_eff_rl_jetpt_eqcharge->Sumw2();
+                
+                ntuple_purity->Project("hnum_pur_rl_jetpt_eqcharge", "jet_pt:R_L", pair_matching_cut + "eq_charge > 0");
+                ntuple_purity->Project("hden_pur_rl_jetpt_eqcharge", "jet_pt:R_L", "eq_charge > 0");
+                ntuple_efficiency_reco->Project("hnum_eff_rl_jetpt_eqcharge", "jet_pt_truth:R_L_truth", pair_matching_cut + "eq_charge > 0");
+                ntuple_efficiency_mc->Project("hden_eff_rl_jetpt_eqcharge", "jet_pt:R_L", "eq_charge > 0");
+
+                hpurity_rl_jetpt_eqcharge->Divide(hnum_pur_rl_jetpt_eqcharge, hden_pur_rl_jetpt_eqcharge, 1, 1, "B");
+                hefficiency_rl_jetpt_eqcharge->Divide(hnum_eff_rl_jetpt_eqcharge, hden_eff_rl_jetpt_eqcharge, 1, 1, "B");
+
+                hpurity_rl_jetpt_eqcharge->Draw("col");
+                for (int i = 2; i < hpurity_rl_jetpt_eqcharge->GetNbinsX(); ++i) {
+                        for (int j = 3; j <= hpurity_rl_jetpt_eqcharge->GetNbinsY(); ++j) {
+                                double x = hpurity_rl_jetpt_eqcharge->GetXaxis()->GetBinCenter(i);
+                                double y = hpurity_rl_jetpt_eqcharge->GetYaxis()->GetBinCenter(j);
+                                double content = hpurity_rl_jetpt_eqcharge->GetBinContent(i, j);
+                                double error = hpurity_rl_jetpt_eqcharge->GetBinError(i, j);
+
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+
+                hpurity_rl_jetpt_eqcharge->SetTitle("Purity Correction Eq. Charge;R_{L};p_{T,jet}(GeV)");
+                hpurity_rl_jetpt_eqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hpurity_rl_jetpt_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                c->Print("../src-analysis/plots/pair_purity_correction_rl_jetpt_eqcharge.pdf");
+
+                hefficiency_rl_jetpt_eqcharge->Draw("col");
+                for (int i = 2; i < hefficiency_rl_jetpt_eqcharge->GetNbinsX(); ++i) {
+                        for (int j = 3; j <= hefficiency_rl_jetpt_eqcharge->GetNbinsY(); ++j) {
+                                double x = hefficiency_rl_jetpt_eqcharge->GetXaxis()->GetBinCenter(i);
+                                double y = hefficiency_rl_jetpt_eqcharge->GetYaxis()->GetBinCenter(j);
+                                double content = hefficiency_rl_jetpt_eqcharge->GetBinContent(i, j);
+                                double error = hefficiency_rl_jetpt_eqcharge->GetBinError(i, j);
+
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+                hefficiency_rl_jetpt_eqcharge->SetTitle("Efficiency Correction Eq. Charge;R_{L};p_{T,jet}(GeV)");
+                hefficiency_rl_jetpt_eqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hefficiency_rl_jetpt_eqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                c->Print("../src-analysis/plots/pair_efficiency_correction_rl_jetpt_eqcharge.pdf");
+
+                // Op. charged EECs
+                TH2F* hnum_pur_rl_jetpt_neqcharge    = new TH2F("hnum_pur_rl_jetpt_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hden_pur_rl_jetpt_neqcharge    = new TH2F("hden_pur_rl_jetpt_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hpurity_rl_jetpt_neqcharge     = new TH2F("hpurity_rl_jetpt_neqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hnum_eff_rl_jetpt_neqcharge    = new TH2F("hnum_eff_rl_jetpt_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hden_eff_rl_jetpt_neqcharge    = new TH2F("hden_eff_rl_jetpt_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                TH2F* hefficiency_rl_jetpt_neqcharge = new TH2F("hefficiency_rl_jetpt_neqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+                
+                hnum_pur_rl_jetpt_neqcharge->Sumw2();
+                hden_pur_rl_jetpt_neqcharge->Sumw2();
+                hnum_eff_rl_jetpt_neqcharge->Sumw2();
+                hden_eff_rl_jetpt_neqcharge->Sumw2();
+                
+                ntuple_purity->Project("hnum_pur_rl_jetpt_neqcharge", "jet_pt:R_L", pair_matching_cut + "eq_charge < 0");
+                ntuple_purity->Project("hden_pur_rl_jetpt_neqcharge", "jet_pt:R_L", "eq_charge < 0");
+                ntuple_efficiency_reco->Project("hnum_eff_rl_jetpt_neqcharge", "jet_pt_truth:R_L_truth", pair_matching_cut + "eq_charge < 0");
+                ntuple_efficiency_mc->Project("hden_eff_rl_jetpt_neqcharge", "jet_pt:R_L", "eq_charge < 0");
+
+                hpurity_rl_jetpt_neqcharge->Divide(hnum_pur_rl_jetpt_neqcharge, hden_pur_rl_jetpt_neqcharge, 1, 1, "B");
+                hefficiency_rl_jetpt_neqcharge->Divide(hnum_eff_rl_jetpt_neqcharge, hden_eff_rl_jetpt_neqcharge, 1, 1, "B");
+
+                hpurity_rl_jetpt_neqcharge->Draw("col");
+                for (int i = 2; i < hpurity_rl_jetpt_neqcharge->GetNbinsX(); ++i) {
+                        for (int j = 3; j <= hpurity_rl_jetpt_neqcharge->GetNbinsY(); ++j) {
+                                double x = hpurity_rl_jetpt_neqcharge->GetXaxis()->GetBinCenter(i);
+                                double y = hpurity_rl_jetpt_neqcharge->GetYaxis()->GetBinCenter(j);
+                                double content = hpurity_rl_jetpt_neqcharge->GetBinContent(i, j);
+                                double error = hpurity_rl_jetpt_neqcharge->GetBinError(i, j);
+
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+
+                hpurity_rl_jetpt_neqcharge->SetTitle("Purity Correction Eq. Charge;R_{L};p_{T,jet}(GeV)");
+                hpurity_rl_jetpt_neqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hpurity_rl_jetpt_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                c->Print("../src-analysis/plots/pair_purity_correction_rl_jetpt_neqcharge.pdf");
+
+                hefficiency_rl_jetpt_neqcharge->Draw("col");
+                for (int i = 2; i < hefficiency_rl_jetpt_neqcharge->GetNbinsX(); ++i) {
+                        for (int j = 3; j <= hefficiency_rl_jetpt_neqcharge->GetNbinsY(); ++j) {
+                                double x = hefficiency_rl_jetpt_neqcharge->GetXaxis()->GetBinCenter(i);
+                                double y = hefficiency_rl_jetpt_neqcharge->GetYaxis()->GetBinCenter(j);
+                                double content = hefficiency_rl_jetpt_neqcharge->GetBinContent(i, j);
+                                double error = hefficiency_rl_jetpt_neqcharge->GetBinError(i, j);
+
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+                hefficiency_rl_jetpt_neqcharge->SetTitle("Efficiency Correction Eq. Charge;R_{L};p_{T,jet}(GeV)");
+                hefficiency_rl_jetpt_neqcharge->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hefficiency_rl_jetpt_neqcharge->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                c->Print("../src-analysis/plots/pair_efficiency_correction_rl_jetpt_neqcharge.pdf");
+        }
+
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector = new TLorentzVector();
         TLorentzVector* Z0_4vector  = new TLorentzVector();
@@ -162,9 +395,11 @@ int main(int argc, char* argv[])
         TH1F* h_njet_wmuoneff = new TH1F("h_njet_wmuoneff","",nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         h_njet->Sumw2();
 
-        TRandom3* rndm = new TRandom3();
+        TRandom3* rndm = new TRandom3(0);
 
         unsigned long long last_eventNum = 0;
+
+        double printcounter = 0;
         
         std::cout<<"Working with 2016 data."<<std::endl;
         for (int evt = 0 ; evt < datatree_2016->fChain->GetEntries() ; evt++) {
@@ -193,63 +428,14 @@ int main(int argc, char* argv[])
                 if (!mum_trigger && !mup_trigger) 
                         continue;
                 
-                double nominal_jec = datatree_2016->Jet_JEC_Cor;
-
-                if (get_nominal)
-                        nominal_jec = 1.;
-
-                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000./nominal_jec,
-                                        datatree_2016->Jet_PY/1000./nominal_jec,
-                                        datatree_2016->Jet_PZ/1000./nominal_jec,
-                                        datatree_2016->Jet_PE/1000./nominal_jec);
-
-                if (get_jes) {
-                        double new_jes_cor = -999;
-                        
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
-                                if (Jet_4vector->Pt() > jet_pt_binning[jet_pt_bin] && Jet_4vector->Pt() < jet_pt_binning[jet_pt_bin + 1])
-                                        new_jes_cor = syst_jes_array[jet_pt_bin];
-                                if (new_jes_cor < 0)
-                                        new_jes_cor = 1;
-                        }
-
-                        double new_jes_cor_effect = std::abs(1. - new_jes_cor);
-
-                        if(rndm->Integer(2))
-                                new_jes_cor = 1 + new_jes_cor_effect;
-                        else
-                                new_jes_cor = 1 - new_jes_cor_effect;
-
-                        Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2016->Jet_PX/1000.,
-                                                new_jes_cor*datatree_2016->Jet_PY/1000.,
-                                                new_jes_cor*datatree_2016->Jet_PZ/1000.,
-                                                new_jes_cor*datatree_2016->Jet_PE/1000.);
-                } else if (get_jer) {
-                        double new_jer_cor = -999;
-
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
-                                        new_jer_cor = syst_jer_array[jet_pt_bin];
-                                if (new_jer_cor < 0) 
-                                        new_jer_cor = 1;
-                        }
-
-                        double smearing_factor;
-
-                        for (int i = 0 ; i < niter_smear ; i++)
-                                smearing_factor += rndm->Gaus(1, new_jer_cor);
-
-                        smearing_factor /= niter_smear;
-                        
-                        Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2016->Jet_PX/1000.,
-                                                smearing_factor*datatree_2016->Jet_PY/1000.,
-                                                smearing_factor*datatree_2016->Jet_PZ/1000.,
-                                                smearing_factor*datatree_2016->Jet_PE/1000.);
-                }
+                Jet_4vector->SetPxPyPzE(datatree_2016->Jet_PX/1000.,
+                                        datatree_2016->Jet_PY/1000.,
+                                        datatree_2016->Jet_PZ/1000.,
+                                        datatree_2016->Jet_PE/1000.);
 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
-                
+
                 mum_4vector->SetPxPyPzE(datatree_2016->mum_PX/1000.,
                                         datatree_2016->mum_PY/1000.,
                                         datatree_2016->mum_PZ/1000.,
@@ -380,59 +566,10 @@ int main(int argc, char* argv[])
                 if (!mum_trigger && !mup_trigger)
                         continue;
                 
-                double nominal_jec = datatree_2017->Jet_JEC_Cor;
-
-                if (get_nominal)
-                        nominal_jec = 1.;
-
-                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000./nominal_jec,
-                                        datatree_2017->Jet_PY/1000./nominal_jec,
-                                        datatree_2017->Jet_PZ/1000./nominal_jec,
-                                        datatree_2017->Jet_PE/1000./nominal_jec);
-
-                if (get_jes) {
-                        double new_jes_cor = -999;
-                        
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1])
-                                        new_jes_cor = syst_jes_array[jet_pt_bin];
-                                if (new_jes_cor < 0)
-                                        new_jes_cor = 1;
-                        }
-                        
-                        double new_jes_cor_effect = std::abs(1. - new_jes_cor);
-
-                        if(rndm->Integer(2))
-                                new_jes_cor = 1 + new_jes_cor_effect;
-                        else
-                                new_jes_cor = 1 - new_jes_cor_effect;
-
-                        Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2017->Jet_PX/1000.,
-                                                new_jes_cor*datatree_2017->Jet_PY/1000.,
-                                                new_jes_cor*datatree_2017->Jet_PZ/1000.,
-                                                new_jes_cor*datatree_2017->Jet_PE/1000.);
-                } else if (get_jer) {
-                        double new_jer_cor = -999;
-
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
-                                        new_jer_cor = syst_jer_array[jet_pt_bin];
-                                if (new_jer_cor < 0) 
-                                        new_jer_cor = 1;
-                        }
-
-                        double smearing_factor;
-
-                        for (int i = 0 ; i < niter_smear ; i++)
-                                smearing_factor += rndm->Gaus(1, new_jer_cor);
-
-                        smearing_factor /= niter_smear;
-                        
-                        Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2017->Jet_PX/1000.,
-                                                smearing_factor*datatree_2017->Jet_PY/1000.,
-                                                smearing_factor*datatree_2017->Jet_PZ/1000.,
-                                                smearing_factor*datatree_2017->Jet_PE/1000.);
-                }
+                Jet_4vector->SetPxPyPzE(datatree_2017->Jet_PX/1000.,
+                                        datatree_2017->Jet_PY/1000.,
+                                        datatree_2017->Jet_PZ/1000.,
+                                        datatree_2017->Jet_PE/1000.);
                 
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
@@ -568,60 +705,11 @@ int main(int argc, char* argv[])
                 if (!mum_trigger && !mup_trigger) 
                         continue;
                 
-                double nominal_jec = datatree_2018->Jet_JEC_Cor;
+                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000.,
+                                        datatree_2018->Jet_PY/1000.,
+                                        datatree_2018->Jet_PZ/1000.,
+                                        datatree_2018->Jet_PE/1000.);
 
-                if (get_nominal)
-                        nominal_jec = 1.;
-
-                Jet_4vector->SetPxPyPzE(datatree_2018->Jet_PX/1000./nominal_jec,
-                                        datatree_2018->Jet_PY/1000./nominal_jec,
-                                        datatree_2018->Jet_PZ/1000./nominal_jec,
-                                        datatree_2018->Jet_PE/1000./nominal_jec);
-
-                if (get_jes) {
-                        double new_jes_cor = -999;
-                        
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1])
-                                        new_jes_cor = syst_jes_array[jet_pt_bin];
-                                if (new_jes_cor < 0)
-                                        new_jes_cor = 1;
-                        }
-                        
-                        double new_jes_cor_effect = std::abs(1. - new_jes_cor);
-
-                        if(rndm->Integer(2))
-                                new_jes_cor = 1 + new_jes_cor_effect;
-                        else
-                                new_jes_cor = 1 - new_jes_cor_effect;
-
-                        Jet_4vector->SetPxPyPzE(new_jes_cor*datatree_2018->Jet_PX/1000.,
-                                                new_jes_cor*datatree_2018->Jet_PY/1000.,
-                                                new_jes_cor*datatree_2018->Jet_PZ/1000.,
-                                                new_jes_cor*datatree_2018->Jet_PE/1000.);
-                } else if (get_jer) {
-                        double new_jer_cor = -999;
-
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt ; jet_pt_bin++) {
-                                if (Jet_4vector->Pt()>jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<jet_pt_binning[jet_pt_bin + 1]) 
-                                        new_jer_cor = syst_jer_array[jet_pt_bin];
-                                if (new_jer_cor < 0) 
-                                        new_jer_cor = 1;
-                        }
-
-                        double smearing_factor;
-
-                        for (int i = 0 ; i < niter_smear ; i++)
-                                smearing_factor += rndm->Gaus(1, new_jer_cor);
-
-                        smearing_factor /= niter_smear;
-                        
-                        Jet_4vector->SetPxPyPzE(smearing_factor*datatree_2018->Jet_PX/1000.,
-                                                smearing_factor*datatree_2018->Jet_PY/1000.,
-                                                smearing_factor*datatree_2018->Jet_PZ/1000.,
-                                                smearing_factor*datatree_2018->Jet_PE/1000.);
-                }
-                
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
@@ -739,6 +827,10 @@ int main(int argc, char* argv[])
         h_eqchnpair_wmuon->Write();
         h_neqchnpair->Write();
         h_neqchnpair_wmuon->Write();
+        hpurity_eqcharge->Write();
+        hefficiency_eqcharge->Write();
+        hpurity_neqcharge->Write();
+        hefficiency_neqcharge->Write();
         fout->Close();
         
         std::cout<<std::endl;

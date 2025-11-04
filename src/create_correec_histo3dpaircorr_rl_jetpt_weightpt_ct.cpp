@@ -32,9 +32,8 @@ int main()
         TZJetsTruth*      truthdata  = new TZJetsTruth();
 
         // Open correction files
-        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_eec_paircorrections_ct).c_str());
-        TFile* fpurity_jet       = new TFile((output_folder + namef_ntuple_jet_purity_ct).c_str());
-        TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_jet_efficiency_ct).c_str());
+        TFile* fcorrections_pair = new TFile((output_folder + namef_ntuple_reco2truth_match_ct).c_str());
+        TFile* fefficiency_jet   = new TFile((output_folder + namef_ntuple_truth2reco_match_ct).c_str());
         
         TFile* fefficiency_muon_2017_id  = new TFile((muons_folder + "IDEff_MC_2016.root").c_str());
         TFile* fefficiency_muon_2017_trk = new TFile((muons_folder + "TRKEff_MC_2016.root").c_str());
@@ -44,8 +43,8 @@ int main()
         TNtuple* ntuple_purity          = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
         TNtuple* ntuple_efficiency_mc   = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_mc.c_str()));
         TNtuple* ntuple_efficiency_reco = (TNtuple*) fcorrections_pair->Get((name_ntuple_correction_reco.c_str()));
-        TNtuple* ntuple_purity_jet      = (TNtuple*) fpurity_jet->Get((name_ntuple_jetpurity.c_str()));
-        TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jetefficiency.c_str()));
+        TNtuple* ntuple_purity_jet      = (TNtuple*) fcorrections_pair->Get((name_ntuple_jet_reco2truth_match.c_str()));
+        TNtuple* ntuple_efficiency_jet  = (TNtuple*) fefficiency_jet->Get((name_ntuple_jet_truth2reco_match.c_str()));
         
         // Muon corrections
         TH2D* h2_muon_2017_ideff_data  = (TH2D*) fefficiency_muon_2017_id->Get("Hist_ALL_2016_ETA_PT_Eff");
@@ -96,6 +95,53 @@ int main()
 
         regularize_correction_factors(hpurity);
         regularize_correction_factors(hefficiency);
+
+        // Charged config pair corrections
+        TH3F* hnum_pur_eqcharge    = new TH3F("hnum_pur_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hden_pur_eqcharge    = new TH3F("hden_pur_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hpurity_eqcharge     = new TH3F("hpurity_eqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hnum_eff_eqcharge    = new TH3F("hnum_eff_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hden_eff_eqcharge    = new TH3F("hden_eff_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hefficiency_eqcharge = new TH3F("hefficiency_eqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        
+        hnum_pur_eqcharge->Sumw2();
+        hden_pur_eqcharge->Sumw2();
+        hnum_eff_eqcharge->Sumw2();
+        hden_eff_eqcharge->Sumw2();
+        
+        ntuple_purity->Project("hnum_pur_eqcharge", "weight_pt:jet_pt:R_L", pair_matching_cut + "eq_charge > 0");
+        ntuple_purity->Project("hden_pur_eqcharge", "weight_pt:jet_pt:R_L", "eq_charge > 0");
+        ntuple_efficiency_reco->Project("hnum_eff_eqcharge", "weight_pt_truth:jet_pt_truth:R_L_truth", pair_matching_cut + "eq_charge > 0");
+        ntuple_efficiency_mc->Project("hden_eff_eqcharge", "weight_pt:jet_pt:R_L", "eq_charge > 0");
+
+        hpurity_eqcharge->Divide(hnum_pur_eqcharge, hden_pur_eqcharge, 1, 1, "B");
+        hefficiency_eqcharge->Divide(hnum_eff_eqcharge, hden_eff_eqcharge, 1, 1, "B");
+
+        regularize_correction_factors(hpurity_eqcharge);
+        regularize_correction_factors(hefficiency_eqcharge);
+
+        TH3F* hnum_pur_neqcharge    = new TH3F("hnum_pur_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hden_pur_neqcharge    = new TH3F("hden_pur_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hpurity_neqcharge     = new TH3F("hpurity_neqcharge"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hnum_eff_neqcharge    = new TH3F("hnum_eff_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hden_eff_neqcharge    = new TH3F("hden_eff_neqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3F* hefficiency_neqcharge = new TH3F("hefficiency_neqcharge", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        
+        hnum_pur_neqcharge->Sumw2();
+        hden_pur_neqcharge->Sumw2();
+        hnum_eff_neqcharge->Sumw2();
+        hden_eff_neqcharge->Sumw2();
+        
+        ntuple_purity->Project("hnum_pur_neqcharge", "weight_pt:jet_pt:R_L", pair_matching_cut + "eq_charge < 0");
+        ntuple_purity->Project("hden_pur_neqcharge", "weight_pt:jet_pt:R_L", "eq_charge < 0");
+        ntuple_efficiency_reco->Project("hnum_eff_neqcharge", "weight_pt_truth:jet_pt_truth:R_L_truth", pair_matching_cut + "eq_charge < 0");
+        ntuple_efficiency_mc->Project("hden_eff_neqcharge", "weight_pt:jet_pt:R_L", "eq_charge < 0");
+
+        hpurity_neqcharge->Divide(hnum_pur_neqcharge, hden_pur_neqcharge, 1, 1, "B");
+        hefficiency_neqcharge->Divide(hnum_eff_neqcharge, hden_eff_neqcharge, 1, 1, "B");
+
+        regularize_correction_factors(hpurity_neqcharge);
+        regularize_correction_factors(hefficiency_neqcharge);
 
         // Create necessary 4vectors
         TLorentzVector* Jet_4vector = new TLorentzVector();
@@ -380,6 +426,10 @@ int main()
         h_neqchnpair_wmuon->Write();
         h_eqchnpair_truth->Write();
         h_neqchnpair_truth->Write();
+        hpurity_eqcharge->Write();
+        hefficiency_eqcharge->Write();
+        hpurity_neqcharge->Write();
+        hefficiency_neqcharge->Write();
         fout->Close();
         
         std::cout<<std::endl;

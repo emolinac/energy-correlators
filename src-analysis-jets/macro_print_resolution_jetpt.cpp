@@ -13,7 +13,7 @@ void macro_print_resolution_jet_pt()
         gStyle->SetOptStat(1110);
 
         // Get the corresponding Ntuples
-        TNtuple* ntuple = (TNtuple*) fpurity->Get((name_ntuple_jetpurity).c_str());
+        TNtuple* ntuple = (TNtuple*) fpurity->Get((name_ntuple_jet_reco2truth_match).c_str());
 
         // Define the necessary histograms to calculate purity
         TH1F* hres    = new TH1F("hres"    ,"",100,-100,100);

@@ -17,6 +17,8 @@ void apply_jet_weight_to_npairs(TH3D* h_npair, TH1F* h_purity_jet, TH1F* h_effic
 
 void project_nominal_phase_space(TH2D* h_2d, TH1F* h_1d);
 
+void substract_stat_error(TH1F* hnominal, TH1F* hsyst);
+
 void get_tau_from_uoflow_eec(TH1F* h_eec, TH1F* h_tau);
 
 void get_tau_binning_from_eec_binning(double* tau_binning, double* eec_binning, double average_pt2_jet);
@@ -24,6 +26,8 @@ void get_tau_binning_from_eec_binning(double* tau_binning, double* eec_binning, 
 void normalize_by_njets(TH1F* h, double h_njet_content, double h_njet_error);
 
 void normalize_by_njets(TH1D* h, double h_njet_content, double h_njet_error);
+
+void square_root_bins(TH1F* h);
 
 void regularize_correction_factors(TH2F* h);
 
@@ -33,7 +37,9 @@ void regularize_correction_factors(TH3F* h);
 
 void regularize_correction_factors(TH3D* h);
 
-void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type, , bool print_table = true);
+void set_histo_with_systematics(TH1F* hrelerror, TH1F* hnominal, TH1F* hsystematic, int syst_index, bool print_table = true);
+
+void set_nominal_error_histo(TH1F* hnominal, TH1F* hnominalerror);
 
 void set_histo_sqrt_content(TH1F* h);
 
@@ -62,5 +68,7 @@ void set_data_ntuple_branches(TNtuple* ntuple, float* event_weight, float* R_L, 
 void set_unfolding_ntuple_branches(TNtuple* ntuple, float* R_L_reco, float* R_L_truth, float* jet_pt_reco, float* jet_pt_truth, float* weight_pt_reco, float* weight_pt_truth);
 
 void set_unfolding_jet_ntuple_branches(TNtuple* ntuple, float* jet_pt_reco, float* jet_pt_truth);
+
+void set_unity_content(TH1F* h);
 
 #endif

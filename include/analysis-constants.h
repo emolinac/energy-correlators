@@ -21,7 +21,9 @@ const double mass_res      = 0.008; // Mass resolution parameter (see src-resolu
 const double rl_resolution = 0.015;
 
 const int nominal_niter = 4;
-const int niter_smear = 30;
+const int niter_smear = 10.;
+const int niter_ct = 10;
+const int reg_par_window = 3;
 
 // Visual
 const double std_marker_size  = 1.0;

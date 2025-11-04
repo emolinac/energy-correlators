@@ -11,6 +11,8 @@ void macro_makeclasses()
         TChain* data_2016  = new TChain("StdHltZJets/DecayTree");
         TChain* data_2017  = new TChain("StdHltZJets/DecayTree");
         TChain* data_2018  = new TChain("StdHltZJets/DecayTree");
+
+        TChain* data_all  = new TChain("StdHltZJets/DecayTree");
         
         TChain* sim_mcreco_ct = new TChain("StdHltZJets/DecayTree");
         TChain* pseudodata_ct = new TChain("StdHltZJets/DecayTree");
@@ -64,6 +66,14 @@ void macro_makeclasses()
         data_2016->MakeClass("TZJets2016Data");
         data_2017->MakeClass("TZJets2017Data");
         data_2018->MakeClass("TZJets2018Data");
+        
+        data_all->Add((input_folder + "Zjet_Data_2016_MU_04212025.root").c_str());
+        data_all->Add((input_folder + "Zjet_Data_2016_MD_04212025.root").c_str());
+        data_all->Add((input_folder + "Zjet_Data_2017_MU_04222025.root").c_str());
+        data_all->Add((input_folder + "Zjet_Data_2017_MD_04222025.root").c_str());
+        data_all->Add((input_folder + "Zjet_Data_2018_MU_04232025.root").c_str());
+        data_all->Add((input_folder + "Zjet_Data_2018_MD_04242025.root").c_str());
+        data_all->MakeClass("TZJetsData");
         
         // CT Correction Files
         sim_mc_ct->Add((input_folder + "ic-files/Zhadron_MC_Sim09b_MD_2016_02222025.root").c_str());

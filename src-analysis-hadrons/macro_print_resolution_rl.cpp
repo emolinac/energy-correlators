@@ -11,7 +11,7 @@ void macro_print_resolution_rl()
         gStyle->SetOptStat(1110);
 
         // Open the necessary files
-        TFile* fpurity = new TFile((output_folder + namef_ntuple_eec_paircorrections).c_str());
+        TFile* fpurity = new TFile((output_folder + namef_ntuple_reco2truth_match).c_str());
 
         // Get the corresponding Ntuples
         TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_correction_reco).c_str());

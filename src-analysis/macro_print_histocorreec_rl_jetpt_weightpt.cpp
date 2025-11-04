@@ -6,15 +6,21 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4, std::string analysis_variation = "--get-nominal")
+void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4, std::string analysis_variation = "--get-nominal", int niter_jer = -999)
 {
         // Open the necessary files
-        TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i%s.root",niter,niter_jet,analysis_variation.c_str())).c_str(),"RECREATE");
+        std::string file_name         = Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i%s.root",niter,niter_jet,analysis_variation.c_str());
+        std::string nominal_file_name = Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i--get-nominal.root",niter,niter_jet);
+
+        TFile* fout = new TFile((output_folder + file_name.c_str()).c_str(),"RECREATE");
         gROOT->cd();
 
-        TFile* f     = new TFile((output_folder + namef_pair_corrections[analysis_variation]).c_str());
-        TFile* fjet  = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
-        TFile* fcorr = new TFile((output_folder + namef_all_corrections[analysis_variation]).c_str()); 
+        TFile* f = new TFile((output_folder + namef_reco_corrections[analysis_variation]).c_str());
+        
+        std::string fdata_name = (niter_jer >= 0) ? Form("histos_3dpaircorr_rl_jetpt_weightpt_eec_jer_%i.root",niter_jer) :
+                                                    namef_all_corrections[analysis_variation];
+
+        TFile* fcorr = new TFile((output_folder + fdata_name).c_str()); 
         if (fcorr->IsZombie() || fcorr == NULL) 
                 return;
 
@@ -34,7 +40,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
         TH1F* h_purity_jet     = (TH1F*) fcorr->Get("hpurity_jet");
 
         // Correct the jets
-        TNtuple* ntuple_jet_unfolding = (TNtuple*) fjet->Get(name_ntuple_jetpurity.c_str());
+        TNtuple* ntuple_jet_unfolding = (TNtuple*) f->Get(name_ntuple_jet_reco2truth_match.c_str());
         
         float jet_pt_unfolding_reco, jet_pt_unfolding_truth;
         set_unfolding_jet_ntuple_branches(ntuple_jet_unfolding, &jet_pt_unfolding_reco, &jet_pt_unfolding_truth);
@@ -155,6 +161,13 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
         }
 
         // Plot the EECs AS A FUNCTION OF R_l * <p^2_{T,jet}>TH1F* hcorr_tau[nbin_jet_pt];
+        // Define unity
+        TH1F* h_unity_uounderflow = new TH1F("h_unity_uounderflow","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
+        h_unity_uounderflow->Sumw2();
+        set_unity_content(h_unity_uounderflow);
+
+        TH1F* h_unity_taubinning[nbin_jet_pt];
+
         TH1F* hcorr_tau[nbin_jet_pt];        
         double tau_binning[nbin_jet_pt][nbin_rl_nominal + 1];
         for (int i = 0 ; i < nbin_jet_pt ; i++) {
@@ -162,6 +175,10 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
                 
                 get_tau_binning_from_eec_binning(tau_binning[i], rl_nominal_binning, avge_pt2_jet);
                 
+                h_unity_taubinning[i] = new TH1F(Form("h_unity%i",i),"",nbin_rl_nominal,tau_binning[i]);
+                h_unity_taubinning[i]->Sumw2();
+                set_unity_content(h_unity_taubinning[i]);
+
                 hcorr_tau[i] = new TH1F(Form("hcorr_tau%i",i),"",nbin_rl_nominal,tau_binning[i]);
                 get_tau_from_uoflow_eec(hcorr_eec[i], hcorr_tau[i], avge_pt2_jet);
                 
@@ -170,6 +187,55 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
                 fout->cd();
                 hcorr_tau[i]->Write();
                 gROOT->cd();
+        }
+
+        // If variation is not nominal, store the rel error plots
+        if (analysis_variation != "--get-nominal") {
+                TFile* fnominal = new TFile((output_folder + nominal_file_name.c_str()).c_str());
+                if (gSystem->AccessPathName((output_folder + nominal_file_name.c_str()).c_str())) {
+                        return ;
+                }
+
+                TH1F* hnominal_eec[nbin_jet_pt]; 
+                TH1F* hnominal_eqcheec[nbin_jet_pt]; 
+                TH1F* hnominal_neqcheec[nbin_jet_pt]; 
+                TH1F* hnominal_tau[nbin_jet_pt];    
+
+                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                        hnominal_eec[bin]      = (TH1F*) fnominal->Get(Form("hcorr_eec%i",bin)); 
+                        hnominal_eqcheec[bin]  = (TH1F*) fnominal->Get(Form("hcorr_eqcheec%i",bin)); 
+                        hnominal_neqcheec[bin] = (TH1F*) fnominal->Get(Form("hcorr_neqcheec%i",bin)); 
+                        hnominal_tau[bin]      = (TH1F*) fnominal->Get(Form("hcorr_tau%i",bin));
+                        
+                        hcorr_eec[bin]->Divide(hnominal_eec[bin]);
+                        hcorr_eqcheec[bin]->Divide(hnominal_eqcheec[bin]);
+                        hcorr_neqcheec[bin]->Divide(hnominal_neqcheec[bin]);
+                        hcorr_tau[bin]->Divide(hnominal_tau[bin]);
+
+                        hcorr_eec[bin]->Add(h_unity_uounderflow, -1);
+                        hcorr_eqcheec[bin]->Add(h_unity_uounderflow, -1);
+                        hcorr_neqcheec[bin]->Add(h_unity_uounderflow, -1);
+                        hcorr_tau[bin]->Add(h_unity_taubinning[bin], -1);
+
+                        hcorr_eec[bin]->Multiply(hcorr_eec[bin]);
+                        hcorr_eqcheec[bin]->Multiply(hcorr_eqcheec[bin]);
+                        hcorr_neqcheec[bin]->Multiply(hcorr_neqcheec[bin]);
+                        hcorr_tau[bin]->Multiply(hcorr_tau[bin]);
+
+                        square_root_bins(hcorr_eec[bin]);
+                        square_root_bins(hcorr_eqcheec[bin]);
+                        square_root_bins(hcorr_neqcheec[bin]);
+                        square_root_bins(hcorr_tau[bin]);
+
+                        fout->cd();
+                        hcorr_eec[bin]->Write(Form("relerror_eec%i",bin));
+                        hcorr_tau[bin]->Write(Form("relerror_tau%i",bin));
+                        hcorr_eqcheec[bin]->Write(Form("relerror_eqcheec%i",bin));
+                        hcorr_neqcheec[bin]->Write(Form("relerror_neqcheec%i",bin));
+                        gROOT->cd();
+                }
+
+                delete fnominal;
         }
 
         // Only print nominal results

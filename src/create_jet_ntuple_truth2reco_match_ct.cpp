@@ -20,13 +20,13 @@
 int main()
 {
         // Create output file
-        TFile* fout = new TFile((output_folder + namef_ntuple_jet_efficiency_ct).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + namef_ntuple_truth2reco_match_ct).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
         TZJetsMCCTCorr* mctree = new TZJetsMCCTCorr();
 
         // Create Ntuples
-        TNtuple* ntuple = new TNtuple(name_ntuple_jetefficiency.c_str(),"",ntuple_jetefficiency_vars); 
+        TNtuple* ntuple = new TNtuple(name_ntuple_jet_truth2reco_match.c_str(),"",ntuple_jetefficiency_vars); 
         ntuple->SetAutoSave(0);
         
         // Create necessary 4vectors

@@ -1,6 +1,3 @@
-#ifndef UTILS_ALGORITHMS_H
-#define UTILS_ALGORITHMS_H
-
 #include "TRandom3.h"
 
 double get_hwhm(TH1F* h)
@@ -44,8 +41,6 @@ void determine_log10binning(int Nbins, double x_i, double x_f, double* binning)
 
         for (int i = 0 ; i <=Nbins ; i++) 
                 binning[i] = pow(10,log_x_i+delta*i);
-
-        return;
 }
 
 void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning)
@@ -54,8 +49,6 @@ void determine_eqsizebinning(int Nbins, double x_i, double x_f, double* binning)
 
         for (int i = 0;i <= Nbins;i++)
                 binning[i] = x_i + delta*i;
-        
-        return;
 }
 
 void apply_unfolded_weights(TH3F* h_rl_jetpt_weight, TH2F* h_rl_jetpt)
@@ -125,6 +118,17 @@ void project_nominal_phase_space(TH2D* h_2d, TH1F* h_1d, int nominal_jet_pt_bin)
         }
 }
 
+void substract_stat_error(TH1F* hnominal, TH1F* hsyst)
+{
+        for (int i = 1 ; i <= hnominal->GetNbinsX() ; i++) {
+                double total_error = hsyst->GetBinError(i);
+                double stat_error  = hnominal->GetBinError(i);
+                double syst_error  = std::sqrt(total_error * total_error - stat_error * stat_error);
+
+                hsyst->SetBinError(i, syst_error);
+        }
+}
+
 void get_tau_from_uoflow_eec(TH1F* h_eec, TH1F* h_tau, double avge_pt2_jet)
 {
         for (int i = 1 ; i <= h_eec->GetNbinsX() ; i++) {
@@ -172,6 +176,13 @@ void normalize_by_njets(TH1D* h, double h_njet_content, double h_njet_error)
         }
 }
 
+void square_root_bins(TH1F* h)
+{
+        for (int i = 1 ; i <= h->GetNbinsX() ; i++) {
+                h->SetBinContent(i, std::sqrt(h->GetBinContent(i)));
+                h->SetBinError(i, std::sqrt(h->GetBinError(i)));
+        }
+}
 
 void regularize_correction_factors(TH2F* h)
 {
@@ -228,35 +239,28 @@ void regularize_correction_factors(TH3D* h)
         }
 }
 
-void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystematic, std::string err_type = "normal", bool print_table = true)
+void set_histo_with_systematics(TH1F* hrelerror, TH1F* hnominal, TH1F* hsystematic, int syst_index, bool print_table = true)
 {
         double total_err = 0, total = 0;
+        double n_ct_sources = (syst_index == 0 || syst_index == 3 || syst_index == 4) ? 3. : 1.;
 
-        for (int hbin = 1 ; hbin <= hdeviations->GetNbinsX() ; hbin++)
+        for (int hbin = 1 ; hbin <= hrelerror->GetNbinsX() ; hbin++)
         {
-                double dev     = hdeviations->GetBinContent(hbin);
-                double dev_err = hdeviations->GetBinError(hbin);
+                double dev     = hrelerror->GetBinContent(hbin);
+                double dev_err = hrelerror->GetBinError(hbin);
+                
+                // // Dev values are positive by construction
+                // if (dev-dev_err < 0) 
+                //         continue;
 
                 total += hnominal->GetBinContent(hbin);
 
-                // Demand more than one sigma to be considered
-                // if ((dev+dev_err > 1 && dev < 1) || (dev-dev_err < 1 && dev > 1)) 
-                //         continue;
-
-                double syst_error;
-                double syst_error_percentage;
+                double syst_error            = std::abs(dev)*hnominal->GetBinContent(hbin);
+                double syst_error_percentage = std::abs(dev);
                 
-                if (err_type=="uniform") {
-                        syst_error            = std::abs(1. - dev)*hnominal->GetBinContent(hbin)/sqrt(12.);
-                        syst_error_percentage = std::abs(1. - dev)/sqrt(12.);
-                } else {
-                        syst_error            = std::abs(1. - dev)*hnominal->GetBinContent(hbin);
-                        syst_error_percentage = std::abs(1. - dev);
-                }
-                
-                hsystematic->SetBinError(hbin, sqrt(syst_error*syst_error + hnominal->GetBinError(hbin)*hnominal->GetBinError(hbin)));
+                hsystematic->SetBinError(hbin, std::sqrt(syst_error * syst_error / n_ct_sources + std::pow(hsystematic->GetBinError(hbin),2)));
 
-                total_err += hnominal->GetBinContent(hbin)*syst_error_percentage;
+                total_err += hnominal->GetBinContent(hbin)*syst_error_percentage*syst_error_percentage;
         }
 
         if (!print_table)
@@ -266,9 +270,23 @@ void set_histo_with_systematics(TH1F* hdeviations, TH1F* hnominal, TH1F* hsystem
         std::cout.precision(2);
 
         if (total > 0)
-                std::cout<<total_err*100./total;
+                std::cout<<std::sqrt(total_err/total)*100.;
         else if (total == 0)
                 std::cout<<0;
+}
+
+void set_nominal_error_histo(TH1F* hnominal, TH1F* hnominalerror)
+{
+        for (int i = 1 ; i <= hnominal->GetNbinsX() ; i++) {
+                double error = hnominal->GetBinError(i);
+                double content = hnominal->GetBinContent(i);
+                double nominal_relerror = error/content;
+
+                if (std::isnan(nominal_relerror))
+                        nominal_relerror = 0;
+
+                hnominalerror->SetBinContent(i, nominal_relerror);
+        }
 }
 
 void set_histo_sqrt_content(TH1F* h)
@@ -487,4 +505,45 @@ void set_unfolding_jet_ntuple_branches(TNtuple* ntuple, float* jet_pt_reco, floa
         ntuple->SetBranchAddress("jet_pt_truth", jet_pt_truth);
 }
 
-#endif
+void set_unity_content(TH1F* h)
+{
+        for (int bin = 1 ; bin <= h->GetNbinsX() ; bin++) {
+                h->SetBinContent(bin, 1.);
+        }
+}
+
+// double get_JES_JER(const double jet_pt, TRandom3 *myRNG, bool do_sys = false) 
+// {
+//         double jes_var = 1, jer_var = 1;
+
+//         if (jet_pt < 10) { 
+//                 jes_var = 0.912; 
+//                 jer_var = 0.006; 
+//         } else if (jet_pt < 12) { 
+//                 jes_var = 0.948; 
+//                 jer_var = 0.132; 
+//         } else if (jet_pt < 15) { 
+//                 jes_var = 0.944; 
+//                 jer_var = 0.192; 
+//         } else if (jet_pt < 17) {
+//                 jes_var = 0.976;
+//                 jer_var = 0.114; 
+//         } else if (jet_pt < 20) { 
+//                 jes_var = 0.972; 
+//                 jer_var = 0.096; 
+//         } else if (jet_pt < 25) { 
+//                 jes_var = 0.976; 
+//                 jer_var = 0.138; 
+//         } else if (jet_pt < 35) {
+//                 jes_var = 0.984;
+//                 jer_var = 0.054; 
+//         } else if (jet_pt < 50) { 
+//                 jes_var = 1.000; 
+//                 jer_var = 0.144; 
+//         } else { 
+//                 jes_var = 1.008; 
+//                 jer_var = 0.120; 
+//         }
+
+//         return jes_var * myRNG->Gaus(1, jer_var);
+// }

@@ -9,12 +9,12 @@
 void macro_print_jetpurity_jetefficiency()
 {
         // Open the necessary files
-        TFile* fpurity = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
-        TFile* fefficiency = new TFile((output_folder + namef_ntuple_jet_efficiency).c_str());
+        TFile* fpurity = new TFile((output_folder + "ntuple_eec_paircorrections.root").c_str());
+        TFile* fefficiency = new TFile((output_folder + namef_ntuple_truth2reco_match).c_str());
 
         // Get the corresponding Ntuples
-        TNtuple* ntuple_purity = (TNtuple*) fpurity->Get((name_ntuple_jetpurity).c_str());
-        TNtuple* ntuple        = (TNtuple*) fefficiency->Get((name_ntuple_jetefficiency).c_str());
+        TNtuple* ntuple_purity = (TNtuple*) fpurity->Get((name_ntuple_jet_reco2truth_match).c_str());
+        TNtuple* ntuple        = (TNtuple*) fefficiency->Get((name_ntuple_jet_truth2reco_match).c_str());
 
         // Define the necessary histograms to calculate purity
         TH1F* hsig_purity = new TH1F("hsig_purity"   ,"",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);

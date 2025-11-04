@@ -12,7 +12,7 @@ void macro_print_recondtrs()
         TFile* f = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
         
         // Get the corresponding Ntuples
-        TNtuple* ntuple = (TNtuple*) f->Get((name_ntuple_jetpurity).c_str());
+        TNtuple* ntuple = (TNtuple*) f->Get((name_ntuple_jet_reco2truth_match).c_str());
 
         TH1F* h[nbin_jet_pt];
         THStack* hs = new THStack();

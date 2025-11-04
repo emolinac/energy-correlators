@@ -6,17 +6,19 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet = 4)
+void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter_jet = 4)
 {
         // Open the necessary files
-        TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i_ct.root",niter, niter_jet)).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i_shapect.root",niter, niter_jet)).c_str(),"RECREATE");
         TFile* f    = new TFile((output_folder + namef_ntuple_reco2truth_match_ct).c_str());
         TFile* fjet = new TFile((output_folder + namef_ntuple_truth2reco_match_ct).c_str());
 
         gROOT->cd();
 
         TFile* fcorr = new TFile((output_folder + namef_3dpaircorr_rl_jetpt_weightpt_histos_ct).c_str());
-        
+        TFile* fcorr_data = new TFile((output_folder + namef_3dpaircorr_rl_jetpt_weightpt_histos).c_str());
+
+        //  Pseudodata
         TH3D* h_npair            = (TH3D*) fcorr->Get("h_npair");
         TH3D* h_npair_wmuon      = (TH3D*) fcorr->Get("h_npair_wmuon");
         TH3D* h_eqchnpair_wmuon  = (TH3D*) fcorr->Get("h_eqchnpair_wmuon");
@@ -24,20 +26,28 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         TH3D* h_efficiency       = (TH3D*) fcorr->Get("hefficiency");
         TH3D* h_purity           = (TH3D*) fcorr->Get("hpurity");
         
-        TH3D* h_efficiency_eqcharge  = (TH3D*) fcorr->Get("hefficiency_eqcharge");
-        TH3D* h_purity_eqcharge      = (TH3D*) fcorr->Get("hpurity_eqcharge");
-        TH3D* h_efficiency_neqcharge = (TH3D*) fcorr->Get("hefficiency_neqcharge");
-        TH3D* h_purity_neqcharge     = (TH3D*) fcorr->Get("hpurity_neqcharge");
-        
         TH1F* h_njet           = (TH1F*) fcorr->Get("h_njet");
         TH1F* h_njet_wmuoneff  = (TH1F*) fcorr->Get("h_njet_wmuoneff");
         TH1F* h_efficiency_jet = (TH1F*) fcorr->Get("hefficiency_jet");
         TH1F* h_purity_jet     = (TH1F*) fcorr->Get("hpurity_jet");
 
+        // Truth
         TH3D* h_npair_truth      = (TH3D*) fcorr->Get("h_npair_truth");
         TH3D* h_eqchnpair_truth  = (TH3D*) fcorr->Get("h_eqchnpair_truth");
         TH3D* h_neqchnpair_truth = (TH3D*) fcorr->Get("h_neqchnpair_truth");
         TH1F* h_njet_truth       = (TH1F*) fcorr->Get("h_njet_truth");
+
+        TH2D* h_eec_truth_2d      = new TH2D("h_eec_truth_2d"     ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* h_eqcheec_truth_2d  = new TH2D("h_eqcheec_truth_2d" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        TH2D* h_neqcheec_truth_2d = new TH2D("h_neqcheec_truth_2d","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
+        apply_unfolded_weights(h_npair_truth     , h_eec_truth_2d);
+        apply_unfolded_weights(h_eqchnpair_truth , h_eqcheec_truth_2d);
+        apply_unfolded_weights(h_neqchnpair_truth, h_neqcheec_truth_2d);
+
+        // Real data
+        TH3D* h_npair_data_wmuon      = (TH3D*) fcorr_data->Get("h_npair_wmuon");
+        TH3D* h_eqchnpair_data_wmuon  = (TH3D*) fcorr_data->Get("h_eqchnpair_wmuon");
+        TH3D* h_neqchnpair_data_wmuon = (TH3D*) fcorr_data->Get("h_neqchnpair_wmuon");
 
         // Correct the jets
         TRandom3* rndm = new TRandom3(0);
@@ -89,24 +99,77 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         TH3D* htrue_neqchnpair = new TH3D("htrue_neqchnpair" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
         RooUnfoldResponse* response_neqchnpair = new RooUnfoldResponse(hmeas_neqchnpair, htrue_neqchnpair, "response_neqchnpair");
 
+        // Create the reweighting matrix
+        TH3D* h_npair_reweight      = new TH3D("h_npair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* h_eqchnpair_reweight  = new TH3D("h_eqchnpair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* h_neqchnpair_reweight = new TH3D("h_neqchnpair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+
+        TH3D* h_npair_wmuon_norm           = (TH3D*) h_npair_wmuon->Clone("h_npair_wmuon_norm");
+        TH3D* h_eqchnpair_wmuon_norm       = (TH3D*) h_eqchnpair_wmuon->Clone("h_eqchnpair_wmuon_norm");
+        TH3D* h_neqchnpair_wmuon_norm      = (TH3D*) h_neqchnpair_wmuon->Clone("h_neqchnpair_wmuon_norm");
+
+        TH3D* h_npair_data_wmuon_norm      = (TH3D*) h_npair_data_wmuon->Clone("h_npair_data_wmuon_norm");
+        TH3D* h_eqchnpair_data_wmuon_norm  = (TH3D*) h_eqchnpair_data_wmuon->Clone("h_eqchnpair_data_wmuon_norm");
+        TH3D* h_neqchnpair_data_wmuon_norm = (TH3D*) h_neqchnpair_data_wmuon->Clone("h_neqchnpair_data_wmuon_norm");
+
+        h_npair_wmuon_norm->Scale(1./h_npair_wmuon_norm->Integral());
+        h_eqchnpair_wmuon_norm->Scale(1./h_eqchnpair_wmuon_norm->Integral());
+        h_neqchnpair_wmuon_norm->Scale(1./h_neqchnpair_wmuon_norm->Integral());
+        h_npair_data_wmuon_norm->Scale(1./h_npair_data_wmuon_norm->Integral());
+        h_eqchnpair_data_wmuon_norm->Scale(1./h_eqchnpair_data_wmuon_norm->Integral());
+        h_neqchnpair_data_wmuon_norm->Scale(1./h_neqchnpair_data_wmuon_norm->Integral());
+
+        h_npair_reweight->Divide(h_npair_wmuon_norm,h_npair_data_wmuon_norm);
+        h_eqchnpair_reweight->Divide(h_eqchnpair_wmuon_norm,h_eqchnpair_data_wmuon_norm);
+        h_neqchnpair_reweight->Divide(h_neqchnpair_wmuon_norm,h_neqchnpair_data_wmuon_norm);
+
+        TCanvas* c = new TCanvas("c", "", 1920, 1080);
+        c->Draw();
+
+        gStyle->SetOptStat("");
+        gStyle->SetPaintTextFormat("4.2f");        
+        
+        TLatex latex;
+        latex.SetTextAlign(22); // center alignment
+        latex.SetTextSize(text_size_correction_plots);
+        latex.SetTextColor(kBlack);
+
+        h_npair_reweight->Draw("col");
+        for (int i = 1; i <= h_npair_reweight->GetNbinsX(); ++i) {
+                for (int j = 1; j <= h_npair_reweight->GetNbinsY(); ++j) {
+                        double x = h_npair_reweight->GetXaxis()->GetBinCenter(i);
+                        double y = h_npair_reweight->GetYaxis()->GetBinCenter(j);
+                        double content = h_npair_reweight->GetBinContent(i, j);
+                        double error = h_npair_reweight->GetBinError(i, j);
+
+                        latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                }
+        }
+        h_npair_reweight->SetTitle("Purity Correction;R_{L};p_{T,jet}(GeV)");
+        // h_npair_reweight->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+        // h_npair_reweight->GetYaxis()->SetRangeUser(jet_pt_binning[0], jet_pt_binning[3]);
+        gPad->SetLogx(1);
+        gPad->SetLogy(1);
+        c->Print("../src-analysis/plots/reweight_rm.pdf");        
+
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
                 ntuple->GetEntry(evt);
 
+                double reweigh_npair      = h_npair_reweight->GetBinContent(h_npair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco));
+                double reweigh_echnpair   = h_eqchnpair_reweight->GetBinContent(h_eqchnpair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco));
+                double reweigh_neqchnpair = h_neqchnpair_reweight->GetBinContent(h_neqchnpair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco));
+
                 if (R_L_truth != -999)
-                        response_npair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
+                        response_npair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth, reweigh_npair);
                 if (R_L_truth != -999 && eq_charge_reco > 0)
-                        response_eqchnpair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
+                        response_eqchnpair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth, reweigh_echnpair);
                 if (R_L_truth != -999 && eq_charge_reco < 0)
-                        response_neqchnpair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
+                        response_neqchnpair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth, reweigh_neqchnpair);
         }
 
         TH3F* h_npair_purity_corrected      = new TH3F("h_npair_purity_corrected",     "",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3F* h_eqchnpair_purity_corrected  = new TH3F("h_eqchnpair_purity_corrected", "",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3F* h_neqchnpair_purity_corrected = new TH3F("h_neqchnpair_purity_corrected","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
-        
-        // h_npair_purity_corrected->Multiply(h_npair_wmuon,h_purity,1,1);
-        // h_eqchnpair_purity_corrected->Multiply(h_eqchnpair_wmuon,h_purity_eqcharge,1,1);
-        // h_neqchnpair_purity_corrected->Multiply(h_neqchnpair_wmuon,h_purity_neqcharge,1,1);
         
         h_npair_purity_corrected->Multiply(h_npair_wmuon,h_purity,1,1);
         h_eqchnpair_purity_corrected->Multiply(h_eqchnpair_wmuon,h_purity,1,1);
@@ -119,10 +182,6 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         TH3D* h_npair_unfolded      = (TH3D*) unfold_npair.Hreco();
         TH3D* h_eqchnpair_unfolded  = (TH3D*) unfold_eqchnpair.Hreco();
         TH3D* h_neqchnpair_unfolded = (TH3D*) unfold_neqchnpair.Hreco();
-
-        // h_npair_unfolded->Divide(h_efficiency);
-        // h_eqchnpair_unfolded->Divide(h_efficiency_eqcharge);
-        // h_neqchnpair_unfolded->Divide(h_efficiency_neqcharge);
 
         h_npair_unfolded->Divide(h_efficiency);
         h_eqchnpair_unfolded->Divide(h_efficiency);
@@ -139,78 +198,82 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         apply_unfolded_weights(h_eqchnpair_unfolded, h_eqcheec_unfolded_2d);
         apply_unfolded_weights(h_neqchnpair_unfolded, h_neqcheec_unfolded_2d);
         
-        TH2D* h_eec_truth_2d      = new TH2D("h_eec_truth_2d"     ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* h_eqcheec_truth_2d  = new TH2D("h_eqcheec_truth_2d" ,"",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        TH2D* h_neqcheec_truth_2d = new TH2D("h_neqcheec_truth_2d","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        apply_unfolded_weights(h_npair_truth     , h_eec_truth_2d);
-        apply_unfolded_weights(h_eqchnpair_truth , h_eqcheec_truth_2d);
-        apply_unfolded_weights(h_neqchnpair_truth, h_neqcheec_truth_2d);
-
         TH2D* h_npair_unfolded_2d  = (TH2D*) h_npair_unfolded->Project3D("yx");
         TH2D* h_npair_truth_2d = (TH2D*) h_npair_truth->Project3D("yx");
 
         TH1F* hcorr_eec[nbin_jet_pt]; 
         TH1F* hcorr_eqcheec[nbin_jet_pt]; 
         TH1F* hcorr_neqcheec[nbin_jet_pt]; 
-        TH1F* hcorr_npair[nbin_jet_pt]; 
+        TH1F* hcorr_tau[nbin_jet_pt]; 
         
         TH1F* hcorr_eec_truth[nbin_jet_pt]; 
         TH1F* hcorr_eqcheec_truth[nbin_jet_pt]; 
         TH1F* hcorr_neqcheec_truth[nbin_jet_pt]; 
-        TH1F* hcorr_npair_truth[nbin_jet_pt]; 
-        
+        TH1F* hcorr_tau_truth[nbin_jet_pt]; 
+
+        // Define unity
+        TH1F* h_unity_uounderflow = new TH1F("h_unity_uounderflow","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
+        h_unity_uounderflow->Sumw2();
+        set_unity_content(h_unity_uounderflow);
+
+        TH1F* h_unity_taubinning[nbin_jet_pt];
+
+        double tau_binning[nbin_jet_pt][nbin_rl_nominal + 1];
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                double avge_pt2_jet = (jet_pt_binning[bin + 1] + jet_pt_binning[bin])/2.;
+                
+                get_tau_binning_from_eec_binning(tau_binning[bin], rl_nominal_binning, avge_pt2_jet);
+                
                 int nominal_jet_pt_bin = bin + 3;
+
+                h_unity_taubinning[bin] = new TH1F(Form("h_unity%i",bin),"",nbin_rl_nominal,tau_binning[bin]);
+                h_unity_taubinning[bin]->Sumw2();
+                set_unity_content(h_unity_taubinning[bin]);
 
                 // Pseudodata operations
                 hcorr_eec[bin]      = new TH1F(Form("hcorr_eec%i",bin)     , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
                 hcorr_eqcheec[bin]  = new TH1F(Form("hcorr_eqcheec%i",bin) , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
                 hcorr_neqcheec[bin] = new TH1F(Form("hcorr_neqcheec%i",bin), "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
-                hcorr_npair[bin]    = new TH1F(Form("hcorr_npair%i",bin)   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
+                hcorr_tau[bin]      = new TH1F(Form("hcorr_tau%i",bin)     , "", nbin_rl_nominal,tau_binning[bin]);
                 
                 set_histogram_style(hcorr_eec[bin]     , corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[bin], std_marker_size+1);
                 set_histogram_style(hcorr_eqcheec[bin] , corr_marker_color_jet_pt[bin], std_line_width-1, std_marker_style_jet_pt[bin] , std_marker_size+1);
                 set_histogram_style(hcorr_neqcheec[bin], corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[bin], std_marker_size+1);
-                set_histogram_style(hcorr_npair[bin]   , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+                set_histogram_style(hcorr_tau[bin]   , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
 
                 project_nominal_phase_space(h_eec_unfolded_2d     , hcorr_eec[bin]     , nominal_jet_pt_bin);
                 project_nominal_phase_space(h_eqcheec_unfolded_2d , hcorr_eqcheec[bin] , nominal_jet_pt_bin);
                 project_nominal_phase_space(h_neqcheec_unfolded_2d, hcorr_neqcheec[bin], nominal_jet_pt_bin);
-                project_nominal_phase_space(h_npair_unfolded_2d   , hcorr_npair[bin]   , nominal_jet_pt_bin);
-
+                
                 hcorr_eqcheec[bin]->Divide(hcorr_eec[bin]);
                 hcorr_neqcheec[bin]->Divide(hcorr_eec[bin]);
 
                 hcorr_eec[bin]->Scale(1./h_njet_unfolded->GetBinContent(bin + 3),"width");
-                hcorr_npair[bin]->Scale(1./h_njet_unfolded->GetBinContent(bin + 3),"width");
+                
+                get_tau_from_uoflow_eec(hcorr_eec[bin], hcorr_tau[bin], avge_pt2_jet);
                 
                 // Truth operations
                 hcorr_eec_truth[bin]      = new TH1F(Form("hcorr_eec_truth%i",bin)     , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
                 hcorr_eqcheec_truth[bin]  = new TH1F(Form("hcorr_eqcheec_truth%i",bin) , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
                 hcorr_neqcheec_truth[bin] = new TH1F(Form("hcorr_neqcheec_truth%i",bin), "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
-                hcorr_npair_truth[bin]    = new TH1F(Form("hcorr_npair_truth%i",bin)   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning);
-                
-                set_histogram_style(hcorr_eec_truth[bin]     , corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[bin], std_marker_size);
-                set_histogram_style(hcorr_eqcheec_truth[bin] , corr_marker_color_jet_pt[bin], std_line_width-1, std_marker_style_jet_pt[bin] , std_marker_size);
-                set_histogram_style(hcorr_neqcheec_truth[bin], corr_marker_color_jet_pt[bin], std_line_width-1, corr_marker_style_jet_pt[bin], std_marker_size);
-                set_histogram_style(hcorr_npair_truth[bin]   , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+1);
+                hcorr_tau_truth[bin]      = new TH1F(Form("hcorr_tau_truth%i",bin)     , "", nbin_rl_nominal,tau_binning[bin]);;
 
                 project_nominal_phase_space(h_eec_truth_2d     , hcorr_eec_truth[bin]     , nominal_jet_pt_bin);
                 project_nominal_phase_space(h_eqcheec_truth_2d , hcorr_eqcheec_truth[bin] , nominal_jet_pt_bin);
                 project_nominal_phase_space(h_neqcheec_truth_2d, hcorr_neqcheec_truth[bin], nominal_jet_pt_bin);
-                project_nominal_phase_space(h_npair_truth_2d   , hcorr_npair_truth[bin]   , nominal_jet_pt_bin);
 
                 hcorr_eqcheec_truth[bin]->Divide(hcorr_eec_truth[bin]);
                 hcorr_neqcheec_truth[bin]->Divide(hcorr_eec_truth[bin]);
 
                 hcorr_eec_truth[bin]->Scale(1./h_njet_truth->GetBinContent(bin + 3),"width");
-                hcorr_npair_truth[bin]->Scale(1./h_njet_truth->GetBinContent(bin + 3),"width");
+                
+                get_tau_from_uoflow_eec(hcorr_eec_truth[bin], hcorr_tau_truth[bin], avge_pt2_jet);
 
                 fout->cd();
                 hcorr_eec[bin]->Write();
-                hcorr_npair[bin]->Write();
+                hcorr_tau[bin]->Write();
                 hcorr_eec_truth[bin]->Write();
-                hcorr_npair_truth[bin]->Write();
+                hcorr_tau_truth[bin]->Write();
                 hcorr_eqcheec[bin]->Write();
                 hcorr_neqcheec[bin]->Write();
                 hcorr_eqcheec_truth[bin]->Write();
@@ -219,26 +282,38 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
 
                 hcorr_eec[bin]->Divide(hcorr_eec_truth[bin]);
                 hcorr_eec[bin]->SetTitle("EEC(pseudodata/truth)");
-
-                hcorr_npair[bin]->Divide(hcorr_npair_truth[bin]);
-                hcorr_npair[bin]->SetTitle("Npair(pseudodata/truth)");
-
+                hcorr_tau[bin]->Divide(hcorr_tau_truth[bin]);
+                hcorr_tau[bin]->SetTitle("Npair(pseudodata/truth)");
                 hcorr_eqcheec[bin]->Divide(hcorr_eqcheec_truth[bin]);
                 hcorr_eqcheec[bin]->SetTitle("Eq. Charged EEC(pseudodata/truth)");
-                
                 hcorr_neqcheec[bin]->Divide(hcorr_neqcheec_truth[bin]);
                 hcorr_neqcheec[bin]->SetTitle("Op. Charged EEC(pseudodata/truth)");
                 
+                hcorr_eec[bin]->Add(h_unity_uounderflow, -1);
+                hcorr_tau[bin]->Add(h_unity_taubinning[bin], -1);
+                hcorr_eqcheec[bin]->Add(h_unity_uounderflow, -1);
+                hcorr_neqcheec[bin]->Add(h_unity_uounderflow, -1);
+
+                hcorr_eec[bin]->Multiply(hcorr_eec[bin]);
+                hcorr_tau[bin]->Multiply(hcorr_tau[bin]);
+                hcorr_eqcheec[bin]->Multiply(hcorr_eqcheec[bin]);
+                hcorr_neqcheec[bin]->Multiply(hcorr_neqcheec[bin]);
+
+                square_root_bins(hcorr_eec[bin]);
+                square_root_bins(hcorr_tau[bin]);
+                square_root_bins(hcorr_eqcheec[bin]);
+                square_root_bins(hcorr_neqcheec[bin]);
+
                 fout->cd();
-                hcorr_eec[bin]->Write(Form("pseudodata_to_truth_eec%i",bin));
-                hcorr_npair[bin]->Write(Form("pseudodata_to_truth_npair%i",bin));
-                hcorr_eqcheec[bin]->Write(Form("pseudodata_to_truth_eqcheec%i",bin));
-                hcorr_neqcheec[bin]->Write(Form("pseudodata_to_truth_neqcheec%i",bin));
+                hcorr_eec[bin]->Write(Form("relerror_eec%i",bin));
+                hcorr_tau[bin]->Write(Form("relerror_tau%i",bin));
+                hcorr_eqcheec[bin]->Write(Form("relerror_eqcheec%i",bin));
+                hcorr_neqcheec[bin]->Write(Form("relerror_neqcheec%i",bin));
                 gROOT->cd();       
         }
 
         // Print all the relevant ratios
-        TCanvas* c = new TCanvas("c","",1800,600);
+        c = new TCanvas("c","",1800,600);
         c->Draw();
         c->Divide(3,1);
         
@@ -263,8 +338,8 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
                 s[bin]->Draw("NOSTACK");
                 
                 s[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};Corr. Pseudodata / Truth",jet_pt_binning[bin],jet_pt_binning[bin+1]));
-                s[bin]->SetMaximum(1.4);
-                s[bin]->SetMinimum(0.6);
+                s[bin]->SetMaximum(0.4);
+                s[bin]->SetMinimum(0.);
                 s[bin]->GetXaxis()->SetRangeUser(unfolding_rl_nominal_binning[1],unfolding_rl_nominal_binning[nbin_rl_nominal_unfolding-1]);
 
                 l[bin]->AddEntry(hcorr_eec[bin], "EEC", "p");
@@ -275,7 +350,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
                 line->Draw("SAME");
         }
 
-        c->Print(Form("./plots/closure-test-eec-niter%i.pdf",niter));
+        c->Print("./plots/closure-test-shape-eec.pdf");
 
         for(int bin = 0 ; bin < nbin_jet_pt ; bin ++) {
                 c->cd(bin+1);
@@ -288,8 +363,8 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
                 s[bin]->Draw("NOSTACK");
                 
                 s[bin]->SetTitle(Form("%.1f<p^{jet}_{t}(GeV)<%.1f;R_{L};Corr. Pseudodata / Truth",jet_pt_binning[bin],jet_pt_binning[bin+1]));
-                s[bin]->SetMaximum(1.4);
-                s[bin]->SetMinimum(0.6);
+                s[bin]->SetMaximum(0.4);
+                s[bin]->SetMinimum(0.);
                 s[bin]->GetXaxis()->SetRangeUser(unfolding_rl_nominal_binning[1],unfolding_rl_nominal_binning[nbin_rl_nominal_unfolding-1]);
 
                 l[bin]->AddEntry(hcorr_eqcheec[bin], "Eq. Ch. EEC", "p");
@@ -301,19 +376,6 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
                 line->Draw("SAME");
         }
 
-        c->Print(Form("./plots/closure-test-chargedeec-niter%i.pdf",niter));
-
-        c = new TCanvas("c","",800,600);
-        c->Draw();
-        
-        h_njet_unfolded->Divide(h_njet_truth);
-        h_njet_unfolded->SetTitle(";p_{T,jet} (GeV);Jet Pseudodata / Truth");
-        set_histogram_style(h_njet_unfolded, corr_marker_color_jet_pt[4], std_line_width-1, corr_marker_style_jet_pt[4], std_marker_size+1);
-        
-        h_njet_unfolded->Draw();
-
-        line = new TLine(unfolding_jet_pt_binning[0], 1, unfolding_jet_pt_binning[nbin_jet_pt_unfolding], 1);
-        line->Draw("SAME");
-
-        c->Print("./plots/closure-test-njets-niter4.pdf");
+        c->Print("./plots/closure-test-shape-chargedeec.pdf");
 }
+

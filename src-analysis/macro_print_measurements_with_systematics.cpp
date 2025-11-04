@@ -19,7 +19,7 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
         TH1F* hcorr_eec_neqcharge[nbin_jet_pt]; 
         TH1F* hcorr_eec_neqcharge_syst[nbin_jet_pt]; 
         
-        // Fill the NOIMNAL histograms
+        // Fill the nominal histograms
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 hcorr_eec[bin]      = (TH1F*) fnominal->Get(Form("hcorr_eec%i",bin));
                 hcorr_eec_syst[bin] = (TH1F*) hcorr_eec[bin]->Clone(Form("hcorr_eec_syst%i",bin));
@@ -55,11 +55,6 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
         // Include the systematics in the whole deal
         const int nsyst = sizeof(available_systematics)/sizeof(available_systematics[0]);
         TFile* fsyst[nsyst];
-        TH1F* hdev_eec[nbin_jet_pt];
-        TH1F* hdev_tau[nbin_jet_pt];
-        TH1F* hdev_eec_eqcharge[nbin_jet_pt];
-        TH1F* hdev_eec_neqcharge[nbin_jet_pt];
-
         TH1F* hsyst_eec[nbin_jet_pt];
         TH1F* hsyst_tau[nbin_jet_pt];
         TH1F* hsyst_eec_eqcharge[nbin_jet_pt];
@@ -76,45 +71,16 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
                 std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
                 
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                        hsyst_eec[bin] = (TH1F*) fsyst[syst_index]->Get(Form("hcorr_eec%i",bin));
-                        
-                        hsyst_eec[bin]->Divide(hcorr_eec[bin]);
+                        hsyst_eec[bin] = (TH1F*) fsyst[syst_index]->Get(Form("relerror_eec%i",bin));
 
-                        set_histo_with_systematics(hsyst_eec[bin], hcorr_eec[bin], hcorr_eec_syst[bin], systematic_errtype[available_systematics[syst_index]]);
+                        set_histo_with_systematics(hsyst_eec[bin], hcorr_eec[bin], hcorr_eec_syst[bin], syst_index);
 
-                        if (bin!=nbin_jet_pt-1) 
+                        if (bin != nbin_jet_pt-1) 
                                 std::cout<<" & ";
                         else
                                 std::cout<<" \\\\ ";
                 }
-
-                std::cout<<std::endl;
-
-                delete fsyst[syst_index];
-        }
-
-        std::cout<<"Source & $20<p_{T,jet}<30$ & $30<p_{T,jet}<50$ & $50<p_{T,jet}<100$ \\\\"<<std::endl;
-        std::cout<<"\\hline"<<std::endl;
-        for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
-                if (gSystem->AccessPathName((output_folder + systematic_namef[available_systematics[syst_index]]).c_str()))
-                        continue;
                 
-                fsyst[syst_index] = new TFile((output_folder + systematic_namef[available_systematics[syst_index]]).c_str());
-                
-                std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
-                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                        hsyst_tau[bin] = (TH1F*) fsyst[syst_index]->Get(Form("hcorr_tau%i",bin));
-                        
-                        hsyst_tau[bin]->Divide(hcorr_tau[bin]);
-
-                        set_histo_with_systematics(hsyst_tau[bin], hcorr_tau[bin], hcorr_tau_syst[bin], systematic_errtype[available_systematics[syst_index]]);
-
-                        if (bin!=nbin_jet_pt-1) 
-                                std::cout<<" & ";
-                        else
-                                std::cout<<" \\\\ ";
-                }
-
                 std::cout<<std::endl;
 
                 delete fsyst[syst_index];
@@ -131,18 +97,42 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
                 std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
                 
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                        hsyst_eec_eqcharge[bin] = (TH1F*) fsyst[syst_index]->Get(Form("hcorr_eqcheec%i",bin));
-                        
-                        hsyst_eec_eqcharge[bin]->Divide(hcorr_eec_eqcharge[bin]);
+                        hsyst_tau[bin] = (TH1F*) fsyst[syst_index]->Get(Form("relerror_tau%i",bin));
 
-                        set_histo_with_systematics(hsyst_eec_eqcharge[bin], hcorr_eec_eqcharge[bin], hcorr_eec_eqcharge_syst[bin], systematic_errtype[available_systematics[syst_index]]);
+                        set_histo_with_systematics(hsyst_tau[bin], hcorr_tau[bin], hcorr_tau_syst[bin], syst_index);
 
-                        if (bin!=nbin_jet_pt-1) 
+                        if (bin != nbin_jet_pt-1) 
                                 std::cout<<" & ";
                         else
                                 std::cout<<" \\\\ ";
                 }
+                
+                std::cout<<std::endl;
 
+                delete fsyst[syst_index];
+        }
+
+        std::cout<<"Source & $20<p_{T,jet}<30$ & $30<p_{T,jet}<50$ & $50<p_{T,jet}<100$ \\\\"<<std::endl;
+        std::cout<<"\\hline"<<std::endl;
+        for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
+                if (gSystem->AccessPathName((output_folder + systematic_namef[available_systematics[syst_index]]).c_str()))
+                        continue;
+                
+                fsyst[syst_index] = new TFile((output_folder + systematic_namef[available_systematics[syst_index]]).c_str());
+                
+                std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
+
+                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                        hsyst_eec_eqcharge[bin] = (TH1F*) fsyst[syst_index]->Get(Form("relerror_eqcheec%i",bin));
+
+                        set_histo_with_systematics(hsyst_eec_eqcharge[bin], hcorr_eec_eqcharge[bin], hcorr_eec_eqcharge_syst[bin], syst_index);
+
+                        if (bin != nbin_jet_pt-1) 
+                                std::cout<<" & ";
+                        else
+                                std::cout<<" \\\\ ";
+                }
+                
                 std::cout<<std::endl;
 
                 delete fsyst[syst_index];
@@ -159,23 +149,29 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
                 std::cout<<systematic_name[available_systematics[syst_index]]<<" & ";
                 
                 for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                        hsyst_eec_neqcharge[bin] = (TH1F*) fsyst[syst_index]->Get(Form("hcorr_neqcheec%i",bin));
-                        
-                        hsyst_eec_neqcharge[bin]->Divide(hcorr_eec_neqcharge[bin]);
+                        hsyst_eec_neqcharge[bin] = (TH1F*) fsyst[syst_index]->Get(Form("relerror_neqcheec%i",bin));
 
-                        set_histo_with_systematics(hsyst_eec_neqcharge[bin], hcorr_eec_neqcharge[bin], hcorr_eec_neqcharge_syst[bin], systematic_errtype[available_systematics[syst_index]]);
+                        set_histo_with_systematics(hsyst_eec_neqcharge[bin], hcorr_eec_neqcharge[bin], hcorr_eec_neqcharge_syst[bin], syst_index);
 
-                        if (bin!=nbin_jet_pt-1) 
+                        if (bin != nbin_jet_pt-1) 
                                 std::cout<<" & ";
                         else
                                 std::cout<<" \\\\ ";
                 }
-
+                
                 std::cout<<std::endl;
 
                 delete fsyst[syst_index];
         }
         
+        // Extract the statistical uncertainty from the plots with systematic uncertainties
+        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+                substract_stat_error(hcorr_eec[bin], hcorr_eec_syst[bin]);
+                substract_stat_error(hcorr_tau[bin], hcorr_tau_syst[bin]);
+                substract_stat_error(hcorr_eec_eqcharge[bin], hcorr_eec_eqcharge_syst[bin]);
+                substract_stat_error(hcorr_eec_neqcharge[bin], hcorr_eec_neqcharge_syst[bin]);
+        }
+
         TCanvas* c = new TCanvas("c", "", 1920, 1480);
         c->Draw();
 
@@ -215,7 +211,7 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
         gPad->SetLogy(0);
         draw_lhcb_tag(lhcbprint);
 
-        c->Print(Form("./plots/corrtau_unf-niter%i_2dunf_incsyst.pdf",niter));
+        c->Print(Form("./plots/corrtau_unf-niter%i_2dunf_incsyst_newparadigm.pdf",niter));
 
         // Print EECS
         s_data = new THStack();
@@ -236,7 +232,7 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
 
         draw_lhcb_tag(lhcbprint);
 
-        c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst.pdf",niter));
+        c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst_newparadigm.pdf",niter));
 
         // Print charged EECs
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -247,7 +243,7 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
                 s_data->Add(hcorr_eec_eqcharge_syst[bin],"E2");
                 s_data->Add(hcorr_eec_neqcharge[bin] ,"E X0");
                 s_data->Add(hcorr_eec_neqcharge_syst[bin],"E2");
-
+                
                 l_data->SetHeader(Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
                 l_data->AddEntry(hcorr_eec_eqcharge[bin], "eq. charge correlations","lfp");
                 l_data->AddEntry(hcorr_eec_neqcharge[bin],"op. charge correlations","lfp");
@@ -255,7 +251,7 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
                 s_data->Draw("NOSTACK");
                 s_data->SetTitle(";R_{L};");
                 s_data->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
-                s_data->SetMaximum(1.15);
+                s_data->SetMaximum(1.2);
                 s_data->SetMinimum(0.1);
                 l_data->Draw("SAME");
                 gPad->SetLogx(1);
@@ -263,6 +259,6 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
                 
                 draw_lhcb_tag(lhcbprint);
 
-                c->Print(Form("./plots/corrchargedeec_jetptbin%i_unf-niter%i_2dunf_incsyst.pdf",bin,niter));
+                c->Print(Form("./plots/corrchargedeec_jetptbin%i_unf-niter%i_2dunf_incsyst_newparadigm.pdf",bin,niter));
         }
 }

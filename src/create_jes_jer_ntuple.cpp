@@ -3,8 +3,8 @@
 #include "TZJetsMC.C"
 #include "TZJetsMCReco.h"
 #include "TZJetsMCReco.C"
-#include "TZJets2016Data.h"
-#include "TZJets2016Data.C"
+#include "TZJetsData.h"
+#include "TZJetsData.C"
 #include "TROOT.h"
 #include "TNtuple.h"
 #include "TFile.h"
@@ -23,9 +23,9 @@ int main()
         TFile* fout = new TFile((output_folder + namef_ntuple_jes_jer).c_str(),"RECREATE");
         
         // Declare the TTrees to be used to build the ntuples
-        TZJetsMC*       mctree     = new TZJetsMC();
-        TZJetsMCReco*   mcrecotree = new TZJetsMCReco();
-        TZJets2016Data* datatree   = new TZJets2016Data();
+        TZJetsMC*     mctree     = new TZJetsMC();
+        TZJetsMCReco* mcrecotree = new TZJetsMCReco();
+        TZJetsData*   datatree   = new TZJetsData();
 
         // Create Ntuples
         TNtuple* ntuple_jes_data = new TNtuple(name_ntuple_jes_data.c_str(),"",ntuple_jec_data_vars);
