@@ -6,38 +6,97 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
+// Currently this code contains the following variations in function:
+// - nominal
+// - jes
+// - jer
+// - prior variation
+// - reg par
+
 void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4, std::string analysis_variation = "--get-nominal", int niter_jer = -999)
 {
         // Open the necessary files
-        std::string file_name         = Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i%s.root",niter,niter_jet,analysis_variation.c_str());
-        std::string nominal_file_name = Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i--get-nominal.root",niter,niter_jet);
-
-        TFile* fout = new TFile((output_folder + file_name.c_str()).c_str(),"RECREATE");
+        std::string fout_name         = Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i%s.root",niter,niter_jet,analysis_variation.c_str());
+        std::string nominal_file_name = "histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-nominal.root";
+        std::string fdata_name        = (niter_jer >= 0) ? Form("histos_3dpaircorr_rl_jetpt_weightpt_eec_jer_%i.root",niter_jer) :
+                                                           namef_all_corrections[analysis_variation];
+        
+        TFile* fout = new TFile((output_folder + fout_name.c_str()).c_str(),"RECREATE");
         gROOT->cd();
 
+        // File used to build response matrix
         TFile* f = new TFile((output_folder + namef_reco_corrections[analysis_variation]).c_str());
-        
-        std::string fdata_name = (niter_jer >= 0) ? Form("histos_3dpaircorr_rl_jetpt_weightpt_eec_jer_%i.root",niter_jer) :
-                                                    namef_all_corrections[analysis_variation];
+        if (gSystem->AccessPathName((output_folder + namef_reco_corrections[analysis_variation]).c_str()))
+                return ;
 
+        // File containing relevant data
         TFile* fcorr = new TFile((output_folder + fdata_name).c_str()); 
-        if (fcorr->IsZombie() || fcorr == NULL) 
-                return;
-
-        TH3F* h_npair            = (TH3F*) fcorr->Get("h_npair");
-        TH3F* h_npair_wmuon      = (TH3F*) fcorr->Get("h_npair_wmuon");
-        TH3F* h_eqchnpair        = (TH3F*) fcorr->Get("h_eqchnpair");
-        TH3F* h_eqchnpair_wmuon  = (TH3F*) fcorr->Get("h_eqchnpair_wmuon");
-        TH3F* h_neqchnpair       = (TH3F*) fcorr->Get("h_neqchnpair");
-        TH3F* h_neqchnpair_wmuon = (TH3F*) fcorr->Get("h_neqchnpair_wmuon");
+        if (gSystem->AccessPathName((output_folder + fdata_name).c_str()))
+                return ;
         
-        TH3F* h_efficiency  = (TH3F*) fcorr->Get("hefficiency");
-        TH3F* h_purity      = (TH3F*) fcorr->Get("hpurity");
+        TH3F* h_npair      = (TH3F*) fcorr->Get("h_npair_wmuon");
+        TH3F* h_eqchnpair  = (TH3F*) fcorr->Get("h_eqchnpair_wmuon");
+        TH3F* h_neqchnpair = (TH3F*) fcorr->Get("h_neqchnpair_wmuon");
+        TH3F* h_efficiency = (TH3F*) fcorr->Get("hefficiency");
+        TH3F* h_purity     = (TH3F*) fcorr->Get("hpurity");
 
-        TH1F* h_njet           = (TH1F*) fcorr->Get("h_njet");
-        TH1F* h_njet_wmuoneff  = (TH1F*) fcorr->Get("h_njet_wmuoneff");
+        TH1F* h_njet           = (TH1F*) fcorr->Get("h_njet_wmuoneff");
         TH1F* h_efficiency_jet = (TH1F*) fcorr->Get("hefficiency_jet");
         TH1F* h_purity_jet     = (TH1F*) fcorr->Get("hpurity_jet");
+
+        // only necessary for the prior systematic
+        TH1D* h_njet_reweight       = new TH1D("h_njet_reweight"      , "", nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH3D* h_npair_reweight      = new TH3D("h_npair_reweight"     , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* h_eqchnpair_reweight  = new TH3D("h_eqchnpair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* h_neqchnpair_reweight = new TH3D("h_neqchnpair_reweight", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+
+        if (analysis_variation == "--get-prior") {
+                TFile* fmcreco = new TFile((output_folder + namef_3dpaircorr_rl_jetpt_weightpt_histos_ct).c_str());
+
+                //  3D reweight
+                //  Get mcreco
+                TH3D* h_mcreco_npair      = (TH3D*) fmcreco->Get("h_npair_wmuon");
+                TH3D* h_mcreco_eqchnpair  = (TH3D*) fmcreco->Get("h_eqchnpair_wmuon");
+                TH3D* h_mcreco_neqchnpair = (TH3D*) fmcreco->Get("h_neqchnpair_wmuon");
+                
+                TH3D* h_mcreco_npair_norm      = (TH3D*) h_mcreco_npair->Clone("h_npair_norm");
+                TH3D* h_mcreco_eqchnpair_norm  = (TH3D*) h_mcreco_eqchnpair->Clone("h_eqchnpair_norm");
+                TH3D* h_mcreco_neqchnpair_norm = (TH3D*) h_mcreco_neqchnpair->Clone("h_neqchnpair_norm");
+
+                h_mcreco_npair_norm->Scale(1./h_mcreco_npair_norm->Integral());
+                h_mcreco_eqchnpair_norm->Scale(1./h_mcreco_eqchnpair_norm->Integral());
+                h_mcreco_neqchnpair_norm->Scale(1./h_mcreco_neqchnpair_norm->Integral());
+                
+                // Get data
+                TH3D* h_data_npair_norm      = (TH3D*) h_npair->Clone("h_npair_data_norm");
+                TH3D* h_data_eqchnpair_norm  = (TH3D*) h_eqchnpair->Clone("h_eqchnpair_data_norm");
+                TH3D* h_data_neqchnpair_norm = (TH3D*) h_neqchnpair->Clone("h_neqchnpair_data_norm");
+
+                h_data_npair_norm->Scale(1./h_data_npair_norm->Integral());
+                h_data_eqchnpair_norm->Scale(1./h_data_eqchnpair_norm->Integral());
+                h_data_neqchnpair_norm->Scale(1./h_data_neqchnpair_norm->Integral());
+
+                // Get reweight
+                h_npair_reweight->Divide(h_data_npair_norm,h_mcreco_npair_norm);
+                h_eqchnpair_reweight->Divide(h_data_eqchnpair_norm,h_mcreco_eqchnpair_norm);
+                h_neqchnpair_reweight->Divide(h_data_neqchnpair_norm,h_mcreco_neqchnpair_norm);
+
+                // 1D reweight
+                // Get reco
+                TH1F* h_mcreco_njet = (TH1F*) fmcreco->Get("h_njet_wmuoneff");
+
+                TH1D* h_mcreco_njet_norm = (TH1D*) h_mcreco_njet->Clone("h_njet_norm");
+                
+                h_mcreco_njet_norm->Scale(1./h_mcreco_njet_norm->Integral());
+
+                // Get data
+                TH1D* h_data_njet_norm = (TH1D*) h_njet->Clone("h_njet_data_norm");
+
+                h_data_njet_norm->Scale(1./h_data_njet_norm->Integral());
+
+                // Get reweight
+                h_njet_reweight->Divide(h_data_njet_norm,h_mcreco_njet_norm);
+        }
 
         // Correct the jets
         TNtuple* ntuple_jet_unfolding = (TNtuple*) f->Get(name_ntuple_jet_reco2truth_match.c_str());
@@ -52,14 +111,16 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
         for (int evt = 0 ; evt < ntuple_jet_unfolding->GetEntries() ; evt++) {
                 ntuple_jet_unfolding->GetEntry(evt);
 
+                double reweight = (analysis_variation == "--get-prior") ? h_njet_reweight->GetBinContent(h_njet_reweight->FindBin(jet_pt_unfolding_reco)) : 1.;
+
                 if (jet_pt_unfolding_truth != -999)
-                        hresp_jet->Fill(jet_pt_unfolding_reco, jet_pt_unfolding_truth);
+                        hresp_jet->Fill(jet_pt_unfolding_reco, jet_pt_unfolding_truth, reweight);
         }
 
         RooUnfoldResponse* response_jet = new RooUnfoldResponse(hmeas_jet, htrue_jet, hresp_jet, "response_jet");
         
         TH1F* h_njet_purity_corrected = new TH1F("h_njet_purity_corrected","",nbin_jet_pt_unfolding,unfolding_jet_pt_binning);
-        h_njet_purity_corrected->Multiply(h_njet_wmuoneff,h_purity_jet,1,1);
+        h_njet_purity_corrected->Multiply(h_njet,h_purity_jet,1,1);
 
         RooUnfoldBayes unfold_jet(response_jet, h_njet_purity_corrected, niter_jet);
 
@@ -89,21 +150,25 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
                 ntuple->GetEntry(evt);
 
+                double reweigh_npair      = (analysis_variation == "--get-prior") ? h_npair_reweight->GetBinContent(h_npair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
+                double reweigh_echnpair   = (analysis_variation == "--get-prior") ? h_eqchnpair_reweight->GetBinContent(h_eqchnpair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
+                double reweigh_neqchnpair = (analysis_variation == "--get-prior") ? h_neqchnpair_reweight->GetBinContent(h_neqchnpair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
+
                 if (R_L_truth != -999)
-                        response_npair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
+                        response_npair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth, reweigh_npair);
                 if (R_L_truth != -999 && eq_charge_reco > 0)
-                        response_eqchnpair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
+                        response_eqchnpair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth, reweigh_echnpair);
                 if (R_L_truth != -999 && eq_charge_reco < 0)
-                        response_neqchnpair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth);
+                        response_neqchnpair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth, reweigh_neqchnpair);
         }
 
         TH3F* h_npair_purity_corrected      = new TH3F("h_npair_purity_corrected",     "",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3F* h_eqchnpair_purity_corrected  = new TH3F("h_eqchnpair_purity_corrected", "",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3F* h_neqchnpair_purity_corrected = new TH3F("h_neqchnpair_purity_corrected","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
         
-        h_npair_purity_corrected->Multiply(h_npair_wmuon,h_purity,1,1);
-        h_eqchnpair_purity_corrected->Multiply(h_eqchnpair_wmuon,h_purity,1,1);
-        h_neqchnpair_purity_corrected->Multiply(h_neqchnpair_wmuon,h_purity,1,1);
+        h_npair_purity_corrected->Multiply(h_npair,h_purity,1,1);
+        h_eqchnpair_purity_corrected->Multiply(h_eqchnpair,h_purity,1,1);
+        h_neqchnpair_purity_corrected->Multiply(h_neqchnpair,h_purity,1,1);
         
         RooUnfoldBayes unfold_npair(response_npair, h_npair_purity_corrected, niter);
         RooUnfoldBayes unfold_eqchnpair(response_eqchnpair, h_eqchnpair_purity_corrected, niter);
@@ -192,9 +257,8 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
         // If variation is not nominal, store the rel error plots
         if (analysis_variation != "--get-nominal") {
                 TFile* fnominal = new TFile((output_folder + nominal_file_name.c_str()).c_str());
-                if (gSystem->AccessPathName((output_folder + nominal_file_name.c_str()).c_str())) {
+                if (gSystem->AccessPathName((output_folder + nominal_file_name.c_str()).c_str()))
                         return ;
-                }
 
                 TH1F* hnominal_eec[nbin_jet_pt]; 
                 TH1F* hnominal_eqcheec[nbin_jet_pt]; 

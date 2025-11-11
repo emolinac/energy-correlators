@@ -11,7 +11,7 @@ void macro_print_responsematrices()
 
         TFile* f = new TFile((output_folder + namef_ntuple_reco2truth_match).c_str());
         TNtuple* ntuple     = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
-        TNtuple* ntuple_jet = (TNtuple*) f->Get(name_ntuple_mcreco_jet.c_str());
+        TNtuple* ntuple_jet = (TNtuple*) f->Get(name_ntuple_jet_reco2truth_match.c_str());
 
         float jet_pt, jet_pt_truth, R_L, R_L_truth, weight_pt, weight_pt_truth, h1_pt, h1_pt_truth, h2_pt, h2_pt_truth;
         set_unfolding_ntuple_branches(ntuple, &R_L, &R_L_truth, &jet_pt, &jet_pt_truth, &weight_pt, &weight_pt_truth);

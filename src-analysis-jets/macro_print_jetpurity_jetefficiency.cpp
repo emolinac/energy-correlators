@@ -9,7 +9,7 @@
 void macro_print_jetpurity_jetefficiency()
 {
         // Open the necessary files
-        TFile* fpurity = new TFile((output_folder + "ntuple_eec_paircorrections.root").c_str());
+        TFile* fpurity = new TFile((output_folder + namef_ntuple_reco2truth_match).c_str());
         TFile* fefficiency = new TFile((output_folder + namef_ntuple_truth2reco_match).c_str());
 
         // Get the corresponding Ntuples
@@ -52,6 +52,7 @@ void macro_print_jetpurity_jetefficiency()
         hefficiency->Divide(hsig,hall,1,1,"B");
 
         hpurity->GetYaxis()->SetRangeUser(0,1.2);
+        hefficiency->GetYaxis()->SetRangeUser(0,1.2);
 
         THStack* hs = new THStack();
         hs->Add(hefficiency);
@@ -67,9 +68,11 @@ void macro_print_jetpurity_jetefficiency()
 
         c->Print(Form("./plots/jet_purity_efficiency.pdf"));
 
-        for (int bin = 1 ; bin <= hpurity->GetNbinsX() ; bin++) {
-                double jet_total_correction = hpurity->GetBinContent(bin)/hefficiency->GetBinContent(bin);
-                
-                std::cout<<"Total correction between "<<unfolding_jet_pt_binning[bin-1]<<" and "<<unfolding_jet_pt_binning[bin]<<" is "<<jet_total_correction<<std::endl;
-        }
+        hpurity->Draw();
+        hpurity->SetTitle(";p_{T,jet}(GeV);Purity");
+        c->Print(Form("./plots/jet_purity.pdf"));
+
+        hefficiency->Draw();
+        hefficiency->SetTitle(";p_{T,jet}(GeV);Efficiency");
+        c->Print(Form("./plots/jet_efficiency.pdf"));
 }
