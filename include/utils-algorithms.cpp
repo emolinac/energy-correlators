@@ -39,7 +39,7 @@ void regularize_correction_factors(TH3D* h);
 
 void set_histo_with_systematics(TH1F* hrelerror, TH1F* hnominal, TH1F* hsystematic, int syst_index, bool print_table = true);
 
-void set_nominal_error_histo(TH1F* hnominal, TH1F* hnominalerror);
+void set_histoa_errors_as_histob_content(TH1F* hnominal, TH1F* hnominalerror);
 
 void set_histo_sqrt_content(TH1F* h);
 

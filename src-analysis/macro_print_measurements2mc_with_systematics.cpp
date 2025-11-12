@@ -75,6 +75,8 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
                 set_histogram_style(hmc_eec[bin]           , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin], std_marker_size+2);
                 set_histogram_style(hmc_eec_eqcharge[bin]  , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin], std_marker_size+2);
                 set_histogram_style(hmc_eec_neqcharge[bin] , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin], std_marker_size+2);
+
+                hmc_eec_eqcharge[bin]->SetLineStyle(7);
         }
         
         std::cout<<"MC done"<<std::endl;
@@ -93,14 +95,14 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
                 hcorr_eec_neqcharge[bin]      = (TH1F*) fnominal->Get(Form("hcorr_neqcheec%i",bin));
                 hcorr_eec_neqcharge_syst[bin] = (TH1F*) hcorr_eec_neqcharge[bin]->Clone(Form("hcorr_neqcheec_syst%i",bin));
 
-                set_histogram_style(hcorr_eec[bin]               , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_eec_syst[bin]          , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_tau[bin]               , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_tau_syst[bin]          , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_eec_eqcharge[bin]      , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size+2);
-                set_histogram_style(hcorr_eec_eqcharge_syst[bin] , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size+2);
-                set_histogram_style(hcorr_eec_neqcharge[bin]     , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_eec_neqcharge_syst[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_eec[bin]               , corr_marker_color_jet_pt[bin], 0, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_eec_syst[bin]          , corr_marker_color_jet_pt[bin], 0, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_tau[bin]               , corr_marker_color_jet_pt[bin], 0, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_tau_syst[bin]          , corr_marker_color_jet_pt[bin], 0, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_eec_eqcharge[bin]      , corr_marker_color_jet_pt[bin], 0, std_marker_style_jet_pt[bin] , std_marker_size+2);
+                set_histogram_style(hcorr_eec_eqcharge_syst[bin] , corr_marker_color_jet_pt[bin], 0, std_marker_style_jet_pt[bin] , std_marker_size+2);
+                set_histogram_style(hcorr_eec_neqcharge[bin]     , corr_marker_color_jet_pt[bin], 0, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_eec_neqcharge_syst[bin], corr_marker_color_jet_pt[bin], 0, corr_marker_style_jet_pt[bin], std_marker_size+2);
                 
                 hcorr_eec[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
                 hcorr_eec_syst[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
@@ -222,7 +224,7 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 su->Add(hcorr_eec_syst[bin],"E2 P");
                 su->Add(hmc_eec[bin],"EP");
-                l_data->AddEntry(hcorr_eec_syst[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"lpf");
+                l_data->AddEntry(hcorr_eec_syst[bin],Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]),"pf");
         }
 
         su->Draw("NOSTACK");
@@ -255,7 +257,7 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
         }
 
         sd->Draw("NOSTACK");
-        sd->SetTitle(";R_{L};Data/Theory");
+        sd->SetTitle(";R_{L};Data/PYTHIA8");
         sd->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
         sd->SetMaximum(1.5);
         sd->SetMinimum(0.5);
@@ -266,6 +268,68 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
         
         c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst_data2mc.pdf",niter));
 
+        // Print EECs separately
+        for (int bin  = 0 ; bin < nbin_jet_pt ; bin++) {
+                c->cd();
+                pu->Draw();
+                pu->cd();
+
+                su = new THStack();
+                sd = new THStack();
+                l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.27 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
+                
+                su->Add(hcorr_eec_syst[bin],"E2 P");
+                su->Add(hmc_eec[bin],"EP");
+                l_data->SetHeader(Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
+                l_data->AddEntry(hcorr_eec_syst[bin],"Data (total uncertainty)","pf");
+                l_data->AddEntry(hmc_eec[bin],"PYTHIA8","p");
+
+                su->Draw("NOSTACK");
+                su->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
+                su->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
+                su->SetMaximum(1.45);
+                su->SetMinimum(0.01);
+                l_data->Draw("SAME");
+                gPad->SetLogx(1);
+                gPad->SetLogy(0);
+
+                draw_lhcb_tag(lhcbprint);
+
+                c->cd();
+                pd->Draw();
+                pd->cd();
+                gPad->SetTopMargin(0);
+                gPad->SetBottomMargin(0.3);
+
+                TLine* line = new TLine(unfolding_rl_nominal_binning[1], 1, unfolding_rl_nominal_binning[nbin_rl_nominal_unfolding-1], 1);
+
+                delete hdatamcratio_eec[bin];
+                hdatamcratio_eec[bin] = new TH1F(Form("hdatamcratio_eec%i",bin),"",nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
+                hdatamcratio_eec[bin]->Divide(hcorr_eec_syst[bin],hmc_eec[bin],1,1);
+
+                set_histogram_style(hdatamcratio_eec[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                hdatamcratio_eec[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+
+                sd->Add(hdatamcratio_eec[bin],"E2 P");
+
+                sd->Draw("NOSTACK");
+                sd->SetTitle(";R_{L};Data/PYTHIA8");
+                sd->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
+                sd->SetMaximum(1.5);
+                sd->SetMinimum(0.5);
+                gPad->SetLogx(1);
+                gPad->SetLogy(0);
+
+                line->Draw("SAME");
+
+                c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst_data2mc_jetpt%i.pdf",niter,bin));
+        }
+
+        // Print charged EECs
+
+        TLine* line_cheec = new TLine(rl_nominal_binning[0],0.5,rl_nominal_binning[nbin_rl_nominal],0.5);
+        line_cheec->SetLineWidth(1);
+
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 c->cd();
                 pu->Draw();
@@ -274,7 +338,7 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
 
                 su = new THStack();
                 sd = new THStack();
-                l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.21 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
+                l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.31 - gPad->GetTopMargin(),0.35 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
 
 
                 su->Add(hcorr_eec_eqcharge_syst[bin],"E2 P");
@@ -283,8 +347,10 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
                 su->Add(hmc_eec_neqcharge[bin],"HISTO C");
                 
                 l_data->SetHeader(Form("%.1f<p_{T,jet}<%.1f (GeV)",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                l_data->AddEntry(hcorr_eec_eqcharge_syst[bin], "eq. charge correlations","lfp");
-                l_data->AddEntry(hcorr_eec_neqcharge_syst[bin],"op. charge correlations","lfp");
+                l_data->AddEntry(hcorr_eec_eqcharge_syst[bin], "Data (total uncertainty) eq. charge correlations","fp");
+                l_data->AddEntry(hcorr_eec_neqcharge_syst[bin],"Data (total uncertainty) op. charge correlations","fp");
+                l_data->AddEntry(hmc_eec_eqcharge[bin], "PYTHIA8 eq. charge correlations","l");
+                l_data->AddEntry(hmc_eec_neqcharge[bin],"PYTHIA8 op. charge correlations","l");
 
                 su->Draw("NOSTACK");
                 su->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
@@ -292,6 +358,7 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
                 su->SetMaximum(1.45);
                 su->SetMinimum(0.1);
                 l_data->Draw("SAME");
+                line_cheec->Draw("SAME");
                 gPad->SetLogx(1);
                 gPad->SetLogy(0);
 
@@ -319,7 +386,7 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
                 sd->Add(hdatamcratio_eec_neqcharge[bin],"E2 P");
 
                 sd->Draw("NOSTACK");
-                sd->SetTitle(";R_{L};Data/Theory");
+                sd->SetTitle(";R_{L};Data/PYTHIA8");
                 sd->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
                 sd->SetMaximum(1.5);
                 sd->SetMinimum(0.5);

@@ -25,7 +25,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter
         TH3D* h_efficiency = (TH3D*) fcorr->Get("hefficiency");
         TH3D* h_purity     = (TH3D*) fcorr->Get("hpurity");
         
-        TH1F* h_njet           = (TH1F*) fcorr->Get("h_njet");
+        TH1F* h_njet           = (TH1F*) fcorr->Get("h_njet_wmuoneff");
         TH1F* h_efficiency_jet = (TH1F*) fcorr->Get("hefficiency_jet");
         TH1F* h_purity_jet     = (TH1F*) fcorr->Get("hpurity_jet");
 
@@ -43,10 +43,49 @@ void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter
         apply_unfolded_weights(h_neqchnpair_truth, h_neqcheec_truth_2d);
 
         // Real data
-        TH3D* h_npair_data_wmuon      = (TH3D*) fcorr_data->Get("h_npair_wmuon");
-        TH3D* h_eqchnpair_data_wmuon  = (TH3D*) fcorr_data->Get("h_eqchnpair_wmuon");
-        TH3D* h_neqchnpair_data_wmuon = (TH3D*) fcorr_data->Get("h_neqchnpair_wmuon");
+        TH3D* h_data_npair      = (TH3D*) fcorr_data->Get("h_npair_wmuon");
+        TH3D* h_data_eqchnpair  = (TH3D*) fcorr_data->Get("h_eqchnpair_wmuon");
+        TH3D* h_data_neqchnpair = (TH3D*) fcorr_data->Get("h_neqchnpair_wmuon");
 
+        TH1D* h_data_njet       = (TH1D*) fcorr_data->Get("h_njet_wmuoneff");
+
+        // 3D reweight matrices
+        TH3D* h_npair_reweight      = new TH3D("h_npair_reweight"      , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* h_eqchnpair_reweight  = new TH3D("h_eqchnpair_reweight"  , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* h_neqchnpair_reweight = new TH3D("h_neqchnpair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+
+        TH3D* h_mcreco_npair_norm      = (TH3D*) h_npair->Clone("h_mcreco_npair_norm");
+        TH3D* h_mcreco_eqchnpair_norm  = (TH3D*) h_eqchnpair->Clone("h_mcreco_eqchnpair_norm");
+        TH3D* h_mcreco_neqchnpair_norm = (TH3D*) h_neqchnpair->Clone("h_mcreco_neqchnpair_norm");
+
+        TH3D* h_data_npair_norm      = (TH3D*) h_data_npair->Clone("h_data_npair_norm");
+        TH3D* h_data_eqchnpair_norm  = (TH3D*) h_data_eqchnpair->Clone("h_data_eqchnpair_norm");
+        TH3D* h_data_neqchnpair_norm = (TH3D*) h_data_neqchnpair->Clone("h_data_neqchnpair_norm");
+
+        h_mcreco_npair_norm->Scale(1./h_mcreco_npair_norm->Integral());
+        h_mcreco_eqchnpair_norm->Scale(1./h_mcreco_eqchnpair_norm->Integral());
+        h_mcreco_neqchnpair_norm->Scale(1./h_mcreco_neqchnpair_norm->Integral());
+        
+        h_data_npair_norm->Scale(1./h_data_npair_norm->Integral());
+        h_data_eqchnpair_norm->Scale(1./h_data_eqchnpair_norm->Integral());
+        h_data_neqchnpair_norm->Scale(1./h_data_neqchnpair_norm->Integral());
+
+        h_npair_reweight->Divide(h_data_npair_norm, h_mcreco_npair_norm);
+        h_eqchnpair_reweight->Divide(h_data_eqchnpair_norm, h_mcreco_eqchnpair_norm);
+        h_neqchnpair_reweight->Divide(h_data_neqchnpair_norm, h_mcreco_neqchnpair_norm);
+
+        // 1D reweight matrices
+        TH1D* h_njet_reweight = new TH1D("h_njet_reweight", "", nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        
+        TH1D* h_mcreco_njet_norm = (TH1D*) h_njet->Clone("h_mcreco_njet_norm");
+        
+        TH1D* h_data_njet_norm = (TH1D*) h_data_njet->Clone("h_data_njet_norm");
+        
+        h_mcreco_njet_norm->Scale(1./h_mcreco_njet_norm->Integral());
+        h_data_njet_norm->Scale(1./h_data_njet_norm->Integral());
+        
+        h_njet_reweight->Divide(h_data_njet_norm, h_mcreco_njet_norm);
+        
         // Correct the jets
         TRandom3* rndm = new TRandom3(0);
         
@@ -96,30 +135,6 @@ void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter
         TH3D* hmeas_neqchnpair = new TH3D("hmeas_neqchnpair" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3D* htrue_neqchnpair = new TH3D("htrue_neqchnpair" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
         RooUnfoldResponse* response_neqchnpair = new RooUnfoldResponse(hmeas_neqchnpair, htrue_neqchnpair, "response_neqchnpair");
-
-        // Create the reweighting matrix
-        TH3D* h_npair_reweight      = new TH3D("h_npair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
-        TH3D* h_eqchnpair_reweight  = new TH3D("h_eqchnpair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
-        TH3D* h_neqchnpair_reweight = new TH3D("h_neqchnpair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
-
-        TH3D* h_npair_norm           = (TH3D*) h_npair->Clone("h_npair_norm");
-        TH3D* h_eqchnpair_norm       = (TH3D*) h_eqchnpair->Clone("h_eqchnpair_norm");
-        TH3D* h_neqchnpair_norm      = (TH3D*) h_neqchnpair->Clone("h_neqchnpair_norm");
-
-        TH3D* h_npair_data_wmuon_norm      = (TH3D*) h_npair_data_wmuon->Clone("h_npair_data_wmuon_norm");
-        TH3D* h_eqchnpair_data_wmuon_norm  = (TH3D*) h_eqchnpair_data_wmuon->Clone("h_eqchnpair_data_wmuon_norm");
-        TH3D* h_neqchnpair_data_wmuon_norm = (TH3D*) h_neqchnpair_data_wmuon->Clone("h_neqchnpair_data_wmuon_norm");
-
-        h_npair_norm->Scale(1./h_npair_norm->Integral());
-        h_eqchnpair_norm->Scale(1./h_eqchnpair_norm->Integral());
-        h_neqchnpair_norm->Scale(1./h_neqchnpair_norm->Integral());
-        h_npair_data_wmuon_norm->Scale(1./h_npair_data_wmuon_norm->Integral());
-        h_eqchnpair_data_wmuon_norm->Scale(1./h_eqchnpair_data_wmuon_norm->Integral());
-        h_neqchnpair_data_wmuon_norm->Scale(1./h_neqchnpair_data_wmuon_norm->Integral());
-
-        h_npair_reweight->Divide(h_npair_norm,h_npair_data_wmuon_norm);
-        h_eqchnpair_reweight->Divide(h_eqchnpair_norm,h_eqchnpair_data_wmuon_norm);
-        h_neqchnpair_reweight->Divide(h_neqchnpair_norm,h_neqchnpair_data_wmuon_norm);
 
         TCanvas* c = new TCanvas("c", "", 1920, 1080);
         c->Draw();

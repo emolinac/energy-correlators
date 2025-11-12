@@ -6,17 +6,17 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_avge_jer_results(int niter = 4, int niter_jet = 4)
+void macro_avge_jes_jer_results(int niter = 4, int niter_jet = 4)
 {
         const int nvariations = 10;
 
         TFile* f[nvariations];
 
         for (int i = 0 ; i < nvariations ; i++) {
-                f[i] = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i--get-jer_%i.root",niter,niter_jet,i)).c_str());
+                f[i] = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i--get-jes-jer_%i.root",niter,niter_jet,i)).c_str());
         }
 
-        TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i--get-jer.root",niter,niter_jet)).c_str(),"RECREATE");
+        TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i--get-jes-jer.root",niter,niter_jet)).c_str(),"RECREATE");
         gROOT->cd();
 
         TH1F* hcorr_eec[nbin_jet_pt][nvariations]; 

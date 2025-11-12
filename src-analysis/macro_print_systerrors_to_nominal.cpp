@@ -6,7 +6,7 @@
 #include "../include/utils-algorithms.h"
 #include "../include/utils-visual.h"
 
-void macro_print_systerrors_contribution(int niter = 4, int niter_jet = 4)
+void macro_print_systerrors_to_nominal(int niter = 4, int niter_jet = 4)
 {
         TFile* fnominal = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i--get-nominal.root",niter,niter_jet)).c_str());
 
@@ -31,86 +31,58 @@ void macro_print_systerrors_contribution(int niter = 4, int niter_jet = 4)
         }
 
         TH1F* hcorr_eec[nbin_jet_pt]; 
-        TH1F* hcorr_eec_syst[nbin_jet_pt]; 
+        TH1F* hcorr_eec_staterror_as_content[nbin_jet_pt]; 
         TH1F* hcorr_eec_eqcharge[nbin_jet_pt]; 
-        TH1F* hcorr_eec_eqcharge_syst[nbin_jet_pt]; 
+        TH1F* hcorr_eec_eqcharge_staterror_as_content[nbin_jet_pt]; 
         TH1F* hcorr_eec_neqcharge[nbin_jet_pt]; 
-        TH1F* hcorr_eec_neqcharge_syst[nbin_jet_pt]; 
+        TH1F* hcorr_eec_neqcharge_staterror_as_content[nbin_jet_pt]; 
         
         // Nominal operations
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 hcorr_eec[bin]           = (TH1F*) fnominal->Get(Form("hcorr_eec%i",bin));
                 hcorr_eec_eqcharge[bin]  = (TH1F*) fnominal->Get(Form("hcorr_eqcheec%i",bin));
                 hcorr_eec_neqcharge[bin] = (TH1F*) fnominal->Get(Form("hcorr_neqcheec%i",bin));
-
-                hcorr_eec_syst[bin]           = (TH1F*) hcorr_eec[bin]->Clone(Form("hcorr_eec_syst%i",bin));
-                hcorr_eec_eqcharge_syst[bin]  = (TH1F*) hcorr_eec_eqcharge[bin]->Clone(Form("hcorr_eec_eqcharge_syst%i",bin));
-                hcorr_eec_neqcharge_syst[bin] = (TH1F*) hcorr_eec_neqcharge[bin]->Clone(Form("hcorr_eec_neqcharge_syst%i",bin));
                 
-                set_histogram_style(hcorr_eec[bin]               , corr_marker_color_jet_pt[bin+3], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_eec_syst[bin]          , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_eec_eqcharge[bin]      , corr_marker_color_jet_pt[bin+3], std_line_width, std_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_eec_eqcharge_syst[bin] , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_eec_neqcharge[bin]     , corr_marker_color_jet_pt[bin+3], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
-                set_histogram_style(hcorr_eec_neqcharge_syst[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                hcorr_eec_staterror_as_content[bin]           = new TH1F(Form("hcorr_eec_stat%i",bin),"", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
+                hcorr_eec_eqcharge_staterror_as_content[bin]  = new TH1F(Form("hcorr_eec_eqcharge_stat%i",bin),"", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
+                hcorr_eec_neqcharge_staterror_as_content[bin] = new TH1F(Form("hcorr_eec_neqcharge_stat%i",bin),"", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning);
                 
-                hcorr_eec[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin+3], 0.3);
-                hcorr_eec_syst[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
-                hcorr_eec_eqcharge[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin+3], 0.3);
-                hcorr_eec_eqcharge_syst[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
-                hcorr_eec_neqcharge[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin+3], 0.3);
-                hcorr_eec_neqcharge_syst[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                set_histoa_errors_as_histob_content(hcorr_eec[bin]          , hcorr_eec_staterror_as_content[bin]);
+                set_histoa_errors_as_histob_content(hcorr_eec_eqcharge[bin] , hcorr_eec_eqcharge_staterror_as_content[bin]);
+                set_histoa_errors_as_histob_content(hcorr_eec_neqcharge[bin], hcorr_eec_neqcharge_staterror_as_content[bin]);
+                
+                set_histogram_style(hcorr_eec[bin]                               , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_eec_staterror_as_content[bin]          , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_eec_eqcharge[bin]                      , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size+2);
+                set_histogram_style(hcorr_eec_eqcharge_staterror_as_content[bin] , corr_marker_color_jet_pt[bin], std_line_width, std_marker_style_jet_pt[bin] , std_marker_size+2);
+                set_histogram_style(hcorr_eec_neqcharge[bin]                     , corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                set_histogram_style(hcorr_eec_neqcharge_staterror_as_content[bin], corr_marker_color_jet_pt[bin], std_line_width, corr_marker_style_jet_pt[bin], std_marker_size+2);
+                
+                hcorr_eec[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                hcorr_eec_staterror_as_content[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                hcorr_eec_eqcharge[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                hcorr_eec_eqcharge_staterror_as_content[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                hcorr_eec_neqcharge[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                hcorr_eec_neqcharge_staterror_as_content[bin]->SetFillColorAlpha(corr_marker_color_jet_pt[bin], 0.3);
+                
+                s[bin]->Add(hcorr_eec_staterror_as_content[bin]);
+                s_eqch[bin]->Add(hcorr_eec_eqcharge_staterror_as_content[bin]);
+                s_neqch[bin]->Add(hcorr_eec_neqcharge_staterror_as_content[bin]);
                 
                 l[bin]->SetHeader(Form("%.0f<p_{T,jet}(GeV)<%.0f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                l[bin]->AddEntry(hcorr_eec_syst[bin],"Systematic Error","f");
+                l[bin]->AddEntry(hcorr_eec_staterror_as_content[bin],"Statistical Error","f");
                 l_eqch[bin]->SetHeader(Form("%.0f<p_{T,jet}(GeV)<%.0f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                l_eqch[bin]->AddEntry(hcorr_eec_eqcharge_syst[bin],"Systematic Error","f");
+                l_eqch[bin]->AddEntry(hcorr_eec_eqcharge_staterror_as_content[bin],"Statistical Error","f");
                 l_neqch[bin]->SetHeader(Form("%.0f<p_{T,jet}(GeV)<%.0f",jet_pt_binning[bin],jet_pt_binning[bin + 1]));
-                l_neqch[bin]->AddEntry(hcorr_eec_neqcharge_syst[bin],"Systematic Error","f");
+                l_neqch[bin]->AddEntry(hcorr_eec_neqcharge_staterror_as_content[bin],"Statistical Error","f");
         }
 
-        // Calculate the total systematic error
+        // Include the systematics in the whole deal
         const int nsyst = sizeof(available_systematics)/sizeof(available_systematics[0]);
         TFile* fsyst[nsyst];
         TH1F* hsyst_eec[nbin_jet_pt];
         TH1F* hsyst_eec_eqcharge[nbin_jet_pt];
         TH1F* hsyst_eec_neqcharge[nbin_jet_pt];
-
-        for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
-                if (gSystem->AccessPathName((output_folder + systematic_namef[available_systematics[syst_index]]).c_str()))
-                        continue;
-                
-                fsyst[syst_index] = new TFile((output_folder + systematic_namef[available_systematics[syst_index]]).c_str());
-                
-                for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                        hsyst_eec[bin] = (TH1F*) fsyst[syst_index]->Get(Form("relerror_eec%i",bin));
-                        set_histo_with_systematics(hsyst_eec[bin], hcorr_eec[bin], hcorr_eec_syst[bin], syst_index, false);
-                        
-                        hsyst_eec_eqcharge[bin] = (TH1F*) fsyst[syst_index]->Get(Form("relerror_eqcheec%i",bin));
-                        set_histo_with_systematics(hsyst_eec_eqcharge[bin], hcorr_eec_eqcharge[bin], hcorr_eec_eqcharge_syst[bin], syst_index, false);
-                        
-                        hsyst_eec_neqcharge[bin] = (TH1F*) fsyst[syst_index]->Get(Form("relerror_neqcheec%i",bin));
-                        set_histo_with_systematics(hsyst_eec_neqcharge[bin], hcorr_eec_neqcharge[bin], hcorr_eec_neqcharge_syst[bin], syst_index, false);
-                }
-        }
-
-        // Extract the statistical error from the total error
-        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                substract_stat_error(hcorr_eec[bin]          , hcorr_eec_syst[bin]);
-                substract_stat_error(hcorr_eec_eqcharge[bin] , hcorr_eec_eqcharge_syst[bin]);
-                substract_stat_error(hcorr_eec_neqcharge[bin], hcorr_eec_neqcharge_syst[bin]);
-
-                set_histoa_errors_as_histob_content(hcorr_eec_syst[bin]          ,hcorr_eec_syst[bin]);
-                set_histoa_errors_as_histob_content(hcorr_eec_eqcharge_syst[bin] ,hcorr_eec_eqcharge_syst[bin]);
-                set_histoa_errors_as_histob_content(hcorr_eec_neqcharge_syst[bin],hcorr_eec_neqcharge_syst[bin]);
-        }
-
-        // In order to get the systematic total in the background I have to insert that first and then the other systematics
-        for (int i = 0 ; i < nbin_jet_pt ; i++) {
-                s[i]->Add(hcorr_eec_syst[i],"HIST");
-                s_eqch[i]->Add(hcorr_eec_eqcharge_syst[i],"HIST");
-                s_neqch[i]->Add(hcorr_eec_neqcharge_syst[i],"HIST");
-        }
 
         for (int syst_index = 0 ; syst_index < nsyst ; syst_index++) {
                 if (gSystem->AccessPathName((output_folder + systematic_namef[available_systematics[syst_index]]).c_str()))
@@ -135,7 +107,7 @@ void macro_print_systerrors_contribution(int niter = 4, int niter_jet = 4)
                         l_neqch[bin]->AddEntry(hsyst_eec_neqcharge[bin],systematic_name[available_systematics[syst_index]].c_str(),"p");
                 }
         }
-
+        
         // Print EECS
         for (int i = 0 ; i < nbin_jet_pt ; i++) {
                 s[i]->Draw("NOSTACK");
@@ -146,7 +118,7 @@ void macro_print_systerrors_contribution(int niter = 4, int niter_jet = 4)
                 gPad->SetLogx(1);
                 gPad->SetLogy(0);
                 
-                c->Print(Form("./plots/correec_systematics_contribution_jetpt%i.pdf",i));
+                c->Print(Form("./plots/correec_systematics_to_nominal_jetpt%i.pdf",i));
 
                 s_eqch[i]->Draw("NOSTACK");
                 s_eqch[i]->SetTitle(";R_{L};Relative Uncertainty");
@@ -156,7 +128,7 @@ void macro_print_systerrors_contribution(int niter = 4, int niter_jet = 4)
                 gPad->SetLogx(1);
                 gPad->SetLogy(0);
                 
-                c->Print(Form("./plots/correqchargedeec_systematics_contribution_jetpt%i.pdf",i));
+                c->Print(Form("./plots/correqchargedeec_systematics_to_nominal_jetpt%i.pdf",i));
 
                 s_neqch[i]->Draw("NOSTACK");
                 s_neqch[i]->SetTitle(";R_{L};Relative Uncertainty");
@@ -166,6 +138,6 @@ void macro_print_systerrors_contribution(int niter = 4, int niter_jet = 4)
                 gPad->SetLogx(1);
                 gPad->SetLogy(0);
                 
-                c->Print(Form("./plots/corrneqchargedeec_systematics_contribution_jetpt%i.pdf",i));
+                c->Print(Form("./plots/corrneqchargedeec_systematics_to_nominal_jetpt%i.pdf",i));
         }
 }

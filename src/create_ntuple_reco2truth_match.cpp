@@ -16,17 +16,18 @@
 #include "directories.h"
 #include "names.h"
 #include "syst-jes-jer.h"
+#include "utils-algorithms.h"
 
 int main(int argc, char* argv[])
 {
         bool get_nominal = false;
-        bool get_jes     = false;
+        bool get_jes_jer = false;
         bool get_jer     = false;
 
         if (argc < 2 || std::string(argv[1]) == "--help") {
                 std::cout<<"You have to pass one argument to this code. Possible options are:"<<std::endl;
                 std::cout<<"--get-nominal : Gets the nominal pair corrections."<<std::endl;
-                std::cout<<"--get-jes     : Gets the pair corrections with the JES variation."<<std::endl;
+                std::cout<<"--get-jes-jer : Gets the pair corrections with the JES-JER variation."<<std::endl;
                 std::cout<<"--get-jer     : Gets the pair corrections with the JER variation."<<std::endl;
 
                 return 0;
@@ -34,8 +35,8 @@ int main(int argc, char* argv[])
 
         if (std::string(argv[1]) == "--get-nominal")
                 get_nominal = true;
-        else if (std::string(argv[1]) == "--get-jes")
-                get_jes = true;
+        else if (std::string(argv[1]) == "--get-jes-jer")
+                get_jes_jer = true;
         else if (std::string(argv[1]) == "--get-jer")
                 get_jer = true;
         else {
@@ -43,16 +44,16 @@ int main(int argc, char* argv[])
                 return 0;
         }
         
-        if ((get_jes && syst_jes_array[0] == -999)||(get_jer && syst_jer_array[0] == -999)) {
-                std::cout<<"No values were found for custom JEC. Set the values related to the JEC:"<<std::endl;
-                std::cout<<"1 - In the bin folder execute: ./create_jes_jer_ntuple"<<std::endl;
-                std::cout<<"2 - In the src-analysis-jets folder execute: root -b -q macro_print_jes_chisquare.cpp"<<std::endl;
-                std::cout<<"3 - Copy the indicated output in include/syst-jes-jer.h"<<std::endl;
-                std::cout<<"4 - In the src-analysis-jets folder execute: root -b -q macro_print_jer_chisquare.cpp"<<std::endl;
-                std::cout<<"5 - Copy the indicated output in include/syst-jes-jer.h"<<std::endl;
+        // if ((get_jes && syst_jes_array[0] == -999)||(get_jer && syst_jer_array[0] == -999)) {
+        //         std::cout<<"No values were found for custom JEC. Set the values related to the JEC:"<<std::endl;
+        //         std::cout<<"1 - In the bin folder execute: ./create_jes_jer_ntuple"<<std::endl;
+        //         std::cout<<"2 - In the src-analysis-jets folder execute: root -b -q macro_print_jes_chisquare.cpp"<<std::endl;
+        //         std::cout<<"3 - Copy the indicated output in include/syst-jes-jer.h"<<std::endl;
+        //         std::cout<<"4 - In the src-analysis-jets folder execute: root -b -q macro_print_jer_chisquare.cpp"<<std::endl;
+        //         std::cout<<"5 - Copy the indicated output in include/syst-jes-jer.h"<<std::endl;
 
-                return 0;
-        }
+        //         return 0;
+        // }
 
         // Create output file
         TFile* fout = new TFile((output_folder + namef_reco_corrections[argv[1]]).c_str(),"RECREATE");
@@ -128,27 +129,29 @@ int main(int argc, char* argv[])
                 if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
                         continue;
                 
-                if (get_jes) {
-                        double beta_star = 1.;
+                if (get_jes_jer) {
+                        // double beta_star = 1.;
                         
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt_unfolding ; jet_pt_bin++)
-                                if (Jet_4vector->Pt()>unfolding_jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<unfolding_jet_pt_binning[jet_pt_bin + 1])
-                                        beta_star = syst_jes_array[jet_pt_bin];
+                        // for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt_unfolding ; jet_pt_bin++)
+                        //         if (Jet_4vector->Pt()>unfolding_jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<unfolding_jet_pt_binning[jet_pt_bin + 1])
+                        //                 beta_star = syst_jes_array[jet_pt_bin];
 
-                        if (beta_star == 1)
-                                continue;
+                        // if (beta_star == 1)
+                        //         continue;
 
-                        double new_jes_cor_effect = std::abs(1. - beta_star);
+                        // double new_jes_cor_effect = std::abs(1. - beta_star);
 
-                        if (rndm->Integer(2))
-                                beta_star = 1 + new_jes_cor_effect;
-                        else
-                                beta_star = 1 - new_jes_cor_effect;
+                        // if (rndm->Integer(2))
+                        //         beta_star = 1 + new_jes_cor_effect;
+                        // else
+                        //         beta_star = 1 - new_jes_cor_effect;
 
-                        Jet_4vector->SetPxPyPzE(beta_star*mcrecotree->Jet_PX/1000.,
-                                                beta_star*mcrecotree->Jet_PY/1000.,
-                                                beta_star*mcrecotree->Jet_PZ/1000.,
-                                                beta_star*mcrecotree->Jet_PE/1000.);
+                        double jes_jer_factor = get_jes_jer_factor(Jet_4vector->Pt(), rndm);
+
+                        Jet_4vector->SetPxPyPzE(jes_jer_factor*mcrecotree->Jet_PX/1000.,
+                                                jes_jer_factor*mcrecotree->Jet_PY/1000.,
+                                                jes_jer_factor*mcrecotree->Jet_PZ/1000.,
+                                                jes_jer_factor*mcrecotree->Jet_PE/1000.);
                 } else if (get_jer) {
                         double alpha_star = 1.;
 
@@ -222,9 +225,9 @@ int main(int argc, char* argv[])
                                         continue;
 
                                 h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,
-                                                mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
-                                                mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,
-                                                mcrecotree->Jet_Dtr_E[h1_index]/1000.);
+                                                       mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
+                                                       mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,
+                                                       mcrecotree->Jet_Dtr_E[h1_index]/1000.);
 
                                 if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h1_index],
                                                         h1_4vector->P(),
@@ -251,14 +254,14 @@ int main(int argc, char* argv[])
                                                 key1_match = 0;
 
                                         true_h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_TRUE_PX[h1_index]/1000.,
-                                                                mcrecotree->Jet_Dtr_TRUE_PY[h1_index]/1000.,
-                                                                mcrecotree->Jet_Dtr_TRUE_PZ[h1_index]/1000.,
-                                                                mcrecotree->Jet_Dtr_TRUE_E[h1_index]/1000.);
+                                                                    mcrecotree->Jet_Dtr_TRUE_PY[h1_index]/1000.,
+                                                                    mcrecotree->Jet_Dtr_TRUE_PZ[h1_index]/1000.,
+                                                                    mcrecotree->Jet_Dtr_TRUE_E[h1_index]/1000.);
                                         
                                         if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h1_index],
-                                                                        true_h1_4vector->P(),
-                                                                        true_h1_4vector->Pt(),
-                                                                        true_h1_4vector->Eta())) 
+                                                                              true_h1_4vector->P(),
+                                                                              true_h1_4vector->Pt(),
+                                                                              true_h1_4vector->Eta())) 
                                                 key1_match = 0;
                                 } 
                                 
@@ -267,9 +270,9 @@ int main(int argc, char* argv[])
                                                 continue;
 
                                         h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,
-                                                        mcrecotree->Jet_Dtr_PY[h2_index]/1000.,
-                                                        mcrecotree->Jet_Dtr_PZ[h2_index]/1000.,
-                                                        mcrecotree->Jet_Dtr_E[h2_index]/1000.);
+                                                               mcrecotree->Jet_Dtr_PY[h2_index]/1000.,
+                                                               mcrecotree->Jet_Dtr_PZ[h2_index]/1000.,
+                                                               mcrecotree->Jet_Dtr_E[h2_index]/1000.);
 
                                         if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h2_index],
                                                                 h2_4vector->P(),
@@ -296,9 +299,9 @@ int main(int argc, char* argv[])
                                                         key2_match = 0;
 
                                                 true_h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_TRUE_PX[h2_index]/1000.,
-                                                                        mcrecotree->Jet_Dtr_TRUE_PY[h2_index]/1000.,
-                                                                        mcrecotree->Jet_Dtr_TRUE_PZ[h2_index]/1000.,
-                                                                        mcrecotree->Jet_Dtr_TRUE_E[h2_index]/1000.);
+                                                                            mcrecotree->Jet_Dtr_TRUE_PY[h2_index]/1000.,
+                                                                            mcrecotree->Jet_Dtr_TRUE_PZ[h2_index]/1000.,
+                                                                            mcrecotree->Jet_Dtr_TRUE_E[h2_index]/1000.);
                                                 
                                                 if (!apply_chargedtrack_momentum_cuts(mcrecotree->Jet_Dtr_TRUE_ThreeCharge[h2_index],
                                                                                 true_h2_4vector->P(),

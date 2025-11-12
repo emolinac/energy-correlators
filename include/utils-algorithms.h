@@ -1,4 +1,11 @@
 #include "TRandom3.h"
+#include "TH3F.h"
+#include "TH3D.h"
+#include "TH2F.h"
+#include "TH2D.h"
+#include "TH1F.h"
+#include "TH1D.h"
+#include "TRandom3.h"
 
 double get_hwhm(TH1F* h)
 {
@@ -242,18 +249,18 @@ void regularize_correction_factors(TH3D* h)
 void set_histo_with_systematics(TH1F* hrelerror, TH1F* hnominal, TH1F* hsystematic, int syst_index, bool print_table = true)
 {
         double total_err = 0, total = 0;
-        double n_ct_sources = (syst_index == 0 || syst_index == 3 || syst_index == 4) ? 3. : 1.;
+        double n_ct_sources = (syst_index != 2) ? 4. : 1.;
 
         for (int hbin = 1 ; hbin <= hrelerror->GetNbinsX() ; hbin++)
         {
                 double dev     = hrelerror->GetBinContent(hbin);
                 double dev_err = hrelerror->GetBinError(hbin);
                 
-                // // Dev values are positive by construction
-                // if (dev-dev_err < 0) 
-                //         continue;
-
+                // Dev values are positive by construction
                 total += hnominal->GetBinContent(hbin);
+
+                if (dev-dev_err < 0) 
+                        continue;
 
                 double syst_error            = std::abs(dev)*hnominal->GetBinContent(hbin);
                 double syst_error_percentage = std::abs(dev);
@@ -275,17 +282,17 @@ void set_histo_with_systematics(TH1F* hrelerror, TH1F* hnominal, TH1F* hsystemat
                 std::cout<<0;
 }
 
-void set_nominal_error_histo(TH1F* hnominal, TH1F* hnominalerror)
+void set_histoa_errors_as_histob_content(TH1F* ha, TH1F* hb)
 {
-        for (int i = 1 ; i <= hnominal->GetNbinsX() ; i++) {
-                double error = hnominal->GetBinError(i);
-                double content = hnominal->GetBinContent(i);
+        for (int i = 1 ; i <= ha->GetNbinsX() ; i++) {
+                double error = ha->GetBinError(i);
+                double content = ha->GetBinContent(i);
                 double nominal_relerror = error/content;
 
                 if (std::isnan(nominal_relerror))
                         nominal_relerror = 0;
 
-                hnominalerror->SetBinContent(i, nominal_relerror);
+                hb->SetBinContent(i, nominal_relerror);
         }
 }
 
@@ -512,7 +519,7 @@ void set_unity_content(TH1F* h)
         }
 }
 
-double get_JES_JER(const double jet_pt, TRandom3 *myRNG, bool do_sys = false) 
+double get_jes_jer_factor(const double jet_pt, TRandom3 *myRNG) 
 {
         double jes_var = 1, jer_var = 1;
 

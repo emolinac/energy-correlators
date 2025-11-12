@@ -235,6 +235,9 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
         c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst_newparadigm.pdf",niter));
 
         // Print charged EECs
+        TLine* line = new TLine(rl_nominal_binning[0],0.5,rl_nominal_binning[nbin_rl_nominal],0.5);
+        line->SetLineWidth(1);
+
         for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
                 s_data = new THStack();
                 l_data = new TLegend(0.02 + gPad->GetLeftMargin(), 1 - 0.21 - gPad->GetTopMargin(),0.32 + gPad->GetLeftMargin(), 1 - 0.03 - gPad->GetTopMargin());
@@ -254,6 +257,7 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
                 s_data->SetMaximum(1.2);
                 s_data->SetMinimum(0.1);
                 l_data->Draw("SAME");
+                line->Draw("SAME");
                 gPad->SetLogx(1);
                 gPad->SetLogy(0);
                 

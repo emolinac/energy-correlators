@@ -18,7 +18,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
         // Open the necessary files
         std::string fout_name         = Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i%s.root",niter,niter_jet,analysis_variation.c_str());
         std::string nominal_file_name = "histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-nominal.root";
-        std::string fdata_name        = (niter_jer >= 0) ? Form("histos_3dpaircorr_rl_jetpt_weightpt_eec_jer_%i.root",niter_jer) :
+        std::string fdata_name        = (niter_jer >= 0) ? Form("histos_3dpaircorr_rl_jetpt_weightpt_eec_jes_jer_%i.root",niter_jer) :
                                                            namef_all_corrections[analysis_variation];
         
         TFile* fout = new TFile((output_folder + fout_name.c_str()).c_str(),"RECREATE");

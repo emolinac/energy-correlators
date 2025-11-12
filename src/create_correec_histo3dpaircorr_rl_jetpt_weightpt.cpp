@@ -29,13 +29,13 @@
 int main(int argc, char* argv[])
 {
         bool get_nominal = false;
-        bool get_jes     = false;
+        bool get_jes_jer = false;
         bool get_jer     = false;
 
         if (argc < 2 || std::string(argv[1]) == "--help") {
                 std::cout<<"You have to pass one argument to this code. Possible options are:"<<std::endl;
                 std::cout<<"--get-nominal : Gets the nominal pair corrections."<<std::endl;
-                std::cout<<"--get-jes     : Gets the pair corrections with the JES variation."<<std::endl;
+                std::cout<<"--get-jes-jer : Gets the pair corrections with the JES-JER variation."<<std::endl;
                 std::cout<<"--get-jer     : Gets the pair corrections with the JER variation."<<std::endl;
 
                 return 0;
@@ -43,8 +43,8 @@ int main(int argc, char* argv[])
 
         if (std::string(argv[1]) == "--get-nominal")
                 get_nominal = true;
-        else if (std::string(argv[1]) == "--get-jes")
-                get_jes = true;
+        else if (std::string(argv[1]) == "--get-jes-jer")
+                get_jes_jer = true;
         else if (std::string(argv[1]) == "--get-jer")
                 get_jer = true;
         else {
