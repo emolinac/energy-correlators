@@ -43,37 +43,10 @@ const double weight_pt_cut[]  = {0.12,0.10,0.085};
 const double min_efficiency[] = {0.14,0.10,0.05};
 const double max_relerror[]   = {0.50,0.35,0.45};
 
-// Misc analysis cuts
 TCut pair_matching_cut = "R_L_truth!=-999";
 
-// Nominal Analysis Cuts
 TCut eec_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
 TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
-
-// Cuts as function of jet pt
-TCut eec_jet_pt_cut[] = {
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_eqcharge_jet_pt_cut[] = {
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_neqcharge_jet_pt_cut[] = {
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_zpt_cut_weightpt[] = {
-        Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[0], z_pt_binning[1]),
-        Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[1], z_pt_binning[2]),
-        Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[2], z_pt_binning[3])
-};
 
 TCut pair_jet_pt_cut[] = {
 	Form("jet_pt>%f&&jet_pt<%f", jet_pt_binning[0], jet_pt_binning[1]),
@@ -81,70 +54,8 @@ TCut pair_jet_pt_cut[] = {
 	Form("jet_pt>%f&&jet_pt<%f", jet_pt_binning[2], jet_pt_binning[3])
 };
 
-TCut pair_zpt_cut[] = {
-	Form("z_pt>%f&&z_pt<%f", z_pt_binning[0], z_pt_binning[1]),
-	Form("z_pt>%f&&z_pt<%f", z_pt_binning[1], z_pt_binning[2]),
-	Form("z_pt>%f&&z_pt<%f", z_pt_binning[2], z_pt_binning[3])
-};
-
-// _______________________________ Purity Analysis Cuts _______________________________ //
 TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f",rl_resolution);
 TCut single_signal_cut = "key_match==1";
-
-TCut purity_corr_singletrack     = Form("purity*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut efficiency_corr_singletrack = Form("(1./efficiency)*(et_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut full_corr_singletrack       = Form("purity*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-
-TCut eec_purity_corr_singletrack     = Form("weight*purity*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut eec_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut eec_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-
-TCut pair_purity_corr_singletrack_weightpt = "purity";
-
-TString muons_eff = "1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))";
-
-TCut jet_full_corr[] = {
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut pair_jet_pt_signal_cut[] = {
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[0], jet_pt_binning[1]),
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[1], jet_pt_binning[2]),
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[2], jet_pt_binning[3])
-};
-
-// ANALYSIS VARIATIONS CUTS
-TCut eec_jet_pt_cut_pp[] = {
-        Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_jet_pt_cut_mm[] = {
-        Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_jet_pt_cut_pm[] = {
-        Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_jet_pt_cut_kaon[] = {
-        Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_jet_pt_cut_nokaon[] = {
-        Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
 
 bool apply_jet_cuts(double jet_eta, double jet_pt)
 {
