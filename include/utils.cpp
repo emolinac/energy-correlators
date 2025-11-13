@@ -1,6 +1,6 @@
 
 #include "analysis-binning.h"
-#include "utils-algorithms.h"
+#include "utils.h"
 #include <iostream>
 
 double get_hwhm(TH1F* h)
@@ -549,4 +549,9 @@ double get_jes_jer_factor(const double jet_pt, TRandom3 *myRNG)
         }
 
         return jes_var * myRNG->Gaus(1, jer_var);
+}
+
+double weight(double h1_E, double h2_E, double jet_E)
+{
+        return h1_E*h2_E/jet_E/jet_E;
 }

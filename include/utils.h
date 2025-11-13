@@ -83,4 +83,6 @@ void set_unity_content(TH1F* h);
 
 double get_jes_jer_factor(const double jet_pt, TRandom3 *myRNG);
 
+double weight(double h1_E, double h2_E, double jet_E);
+
 #endif

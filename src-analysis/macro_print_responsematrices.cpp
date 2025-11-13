@@ -4,8 +4,8 @@
 #include "../include/analysis-cuts.h"
 #include "../include/directories.h"
 #include "../include/names.h"
-#include "../include/utils-algorithms.cpp"
-#include "../include/utils-algorithms.h"
+#include "../include/utils.cpp"
+#include "../include/utils.h"
 #include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 

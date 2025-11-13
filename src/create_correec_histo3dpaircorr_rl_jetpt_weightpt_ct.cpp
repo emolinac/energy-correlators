@@ -16,10 +16,9 @@
 #include "analysis-constants.h"
 #include "analysis-binning.h"
 #include "analysis-cuts.h"
-#include "analysis-functions.h"
 #include "directories.h"
 #include "names.h"
-#include "utils-algorithms.h"
+#include "utils.h"
 
 int main()
 {
