@@ -54,13 +54,14 @@ void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter
         TH3D* h_eqchnpair_reweight  = new TH3D("h_eqchnpair_reweight"  , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3D* h_neqchnpair_reweight = new TH3D("h_neqchnpair_reweight" , "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
 
-        TH3D* h_mcreco_npair_norm      = (TH3D*) h_npair->Clone("h_mcreco_npair_norm");
-        TH3D* h_mcreco_eqchnpair_norm  = (TH3D*) h_eqchnpair->Clone("h_mcreco_eqchnpair_norm");
-        TH3D* h_mcreco_neqchnpair_norm = (TH3D*) h_neqchnpair->Clone("h_mcreco_neqchnpair_norm");
+        TH3D* h_mcreco_npair_norm      = (TH3D*) fcorr->Get("h_npair");
+        TH3D* h_mcreco_npair_normtest  = (TH3D*) fcorr->Get("h_npair");
+        TH3D* h_mcreco_eqchnpair_norm  = (TH3D*) fcorr->Get("h_eqchnpair");
+        TH3D* h_mcreco_neqchnpair_norm = (TH3D*) fcorr->Get("h_neqchnpair");
 
-        TH3D* h_data_npair_norm      = (TH3D*) h_data_npair->Clone("h_data_npair_norm");
-        TH3D* h_data_eqchnpair_norm  = (TH3D*) h_data_eqchnpair->Clone("h_data_eqchnpair_norm");
-        TH3D* h_data_neqchnpair_norm = (TH3D*) h_data_neqchnpair->Clone("h_data_neqchnpair_norm");
+        TH3D* h_data_npair_norm      = (TH3D*) fcorr_data->Get("h_npair");
+        TH3D* h_data_eqchnpair_norm  = (TH3D*) fcorr_data->Get("h_eqchnpair");
+        TH3D* h_data_neqchnpair_norm = (TH3D*) fcorr_data->Get("h_neqchnpair");
 
         h_mcreco_npair_norm->Scale(1./h_mcreco_npair_norm->Integral());
         h_mcreco_eqchnpair_norm->Scale(1./h_mcreco_eqchnpair_norm->Integral());
@@ -77,9 +78,9 @@ void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter
         // 1D reweight matrices
         TH1D* h_njet_reweight = new TH1D("h_njet_reweight", "", nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
         
-        TH1D* h_mcreco_njet_norm = (TH1D*) h_njet->Clone("h_mcreco_njet_norm");
+        TH1D* h_mcreco_njet_norm = (TH1D*) fcorr->Get("h_njet");
         
-        TH1D* h_data_njet_norm = (TH1D*) h_data_njet->Clone("h_data_njet_norm");
+        TH1D* h_data_njet_norm = (TH1D*) fcorr_data->Get("h_njet");
         
         h_mcreco_njet_norm->Scale(1./h_mcreco_njet_norm->Integral());
         h_data_njet_norm->Scale(1./h_data_njet_norm->Integral());

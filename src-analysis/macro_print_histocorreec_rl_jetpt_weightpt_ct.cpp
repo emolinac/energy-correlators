@@ -18,6 +18,8 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         TFile* fcorr = new TFile((output_folder + namef_3dpaircorr_rl_jetpt_weightpt_histos_ct).c_str());
         
         TH3D* h_npair            = (TH3D*) fcorr->Get("h_npair");
+        TH3D* h_eqchnpair        = (TH3D*) fcorr->Get("h_eqchnpair");
+        TH3D* h_neqchnpair       = (TH3D*) fcorr->Get("h_neqchnpair");
         TH3D* h_npair_wmuon      = (TH3D*) fcorr->Get("h_npair_wmuon");
         TH3D* h_eqchnpair_wmuon  = (TH3D*) fcorr->Get("h_eqchnpair_wmuon");
         TH3D* h_neqchnpair_wmuon = (TH3D*) fcorr->Get("h_neqchnpair_wmuon");
@@ -38,6 +40,16 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         TH3D* h_eqchnpair_truth  = (TH3D*) fcorr->Get("h_eqchnpair_truth");
         TH3D* h_neqchnpair_truth = (TH3D*) fcorr->Get("h_neqchnpair_truth");
         TH1F* h_njet_truth       = (TH1F*) fcorr->Get("h_njet_truth");
+
+        TH1D* h_muon_efficiency_jet        = new TH1D("h_muon_efficiency_jet", "", nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
+        TH3D* h_muon_efficiency_npair      = new TH3D("h_muon_efficiency_npair", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* h_muon_efficiency_eqchnpair  = new TH3D("h_muon_efficiency_eqchnpair", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+        TH3D* h_muon_efficiency_neqchnpair = new TH3D("h_muon_efficiency_neqchnpair", "", nbin_rl_nominal_unfolding, unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning, nbin_weight, weight_binning);
+
+        h_muon_efficiency_jet->Divide(h_njet, h_njet_wmuoneff);
+        h_muon_efficiency_npair->Divide(h_npair, h_npair_wmuon);
+        h_muon_efficiency_eqchnpair->Divide(h_eqchnpair, h_eqchnpair_wmuon);
+        h_muon_efficiency_neqchnpair->Divide(h_neqchnpair, h_neqchnpair_wmuon);
 
         // Correct the jets
         TRandom3* rndm = new TRandom3(0);
@@ -68,6 +80,8 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         TH1D* h_njet_unfolded = (TH1D*) unfold_jet.Hreco();
 
         h_njet_unfolded->Divide(h_efficiency_jet);
+
+        // h_njet_unfolded->Divide(h_muon_efficiency_jet);
 
         // Correct the npairs
         TNtuple* ntuple = (TNtuple*) f->Get(name_ntuple_correction_reco.c_str());
@@ -104,10 +118,6 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         TH3F* h_eqchnpair_purity_corrected  = new TH3F("h_eqchnpair_purity_corrected", "",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
         TH3F* h_neqchnpair_purity_corrected = new TH3F("h_neqchnpair_purity_corrected","",nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning,nbin_jet_pt_unfolding,unfolding_jet_pt_binning, nbin_weight, weight_binning);
         
-        // h_npair_purity_corrected->Multiply(h_npair_wmuon,h_purity,1,1);
-        // h_eqchnpair_purity_corrected->Multiply(h_eqchnpair_wmuon,h_purity_eqcharge,1,1);
-        // h_neqchnpair_purity_corrected->Multiply(h_neqchnpair_wmuon,h_purity_neqcharge,1,1);
-        
         h_npair_purity_corrected->Multiply(h_npair_wmuon,h_purity,1,1);
         h_eqchnpair_purity_corrected->Multiply(h_eqchnpair_wmuon,h_purity,1,1);
         h_neqchnpair_purity_corrected->Multiply(h_neqchnpair_wmuon,h_purity,1,1);
@@ -120,13 +130,13 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         TH3D* h_eqchnpair_unfolded  = (TH3D*) unfold_eqchnpair.Hreco();
         TH3D* h_neqchnpair_unfolded = (TH3D*) unfold_neqchnpair.Hreco();
 
-        // h_npair_unfolded->Divide(h_efficiency);
-        // h_eqchnpair_unfolded->Divide(h_efficiency_eqcharge);
-        // h_neqchnpair_unfolded->Divide(h_efficiency_neqcharge);
-
         h_npair_unfolded->Divide(h_efficiency);
         h_eqchnpair_unfolded->Divide(h_efficiency);
         h_neqchnpair_unfolded->Divide(h_efficiency);
+
+        // h_npair_unfolded->Divide(h_muon_efficiency_npair);
+        // h_eqchnpair_unfolded->Divide(h_muon_efficiency_eqchnpair);
+        // h_neqchnpair_unfolded->Divide(h_muon_efficiency_neqchnpair);
 
         apply_jet_weight_to_npairs(h_npair_unfolded, h_purity_jet, h_efficiency_jet);
         apply_jet_weight_to_npairs(h_eqchnpair_unfolded, h_purity_jet, h_efficiency_jet);
@@ -275,7 +285,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
                 line->Draw("SAME");
         }
 
-        c->Print(Form("./plots/closure-test-eec-niter%i.pdf",niter));
+        c->Print(Form("./plots/closure-test-eec-niter%i-niterjet%i.pdf",niter,niter_jet));
 
         for(int bin = 0 ; bin < nbin_jet_pt ; bin ++) {
                 c->cd(bin+1);
@@ -301,7 +311,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
                 line->Draw("SAME");
         }
 
-        c->Print(Form("./plots/closure-test-chargedeec-niter%i.pdf",niter));
+        c->Print(Form("./plots/closure-test-chargedeec-niter%i-niterjet%i.pdf",niter,niter_jet));
 
         c = new TCanvas("c","",800,600);
         c->Draw();
@@ -315,5 +325,5 @@ void macro_print_histocorreec_rl_jetpt_weightpt_ct(int niter = 4, int niter_jet 
         line = new TLine(unfolding_jet_pt_binning[0], 1, unfolding_jet_pt_binning[nbin_jet_pt_unfolding], 1);
         line->Draw("SAME");
 
-        c->Print("./plots/closure-test-njets-niter4.pdf");
+        c->Print(Form("./plots/closure-test-njets-niter%i.pdf",niter_jet));
 }

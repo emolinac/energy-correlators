@@ -55,35 +55,31 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
 
                 //  3D reweight
                 //  Get mcreco
-                TH3D* h_mcreco_npair      = (TH3D*) fmcreco->Get("h_npair_wmuon");
-                TH3D* h_mcreco_eqchnpair  = (TH3D*) fmcreco->Get("h_eqchnpair_wmuon");
-                TH3D* h_mcreco_neqchnpair = (TH3D*) fmcreco->Get("h_neqchnpair_wmuon");
+                TH3D* h_mcreco_npair      = (TH3D*) fmcreco->Get("h_npair");
+                TH3D* h_mcreco_eqchnpair  = (TH3D*) fmcreco->Get("h_eqchnpair");
+                TH3D* h_mcreco_neqchnpair = (TH3D*) fmcreco->Get("h_neqchnpair");
                 
-                TH3D* h_mcreco_npair_norm      = (TH3D*) h_mcreco_npair->Clone("h_npair_norm");
-                TH3D* h_mcreco_eqchnpair_norm  = (TH3D*) h_mcreco_eqchnpair->Clone("h_eqchnpair_norm");
-                TH3D* h_mcreco_neqchnpair_norm = (TH3D*) h_mcreco_neqchnpair->Clone("h_neqchnpair_norm");
-
-                h_mcreco_npair_norm->Scale(1./h_mcreco_npair_norm->Integral());
-                h_mcreco_eqchnpair_norm->Scale(1./h_mcreco_eqchnpair_norm->Integral());
-                h_mcreco_neqchnpair_norm->Scale(1./h_mcreco_neqchnpair_norm->Integral());
+                h_mcreco_npair->Scale(1./h_mcreco_npair->Integral());
+                h_mcreco_eqchnpair->Scale(1./h_mcreco_eqchnpair->Integral());
+                h_mcreco_neqchnpair->Scale(1./h_mcreco_neqchnpair->Integral());
                 
                 // Get data
-                TH3D* h_data_npair_norm      = (TH3D*) h_npair->Clone("h_npair_data_norm");
-                TH3D* h_data_eqchnpair_norm  = (TH3D*) h_eqchnpair->Clone("h_eqchnpair_data_norm");
-                TH3D* h_data_neqchnpair_norm = (TH3D*) h_neqchnpair->Clone("h_neqchnpair_data_norm");
+                TH3D* h_data_npair      = (TH3D*) fcorr->Get("h_npair");
+                TH3D* h_data_eqchnpair  = (TH3D*) fcorr->Get("h_eqchnpair");
+                TH3D* h_data_neqchnpair = (TH3D*) fcorr->Get("h_neqchnpair");
 
-                h_data_npair_norm->Scale(1./h_data_npair_norm->Integral());
-                h_data_eqchnpair_norm->Scale(1./h_data_eqchnpair_norm->Integral());
-                h_data_neqchnpair_norm->Scale(1./h_data_neqchnpair_norm->Integral());
+                h_data_npair->Scale(1./h_data_npair->Integral());
+                h_data_eqchnpair->Scale(1./h_data_eqchnpair->Integral());
+                h_data_neqchnpair->Scale(1./h_data_neqchnpair->Integral());
 
                 // Get reweight
-                h_npair_reweight->Divide(h_data_npair_norm,h_mcreco_npair_norm);
-                h_eqchnpair_reweight->Divide(h_data_eqchnpair_norm,h_mcreco_eqchnpair_norm);
-                h_neqchnpair_reweight->Divide(h_data_neqchnpair_norm,h_mcreco_neqchnpair_norm);
+                h_npair_reweight->Divide(h_data_npair,h_mcreco_npair);
+                h_eqchnpair_reweight->Divide(h_data_eqchnpair,h_mcreco_eqchnpair);
+                h_neqchnpair_reweight->Divide(h_data_neqchnpair,h_mcreco_neqchnpair);
 
                 // 1D reweight
                 // Get reco
-                TH1F* h_mcreco_njet = (TH1F*) fmcreco->Get("h_njet_wmuoneff");
+                TH1F* h_mcreco_njet = (TH1F*) fmcreco->Get("h_njet");
 
                 TH1D* h_mcreco_njet_norm = (TH1D*) h_mcreco_njet->Clone("h_njet_norm");
                 
