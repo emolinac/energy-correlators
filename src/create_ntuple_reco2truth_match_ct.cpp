@@ -255,14 +255,9 @@ int main()
                                         vars_reco[20] = (key2_match==0) ? -999 : true_h2_4vector->Eta();
                                         vars_reco[21] = (key1_match==0||key2_match==0) ? -999 : true_h1_4vector->DeltaR(*true_h2_4vector);
 
-                                        double weight_truth    = (weight_absmax > 0.5) ? sqrt_weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E()) : 
-                                                                                        weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E());
-                                        
-                                        double weight_pt_truth = (weight_absmax > 0.5) ? sqrt_weight(true_h1_4vector->Pt(), true_h2_4vector->Pt(), true_Jet_4vector->Pt()) : 
-                                                                                        weight(true_h1_4vector->Pt(), true_h2_4vector->Pt(), true_Jet_4vector->Pt());
-                                        
-                                        double weight_pt       = (weight_absmax > 0.5) ? sqrt_weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt()) : 
-                                                                                        weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                        double weight_truth    = weight(true_h1_4vector->E(), true_h2_4vector->E(), true_Jet_4vector->E());
+                                        double weight_pt_truth = weight(true_h1_4vector->Pt(), true_h2_4vector->Pt(), true_Jet_4vector->Pt());
+                                        double weight_pt       = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
                                         
                                         vars_reco[22] = (key1_match==0||key2_match==0) ? -999 : weight_truth;
                                         vars_reco[23] = (key1_match==0||key2_match==0) ? -999 : weight_pt_truth;
@@ -322,8 +317,7 @@ int main()
                                         vars_mc[9]  = h2_4vector->Pt();
                                         vars_mc[10] = Jet_4vector->Eta();
                                         vars_mc[11] = Jet_4vector->Pt();
-                                        vars_mc[12] = (weight_absmax > 0.5) ? sqrt_weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt()) : 
-                                                                        weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                        vars_mc[12] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
                                         // Fill the TNtuple
                                         ntuple_mc->Fill(vars_mc);
