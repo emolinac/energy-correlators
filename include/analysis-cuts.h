@@ -2,291 +2,66 @@
 #define ANALYSIS_CUTS_H
 
 #include "TCut.h"
+#include "TMath.h"
 #include "TString.h"
 #include "analysis-constants.h"
 #include "analysis-binning.h"
 
-// Z Tagged Jet Cuts 
-
-// Trigger cuts
-const bool trigger_lines = true;
-
-// Jet cuts
-const double jet_eta_min = 2.5;
-const double jet_eta_max = 4.0;
-const double jet_pt_min  = 15;
-
-// Jet ID cuts
-const double mpf_max = 0.8; 
-const double cpf_min = 0.1;
-const double mpt_min = 1.2;
-const double nPVtrks_min = 1.5;
-
-// Topological cuts
-const double deltaphi_z_jet_min  = 7*TMath::Pi()/8.;
-const double jet_radius = 0.5;
-
-// Z boson cuts
-const double muon_pt_min  = 20.;
-const double lhcb_eta_min = 2;
-const double lhcb_eta_max = 4.5;
-const double dimuon_mass_min = 60;
-const double dimuon_mass_max = 120;
-const double muon_trackprob_min = 0.001;
-
-// Track cuts
-const double track_chi2ndf_max     = 3;
-const double track_p_min           = 4;
-const double track_p_max           = 1000;
-const double track_pt_min          = 0.25;
-const double track_probnnghost_max = 0.5;
-
-// Jet pt dependent cuts
-const double weight_pt_cut[]  = {0.12,0.10,0.085};
-const double min_efficiency[] = {0.14,0.10,0.05};
-const double max_relerror[]   = {0.50,0.35,0.45};
-
 // Misc analysis cuts
-TCut pair_matching_cut = "R_L_truth!=-999";
+extern TCut pair_matching_cut;
 
 // Nominal Analysis Cuts
-TCut eec_cut  = Form("weight*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut pair_cut = Form("jet_pt>%f&&jet_pt<%f",jet_pt_min_nom,jet_pt_max);
+extern TCut eec_cut;
+extern TCut pair_cut;
 
 // Cuts as function of jet pt
-TCut eec_jet_pt_cut[] = {
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_eqcharge_jet_pt_cut[] = {
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge>0)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_neqcharge_jet_pt_cut[] = {
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(jet_pt>%f&&jet_pt<%f&&eq_charge<0)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut eec_zpt_cut_weightpt[] = {
-        Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[0], z_pt_binning[1]),
-        Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[1], z_pt_binning[2]),
-        Form("weight_pt*(z_pt>%f&&z_pt<%f&&TMath::Abs(deltaphi_z_h1)>TMath::Pi()/2.&&TMath::Abs(deltaphi_z_h2)>TMath::Pi()/2.)", z_pt_binning[2], z_pt_binning[3])
-};
-
-TCut pair_jet_pt_cut[] = {
-	Form("jet_pt>%f&&jet_pt<%f", jet_pt_binning[0], jet_pt_binning[1]),
-	Form("jet_pt>%f&&jet_pt<%f", jet_pt_binning[1], jet_pt_binning[2]),
-	Form("jet_pt>%f&&jet_pt<%f", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut pair_zpt_cut[] = {
-	Form("z_pt>%f&&z_pt<%f", z_pt_binning[0], z_pt_binning[1]),
-	Form("z_pt>%f&&z_pt<%f", z_pt_binning[1], z_pt_binning[2]),
-	Form("z_pt>%f&&z_pt<%f", z_pt_binning[2], z_pt_binning[3])
-};
+extern TCut eec_jet_pt_cut[];
+extern TCut eec_eqcharge_jet_pt_cut[];
+extern TCut eec_neqcharge_jet_pt_cut[];
+extern TCut eec_zpt_cut_weightpt[];
+extern TCut pair_jet_pt_cut[];
+extern TCut pair_zpt_cut[];
 
 // _______________________________ Purity Analysis Cuts _______________________________ //
-TCut pair_signal_cut   = Form("TMath::Abs(R_L_truth-R_L)<%f",rl_resolution);
-TCut single_signal_cut = "key_match==1";
+extern TCut pair_signal_cut;
+extern TCut single_signal_cut;
 
-TCut purity_corr_singletrack     = Form("purity*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut efficiency_corr_singletrack = Form("(1./efficiency)*(et_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut full_corr_singletrack       = Form("purity*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+extern TCut purity_corr_singletrack;
+extern TCut efficiency_corr_singletrack;
+extern TCut full_corr_singletrack;
+extern TCut eec_purity_corr_singletrack;
+extern TCut eec_efficiency_corr_singletrack;
+extern TCut eec_full_corr_singletrack;
 
-TCut eec_purity_corr_singletrack     = Form("weight*purity*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut eec_efficiency_corr_singletrack = Form("weight*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
-TCut eec_full_corr_singletrack       = Form("weight*purity*(1./efficiency)*(jet_pt>%f&&jet_pt<%f)",jet_pt_min_nom,jet_pt_max);
+extern TCut pair_purity_corr_singletrack_weightpt;
 
-TCut pair_purity_corr_singletrack_weightpt = "purity";
+extern TString muons_eff;
 
-TString muons_eff = "1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg))";
-
-TCut jet_full_corr[] = {
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("jet_purity*(1./jet_efficiency)*(1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg)))*(jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
-
-TCut pair_jet_pt_signal_cut[] = {
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[0], jet_pt_binning[1]),
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[1], jet_pt_binning[2]),
-        Form("TMath::Abs(R_L_truth-R_L)<%f&&jet_pt>%f&&jet_pt<%f",rl_resolution, jet_pt_binning[2], jet_pt_binning[3])
-};
+extern TCut jet_full_corr[];
+extern TCut pair_jet_pt_signal_cut[];
 
 // ANALYSIS VARIATIONS CUTS
-TCut eec_jet_pt_cut_pp[] = {
-        Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(h1_charge==3&&h2_charge==3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
+extern TCut eec_jet_pt_cut_pp[];
+extern TCut eec_jet_pt_cut_mm[];
+extern TCut eec_jet_pt_cut_pm[];
+extern TCut eec_jet_pt_cut_kaon[];
+extern TCut eec_jet_pt_cut_nokaon[];
 
-TCut eec_jet_pt_cut_mm[] = {
-        Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(h1_charge==-3&&h2_charge==-3&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
 
-TCut eec_jet_pt_cut_pm[] = {
-        Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*(h1_charge*h2_charge<0&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
+bool apply_jet_cuts(double jet_eta, double jet_pt);
 
-TCut eec_jet_pt_cut_kaon[] = {
-        Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*((TMath::Abs(h1_pid)==321||TMath::Abs(h2_pid)==321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
+bool apply_jet_id_cuts(double mpt, double nPVtrk, double cpf, double mpf);
 
-TCut eec_jet_pt_cut_nokaon[] = {
-        Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[0], jet_pt_binning[1]),
-        Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[1], jet_pt_binning[2]),
-        Form("weight_pt*((TMath::Abs(h1_pid)!=321&&TMath::Abs(h2_pid)!=321)&&jet_pt>%f&&jet_pt<%f)", jet_pt_binning[2], jet_pt_binning[3])
-};
+bool apply_muon_cuts(double deltaR_mu_jet, double mu_pt, double mu_eta);
 
-// FUNCTIONS TO APPLY CUTS
-bool apply_jet_cuts(double jet_eta, double jet_pt)
-{
-        if (jet_eta < jet_eta_min || jet_eta > jet_eta_max) 
-                return false;
-        
-        if (jet_pt < unfolding_jet_pt_binning[0])
-                return false;
+bool apply_zboson_cuts(double deltaphi_zboson_jet, double zboson_mass);
 
-        return true;    
-}
+bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta);
 
-bool apply_jet_id_cuts(double mpt, double nPVtrk, double cpf, double mpf)
-{
-        if (mpt < mpt_min)
-                return false;
-        
-        if (nPVtrk < nPVtrks_min)
-                return false;
-        
-        if (cpf < cpf_min)
-                return false;
-        
-        if (mpf > mpf_max)
-                return false;
+bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta, double deltaR_h_jet);
 
-        return true;    
-}
+bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta);
 
-bool apply_muon_cuts(double deltaR_mu_jet, double mu_pt, double mu_eta)
-{
-        if (deltaR_mu_jet < jet_radius) 
-                return false; 
-        
-        if (mu_pt < muon_pt_min)
-                return false;
-
-        if (mu_eta < lhcb_eta_min || mu_eta > lhcb_eta_max) 
-                return false;
-
-        return true;
-}
-
-bool apply_zboson_cuts(double deltaphi_zboson_jet, double zboson_mass)
-{
-    if (deltaphi_zboson_jet < deltaphi_z_jet_min) 
-            return false;
-
-    if (zboson_mass < dimuon_mass_min || zboson_mass > dimuon_mass_max) 
-            return false;
-
-    return true;
-}
-
-bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta)
-{
-        if (charge == 0)
-                return false;
-
-        if (p < track_p_min || p > track_p_max)
-                return false;
-
-        if (pt < track_pt_min)
-                return false;
-
-        if (chi2ndf > track_chi2ndf_max)
-                return false;
-
-        if (probnnghost > track_probnnghost_max)
-                return false;
-
-        if (eta < lhcb_eta_min || eta > lhcb_eta_max)
-                return false;
-
-        return true;
-}
-
-bool apply_chargedtrack_cuts(double charge, double p, double pt, double chi2ndf, double probnnghost, double eta, double deltaR_h_jet)
-{
-        if (charge == 0)
-                return false;
-
-        if (p < track_p_min || p > track_p_max)
-                return false;
-
-        if (pt < track_pt_min)
-                return false;
-
-        if (chi2ndf > track_chi2ndf_max)
-                return false;
-
-        if (probnnghost > track_probnnghost_max)
-                return false;
-
-        if (eta < lhcb_eta_min || eta > lhcb_eta_max)
-                return false;
-
-        if (deltaR_h_jet > jet_radius)
-                return false;
-
-        return true;
-}
-
-bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta)
-{
-        if (charge == 0)
-                return false;
-
-        if (p < track_p_min || p > track_p_max)
-                return false;
-
-        if (pt < track_pt_min)
-                return false;
-
-        if (eta < lhcb_eta_min || eta > lhcb_eta_max)
-                return false;
-
-        return true;
-}
-
-bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta, double deltaR_h_jet)
-{
-        if (charge == 0)
-                return false;
-
-        if (p < track_p_min || p > track_p_max)
-                return false;
-
-        if (pt < track_pt_min)
-                return false;
-
-        if (eta < lhcb_eta_min || eta > lhcb_eta_max)
-                return false;
-
-        if (deltaR_h_jet > jet_radius)
-                return false;
-
-        return true;
-}
+bool apply_chargedtrack_momentum_cuts(double charge, double p, double pt, double eta, double deltaR_h_jet);
 
 #endif

@@ -1,17 +1,13 @@
 #include "../include/analysis-constants.h"
 #include "../include/analysis-binning.h"
+#include "../include/analysis-cuts.cpp"
 #include "../include/analysis-cuts.h"
 #include "../include/directories.h"
 #include "../include/names.h"
+#include "../include/utils-algorithms.cpp"
 #include "../include/utils-algorithms.h"
+#include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
-
-// Currently this code contains the following variations in function:
-// - nominal
-// - jes
-// - jer
-// - prior variation
-// - reg par
 
 void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4, std::string analysis_variation = "--get-nominal", int niter_jer = -999)
 {

@@ -1,9 +1,12 @@
 #include "../include/analysis-constants.h"
 #include "../include/analysis-binning.h"
+#include "../include/analysis-cuts.cpp"
 #include "../include/analysis-cuts.h"
 #include "../include/directories.h"
 #include "../include/names.h"
+#include "../include/utils-algorithms.cpp"
 #include "../include/utils-algorithms.h"
+#include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
 void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet = 4)
@@ -266,7 +269,7 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
 
         line->Draw("SAME");
         
-        c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst_data2mc.pdf",niter));
+        c->Print(Form("./plots/correec_unf-niter%i_incsyst_data2mc.pdf",niter));
 
         // Print EECs separately
         for (int bin  = 0 ; bin < nbin_jet_pt ; bin++) {
@@ -322,7 +325,7 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
 
                 line->Draw("SAME");
 
-                c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst_data2mc_jetpt%i.pdf",niter,bin));
+                c->Print(Form("./plots/correec_unf-niter%i_incsyst_data2mc_jetpt%i.pdf",niter,bin));
         }
 
         // Print charged EECs
@@ -395,6 +398,6 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
 
                 line->Draw("SAME");
 
-                c->Print(Form("./plots/corrchargedeec_unf-niter%i_2dunf_incsyst_data2mc_jetptbin%i.pdf",niter,bin));
+                c->Print(Form("./plots/corrchargedeec_unf-niter%i_incsyst_data2mc_jetptbin%i.pdf",niter,bin));
         }
 }

@@ -1,6 +1,8 @@
 #ifndef ANALYSIS_BINNING_H
 #define ANALYSIS_BINNING_H
 
+#include "TMath.h"
+
 const double rl_absmin     = 0.001; // Lowest value achievable for MC. Used as limit for the underflow in the unfolding
 const double rl_absmax     = 1.;
 const double rl_min        = 0.008;

@@ -1,9 +1,12 @@
 #include "../include/analysis-constants.h"
 #include "../include/analysis-binning.h"
+#include "../include/analysis-cuts.cpp"
 #include "../include/analysis-cuts.h"
 #include "../include/directories.h"
 #include "../include/names.h"
+#include "../include/utils-algorithms.cpp"
 #include "../include/utils-algorithms.h"
+#include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
 void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
@@ -211,7 +214,7 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
         gPad->SetLogy(0);
         draw_lhcb_tag(lhcbprint);
 
-        c->Print(Form("./plots/corrtau_unf-niter%i_2dunf_incsyst_newparadigm.pdf",niter));
+        c->Print(Form("./plots/corrtau_unf-niter%i_incsyst_newparadigm.pdf",niter));
 
         // Print EECS
         s_data = new THStack();
@@ -232,7 +235,7 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
 
         draw_lhcb_tag(lhcbprint);
 
-        c->Print(Form("./plots/correec_unf-niter%i_2dunf_incsyst_newparadigm.pdf",niter));
+        c->Print(Form("./plots/correec_unf-niter%i_incsyst_newparadigm.pdf",niter));
 
         // Print charged EECs
         TLine* line = new TLine(rl_nominal_binning[0],0.5,rl_nominal_binning[nbin_rl_nominal],0.5);
@@ -263,6 +266,6 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
                 
                 draw_lhcb_tag(lhcbprint);
 
-                c->Print(Form("./plots/corrchargedeec_jetptbin%i_unf-niter%i_2dunf_incsyst_newparadigm.pdf",bin,niter));
+                c->Print(Form("./plots/corrchargedeec_jetptbin%i_unf-niter%i_incsyst_newparadigm.pdf",bin,niter));
         }
 }

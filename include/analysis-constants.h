@@ -1,10 +1,6 @@
 #ifndef ANALYSIS_CONSTANTS_H
 #define ANALYSIS_CONSTANTS_H
 
-#include "TCut.h"
-#include "TString.h"
-#include "TColor.h"
-
 // Masses (GeV)
 const double rho_mass      = 0.77526;  // PDG 2023
 const double omega_mass    = 0.78266; // PDG 2023
@@ -32,9 +28,6 @@ const int    std_line_width   = 3;
 
 const int std_marker_style_jet_pt[]  = {24,25,27,42,46};
 const int corr_marker_style_jet_pt[] = {20,21,33,43,47};
-
-// const int std_marker_color_jet_pt[]  = {868,797,618,633,820,418,810,616,600,1};
-// const int corr_marker_color_jet_pt[] = {868,797,618,633,820,418,810,616,600,1};
 
 const int std_marker_color_jet_pt[]  = {868,797,618,41,46,38,418,861,617,1};
 const int corr_marker_color_jet_pt[] = {868,797,618,41,46,38,418,861,617,1};

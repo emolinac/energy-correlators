@@ -1,9 +1,12 @@
 #include "../include/analysis-constants.h"
 #include "../include/analysis-binning.h"
+#include "../include/analysis-cuts.cpp"
 #include "../include/analysis-cuts.h"
 #include "../include/directories.h"
 #include "../include/names.h"
+#include "../include/utils-algorithms.cpp"
 #include "../include/utils-algorithms.h"
+#include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
 void macro_print_jer_chisquare(const int nbin = 50, double ptratio_min = 0.4 , double ptratio_max = 1.6, bool do_print = true)
