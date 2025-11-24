@@ -154,7 +154,7 @@ void macro_print_systerrors_contribution(int niter = 4, int niter_jet = 4)
                 s_eqch[i]->Draw("NOSTACK");
                 s_eqch[i]->SetTitle(";R_{L};Relative Uncertainty");
                 s_eqch[i]->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
-                s_eqch[i]->SetMaximum(0.45);
+                s_eqch[i]->SetMaximum(0.60);
                 l_eqch[i]->Draw("SAME");
                 gPad->SetLogx(1);
                 gPad->SetLogy(0);
@@ -164,7 +164,7 @@ void macro_print_systerrors_contribution(int niter = 4, int niter_jet = 4)
                 s_neqch[i]->Draw("NOSTACK");
                 s_neqch[i]->SetTitle(";R_{L};Relative Uncertainty");
                 s_neqch[i]->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
-                s_neqch[i]->SetMaximum(0.45);
+                s_neqch[i]->SetMaximum(0.60);
                 l_neqch[i]->Draw("SAME");
                 gPad->SetLogx(1);
                 gPad->SetLogy(0);

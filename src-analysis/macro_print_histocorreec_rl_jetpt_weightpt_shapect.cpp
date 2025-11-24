@@ -74,9 +74,9 @@ void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter
         h_data_eqchnpair_norm->Scale(1./h_data_eqchnpair_norm->Integral());
         h_data_neqchnpair_norm->Scale(1./h_data_neqchnpair_norm->Integral());
 
-        h_npair_reweight->Divide(h_data_npair_norm, h_mcreco_npair_norm);
-        h_eqchnpair_reweight->Divide(h_data_eqchnpair_norm, h_mcreco_eqchnpair_norm);
-        h_neqchnpair_reweight->Divide(h_data_neqchnpair_norm, h_mcreco_neqchnpair_norm);
+        h_npair_reweight->Divide(h_mcreco_npair_norm, h_data_npair_norm);
+        h_eqchnpair_reweight->Divide(h_mcreco_eqchnpair_norm, h_data_eqchnpair_norm);
+        h_neqchnpair_reweight->Divide(h_mcreco_neqchnpair_norm, h_data_neqchnpair_norm);
 
         // 1D reweight matrices
         TH1D* h_njet_reweight = new TH1D("h_njet_reweight", "", nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
@@ -88,7 +88,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter
         h_mcreco_njet_norm->Scale(1./h_mcreco_njet_norm->Integral());
         h_data_njet_norm->Scale(1./h_data_njet_norm->Integral());
         
-        h_njet_reweight->Divide(h_data_njet_norm, h_mcreco_njet_norm);
+        h_njet_reweight->Divide(h_mcreco_njet_norm, h_data_njet_norm);
         
         // Correct the jets
         TRandom3* rndm = new TRandom3(0);
