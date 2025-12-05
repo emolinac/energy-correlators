@@ -28,6 +28,7 @@ std::string namef_ntuple_truth2reco_match_ct  = "ntuple_truth2reco_match_ct.root
 std::string namef_3dpaircorr_rl_jetpt_weightpt_histos         = "histos_3dpaircorr_rl_jetpt_weightpt_eec.root";
 std::string namef_3dpaircorr_rl_jetpt_weightpt_histos_jes_jer = "histos_3dpaircorr_rl_jetpt_weightpt_eec_jes_jer.root";
 std::string namef_3dpaircorr_rl_jetpt_weightpt_histos_ct      = "histos_3dpaircorr_rl_jetpt_weightpt_eec_ct.root";
+std::string namef_3dpaircorr_rl_jetpt_weightpt_histos_muon    = "histos_3dpaircorr_rl_jetpt_weightpt_eec_muon.root";
 
 std::string namef_ntuple_eec      = "ntuple_eec.root";
 std::string namef_ntuple_eec_corr = "ntuple_correec.root";
@@ -41,19 +42,21 @@ std::map<std::string, std::string> namef_reco_corrections = {
         {"--get-nominal", namef_ntuple_reco2truth_match},
         {"--get-jes-jer", namef_ntuple_reco2truth_match_jes_jer},
         {"--get-prior"  , namef_ntuple_reco2truth_match},
-        {"--get-regpar" , namef_ntuple_reco2truth_match}
+        {"--get-regpar" , namef_ntuple_reco2truth_match},
+        {"--get-muon"   , namef_ntuple_reco2truth_match}
 };
 
 std::map<std::string, std::string> namef_all_corrections = {
         {"--get-nominal", namef_3dpaircorr_rl_jetpt_weightpt_histos},
         {"--get-jes-jer", namef_3dpaircorr_rl_jetpt_weightpt_histos_jes_jer},
         {"--get-prior"  , namef_3dpaircorr_rl_jetpt_weightpt_histos},
-        {"--get-regpar" , namef_3dpaircorr_rl_jetpt_weightpt_histos}
+        {"--get-regpar" , namef_3dpaircorr_rl_jetpt_weightpt_histos},
+        {"--get-muon"   , namef_3dpaircorr_rl_jetpt_weightpt_histos_muon}
 };
 
 // About systematics
 std::string available_systematics[] = {
-        "ct-stat", "ct-shape", "jes-jer", "prior", "regpar"
+        "ct-stat", "ct-shape", "jes-jer", "prior", "regpar", "muon"
 };
 
 std::map<std::string, std::string> systematic_name  = {
@@ -61,7 +64,8 @@ std::map<std::string, std::string> systematic_name  = {
         {available_systematics[1],"Shape closure test"},
         {available_systematics[2],"JES-JER"},
         {available_systematics[3],"Prior variation"},
-        {available_systematics[4],"Regularization parameter"}
+        {available_systematics[4],"Regularization parameter"},
+        {available_systematics[5],"Muon eff"}
 };
 
 std::map<std::string, std::string> systematic_namef = {
@@ -69,7 +73,8 @@ std::map<std::string, std::string> systematic_namef = {
         {available_systematics[1],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4_shapect.root"},
         {available_systematics[2],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-jes-jer.root"},
         {available_systematics[3],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-prior.root"},
-        {available_systematics[4],"histos_eec_3dcorr_rl_jetpt_weightpt_niterjet4--get-regpar.root"}
+        {available_systematics[4],"histos_eec_3dcorr_rl_jetpt_weightpt_niterjet4--get-regpar.root"},
+        {available_systematics[5],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-muon.root"}
 };
 
 std::map<std::string, std::string> systematic_errtype = {
@@ -77,7 +82,8 @@ std::map<std::string, std::string> systematic_errtype = {
         {available_systematics[1],"normal"},
         {available_systematics[2],"normal"},
         {available_systematics[3],"normal"},
-        {available_systematics[4],"normal"}
+        {available_systematics[4],"normal"},
+        {available_systematics[5],"normal"}
 };
 
 std::string namef_ntuple_jes_jer = "ntuple_jes_jer.root";

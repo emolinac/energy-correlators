@@ -245,7 +245,7 @@ void regularize_correction_factors(TH3D* h)
 void set_histo_with_systematics(TH1F* hrelerror, TH1F* hnominal, TH1F* hsystematic, int syst_index, bool print_table)
 {
         double total_err = 0, total = 0;
-        double n_ct_sources = (syst_index != 2) ? 4. : 1.;
+        double n_ct_sources = (syst_index != 2 && syst_index != 5) ? 4. : 1.;
 
         for (int hbin = 1 ; hbin <= hrelerror->GetNbinsX() ; hbin++)
         {

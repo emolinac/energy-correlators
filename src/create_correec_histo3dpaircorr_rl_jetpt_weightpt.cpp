@@ -30,12 +30,14 @@ int main(int argc, char* argv[])
         bool get_nominal = false;
         bool get_jes_jer = false;
         bool get_jer     = false;
+        bool get_muon    = false;
 
         if (argc < 2 || std::string(argv[1]) == "--help") {
                 std::cout<<"You have to pass one argument to this code. Possible options are:"<<std::endl;
                 std::cout<<"--get-nominal : Gets the nominal pair corrections."<<std::endl;
                 std::cout<<"--get-jes-jer : Gets the pair corrections with the JES-JER variation."<<std::endl;
                 std::cout<<"--get-jer     : Gets the pair corrections with the JER variation."<<std::endl;
+                std::cout<<"--get-muon    : Gets the pair corrections with the muon eff varied."<<std::endl;
 
                 return 0;
         }
@@ -46,6 +48,8 @@ int main(int argc, char* argv[])
                 get_jes_jer = true;
         else if (std::string(argv[1]) == "--get-jer")
                 get_jer = true;
+        else if (std::string(argv[1]) == "--get-muon")
+                get_muon = true;
         else {
                 std::cout<<"No valid options provided"<<std::endl;
                 return 0;
@@ -478,8 +482,33 @@ int main(int argc, char* argv[])
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
-                double muon_weight = 1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+                if (get_muon) {
+                        double mup_eff_id_err  = h2_muon_2016_ideff_data->GetBinError(h2_muon_2016_ideff_data->FindBin(mup_eta, mup_pt));
+                        double mup_eff_trk_err = h2_muon_2016_trkeff_data->GetBinError(h2_muon_2016_trkeff_data->FindBin(mup_eta, mup_pt));
+                        double mup_eff_trg_err = h2_muon_2016_trgeff_data->GetBinError(h2_muon_2016_trgeff_data->FindBin(mup_eta, mup_pt));
+                        double mum_eff_id_err  = h2_muon_2016_ideff_data->GetBinError(h2_muon_2016_ideff_data->FindBin(mum_eta, mum_pt));
+                        double mum_eff_trk_err = h2_muon_2016_trkeff_data->GetBinError(h2_muon_2016_trkeff_data->FindBin(mum_eta, mum_pt));
+                        double mum_eff_trg_err = h2_muon_2016_trgeff_data->GetBinError(h2_muon_2016_trgeff_data->FindBin(mum_eta, mum_pt));
+
+                        if (rndm->Integer(2)) {
+                                mup_eff_id  += mup_eff_id_err;
+                                mup_eff_trk  += mup_eff_trk_err;
+                                mup_eff_trg  += mup_eff_trg_err;
+                                mum_eff_id  += mum_eff_id_err;
+                                mum_eff_trk  += mum_eff_trk_err;
+                                mum_eff_trg  += mum_eff_trg_err;
+                        } else {
+                                mup_eff_id  -= mup_eff_id_err;
+                                mup_eff_trk  -= mup_eff_trk_err;
+                                mup_eff_trg  -= mup_eff_trg_err;
+                                mum_eff_id  -= mum_eff_id_err;
+                                mum_eff_trk  -= mum_eff_trk_err;
+                                mum_eff_trg  -= mum_eff_trg_err;
+                        }
+                }
                 
+                double muon_weight = 1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
+
                 for (int h1_index = 0 ; h1_index < datatree_2016->Jet_NDtr ; h1_index++) {
                         if (datatree_2016->Jet_Dtr_IsMeson[h1_index] != 1 && datatree_2016->Jet_Dtr_IsBaryon[h1_index] != 1)
                                 continue;
@@ -616,6 +645,31 @@ int main(int argc, char* argv[])
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
+                if (get_muon) {
+                        double mup_eff_id_err  = h2_muon_2017_ideff_data->GetBinError(h2_muon_2017_ideff_data->FindBin(mup_eta, mup_pt));
+                        double mup_eff_trk_err = h2_muon_2017_trkeff_data->GetBinError(h2_muon_2017_trkeff_data->FindBin(mup_eta, mup_pt));
+                        double mup_eff_trg_err = h2_muon_2017_trgeff_data->GetBinError(h2_muon_2017_trgeff_data->FindBin(mup_eta, mup_pt));
+                        double mum_eff_id_err  = h2_muon_2017_ideff_data->GetBinError(h2_muon_2017_ideff_data->FindBin(mum_eta, mum_pt));
+                        double mum_eff_trk_err = h2_muon_2017_trkeff_data->GetBinError(h2_muon_2017_trkeff_data->FindBin(mum_eta, mum_pt));
+                        double mum_eff_trg_err = h2_muon_2017_trgeff_data->GetBinError(h2_muon_2017_trgeff_data->FindBin(mum_eta, mum_pt));
+
+                        if (rndm->Integer(2)) {
+                                mup_eff_id  += mup_eff_id_err;
+                                mup_eff_trk  += mup_eff_trk_err;
+                                mup_eff_trg  += mup_eff_trg_err;
+                                mum_eff_id  += mum_eff_id_err;
+                                mum_eff_trk  += mum_eff_trk_err;
+                                mum_eff_trg  += mum_eff_trg_err;
+                        } else {
+                                mup_eff_id  -= mup_eff_id_err;
+                                mup_eff_trk  -= mup_eff_trk_err;
+                                mup_eff_trg  -= mup_eff_trg_err;
+                                mum_eff_id  -= mum_eff_id_err;
+                                mum_eff_trk  -= mum_eff_trk_err;
+                                mum_eff_trg  -= mum_eff_trg_err;
+                        }
+                }
+                
                 double muon_weight = 1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
 
                 for (int h1_index = 0 ; h1_index < datatree_2017->Jet_NDtr ; h1_index++) {
@@ -755,6 +809,31 @@ int main(int argc, char* argv[])
                 double jet_efficiency_error = hefficiency_jet->GetBinError(hefficiency_jet->FindBin(Jet_4vector->Pt()));
                 double jet_purity_error     = hpurity_jet->GetBinError(hpurity_jet->FindBin(Jet_4vector->Pt()));
 
+                if (get_muon) {
+                        double mup_eff_id_err  = h2_muon_2018_ideff_data->GetBinError(h2_muon_2018_ideff_data->FindBin(mup_eta, mup_pt));
+                        double mup_eff_trk_err = h2_muon_2018_trkeff_data->GetBinError(h2_muon_2018_trkeff_data->FindBin(mup_eta, mup_pt));
+                        double mup_eff_trg_err = h2_muon_2018_trgeff_data->GetBinError(h2_muon_2018_trgeff_data->FindBin(mup_eta, mup_pt));
+                        double mum_eff_id_err  = h2_muon_2018_ideff_data->GetBinError(h2_muon_2018_ideff_data->FindBin(mum_eta, mum_pt));
+                        double mum_eff_trk_err = h2_muon_2018_trkeff_data->GetBinError(h2_muon_2018_trkeff_data->FindBin(mum_eta, mum_pt));
+                        double mum_eff_trg_err = h2_muon_2018_trgeff_data->GetBinError(h2_muon_2018_trgeff_data->FindBin(mum_eta, mum_pt));
+
+                        if (rndm->Integer(2)) {
+                                mup_eff_id  += mup_eff_id_err;
+                                mup_eff_trk  += mup_eff_trk_err;
+                                mup_eff_trg  += mup_eff_trg_err;
+                                mum_eff_id  += mum_eff_id_err;
+                                mum_eff_trk  += mum_eff_trk_err;
+                                mum_eff_trg  += mum_eff_trg_err;
+                        } else {
+                                mup_eff_id  -= mup_eff_id_err;
+                                mup_eff_trk  -= mup_eff_trk_err;
+                                mup_eff_trg  -= mup_eff_trg_err;
+                                mum_eff_id  -= mum_eff_id_err;
+                                mum_eff_trk  -= mum_eff_trk_err;
+                                mum_eff_trg  -= mum_eff_trg_err;
+                        }
+                }
+                
                 double muon_weight = 1./(mum_eff_id*mup_eff_id*mum_eff_trk*mup_eff_trk*(mum_eff_trg+mup_eff_trg-mum_eff_trg*mup_eff_trg));
 
                 for (int h1_index = 0 ; h1_index < datatree_2018->Jet_NDtr ; h1_index++) {
