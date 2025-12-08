@@ -33,7 +33,7 @@ const double muon_trackprob_min = 0.001;
 
 // Track cuts
 const double track_chi2ndf_max     = 3;
-const double track_p_min           = 4;
+const double track_p_min           = 10;
 const double track_p_max           = 1000;
 const double track_pt_min          = 0.25;
 const double track_probnnghost_max = 0.5;
