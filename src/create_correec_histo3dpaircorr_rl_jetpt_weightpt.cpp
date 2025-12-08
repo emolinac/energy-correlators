@@ -201,7 +201,7 @@ int main(int argc, char* argv[])
                 latex.SetTextSize(text_size_correction_plots);
                 latex.SetTextColor(kBlack);
 
-                // Inclusive
+                // Inclusive RL vs jetpt
                 TH2F* hnum_pur_rl_jetpt    = new TH2F("hnum_pur_rl_jetpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
                 TH2F* hden_pur_rl_jetpt    = new TH2F("hden_pur_rl_jetpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
                 TH2F* hpurity_rl_jetpt     = new TH2F("hpurity_rl_jetpt"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
@@ -257,6 +257,63 @@ int main(int argc, char* argv[])
                 gPad->SetLogx(1);
                 gPad->SetLogy(1);
                 c->Print("../src-analysis/plots/pair_efficiency_correction_rl_jetpt.pdf");
+
+                // Inclusive RL vs weightpt
+                TH2F* hnum_pur_rl_weightpt    = new TH2F("hnum_pur_rl_weightpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_weight, weight_binning);
+                TH2F* hden_pur_rl_weightpt    = new TH2F("hden_pur_rl_weightpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_weight, weight_binning);
+                TH2F* hpurity_rl_weightpt     = new TH2F("hpurity_rl_weightpt"    , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_weight, weight_binning);
+                TH2F* hnum_eff_rl_weightpt    = new TH2F("hnum_eff_rl_weightpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_weight, weight_binning);
+                TH2F* hden_eff_rl_weightpt    = new TH2F("hden_eff_rl_weightpt"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_weight, weight_binning);
+                TH2F* hefficiency_rl_weightpt = new TH2F("hefficiency_rl_weightpt", "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_weight, weight_binning);
+                
+                hnum_pur_rl_weightpt->Sumw2();
+                hden_pur_rl_weightpt->Sumw2();
+                hnum_eff_rl_weightpt->Sumw2();
+                hden_eff_rl_weightpt->Sumw2();
+                
+                ntuple_purity->Project("hnum_pur_rl_weightpt", "weight_pt:R_L", pair_matching_cut);
+                ntuple_purity->Project("hden_pur_rl_weightpt", "weight_pt:R_L");
+                ntuple_efficiency_reco->Project("hnum_eff_rl_weightpt", "weight_pt_truth:R_L_truth", pair_matching_cut);
+                ntuple_efficiency_mc->Project("hden_eff_rl_weightpt", "weight_pt:R_L");
+
+                hpurity_rl_weightpt->Divide(hnum_pur_rl_weightpt, hden_pur_rl_weightpt, 1, 1, "B");
+                hefficiency_rl_weightpt->Divide(hnum_eff_rl_weightpt, hden_eff_rl_weightpt, 1, 1, "B");
+
+                hpurity_rl_weightpt->Draw("col");
+                for (int i = 2; i < hpurity_rl_jetpt->GetNbinsX(); ++i) {
+                        for (int j = 1; j <= hpurity_rl_weightpt->GetNbinsY(); ++j) {
+                                double x = hpurity_rl_weightpt->GetXaxis()->GetBinCenter(i);
+                                double y = hpurity_rl_weightpt->GetYaxis()->GetBinCenter(j);
+                                double content = hpurity_rl_weightpt->GetBinContent(i, j);
+                                double error = hpurity_rl_weightpt->GetBinError(i, j);
+
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+                hpurity_rl_weightpt->SetTitle("Purity Correction;R_{L};w_{p_{T}}");
+                hpurity_rl_weightpt->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hpurity_rl_weightpt->GetYaxis()->SetRangeUser(weight_binning[0], weight_binning[nbin_weight]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                c->Print("../src-analysis/plots/pair_purity_correction_rl_weightpt.pdf");
+
+                hefficiency_rl_weightpt->Draw("col");
+                for (int i = 2; i < hefficiency_rl_weightpt->GetNbinsX(); ++i) {
+                        for (int j = 1; j <= hefficiency_rl_weightpt->GetNbinsY(); ++j) {
+                                double x = hefficiency_rl_weightpt->GetXaxis()->GetBinCenter(i);
+                                double y = hefficiency_rl_weightpt->GetYaxis()->GetBinCenter(j);
+                                double content = hefficiency_rl_weightpt->GetBinContent(i, j);
+                                double error = hefficiency_rl_weightpt->GetBinError(i, j);
+
+                                latex.DrawLatex(x, y, Form("%.2f #pm %.2f", content, error));
+                        }
+                }
+                hefficiency_rl_weightpt->SetTitle("Efficiency Correction;R_{L};w_{p_{T}}");
+                hefficiency_rl_weightpt->GetXaxis()->SetRangeUser(rl_nominal_binning[0],rl_nominal_binning[nbin_rl_nominal]);
+                hefficiency_rl_weightpt->GetYaxis()->SetRangeUser(weight_binning[0], weight_binning[nbin_weight]);
+                gPad->SetLogx(1);
+                gPad->SetLogy(1);
+                c->Print("../src-analysis/plots/pair_efficiency_correction_rl_weightpt.pdf");
 
                 // Eq. charged EECs
                 TH2F* hnum_pur_rl_jetpt_eqcharge    = new TH2F("hnum_pur_rl_jetpt_eqcharge"   , "", nbin_rl_nominal_unfolding,unfolding_rl_nominal_binning, nbin_jet_pt_unfolding, unfolding_jet_pt_binning);
