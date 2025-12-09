@@ -208,6 +208,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
                 hcorr_eqcheec[bin]->Divide(hcorr_eec[bin]);
                 hcorr_neqcheec[bin]->Divide(hcorr_eec[bin]);
 
+                // hcorr_eec[bin]->Scale(1./h_njet_unfolded->GetBinContent(bin + 3),"width");
                 hcorr_eec[bin]->Scale(1./h_njet_unfolded->GetBinContent(bin + 3),"width");
         
                 fout->cd();
@@ -315,7 +316,8 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
                 s_data->Draw("NOSTACK");
                 s_data->SetTitle(";R_{L};#Sigma_{EEC}(R_{L})");
                 s_data->GetXaxis()->SetRangeUser(rl_nominal_binning[0]*1.01,rl_nominal_binning[nbin_rl_nominal]);
-                s_data->SetMaximum(1.3);
+                // s_data->SetMaximum(1.3);
+                s_data->SetMaximum(7.75);
                 l_data->Draw("SAME");
                 gPad->SetLogx(1);
                 gPad->SetLogy(0);
