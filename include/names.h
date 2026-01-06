@@ -22,6 +22,8 @@ std::string namef_ntuple_reco2truth_match         = "ntuple_reco2truth_match.roo
 std::string namef_ntuple_reco2truth_match_ct      = "ntuple_reco2truth_match_ct.root";
 std::string namef_ntuple_reco2truth_match_jes_jer = "ntuple_reco2truth_match_jes_jer.root";
 
+std::string namef_ntuple_reco2truth_singlehadron_match = "ntuple_reco2truth_singlehadron_match.root";
+
 std::string namef_ntuple_truth2reco_match     = "ntuple_truth2reco_match.root";
 std::string namef_ntuple_truth2reco_match_ct  = "ntuple_truth2reco_match_ct.root";
 
@@ -121,9 +123,9 @@ const char* ntuple_corrections_reco_vars_plus = "eq_charge:R_L:h1_eta:h2_eta:h1_
 
 //--------------------------------------------------------------------------------------//
 const int   Nvars_hadroncorrections_mc         = 8;
-const int   Nvars_hadroncorrections_reco       = 14;
+const int   Nvars_hadroncorrections_reco       = 16;
 const char* ntuple_hadroncorrections_mc_vars   = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:deltaR_jet_h";
-const char* ntuple_hadroncorrections_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:jet_e_truth:jet_pt_truth:h_y_truth:h_eta_truth:h_p_truth:deltaR_jet_h:key_match";
+const char* ntuple_hadroncorrections_reco_vars = "h_eta:h_y:h_p:h_pt:jet_pt:jet_eta:jet_e:jet_e_truth:jet_pt_truth:h_y_truth:h_eta_truth:h_p_truth:deltaR_jet_h:key_match:R_h_reco:R_h_truth";
 
 const int   Nvars_corrdata       = 30; 
 const char* ntuple_corrdata_vars = "event_weight:efficiency:purity:efficiency_relerror:purity_relerror:R_L:h1_eta:h2_eta:h1_y:h2_y:h1_p:h2_p:h1_pt:h2_pt:jet_pt:jet_eta:weight_pt:jet_e:h1_e:h2_e:year:n_h1_reco_ok:n_h1_reco:n_h1_truth_ok:n_h1_truth:n_h2_reco_ok:n_h2_reco:n_h2_truth_ok:n_h2_truth:eq_charge";

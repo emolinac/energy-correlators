@@ -18,7 +18,8 @@ all: ${BIN}/create_jet_ntuple_truth2reco_match \
      ${BIN}/create_jes_jer_ntuple \
      ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt \
      ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt_ct \
-     ${BIN}/create_ntuple_reco2truth_match ${BIN}/create_ntuple_reco2truth_match_ct 
+     ${BIN}/create_ntuple_reco2truth_match ${BIN}/create_ntuple_reco2truth_match_ct \
+     ${BIN}/create_ntuple_reco2truth_singlehadron_match
 
 ${BIN}/create_eec_mc_ntuple: ${SRC}/create_eec_mc_ntuple.cpp
 	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_eec_mc_ntuple.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_eec_mc_ntuple
@@ -40,6 +41,9 @@ ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt_ct: ${SRC}/create_corree
 
 ${BIN}/create_ntuple_reco2truth_match: ${SRC}/create_ntuple_reco2truth_match.cpp
 	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_ntuple_reco2truth_match.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_ntuple_reco2truth_match
+
+${BIN}/create_ntuple_reco2truth_singlehadron_match: ${SRC}/create_ntuple_reco2truth_singlehadron_match.cpp
+	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_ntuple_reco2truth_singlehadron_match.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_ntuple_reco2truth_singlehadron_match
 
 ${BIN}/create_ntuple_reco2truth_match_ct: ${SRC}/create_ntuple_reco2truth_match_ct.cpp
 	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_ntuple_reco2truth_match_ct.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_ntuple_reco2truth_match_ct
