@@ -15,6 +15,8 @@ CUSTOM_FUNCTIONS := $(wildcard ${INC}/*.cpp)
 all: ${BIN}/create_jet_ntuple_truth2reco_match \
      ${BIN}/create_jet_ntuple_truth2reco_match_ct \
      ${BIN}/create_eec_mc_ntuple \
+     ${BIN}/create_eec_28r1_mc_ntuple \
+     ${BIN}/create_eec_28r2_mc_ntuple \
      ${BIN}/create_jes_jer_ntuple \
      ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt \
      ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt_ct \
@@ -23,6 +25,12 @@ all: ${BIN}/create_jet_ntuple_truth2reco_match \
 
 ${BIN}/create_eec_mc_ntuple: ${SRC}/create_eec_mc_ntuple.cpp
 	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_eec_mc_ntuple.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_eec_mc_ntuple
+
+${BIN}/create_eec_28r1_mc_ntuple: ${SRC}/create_eec_28r1_mc_ntuple.cpp
+	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_eec_28r1_mc_ntuple.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_eec_28r1_mc_ntuple
+
+${BIN}/create_eec_28r2_mc_ntuple: ${SRC}/create_eec_28r2_mc_ntuple.cpp
+	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_eec_28r2_mc_ntuple.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_eec_28r2_mc_ntuple
 
 ${BIN}/create_jes_jer_ntuple: ${SRC}/create_jes_jer_ntuple.cpp
 	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_jes_jer_ntuple.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_jes_jer_ntuple

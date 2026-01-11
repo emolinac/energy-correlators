@@ -39,6 +39,9 @@ std::string namef_ntuple_mc_eec    = "ntuple_mc_eec.root";
 std::string namef_ntuple_mc_at_eec = "ntuple_mc_at_eec.root";
 std::string namef_ntuple_hadron    = "ntuple_hadron.root";
 
+std::string namef_ntuple_mc_eec_28r1 = "ntuple_mc_eec_28r1.root";
+std::string namef_ntuple_mc_eec_28r2 = "ntuple_mc_eec_28r2.root";
+
 // About names and options
 std::map<std::string, std::string> namef_reco_corrections = {
         {"--get-nominal", namef_ntuple_reco2truth_match},
