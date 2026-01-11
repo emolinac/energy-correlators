@@ -24,8 +24,9 @@ void macro_makeclasses()
         TChain* pseudodata_ct = new TChain("StdHltZJets/DecayTree");
         TChain* sim_mc_ct     = new TChain("mcjettuple/MCJetTree");
         TChain* truth_ct      = new TChain("mcjettuple/MCJetTree");
-        
-        TChain* data_2016_new  = new TChain("StdHltZJets/DecayTree");
+
+        TChain* sim_28r1 = new TChain("StdHltZJets/DecayTree");
+        TChain* sim_28r2 = new TChain("StdHltZJets/DecayTree");
         
         sim_mc->Add((input_folder + "ic-files/Zhadron_MC_Sim09b_MD_2016_02222025.root").c_str());
         sim_mc->Add((input_folder + "ic-files/Zhadron_MC_Sim09b_MU_2016_02222025.root").c_str());
@@ -155,4 +156,16 @@ void macro_makeclasses()
         // truth_ct->Add((input_folder + "ic-files/Zhadron_MC_Sim10b_MD_2018_02222025.root").c_str());
         truth_ct->Add((input_folder + "ic-files/Zhadron_MC_Sim10b_MU_2018_02222025.root").c_str());
         truth_ct->MakeClass("TZJetsTruth");
+
+        sim_28r1->Add((input_folder + "ic-files/Zhadron_MC_Sim09c_MD_2016_02222025.root").c_str());
+        sim_28r1->Add((input_folder + "ic-files/Zhadron_MC_Sim09c_MU_2016_02222025.root").c_str());
+        sim_28r1->MakeClass("TZJetsMCReco28r1");
+
+        sim_28r2->Add((input_folder + "ic-files/Zhadron_MC_Sim09j_MD_2016_02222025.root").c_str());
+        sim_28r2->Add((input_folder + "ic-files/Zhadron_MC_Sim09j_MU_2016_02222025.root").c_str());
+        sim_28r2->Add((input_folder + "ic-files/Zhadron_MC_Sim09l_MD_2016_02222025.root").c_str());
+        sim_28r2->Add((input_folder + "ic-files/Zhadron_MC_Sim09l_MU_2016_02222025.root").c_str());
+        sim_28r2->Add((input_folder + "ic-files/Zhadron_MC_Sim10a_MD_2016_02222025.root").c_str());
+        sim_28r2->Add((input_folder + "ic-files/Zhadron_MC_Sim10a_MU_2016_02222025.root").c_str());
+        sim_28r2->MakeClass("TZJetsMCReco28r2");
 }
