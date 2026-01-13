@@ -1,18 +1,21 @@
 #include "../../include/analysis-constants.h"
 #include "../../include/analysis-binning.h"
+#include "../../include/analysis-cuts.cpp"
 #include "../../include/analysis-cuts.h"
 #include "../../include/directories.h"
 #include "../../include/names.h"
+#include "../../include/utils.cpp"
 #include "../../include/utils.h"
+#include "../../include/utils-visual.cpp"
 #include "../../include/utils-visual.h"
 
 void macro_print_singlepurity_eta_phi()
 {
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_reco2truth_singlehadron_match).c_str());
 
     // Get the corresponding Ntuples
-    TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
+    TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_correction_reco).c_str());
 
     // Define the necessary histograms to calculate purity
     TH2F* hsig    = new TH2F("hsig"   ,"",ndim_corr,-TMath::Pi(),TMath::Pi(),ndim_corr,eta_min,eta_max);

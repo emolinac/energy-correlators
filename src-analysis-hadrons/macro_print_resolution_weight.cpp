@@ -17,7 +17,7 @@ void macro_print_resolution_weight()
         TFile* fpurity = new TFile((output_folder + namef_ntuple_eec_pairpurity).c_str());
 
         // Get the corresponding Ntuples
-        TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
+        TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_correction_reco).c_str());
 
         // Define the necessary histograms to calculate purity
         // TH1F* hres = new TH1F("hres","",200,-.06,.06);

@@ -18,6 +18,7 @@ all: ${BIN}/create_jet_ntuple_truth2reco_match \
      ${BIN}/create_eec_28r1_mc_ntuple \
      ${BIN}/create_eec_28r2_mc_ntuple \
      ${BIN}/create_jes_jer_ntuple \
+     ${BIN}/create_hadron_jet_ntuples \
      ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt \
      ${BIN}/create_correec_histo3dpaircorr_rl_jetpt_weightpt_ct \
      ${BIN}/create_ntuple_reco2truth_match ${BIN}/create_ntuple_reco2truth_match_ct \
@@ -31,6 +32,9 @@ ${BIN}/create_eec_28r1_mc_ntuple: ${SRC}/create_eec_28r1_mc_ntuple.cpp
 
 ${BIN}/create_eec_28r2_mc_ntuple: ${SRC}/create_eec_28r2_mc_ntuple.cpp
 	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_eec_28r2_mc_ntuple.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_eec_28r2_mc_ntuple
+
+${BIN}/create_hadron_jet_ntuples: ${SRC}/create_hadron_jet_ntuples.cpp
+	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_hadron_jet_ntuples.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_hadron_jet_ntuples
 
 ${BIN}/create_jes_jer_ntuple: ${SRC}/create_jes_jer_ntuple.cpp
 	${CXX} ${ROOTCFLAGS} -I${INC} ${SRC}/create_jes_jer_ntuple.cpp ${CUSTOM_FUNCTIONS} ${ROOTLIBS} -o ${BIN}/create_jes_jer_ntuple

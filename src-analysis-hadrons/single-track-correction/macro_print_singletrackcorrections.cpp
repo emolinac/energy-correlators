@@ -1,9 +1,12 @@
 #include "../../include/analysis-constants.h"
 #include "../../include/analysis-binning.h"
+#include "../../include/analysis-cuts.cpp"
 #include "../../include/analysis-cuts.h"
 #include "../../include/directories.h"
 #include "../../include/names.h"
+#include "../../include/utils.cpp"
 #include "../../include/utils.h"
+#include "../../include/utils-visual.cpp"
 #include "../../include/utils-visual.h"
 
 void macro_print_singletrackcorrections(double jet_pt_min_local = jet_pt_binning[0], double jet_pt_max_local = jet_pt_binning[nbin_jet_pt])

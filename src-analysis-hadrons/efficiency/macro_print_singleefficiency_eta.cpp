@@ -1,15 +1,18 @@
 #include "../../include/analysis-constants.h"
 #include "../../include/analysis-binning.h"
+#include "../../include/analysis-cuts.cpp"
 #include "../../include/analysis-cuts.h"
 #include "../../include/directories.h"
 #include "../../include/names.h"
+#include "../../include/utils.cpp"
 #include "../../include/utils.h"
+#include "../../include/utils-visual.cpp"
 #include "../../include/utils-visual.h"
 
 void macro_print_singleefficiency_eta()
 {
     // Open the necessary files
-    TFile* fefficiency = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
+    TFile* fefficiency = new TFile((output_folder + namef_ntuple_reco2truth_singlehadron_match).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_mcreco = (TNtuple*) fefficiency->Get((name_ntuple_correction_reco).c_str());

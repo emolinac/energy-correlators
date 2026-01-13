@@ -1,16 +1,19 @@
 #include "../../include/analysis-constants.h"
 #include "../../include/analysis-binning.h"
+#include "../../include/analysis-cuts.cpp"
 #include "../../include/analysis-cuts.h"
 #include "../../include/directories.h"
 #include "../../include/names.h"
+#include "../../include/utils.cpp"
 #include "../../include/utils.h"
+#include "../../include/utils-visual.cpp"
 #include "../../include/utils-visual.h"
 
 void macro_print_pairefficiency_rl()
 {
     // Open the necessary files
     TFile* fdata   = new TFile((output_folder + namef_ntuple_eec).c_str());
-    TFile* fefficiency = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
+    TFile* fefficiency = new TFile((output_folder + namef_ntuple_reco2truth_singlehadron_match).c_str());
 
     // Get the corresponding Ntuples
     TNtuple* ntuple_data            = (TNtuple*) fdata->Get((name_ntuple_data).c_str());

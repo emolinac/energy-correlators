@@ -1,18 +1,21 @@
 #include "../../include/analysis-constants.h"
 #include "../../include/analysis-binning.h"
+#include "../../include/analysis-cuts.cpp"
 #include "../../include/analysis-cuts.h"
 #include "../../include/directories.h"
 #include "../../include/names.h"
+#include "../../include/utils.cpp"
 #include "../../include/utils.h"
+#include "../../include/utils-visual.cpp"
 #include "../../include/utils-visual.h"
 
 void macro_print_singlepurity_momentum()
 {
     // Open the necessary files
-    TFile* fpurity = new TFile((output_folder + namef_ntuple_eec_hadroncorrections).c_str());
+    TFile* fpurity = new TFile((output_folder + namef_ntuple_reco2truth_singlehadron_match).c_str());
 
     // Get the corresponding Ntuples
-    TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_purity).c_str());
+    TNtuple* ntuple_dtrmatch = (TNtuple*) fpurity->Get((name_ntuple_correction_reco).c_str());
 
     // Define the necessary histograms to calculate purity
     TH1F* hsig    = new TH1F("hsig"   ,"",10,track_p_min,track_p_max);
@@ -26,8 +29,8 @@ void macro_print_singlepurity_momentum()
     set_histogram_style(hall, kCyan  , std_line_width, std_marker_style, std_marker_size);
 
     // Project into the histograms
-    ntuple_dtrmatch->Project("hsig","h_p",single_signal_cut);
-    ntuple_dtrmatch->Project("hall","h_p",pair_cut         );
+    ntuple_dtrmatch->Project("hsig","h_p","key_match==1");
+    ntuple_dtrmatch->Project("hall","h_p","");
     
     TCanvas* c = new TCanvas("c","",800,600);
     c->Draw();

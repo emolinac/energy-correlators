@@ -9,10 +9,10 @@
 #include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
-void macro_print_resolution_jet_pt()
+void macro_print_resolution_jetpt()
 {
         // Open the necessary files
-        TFile* fpurity = new TFile((output_folder + namef_ntuple_jet_purity).c_str());
+        TFile* fpurity = new TFile((output_folder + namef_reco_corrections["--get-nominal"]).c_str());
         gStyle->SetOptStat(1110);
 
         // Get the corresponding Ntuples
@@ -68,7 +68,7 @@ void macro_print_resolution_jet_pt()
 
         gPad->SetLogy(0);
         hdirres->Draw();
-        hdirres->SetTitle(";#Delta R(Reco,Truth)(GeV);");
+        hdirres->SetTitle(";#Delta R(Reco,Truth);");
         
         c->Print("./plots/dirresolution_jet.pdf");
 
