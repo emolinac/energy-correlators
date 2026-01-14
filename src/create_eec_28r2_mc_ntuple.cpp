@@ -70,7 +70,7 @@ int main()
         //                                 mctree->MCJet_PZ/1000.,
         //                                 mctree->MCJet_PE/1000.);
 
-        //         if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+        //         if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
         //                 continue;
                 
         //         mum_4vector->SetPxPyPzE(mctree->MCJet_truth_mum_PX/1000.,
@@ -78,7 +78,7 @@ int main()
         //                                 mctree->MCJet_truth_mum_PZ/1000.,
         //                                 mctree->MCJet_truth_mum_PE/1000.);
 
-        //         if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+        //         if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
         //                 continue;
                 
         //         mup_4vector->SetPxPyPzE(mctree->MCJet_truth_mup_PX/1000.,
@@ -86,7 +86,7 @@ int main()
         //                                 mctree->MCJet_truth_mup_PZ/1000.,
         //                                 mctree->MCJet_truth_mup_PE/1000.);
 
-        //         if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+        //         if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
         //                 continue;
                 
         //         Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -151,7 +151,7 @@ int main()
         //                                 continue;
 
         //                         vars_mc[0]  = mctree->MCJet_Dtr_ThreeCharge[h1_index]*mctree->MCJet_Dtr_ThreeCharge[h2_index];
-        //                         vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
+        //                         vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector, true);
         //                         vars_mc[2]  = h1_4vector->Eta();
         //                         vars_mc[3]  = h2_4vector->Eta();
         //                         vars_mc[4]  = h1_4vector->Rapidity();
@@ -221,7 +221,7 @@ int main()
                                         mcrecotree->Jet_PZ/1000.,
                                         mcrecotree->Jet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,
@@ -229,7 +229,7 @@ int main()
                                         mcrecotree->mum_PZ/1000.,
                                         mcrecotree->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,
@@ -237,7 +237,7 @@ int main()
                                         mcrecotree->mup_PZ/1000.,
                                         mcrecotree->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -311,7 +311,7 @@ int main()
 
                                 // If all good, fille Ntuple
                                 vars[0]  = weight(h1_4vector->E(), h2_4vector->E(), Jet_4vector->E());
-                                vars[1]  = h1_4vector->DeltaR(*h2_4vector);
+                                vars[1]  = h1_4vector->DeltaR(*h2_4vector, true);
                                 vars[2]  = h1_4vector->Eta();
                                 vars[3]  = h2_4vector->Eta();
                                 vars[4]  = h1_4vector->Rapidity();

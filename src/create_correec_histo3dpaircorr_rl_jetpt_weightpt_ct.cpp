@@ -207,7 +207,7 @@ int main()
                                         pseudodata->Jet_PZ/1000.,
                                         pseudodata->Jet_PE/1000.);
                 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(pseudodata->mum_PX/1000.,
@@ -215,7 +215,7 @@ int main()
                                         pseudodata->mum_PZ/1000.,
                                         pseudodata->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(pseudodata->mup_PX/1000.,
@@ -223,7 +223,7 @@ int main()
                                         pseudodata->mup_PZ/1000.,
                                         pseudodata->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -291,16 +291,16 @@ int main()
 
                                 double momentum_weight = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
-                                h_npair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
-                                h_npair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                h_npair->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight);
+                                h_npair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight, muon_weight);
 
                                 if (pseudodata->Jet_Dtr_ThreeCharge[h1_index] * pseudodata->Jet_Dtr_ThreeCharge[h2_index] > 0) {
-                                        h_eqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
-                                        h_eqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                        h_eqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight);
+                                        h_eqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight, muon_weight);
                                 }
                                 else if (pseudodata->Jet_Dtr_ThreeCharge[h1_index] * pseudodata->Jet_Dtr_ThreeCharge[h2_index] < 0) {
-                                        h_neqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
-                                        h_neqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight, muon_weight);
+                                        h_neqchnpair->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight);
+                                        h_neqchnpair_wmuon->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight, muon_weight);
                                 }
                         }
                 }
@@ -335,7 +335,7 @@ int main()
                                         truthdata->MCJet_PZ/1000.,
                                         truthdata->MCJet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
 
                 mum_4vector->SetPxPyPzE(truthdata->MCJet_truth_mum_PX/1000.,
@@ -343,7 +343,7 @@ int main()
                                         truthdata->MCJet_truth_mum_PZ/1000.,
                                         truthdata->MCJet_truth_mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
 
                 mup_4vector->SetPxPyPzE(truthdata->MCJet_truth_mup_PX/1000.,
@@ -351,7 +351,7 @@ int main()
                                         truthdata->MCJet_truth_mup_PZ/1000.,
                                         truthdata->MCJet_truth_mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -394,12 +394,12 @@ int main()
 
                                 double momentum_weight = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
 
-                                h_npair_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                h_npair_truth->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight);
 
                                 if (truthdata->MCJet_Dtr_ThreeCharge[h1_index] * truthdata->MCJet_Dtr_ThreeCharge[h2_index] > 0)
-                                        h_eqchnpair_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_eqchnpair_truth->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight);
                                 else if (truthdata->MCJet_Dtr_ThreeCharge[h1_index] * truthdata->MCJet_Dtr_ThreeCharge[h2_index] < 0)
-                                        h_neqchnpair_truth->Fill(h1_4vector->DeltaR(*h2_4vector), Jet_4vector->Pt(), momentum_weight);
+                                        h_neqchnpair_truth->Fill(h1_4vector->DeltaR(*h2_4vector, true), Jet_4vector->Pt(), momentum_weight);
                         }   
                 }
                 

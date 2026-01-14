@@ -93,7 +93,7 @@ int main()
                                         mcrecotree->Jet_PZ/1000.,
                                         mcrecotree->Jet_PE/1000.);
                 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,
@@ -101,7 +101,7 @@ int main()
                                         mcrecotree->mum_PZ/1000.,
                                         mcrecotree->mum_PE/1000.);
                 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,
@@ -109,7 +109,7 @@ int main()
                                         mcrecotree->mup_PZ/1000.,
                                         mcrecotree->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -128,7 +128,7 @@ int main()
                                                      mcrecotree->Jet_mcjet_PZ/1000.,
                                                      mcrecotree->Jet_mcjet_PE/1000.);
 
-                        if (apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) 
+                        if (apply_jet_cuts(true_Jet_4vector->Rapidity(),true_Jet_4vector->Pt())) 
                                 truth_jet_passed = true;
                 }
 
@@ -233,7 +233,7 @@ int main()
                                         } 
                                 
                                         vars_reco[0]  = mcrecotree->Jet_Dtr_ThreeCharge[h1_index]*mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
-                                        vars_reco[1]  = h1_4vector->DeltaR(*h2_4vector);
+                                        vars_reco[1]  = h1_4vector->DeltaR(*h2_4vector, true);
                                         vars_reco[2]  = h1_4vector->Eta();
                                         vars_reco[3]  = h2_4vector->Eta();
                                         vars_reco[4]  = h1_4vector->Rapidity();
@@ -249,8 +249,8 @@ int main()
                                         vars_reco[14] = (key2_match==0) ? -999 : true_h2_4vector->Pt();
                                         vars_reco[15] = Jet_4vector->Pt();
                                         vars_reco[16] = true_Jet_4vector->Pt();
-                                        vars_reco[17] = (key1_match==0) ? -999 : true_h1_4vector->DeltaR(*h1_4vector);
-                                        vars_reco[18] = (key2_match==0) ? -999 : true_h2_4vector->DeltaR(*h2_4vector);
+                                        vars_reco[17] = (key1_match==0) ? -999 : true_h1_4vector->DeltaR(*h1_4vector, true);
+                                        vars_reco[18] = (key2_match==0) ? -999 : true_h2_4vector->DeltaR(*h2_4vector, true);
                                         vars_reco[19] = (key1_match==0) ? -999 : true_h1_4vector->Eta();
                                         vars_reco[20] = (key2_match==0) ? -999 : true_h2_4vector->Eta();
                                         vars_reco[21] = (key1_match==0||key2_match==0) ? -999 : true_h1_4vector->DeltaR(*true_h2_4vector);
@@ -306,7 +306,7 @@ int main()
                                                 continue;
 
                                         vars_mc[0]  = mcrecotree->Jet_mcjet_dtrThreeCharge[h1_index]*mcrecotree->Jet_mcjet_dtrThreeCharge[h2_index];
-                                        vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector);
+                                        vars_mc[1]  = h1_4vector->DeltaR(*h2_4vector, true);
                                         vars_mc[2]  = h1_4vector->Eta();
                                         vars_mc[3]  = h2_4vector->Eta();
                                         vars_mc[4]  = h1_4vector->Rapidity();

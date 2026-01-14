@@ -12,7 +12,7 @@
 void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet = 4)
 {
         TFile* fnominal = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i--get-nominal.root",niter,niter_jet)).c_str());
-        TFile* fmc      = new TFile((output_folder + "ntuple_mc_eec.root").c_str());
+        TFile* fmc      = new TFile((output_folder + namef_ntuple_hadron_jet).c_str());
 
         TH1F* hcorr_eec[nbin_jet_pt]; 
         TH1F* hcorr_eec_syst[nbin_jet_pt]; 
@@ -23,7 +23,7 @@ void macro_print_measurements2mc_with_systematics(int niter = 4, int niter_jet =
         TH1F* hcorr_eec_neqcharge[nbin_jet_pt]; 
         TH1F* hcorr_eec_neqcharge_syst[nbin_jet_pt]; 
 
-        TNtuple* ntuple_mc     = (TNtuple*) fmc->Get(name_ntuple_mc.c_str());
+        TNtuple* ntuple_mc     = (TNtuple*) fmc->Get(name_ntuple_mc_pair.c_str());
         TNtuple* ntuple_mc_jet = (TNtuple*) fmc->Get(name_ntuple_mc_jet.c_str());
         
         TH1F* hmc_eec[nbin_jet_pt]; 

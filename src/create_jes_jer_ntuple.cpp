@@ -88,7 +88,7 @@ int main()
                                         mcrecotree->Jet_PZ/1000./mcrecotree->Jet_JEC_Error,
                                         mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Error);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,
@@ -96,7 +96,7 @@ int main()
                                         mcrecotree->mum_PZ/1000.,
                                         mcrecotree->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,
@@ -104,7 +104,7 @@ int main()
                                         mcrecotree->mup_PZ/1000.,
                                         mcrecotree->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -127,7 +127,7 @@ int main()
                                                         mcrecotree->Jet_PZ/1000./mcrecotree->Jet_JEC_Error,
                                                         mcrecotree->Jet_PE/1000./mcrecotree->Jet_JEC_Error);
 
-                                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                                         continue;
 
                                 if (Jet_4vector->Pt() > subleading_jet_pt) 
@@ -190,7 +190,7 @@ int main()
                                         datatree->Jet_PZ/1000./datatree->Jet_JEC_Cor,
                                         datatree->Jet_PE/1000./datatree->Jet_JEC_Cor);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(datatree->mum_PX/1000.,
@@ -198,7 +198,7 @@ int main()
                                         datatree->mum_PZ/1000.,
                                         datatree->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(datatree->mup_PX/1000.,
@@ -206,7 +206,7 @@ int main()
                                         datatree->mup_PZ/1000.,
                                         datatree->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -229,7 +229,7 @@ int main()
                                                         datatree->Jet_PZ/1000./datatree->Jet_JEC_Cor,
                                                         datatree->Jet_PE/1000./datatree->Jet_JEC_Cor);
 
-                                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                                         continue;
 
                                 if (Jet_4vector->Pt() > subleading_jet_pt) 

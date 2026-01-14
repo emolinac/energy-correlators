@@ -109,13 +109,13 @@ int main()
                                        mup_4vector->Pz()+mum_4vector->Pz(),
                                        mup_4vector->E() +mum_4vector->E());
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
@@ -127,7 +127,7 @@ int main()
                                              mcrecotree->Jet_mcjet_PZ/1000.,
                                              mcrecotree->Jet_mcjet_PE/1000.);
 
-                if (!apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(true_Jet_4vector->Rapidity(),true_Jet_4vector->Pt())) 
                         continue;
                 
                 // Loop over reco
@@ -189,7 +189,7 @@ int main()
                         vars_reco[9]  = (key_match == 0) ? -999 : true_h_4vector->Rapidity();
                         vars_reco[10] = (key_match == 0) ? -999 : true_h_4vector->Eta();
                         vars_reco[11] = (key_match == 0) ? -999 : true_h_4vector->P();
-                        vars_reco[12] = Jet_4vector->DeltaR(*h_4vector);            
+                        vars_reco[12] = Jet_4vector->DeltaR(*h_4vector, true);            
                         vars_reco[13] = key_match;
                         vars_reco[14] = std::sqrt(std::pow(h_4vector->Eta(),2) + std::pow(h_4vector->Phi(),2));
                         vars_reco[15] = (key_match == 0) ? -999 : std::sqrt(std::pow(true_h_4vector->Eta(),2) + std::pow(true_h_4vector->Phi(),2));

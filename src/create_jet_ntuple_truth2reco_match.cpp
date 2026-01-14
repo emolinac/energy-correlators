@@ -67,7 +67,7 @@ int main()
                                              mctree->MCJet_PZ/1000.,
                                              mctree->MCJet_PE/1000.);
 
-                if (!apply_jet_cuts(true_Jet_4vector->Eta(),true_Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(true_Jet_4vector->Rapidity(),true_Jet_4vector->Pt())) 
                         continue;
 
                 true_mum_4vector->SetPxPyPzE(mctree->MCJet_truth_mum_PX/1000.,
@@ -75,7 +75,7 @@ int main()
                                              mctree->MCJet_truth_mum_PZ/1000.,
                                              mctree->MCJet_truth_mum_PE/1000.);
 
-                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector),true_mum_4vector->Pt(),true_mum_4vector->Eta())) 
+                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mum_4vector, true),true_mum_4vector->Pt(),true_mum_4vector->Eta())) 
                         continue;
                 
                 true_mup_4vector->SetPxPyPzE(mctree->MCJet_truth_mup_PX/1000.,
@@ -83,7 +83,7 @@ int main()
                                              mctree->MCJet_truth_mup_PZ/1000.,
                                              mctree->MCJet_truth_mup_PE/1000.);
 
-                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector),true_mup_4vector->Pt(),true_mup_4vector->Eta())) 
+                if (!apply_muon_cuts(true_Jet_4vector->DeltaR(*true_mup_4vector, true),true_mup_4vector->Pt(),true_mup_4vector->Eta())) 
                         continue;
                 
                 true_Z0_4vector->SetPxPyPzE(true_mup_4vector->Px()+true_mum_4vector->Px(),
@@ -103,7 +103,7 @@ int main()
                                                 mctree->MCJet_recojet_PZ/1000.,
                                                 mctree->MCJet_recojet_PE/1000.);
 
-                        if (apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                        if (apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                                 reco_passed = true;
                 }
                 

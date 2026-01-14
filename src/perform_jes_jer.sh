@@ -9,16 +9,16 @@ std_output_name="histos_3dpaircorr_rl_jetpt_weightpt_eec_jes_jer.root"
 name="histos_3dpaircorr_rl_jetpt_weightpt_eec_jes_jer"
 ext=".root"
 
-for ((i=0 ; i<${niter_jer} ; i++)); do
-        cd ../bin
+# for ((i=0 ; i<${niter_jer} ; i++)); do
+#         cd ../bin
 
-        ./create_ntuple_reco2truth_match --get-jes-jer
+#         ./create_ntuple_reco2truth_match --get-jes-jer
 
-        ./create_correec_histo3dpaircorr_rl_jetpt_weightpt --get-jes-jer
+#         ./create_correec_histo3dpaircorr_rl_jetpt_weightpt --get-jes-jer
 
-        cd ../output-files
-        mv ${std_output_name} ${name}_${i}${ext}
-done
+#         cd ../output-files
+#         mv ${std_output_name} ${name}_${i}${ext}
+# done
 
 cd ../src-analysis
 

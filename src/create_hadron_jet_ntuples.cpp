@@ -19,6 +19,7 @@
 #include "analysis-cuts.h"
 #include "directories.h"
 #include "names.h"
+#include "utils.h"
 
 int main()
 {
@@ -40,9 +41,16 @@ int main()
         ntuple_mcreco->SetAutoSave(0);
         ntuple_data->SetAutoSave(0);
         
-        TNtuple* ntuple_mc_jet     = new TNtuple(name_ntuple_mc_jet.c_str()    ,"jet-truth","jet_pt:jet_eta:jet_y:jet_phi:z_pt:z_eta:z_y:z_phi");
-        TNtuple* ntuple_mcreco_jet = new TNtuple(name_ntuple_mcreco_jet.c_str(),"jet-reco" ,"jet_pt:jet_eta:jet_y:jet_phi:z_pt:z_eta:z_y:z_phi");
-        TNtuple* ntuple_data_jet   = new TNtuple(name_ntuple_data_jet.c_str()  ,"jet-data" ,"jet_pt:jet_eta:jet_y:jet_phi:z_pt:z_eta:z_y:z_phi");
+        TNtuple* ntuple_mc_pair     = new TNtuple(name_ntuple_mc_pair.c_str()    ,"pair-truth","R_L:weight_pt:jet_pt:eq_charge");
+        TNtuple* ntuple_mcreco_pair = new TNtuple(name_ntuple_mcreco_pair.c_str(),"pair-reco" ,"R_L:weight_pt:jet_pt:eq_charge");
+        TNtuple* ntuple_data_pair   = new TNtuple(name_ntuple_data_pair.c_str()  ,"pair-data" ,"R_L:weight_pt:jet_pt:eq_charge");
+        ntuple_mc_pair->SetAutoSave(0);
+        ntuple_mcreco_pair->SetAutoSave(0);
+        ntuple_data_pair->SetAutoSave(0);
+        
+        TNtuple* ntuple_mc_jet     = new TNtuple(name_ntuple_mc_jet.c_str()    ,"jet-truth","jet_pt:jet_eta:jet_y:jet_phi:z_pt:z_eta:z_y:z_phi:mup_pt:mup_eta:mum_pt:mum_eta");
+        TNtuple* ntuple_mcreco_jet = new TNtuple(name_ntuple_mcreco_jet.c_str(),"jet-reco" ,"jet_pt:jet_eta:jet_y:jet_phi:z_pt:z_eta:z_y:z_phi:mup_pt:mup_eta:mum_pt:mum_eta");
+        TNtuple* ntuple_data_jet   = new TNtuple(name_ntuple_data_jet.c_str()  ,"jet-data" ,"jet_pt:jet_eta:jet_y:jet_phi:z_pt:z_eta:z_y:z_phi:mup_pt:mup_eta:mum_pt:mum_eta");
         ntuple_mc_jet->SetAutoSave(0);
         ntuple_mcreco_jet->SetAutoSave(0);
         ntuple_data_jet->SetAutoSave(0);
@@ -51,7 +59,8 @@ int main()
         TLorentzVector* Z0_4vector  = new TLorentzVector();
         TLorentzVector* mum_4vector = new TLorentzVector();
         TLorentzVector* mup_4vector = new TLorentzVector();
-        TLorentzVector* h_4vector  = new TLorentzVector();
+        TLorentzVector* h1_4vector  = new TLorentzVector();
+        TLorentzVector* h2_4vector  = new TLorentzVector();
         
         int eventNum;
         unsigned long long last_eventNum = 0;
@@ -60,7 +69,8 @@ int main()
         
         // Fill the MC TNtuple
         float vars[5];
-        float vars_jet[8];
+        float vars_pair[4];
+        float vars_jet[12];
 
         for (int evt = 0 ; evt < mctree->fChain->GetEntries() ; evt++) {
                 // Access entry of tree
@@ -85,7 +95,7 @@ int main()
                                         mctree->MCJet_PZ/1000.,
                                         mctree->MCJet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(mctree->MCJet_truth_mum_PX/1000.,
@@ -93,7 +103,7 @@ int main()
                                         mctree->MCJet_truth_mum_PZ/1000.,
                                         mctree->MCJet_truth_mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(mctree->MCJet_truth_mup_PX/1000.,
@@ -101,7 +111,7 @@ int main()
                                         mctree->MCJet_truth_mup_PZ/1000.,
                                         mctree->MCJet_truth_mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -112,14 +122,18 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
 
-                vars_jet[0] = Jet_4vector->Pt();
-                vars_jet[1] = Jet_4vector->Eta();
-                vars_jet[2] = Jet_4vector->Rapidity();
-                vars_jet[3] = Jet_4vector->Phi();
-                vars_jet[4] = Z0_4vector->Pt();
-                vars_jet[5] = Z0_4vector->Eta();
-                vars_jet[6] = Z0_4vector->Rapidity();
-                vars_jet[7] = Z0_4vector->Phi();
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->Eta();
+                vars_jet[2]  = Jet_4vector->Rapidity();
+                vars_jet[3]  = Jet_4vector->Phi();
+                vars_jet[4]  = Z0_4vector->Pt();
+                vars_jet[5]  = Z0_4vector->Eta();
+                vars_jet[6]  = Z0_4vector->Rapidity();
+                vars_jet[7]  = Z0_4vector->Phi();
+                vars_jet[8]  = mup_4vector->Pt();
+                vars_jet[9]  = mup_4vector->Eta();
+                vars_jet[10] = mum_4vector->Pt();
+                vars_jet[11] = mum_4vector->Eta();
 
                 ntuple_mc_jet->Fill(vars_jet);
 
@@ -128,24 +142,48 @@ int main()
                         if (abs(mctree->MCJet_Dtr_ID[h1_index]) < 100)
                                 continue;
 
-                        h_4vector->SetPxPyPzE(mctree->MCJet_Dtr_PX[h1_index]/1000.,
+                        h1_4vector->SetPxPyPzE(mctree->MCJet_Dtr_PX[h1_index]/1000.,
                                               mctree->MCJet_Dtr_PY[h1_index]/1000.,
                                               mctree->MCJet_Dtr_PZ[h1_index]/1000., 
                                               mctree->MCJet_Dtr_E[h1_index]/1000.);
 
                         if (!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h1_index],
-                                                              h_4vector->P(),
-                                                              h_4vector->Pt(),
-                                                              h_4vector->Eta())) 
+                                                              h1_4vector->P(),
+                                                              h1_4vector->Pt(),
+                                                              h1_4vector->Eta())) 
                                 continue;
                         
-                        vars[0] = h_4vector->P();
-                        vars[1] = h_4vector->Pt();
-                        vars[2] = h_4vector->Eta();
-                        vars[3] = h_4vector->Rapidity();
-                        vars[4] = h_4vector->Phi();
+                        vars[0] = h1_4vector->P();
+                        vars[1] = h1_4vector->Pt();
+                        vars[2] = h1_4vector->Eta();
+                        vars[3] = h1_4vector->Rapidity();
+                        vars[4] = h1_4vector->Phi();
 
                         ntuple_mc->Fill(vars);
+
+                        for (int h2_index = h1_index + 1 ; h2_index < mctree->MCJet_Dtr_nmcdtrs ; h2_index++) {
+                                // Skip non-hadronic particles
+                                if (abs(mctree->MCJet_Dtr_ID[h2_index]) < 100)
+                                        continue;
+
+                                h2_4vector->SetPxPyPzE(mctree->MCJet_Dtr_PX[h2_index]/1000.,
+                                                       mctree->MCJet_Dtr_PY[h2_index]/1000.,
+                                                       mctree->MCJet_Dtr_PZ[h2_index]/1000., 
+                                                       mctree->MCJet_Dtr_E[h2_index]/1000.);
+
+                                if (!apply_chargedtrack_momentum_cuts(mctree->MCJet_Dtr_ThreeCharge[h2_index],
+                                                                      h2_4vector->P(),
+                                                                      h2_4vector->Pt(),
+                                                                      h2_4vector->Eta())) 
+                                        continue;
+                                
+                                vars_pair[0] = h1_4vector->DeltaR(*h2_4vector, true);
+                                vars_pair[1] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars_pair[2] = Jet_4vector->Pt();
+                                vars_pair[3] = mctree->MCJet_Dtr_ThreeCharge[h1_index] * mctree->MCJet_Dtr_ThreeCharge[h2_index];
+
+                                ntuple_mc_pair->Fill(vars_pair);       
+                        }
                 }
 
                 last_eventNum = mctree->eventNumber;
@@ -191,7 +229,7 @@ int main()
                                         mcrecotree->Jet_PZ/1000.,
                                         mcrecotree->Jet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,
@@ -199,7 +237,7 @@ int main()
                                         mcrecotree->mum_PZ/1000.,
                                         mcrecotree->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(mcrecotree->mup_PX/1000.,
@@ -207,7 +245,7 @@ int main()
                                         mcrecotree->mup_PZ/1000.,
                                         mcrecotree->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -218,14 +256,18 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
 
-                vars_jet[0] = Jet_4vector->Pt();
-                vars_jet[1] = Jet_4vector->Eta();
-                vars_jet[2] = Jet_4vector->Rapidity();
-                vars_jet[3] = Jet_4vector->Phi();
-                vars_jet[4] = Z0_4vector->Pt();
-                vars_jet[5] = Z0_4vector->Eta();
-                vars_jet[6] = Z0_4vector->Rapidity();
-                vars_jet[7] = Z0_4vector->Phi();
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->Eta();
+                vars_jet[2]  = Jet_4vector->Rapidity();
+                vars_jet[3]  = Jet_4vector->Phi();
+                vars_jet[4]  = Z0_4vector->Pt();
+                vars_jet[5]  = Z0_4vector->Eta();
+                vars_jet[6]  = Z0_4vector->Rapidity();
+                vars_jet[7]  = Z0_4vector->Phi();
+                vars_jet[8]  = mup_4vector->Pt();
+                vars_jet[9]  = mup_4vector->Eta();
+                vars_jet[10] = mum_4vector->Pt();
+                vars_jet[11] = mum_4vector->Eta();
 
                 ntuple_mcreco_jet->Fill(vars_jet);
 
@@ -234,26 +276,52 @@ int main()
                         if (abs(mcrecotree->Jet_Dtr_ID[h1_index]) < 100) 
                                 continue;
 
-                        h_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,
+                        h1_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h1_index]/1000.,
                                               mcrecotree->Jet_Dtr_PY[h1_index]/1000.,
                                               mcrecotree->Jet_Dtr_PZ[h1_index]/1000.,
                                               mcrecotree->Jet_Dtr_E[h1_index]/1000.);
 
                         if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h_4vector->P(),
-                                                     h_4vector->Pt(),
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
                                                      mcrecotree->Jet_Dtr_TrackChi2[h1_index]/mcrecotree->Jet_Dtr_TrackNDF[h1_index],
                                                      mcrecotree->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h_4vector->Eta())) 
+                                                     h1_4vector->Eta())) 
                                 continue;
 
-                        vars[0] = h_4vector->P();
-                        vars[1] = h_4vector->Pt();
-                        vars[2] = h_4vector->Eta();
-                        vars[3] = h_4vector->Rapidity();
-                        vars[4] = h_4vector->Phi();
+                        vars[0] = h1_4vector->P();
+                        vars[1] = h1_4vector->Pt();
+                        vars[2] = h1_4vector->Eta();
+                        vars[3] = h1_4vector->Rapidity();
+                        vars[4] = h1_4vector->Phi();
                         
                         ntuple_mcreco->Fill(vars);
+
+                        for (int h2_index = h1_index + 1 ; h2_index < mcrecotree->Jet_NDtr ; h2_index++) {
+                                // Skip non-hadronic particles
+                                if (abs(mcrecotree->Jet_Dtr_ID[h2_index]) < 100)
+                                        continue;
+
+                                h2_4vector->SetPxPyPzE(mcrecotree->Jet_Dtr_PX[h2_index]/1000.,
+                                                       mcrecotree->Jet_Dtr_PY[h2_index]/1000.,
+                                                       mcrecotree->Jet_Dtr_PZ[h2_index]/1000., 
+                                                       mcrecotree->Jet_Dtr_E[h2_index]/1000.);
+
+                                if (!apply_chargedtrack_cuts(mcrecotree->Jet_Dtr_ThreeCharge[h2_index],
+                                                             h2_4vector->P(),
+                                                             h2_4vector->Pt(),
+                                                             mcrecotree->Jet_Dtr_TrackChi2[h2_index]/mcrecotree->Jet_Dtr_TrackNDF[h2_index],
+                                                             mcrecotree->Jet_Dtr_ProbNNghost[h2_index],
+                                                             h2_4vector->Eta())) 
+                                        continue;
+                                
+                                vars_pair[0] = h1_4vector->DeltaR(*h2_4vector, true);
+                                vars_pair[1] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars_pair[2] = Jet_4vector->Pt();
+                                vars_pair[3] = mcrecotree->Jet_Dtr_ThreeCharge[h1_index] * mcrecotree->Jet_Dtr_ThreeCharge[h2_index];
+
+                                ntuple_mcreco_pair->Fill(vars_pair);       
+                        }
                 }
 
                 last_eventNum = mcrecotree->eventNumber;
@@ -295,7 +363,7 @@ int main()
                                         datatree_2016->Jet_PZ/1000.,
                                         datatree_2016->Jet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(datatree_2016->mum_PX/1000.,
@@ -303,7 +371,7 @@ int main()
                                         datatree_2016->mum_PZ/1000.,
                                         datatree_2016->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(datatree_2016->mup_PX/1000.,
@@ -311,7 +379,7 @@ int main()
                                         datatree_2016->mup_PZ/1000.,
                                         datatree_2016->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -322,14 +390,18 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
 
-                vars_jet[0] = Jet_4vector->Pt();
-                vars_jet[1] = Jet_4vector->Eta();
-                vars_jet[2] = Jet_4vector->Rapidity();
-                vars_jet[3] = Jet_4vector->Phi();
-                vars_jet[4] = Z0_4vector->Pt();
-                vars_jet[5] = Z0_4vector->Eta();
-                vars_jet[6] = Z0_4vector->Rapidity();
-                vars_jet[7] = Z0_4vector->Phi();
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->Eta();
+                vars_jet[2]  = Jet_4vector->Rapidity();
+                vars_jet[3]  = Jet_4vector->Phi();
+                vars_jet[4]  = Z0_4vector->Pt();
+                vars_jet[5]  = Z0_4vector->Eta();
+                vars_jet[6]  = Z0_4vector->Rapidity();
+                vars_jet[7]  = Z0_4vector->Phi();
+                vars_jet[8]  = mup_4vector->Pt();
+                vars_jet[9]  = mup_4vector->Eta();
+                vars_jet[10] = mum_4vector->Pt();
+                vars_jet[11] = mum_4vector->Eta();
 
                 ntuple_data_jet->Fill(vars_jet);
 
@@ -339,26 +411,52 @@ int main()
                         if (abs(datatree_2016->Jet_Dtr_ID[h1_index]) < 100) 
                                 continue;
 
-                        h_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
+                        h1_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h1_index]/1000.,
                                               datatree_2016->Jet_Dtr_PY[h1_index]/1000.,
                                               datatree_2016->Jet_Dtr_PZ[h1_index]/1000.,
                                               datatree_2016->Jet_Dtr_E[h1_index]/1000.);
 
                         if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h_4vector->P(),
-                                                     h_4vector->Pt(),
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
                                                      datatree_2016->Jet_Dtr_TrackChi2[h1_index]/datatree_2016->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2016->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h_4vector->Eta())) 
+                                                     h1_4vector->Eta())) 
                                 continue;
 
-                        vars[0] = h_4vector->P();
-                        vars[1] = h_4vector->Pt();
-                        vars[2] = h_4vector->Eta();
-                        vars[3] = h_4vector->Rapidity();
-                        vars[4] = h_4vector->Phi();
+                        vars[0] = h1_4vector->P();
+                        vars[1] = h1_4vector->Pt();
+                        vars[2] = h1_4vector->Eta();
+                        vars[3] = h1_4vector->Rapidity();
+                        vars[4] = h1_4vector->Phi();
 
                         ntuple_data->Fill(vars);
+
+                        for (int h2_index = h1_index + 1 ; h2_index < datatree_2016->Jet_NDtr ; h2_index++) {
+                                // Skip non-hadronic particles
+                                if (abs(datatree_2016->Jet_Dtr_ID[h2_index]) < 100)
+                                        continue;
+
+                                h2_4vector->SetPxPyPzE(datatree_2016->Jet_Dtr_PX[h2_index]/1000.,
+                                                       datatree_2016->Jet_Dtr_PY[h2_index]/1000.,
+                                                       datatree_2016->Jet_Dtr_PZ[h2_index]/1000., 
+                                                       datatree_2016->Jet_Dtr_E[h2_index]/1000.);
+
+                                if (!apply_chargedtrack_cuts(datatree_2016->Jet_Dtr_ThreeCharge[h2_index],
+                                                             h2_4vector->P(),
+                                                             h2_4vector->Pt(),
+                                                             datatree_2016->Jet_Dtr_TrackChi2[h2_index]/datatree_2016->Jet_Dtr_TrackNDF[h2_index],
+                                                             datatree_2016->Jet_Dtr_ProbNNghost[h2_index],
+                                                             h2_4vector->Eta())) 
+                                        continue;
+                                
+                                vars_pair[0] = h1_4vector->DeltaR(*h2_4vector, true);
+                                vars_pair[1] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars_pair[2] = Jet_4vector->Pt();
+                                vars_pair[3] = datatree_2016->Jet_Dtr_ThreeCharge[h1_index] * datatree_2016->Jet_Dtr_ThreeCharge[h2_index];
+
+                                ntuple_data_pair->Fill(vars_pair);       
+                        }
                 }
 
                 last_eventNum = datatree_2016->eventNumber;
@@ -400,7 +498,7 @@ int main()
                                         datatree_2017->Jet_PZ/1000.,
                                         datatree_2017->Jet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(datatree_2017->mum_PX/1000.,
@@ -408,7 +506,7 @@ int main()
                                         datatree_2017->mum_PZ/1000.,
                                         datatree_2017->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(datatree_2017->mup_PX/1000.,
@@ -416,7 +514,7 @@ int main()
                                         datatree_2017->mup_PZ/1000.,
                                         datatree_2017->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -427,14 +525,18 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
 
-                vars_jet[0] = Jet_4vector->Pt();
-                vars_jet[1] = Jet_4vector->Eta();
-                vars_jet[2] = Jet_4vector->Rapidity();
-                vars_jet[3] = Jet_4vector->Phi();
-                vars_jet[4] = Z0_4vector->Pt();
-                vars_jet[5] = Z0_4vector->Eta();
-                vars_jet[6] = Z0_4vector->Rapidity();
-                vars_jet[7] = Z0_4vector->Phi();
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->Eta();
+                vars_jet[2]  = Jet_4vector->Rapidity();
+                vars_jet[3]  = Jet_4vector->Phi();
+                vars_jet[4]  = Z0_4vector->Pt();
+                vars_jet[5]  = Z0_4vector->Eta();
+                vars_jet[6]  = Z0_4vector->Rapidity();
+                vars_jet[7]  = Z0_4vector->Phi();
+                vars_jet[8]  = mup_4vector->Pt();
+                vars_jet[9]  = mup_4vector->Eta();
+                vars_jet[10] = mum_4vector->Pt();
+                vars_jet[11] = mum_4vector->Eta();
 
                 ntuple_data_jet->Fill(vars_jet);
 
@@ -443,26 +545,52 @@ int main()
                         if (abs(datatree_2017->Jet_Dtr_ID[h1_index]) < 100) 
                                 continue;
 
-                        h_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
+                        h1_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h1_index]/1000.,
                                               datatree_2017->Jet_Dtr_PY[h1_index]/1000.,
                                               datatree_2017->Jet_Dtr_PZ[h1_index]/1000.,
                                               datatree_2017->Jet_Dtr_E[h1_index]/1000.);
 
                         if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h_4vector->P(),
-                                                     h_4vector->Pt(),
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
                                                      datatree_2017->Jet_Dtr_TrackChi2[h1_index]/datatree_2017->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2017->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h_4vector->Eta())) 
+                                                     h1_4vector->Eta())) 
                                 continue;
 
-                        vars[0] = h_4vector->P();
-                        vars[1] = h_4vector->Pt();
-                        vars[2] = h_4vector->Eta();
-                        vars[3] = h_4vector->Rapidity();
-                        vars[4] = h_4vector->Phi();
+                        vars[0] = h1_4vector->P();
+                        vars[1] = h1_4vector->Pt();
+                        vars[2] = h1_4vector->Eta();
+                        vars[3] = h1_4vector->Rapidity();
+                        vars[4] = h1_4vector->Phi();
 
                         ntuple_data->Fill(vars);
+
+                        for (int h2_index = h1_index + 1 ; h2_index < datatree_2017->Jet_NDtr ; h2_index++) {
+                                // Skip non-hadronic particles
+                                if (abs(datatree_2017->Jet_Dtr_ID[h2_index]) < 100)
+                                        continue;
+
+                                h2_4vector->SetPxPyPzE(datatree_2017->Jet_Dtr_PX[h2_index]/1000.,
+                                                       datatree_2017->Jet_Dtr_PY[h2_index]/1000.,
+                                                       datatree_2017->Jet_Dtr_PZ[h2_index]/1000., 
+                                                       datatree_2017->Jet_Dtr_E[h2_index]/1000.);
+
+                                if (!apply_chargedtrack_cuts(datatree_2017->Jet_Dtr_ThreeCharge[h2_index],
+                                                             h2_4vector->P(),
+                                                             h2_4vector->Pt(),
+                                                             datatree_2017->Jet_Dtr_TrackChi2[h2_index]/datatree_2017->Jet_Dtr_TrackNDF[h2_index],
+                                                             datatree_2017->Jet_Dtr_ProbNNghost[h2_index],
+                                                             h2_4vector->Eta())) 
+                                        continue;
+                                
+                                vars_pair[0] = h1_4vector->DeltaR(*h2_4vector, true);
+                                vars_pair[1] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars_pair[2] = Jet_4vector->Pt();
+                                vars_pair[3] = datatree_2017->Jet_Dtr_ThreeCharge[h1_index] * datatree_2017->Jet_Dtr_ThreeCharge[h2_index];
+
+                                ntuple_data_pair->Fill(vars_pair);       
+                        }
                 }
 
                 last_eventNum = datatree_2017->eventNumber;
@@ -504,7 +632,7 @@ int main()
                                         datatree_2018->Jet_PZ/1000.,
                                         datatree_2018->Jet_PE/1000.);
 
-                if (!apply_jet_cuts(Jet_4vector->Eta(), Jet_4vector->Pt())) 
+                if (!apply_jet_cuts(Jet_4vector->Rapidity(), Jet_4vector->Pt())) 
                         continue;
                 
                 mum_4vector->SetPxPyPzE(datatree_2018->mum_PX/1000.,
@@ -512,7 +640,7 @@ int main()
                                         datatree_2018->mum_PZ/1000.,
                                         datatree_2018->mum_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector), mum_4vector->Pt(), mum_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mum_4vector, true), mum_4vector->Pt(), mum_4vector->Eta())) 
                         continue;
                 
                 mup_4vector->SetPxPyPzE(datatree_2018->mup_PX/1000.,
@@ -520,7 +648,7 @@ int main()
                                         datatree_2018->mup_PZ/1000.,
                                         datatree_2018->mup_PE/1000.);
 
-                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector), mup_4vector->Pt(), mup_4vector->Eta())) 
+                if (!apply_muon_cuts(Jet_4vector->DeltaR(*mup_4vector, true), mup_4vector->Pt(), mup_4vector->Eta())) 
                         continue;
                 
                 Z0_4vector->SetPxPyPzE(mup_4vector->Px()+mum_4vector->Px(),
@@ -531,14 +659,18 @@ int main()
                 if (!apply_zboson_cuts(TMath::Abs(Jet_4vector->DeltaPhi(*Z0_4vector)), Z0_4vector->M())) 
                         continue;
 
-                vars_jet[0] = Jet_4vector->Pt();
-                vars_jet[1] = Jet_4vector->Eta();
-                vars_jet[2] = Jet_4vector->Rapidity();
-                vars_jet[3] = Jet_4vector->Phi();
-                vars_jet[4] = Z0_4vector->Pt();
-                vars_jet[5] = Z0_4vector->Eta();
-                vars_jet[6] = Z0_4vector->Rapidity();
-                vars_jet[7] = Z0_4vector->Phi();
+                vars_jet[0]  = Jet_4vector->Pt();
+                vars_jet[1]  = Jet_4vector->Eta();
+                vars_jet[2]  = Jet_4vector->Rapidity();
+                vars_jet[3]  = Jet_4vector->Phi();
+                vars_jet[4]  = Z0_4vector->Pt();
+                vars_jet[5]  = Z0_4vector->Eta();
+                vars_jet[6]  = Z0_4vector->Rapidity();
+                vars_jet[7]  = Z0_4vector->Phi();
+                vars_jet[8]  = mup_4vector->Pt();
+                vars_jet[9]  = mup_4vector->Eta();
+                vars_jet[10] = mum_4vector->Pt();
+                vars_jet[11] = mum_4vector->Eta();
 
                 ntuple_data_jet->Fill(vars_jet);
 
@@ -547,26 +679,52 @@ int main()
                         if (abs(datatree_2018->Jet_Dtr_ID[h1_index]) < 100) 
                                 continue;
 
-                        h_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h1_index]/1000.,
+                        h1_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h1_index]/1000.,
                                               datatree_2018->Jet_Dtr_PY[h1_index]/1000.,
                                               datatree_2018->Jet_Dtr_PZ[h1_index]/1000.,
                                               datatree_2018->Jet_Dtr_E[h1_index]/1000.);
 
                         if (!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h1_index],
-                                                     h_4vector->P(),
-                                                     h_4vector->Pt(),
+                                                     h1_4vector->P(),
+                                                     h1_4vector->Pt(),
                                                      datatree_2018->Jet_Dtr_TrackChi2[h1_index]/datatree_2018->Jet_Dtr_TrackNDF[h1_index],
                                                      datatree_2018->Jet_Dtr_ProbNNghost[h1_index],
-                                                     h_4vector->Eta())) 
+                                                     h1_4vector->Eta())) 
                                 continue;
 
-                        vars[0] = h_4vector->P();
-                        vars[1] = h_4vector->Pt();
-                        vars[2] = h_4vector->Eta();
-                        vars[3] = h_4vector->Rapidity();
-                        vars[4] = h_4vector->Phi();
+                        vars[0] = h1_4vector->P();
+                        vars[1] = h1_4vector->Pt();
+                        vars[2] = h1_4vector->Eta();
+                        vars[3] = h1_4vector->Rapidity();
+                        vars[4] = h1_4vector->Phi();
 
                         ntuple_data->Fill(vars);
+
+                        for (int h2_index = h1_index + 1 ; h2_index < datatree_2018->Jet_NDtr ; h2_index++) {
+                                // Skip non-hadronic particles
+                                if (abs(datatree_2018->Jet_Dtr_ID[h2_index]) < 100)
+                                        continue;
+
+                                h2_4vector->SetPxPyPzE(datatree_2018->Jet_Dtr_PX[h2_index]/1000.,
+                                                       datatree_2018->Jet_Dtr_PY[h2_index]/1000.,
+                                                       datatree_2018->Jet_Dtr_PZ[h2_index]/1000., 
+                                                       datatree_2018->Jet_Dtr_E[h2_index]/1000.);
+
+                                if (!apply_chargedtrack_cuts(datatree_2018->Jet_Dtr_ThreeCharge[h2_index],
+                                                             h2_4vector->P(),
+                                                             h2_4vector->Pt(),
+                                                             datatree_2018->Jet_Dtr_TrackChi2[h2_index]/datatree_2018->Jet_Dtr_TrackNDF[h2_index],
+                                                             datatree_2018->Jet_Dtr_ProbNNghost[h2_index],
+                                                             h2_4vector->Eta())) 
+                                        continue;
+                                
+                                vars_pair[0] = h1_4vector->DeltaR(*h2_4vector, true);
+                                vars_pair[1] = weight(h1_4vector->Pt(), h2_4vector->Pt(), Jet_4vector->Pt());
+                                vars_pair[2] = Jet_4vector->Pt();
+                                vars_pair[3] = datatree_2018->Jet_Dtr_ThreeCharge[h1_index] * datatree_2018->Jet_Dtr_ThreeCharge[h2_index];
+
+                                ntuple_data_pair->Fill(vars_pair);       
+                        }
                 }
 
                 last_eventNum = datatree_2018->eventNumber;
@@ -579,6 +737,9 @@ int main()
         ntuple_mc_jet->Write();
         ntuple_mcreco_jet->Write();
         ntuple_data_jet->Write();
+        ntuple_mc_pair->Write();
+        ntuple_mcreco_pair->Write();
+        ntuple_data_pair->Write();
         fout->Close();
 
         std::cout<<std::endl;
