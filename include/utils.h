@@ -85,4 +85,6 @@ double get_jes_jer_factor(const double jet_pt, TRandom3 *myRNG);
 
 double weight(double h1_E, double h2_E, double jet_E);
 
+void smooth_nominal_phase_space(TH1F* h_to_smooth, TH1F* h_nominal_phase_space);
+
 #endif

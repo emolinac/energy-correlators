@@ -129,46 +129,14 @@ int main(int argc, char* argv[])
                         continue;
                 
                 if (get_jes_jer) {
-                        // double beta_star = 1.;
-                        
-                        // for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt_unfolding ; jet_pt_bin++)
-                        //         if (Jet_4vector->Pt()>unfolding_jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<unfolding_jet_pt_binning[jet_pt_bin + 1])
-                        //                 beta_star = syst_jes_array[jet_pt_bin];
-
-                        // if (beta_star == 1)
-                        //         continue;
-
-                        // double new_jes_cor_effect = std::abs(1. - beta_star);
-
-                        // if (rndm->Integer(2))
-                        //         beta_star = 1 + new_jes_cor_effect;
-                        // else
-                        //         beta_star = 1 - new_jes_cor_effect;
-
                         double jes_jer_factor = get_jes_jer_factor(Jet_4vector->Pt(), rndm);
 
                         Jet_4vector->SetPxPyPzE(jes_jer_factor*mcrecotree->Jet_PX/1000.,
                                                 jes_jer_factor*mcrecotree->Jet_PY/1000.,
                                                 jes_jer_factor*mcrecotree->Jet_PZ/1000.,
                                                 jes_jer_factor*mcrecotree->Jet_PE/1000.);
-                } else if (get_jer) {
-                        double alpha_star = 1.;
-
-                        for (int jet_pt_bin = 0 ; jet_pt_bin < nbin_jet_pt_unfolding ; jet_pt_bin++)
-                                if (Jet_4vector->Pt()>unfolding_jet_pt_binning[jet_pt_bin]&&Jet_4vector->Pt()<unfolding_jet_pt_binning[jet_pt_bin + 1]) 
-                                        alpha_star = syst_jer_array[jet_pt_bin];
-                        
-                        if (alpha_star == 1)
-                                continue;
-                        
-                        double smearing_factor = rndm->Gaus(1., alpha_star);
-                        
-                        Jet_4vector->SetPxPyPzE(smearing_factor*mcrecotree->Jet_PX/1000.,
-                                                smearing_factor*mcrecotree->Jet_PY/1000.,
-                                                smearing_factor*mcrecotree->Jet_PZ/1000.,
-                                                smearing_factor*mcrecotree->Jet_PE/1000.);
-                }
-
+                } 
+                
                 mum_4vector->SetPxPyPzE(mcrecotree->mum_PX/1000.,
                                         mcrecotree->mum_PY/1000.,
                                         mcrecotree->mum_PZ/1000.,

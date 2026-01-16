@@ -9,7 +9,7 @@
 #include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
-void macro_print_histocorreec_rl_jetpt_weightpt_statct(int niter = 4, int niter_jet = 4)
+void macro_print_histocorreec_rl_jetpt_weightpt_statct(int niter = 4, int niter_jet = 4, bool smooth_syst = false)
 {
         // Open the necessary files
         TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i_statct_niterct%i.root",niter, niter_jet,niter_ct)).c_str(),"RECREATE");
@@ -209,9 +209,11 @@ void macro_print_histocorreec_rl_jetpt_weightpt_statct(int niter = 4, int niter_
                 h_neqchnpair_wmuon_sample[ct_iter] = (TH3D*) h_neqchnpair_wmuon->Clone(Form("h_neqchnpair_wmuon_sample%i",ct_iter));
 
                 // Smear the pseudodata
-                smear_pseudodata(h_npair_wmuon_sample[ct_iter]     , h_npair_data_wmuon     , rndm);
-                smear_pseudodata(h_eqchnpair_wmuon_sample[ct_iter] , h_eqchnpair_data_wmuon , rndm);
-                smear_pseudodata(h_neqchnpair_wmuon_sample[ct_iter], h_neqchnpair_data_wmuon, rndm);
+                if (niter_ct > 1) {
+                        smear_pseudodata(h_npair_wmuon_sample[ct_iter]     , h_npair_data_wmuon     , rndm);
+                        smear_pseudodata(h_eqchnpair_wmuon_sample[ct_iter] , h_eqchnpair_data_wmuon , rndm);
+                        smear_pseudodata(h_neqchnpair_wmuon_sample[ct_iter], h_neqchnpair_data_wmuon, rndm);
+                }
                 
                 // Correct the pseudodata
                 h_npair_purity_corrected->Multiply(h_npair_wmuon_sample[ct_iter],h_purity,1,1);
@@ -292,6 +294,12 @@ void macro_print_histocorreec_rl_jetpt_weightpt_statct(int niter = 4, int niter_
                         hcorr_eqcheec_total[bin]->Add(hcorr_eqcheec[bin][ct_iter]); 
                         hcorr_neqcheec_total[bin]->Add(hcorr_neqcheec[bin][ct_iter]);
 
+                        if (smooth_syst) {
+                                hcorr_eec[bin][ct_iter]->Smooth();
+                                hcorr_tau[bin][ct_iter]->Smooth();
+                                hcorr_eqcheec[bin][ct_iter]->Smooth();
+                                hcorr_neqcheec[bin][ct_iter]->Smooth();
+                        }
                         
                         fout->cd();
                         hcorr_eec[bin][ct_iter]->Write(Form("squared_relerror_eec%i%i",bin,ct_iter));

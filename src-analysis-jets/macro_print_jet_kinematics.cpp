@@ -29,9 +29,9 @@ void macro_print_jet_kinematics()
         TH1F* h_jet_eta_mc     = new TH1F("h_jet_eta_mc"    ,"",12,jet_eta_min,jet_eta_max);
         TH1F* h_jet_eta_mcreco = new TH1F("h_jet_eta_mcreco","",12,jet_eta_min,jet_eta_max);
 
-        TH1F* h_jet_phi_data   = new TH1F("h_jet_phi_data"  ,"",30,-TMath::Pi(),TMath::Pi());
-        TH1F* h_jet_phi_mc     = new TH1F("h_jet_phi_mc"    ,"",30,-TMath::Pi(),TMath::Pi());
-        TH1F* h_jet_phi_mcreco = new TH1F("h_jet_phi_mcreco","",30,-TMath::Pi(),TMath::Pi());
+        TH1F* h_jet_phi_data   = new TH1F("h_jet_phi_data"  ,"",10,-TMath::Pi(),TMath::Pi());
+        TH1F* h_jet_phi_mc     = new TH1F("h_jet_phi_mc"    ,"",10,-TMath::Pi(),TMath::Pi());
+        TH1F* h_jet_phi_mcreco = new TH1F("h_jet_phi_mcreco","",10,-TMath::Pi(),TMath::Pi());
 
         TH1F* h_z_pt_data   = new TH1F("h_z_pt_data"   ,"",20,0,200);
         TH1F* h_z_pt_mc     = new TH1F("h_z_pt_mc"     ,"",20,0,200);
@@ -45,9 +45,9 @@ void macro_print_jet_kinematics()
         TH1F* h_z_eta_mc     = new TH1F("h_z_eta_mc"    ,"",12,eta_min,eta_max);
         TH1F* h_z_eta_mcreco = new TH1F("h_z_eta_mcreco","",12,eta_min,eta_max);
 
-        TH1F* h_z_phi_data   = new TH1F("h_z_phi_data"  ,"",30,-TMath::Pi(),TMath::Pi());
-        TH1F* h_z_phi_mc     = new TH1F("h_z_phi_mc"    ,"",30,-TMath::Pi(),TMath::Pi());
-        TH1F* h_z_phi_mcreco = new TH1F("h_z_phi_mcreco","",30,-TMath::Pi(),TMath::Pi());
+        TH1F* h_z_phi_data   = new TH1F("h_z_phi_data"  ,"",10,-TMath::Pi(),TMath::Pi());
+        TH1F* h_z_phi_mc     = new TH1F("h_z_phi_mc"    ,"",10,-TMath::Pi(),TMath::Pi());
+        TH1F* h_z_phi_mcreco = new TH1F("h_z_phi_mcreco","",10,-TMath::Pi(),TMath::Pi());
 
         set_histogram_style(h_jet_pt_data   , 875 , std_line_width, std_marker_style, std_marker_size);
         set_histogram_style(h_jet_pt_mc     , 797 , std_line_width, std_marker_style, std_marker_size);
@@ -230,7 +230,7 @@ void macro_print_jet_kinematics()
         c->Print("./plots/jet_phi_kinematics.pdf");
 
         hzphi->Draw("NOSTACK");
-        gPad->SetLogy(1);
+        gPad->SetLogy(0);
         ljeteta->Draw("SAME");
         c->Print("./plots/z_phi_kinematics.pdf");
 }

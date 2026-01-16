@@ -9,7 +9,7 @@
 #include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
-void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4, std::string analysis_variation = "--get-nominal", int niter_jer = -999)
+void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4, std::string analysis_variation = "--get-nominal", int niter_jer = -999, bool smooth_syst = false)
 {
         // Open the necessary files
         std::string fout_name         = Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i%s.root",niter,niter_jet,analysis_variation.c_str());
@@ -142,9 +142,12 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
         for (int evt = 0 ; evt < ntuple->GetEntries() ; evt++) {
                 ntuple->GetEntry(evt);
 
-                double reweigh_npair      = (analysis_variation == "--get-prior") ? h_npair_reweight->GetBinContent(h_npair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
-                double reweigh_echnpair   = (analysis_variation == "--get-prior") ? h_eqchnpair_reweight->GetBinContent(h_eqchnpair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
-                double reweigh_neqchnpair = (analysis_variation == "--get-prior") ? h_neqchnpair_reweight->GetBinContent(h_neqchnpair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
+                double reweigh_npair      = (analysis_variation == "--get-prior") ? 
+                                             h_npair_reweight->GetBinContent(h_npair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
+                double reweigh_echnpair   = (analysis_variation == "--get-prior") ? 
+                                             h_eqchnpair_reweight->GetBinContent(h_eqchnpair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
+                double reweigh_neqchnpair = (analysis_variation == "--get-prior") ? 
+                                             h_neqchnpair_reweight->GetBinContent(h_neqchnpair_reweight->FindBin(R_L_reco, jet_pt_reco, weight_pt_reco)) : 1.;
 
                 if (R_L_truth != -999)
                         response_npair->Fill(R_L_reco, jet_pt_reco, weight_pt_reco, R_L_truth, jet_pt_truth, weight_pt_truth, reweigh_npair);
@@ -282,6 +285,26 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
                         square_root_bins(hcorr_eqcheec[bin]);
                         square_root_bins(hcorr_neqcheec[bin]);
                         square_root_bins(hcorr_tau[bin]);
+
+                        if (smooth_syst) {
+                                hcorr_eec[bin]->Smooth();
+                                hcorr_tau[bin]->Smooth();
+                                hcorr_eqcheec[bin]->Smooth();
+                                hcorr_neqcheec[bin]->Smooth();
+                        }
+
+                        if (bin == 0 && analysis_variation == "--get-jes-jer") {
+                                TH1F* h_nominal = new TH1F("h_nominal", "", nbin_rl_nominal, rl_nominal_binning);
+
+                                smooth_nominal_phase_space(hcorr_eec[bin],h_nominal);
+                                smooth_nominal_phase_space(hcorr_eqcheec[bin],h_nominal);
+                                smooth_nominal_phase_space(hcorr_neqcheec[bin],h_nominal);
+
+                                // hcorr_eec[bin]->Smooth();
+                                hcorr_tau[bin]->Smooth();
+                                // hcorr_eqcheec[bin]->Smooth();
+                                // hcorr_neqcheec[bin]->Smooth();
+                        }
 
                         fout->cd();
                         hcorr_eec[bin]->Write(Form("relerror_eec%i",bin));

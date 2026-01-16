@@ -78,7 +78,7 @@ std::map<std::string, std::string> systematic_name  = {
 };
 
 std::map<std::string, std::string> systematic_namef = {
-        {available_systematics[0],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4_statct_niterct10.root"},
+        {available_systematics[0],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4_statct_niterct1.root"},
         {available_systematics[1],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4_shapect.root"},
         {available_systematics[2],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-jes-jer.root"},
         {available_systematics[3],"histos_eec_3dcorr_rl_jetpt_weightpt_niter4_niterjet4--get-prior.root"},

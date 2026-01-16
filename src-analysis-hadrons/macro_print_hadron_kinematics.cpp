@@ -33,9 +33,9 @@ void macro_print_hadron_kinematics()
         TH1F* h_eta_mc     = new TH1F("h_eta_mc"    ,"",15,lhcb_eta_min,lhcb_eta_max);
         TH1F* h_eta_mcreco = new TH1F("h_eta_mcreco","",15,lhcb_eta_min,lhcb_eta_max);
 
-        TH1F* h_phi_data   = new TH1F("h_phi_data"  ,"",30,-TMath::Pi(),TMath::Pi());
-        TH1F* h_phi_mc     = new TH1F("h_phi_mc"    ,"",30,-TMath::Pi(),TMath::Pi());
-        TH1F* h_phi_mcreco = new TH1F("h_phi_mcreco","",30,-TMath::Pi(),TMath::Pi());
+        TH1F* h_phi_data   = new TH1F("h_phi_data"  ,"",12,-TMath::Pi(),TMath::Pi());
+        TH1F* h_phi_mc     = new TH1F("h_phi_mc"    ,"",12,-TMath::Pi(),TMath::Pi());
+        TH1F* h_phi_mcreco = new TH1F("h_phi_mcreco","",12,-TMath::Pi(),TMath::Pi());
 
         set_histogram_style(h_pt_data   , 875 , std_line_width, std_marker_style, std_marker_size);
         set_histogram_style(h_pt_mc     , 797 , std_line_width, std_marker_style, std_marker_size);
@@ -108,19 +108,19 @@ void macro_print_hadron_kinematics()
         heta->Add(h_eta_data);
         heta->Add(h_eta_mc);
         heta->Add(h_eta_mcreco);
-        heta->SetTitle(";#eta_{jet};Normalized Distributions");
+        heta->SetTitle(";#eta_{hadron};Normalized Distributions");
 
         THStack* hy = new THStack();
         hy->Add(h_y_data);
         hy->Add(h_y_mc);
         hy->Add(h_y_mcreco);
-        hy->SetTitle(";y_{jet};Normalized Distributions");
+        hy->SetTitle(";y_{hadron};Normalized Distributions");
 
         THStack* hphi = new THStack();
         hphi->Add(h_phi_data);
         hphi->Add(h_phi_mc);
         hphi->Add(h_phi_mcreco);
-        hphi->SetTitle(";#phi_{jet};Normalized Distributions");
+        hphi->SetTitle(";#phi_{hadron};Normalized Distributions");
 
         TLegend* l = new TLegend();
         l->AddEntry(h_pt_data,"data","lpf");

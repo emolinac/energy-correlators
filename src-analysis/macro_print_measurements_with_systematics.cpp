@@ -168,12 +168,12 @@ void macro_print_measurements_with_systematics(int niter = 4, int niter_jet = 4)
         }
         
         // Extract the statistical uncertainty from the plots with systematic uncertainties
-        for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
-                substract_stat_error(hcorr_eec[bin], hcorr_eec_syst[bin]);
-                substract_stat_error(hcorr_tau[bin], hcorr_tau_syst[bin]);
-                substract_stat_error(hcorr_eec_eqcharge[bin], hcorr_eec_eqcharge_syst[bin]);
-                substract_stat_error(hcorr_eec_neqcharge[bin], hcorr_eec_neqcharge_syst[bin]);
-        }
+        // for (int bin = 0 ; bin < nbin_jet_pt ; bin++) {
+        //         substract_stat_error(hcorr_eec[bin], hcorr_eec_syst[bin]);
+        //         substract_stat_error(hcorr_tau[bin], hcorr_tau_syst[bin]);
+        //         substract_stat_error(hcorr_eec_eqcharge[bin], hcorr_eec_eqcharge_syst[bin]);
+        //         substract_stat_error(hcorr_eec_neqcharge[bin], hcorr_eec_neqcharge_syst[bin]);
+        // }
 
         TCanvas* c = new TCanvas("c", "", 1920, 1480);
         c->Draw();

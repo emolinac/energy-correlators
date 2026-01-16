@@ -9,7 +9,7 @@
 #include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
-void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter_jet = 4)
+void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter_jet = 4, bool smooth_syst = false)
 {
         // Open the necessary files
         TFile* fout = new TFile((output_folder + Form("histos_eec_3dcorr_rl_jetpt_weightpt_niter%i_niterjet%i_shapect.root",niter, niter_jet)).c_str(),"RECREATE");
@@ -302,6 +302,13 @@ void macro_print_histocorreec_rl_jetpt_weightpt_shapect(int niter = 4, int niter
                 square_root_bins(hcorr_tau[bin]);
                 square_root_bins(hcorr_eqcheec[bin]);
                 square_root_bins(hcorr_neqcheec[bin]);
+
+                if (smooth_syst) {
+                        hcorr_eec[bin]->Smooth();
+                        hcorr_tau[bin]->Smooth();
+                        hcorr_eqcheec[bin]->Smooth();
+                        hcorr_neqcheec[bin]->Smooth();
+                }
 
                 fout->cd();
                 hcorr_eec[bin]->Write(Form("relerror_eec%i",bin));

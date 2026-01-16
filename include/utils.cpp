@@ -255,8 +255,8 @@ void set_histo_with_systematics(TH1F* hrelerror, TH1F* hnominal, TH1F* hsystemat
                 // Dev values are positive by construction
                 total += hnominal->GetBinContent(hbin);
 
-                if (dev-dev_err < 0) 
-                        continue;
+                // if (dev-dev_err < 0) 
+                //         continue;
 
                 double syst_error            = std::abs(dev)*hnominal->GetBinContent(hbin);
                 double syst_error_percentage = std::abs(dev);
@@ -554,4 +554,19 @@ double get_jes_jer_factor(const double jet_pt, TRandom3 *myRNG)
 double weight(double h1_E, double h2_E, double jet_E)
 {
         return h1_E*h2_E/jet_E/jet_E;
+}
+
+void smooth_nominal_phase_space(TH1F* h_to_smooth, TH1F* h_nominal_phase_space)
+{
+        for (int bin = 2 ; bin < h_to_smooth->GetNbinsX(); bin++) {
+                h_nominal_phase_space->SetBinContent(bin - 1, h_to_smooth->GetBinContent(bin));
+                h_nominal_phase_space->SetBinError(bin - 1, h_to_smooth->GetBinError(bin));
+        }
+
+        h_nominal_phase_space->Smooth();
+
+        for (int bin = 2 ; bin < h_to_smooth->GetNbinsX(); bin++) {
+                h_to_smooth->SetBinContent(bin, h_nominal_phase_space->GetBinContent(bin - 1));
+                h_to_smooth->SetBinError(bin, h_nominal_phase_space->GetBinError(bin - 1));
+        }
 }
