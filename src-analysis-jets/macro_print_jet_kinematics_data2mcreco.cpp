@@ -9,7 +9,7 @@
 #include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
-void macro_print_jet_kinematics()
+void macro_print_jet_kinematics_data2mcreco()
 {
         TFile* fin = new TFile((output_folder + namef_ntuple_hadron_jet).c_str());
         
@@ -120,6 +120,11 @@ void macro_print_jet_kinematics()
         h_jet_phi_mc->Scale(1./h_jet_phi_mc->Integral());
         h_jet_phi_mcreco->Scale(1./h_jet_phi_mcreco->Integral());
         
+        h_jet_pt_data->Divide(h_jet_pt_mcreco);
+        h_jet_eta_data->Divide(h_jet_eta_mcreco);
+        h_jet_y_data->Divide(h_jet_y_mcreco);
+        h_jet_phi_data->Divide(h_jet_phi_mcreco);
+        
         h_z_pt_data->Scale(1./h_z_pt_data->Integral());
         h_z_pt_mc->Scale(1./h_z_pt_mc->Integral());
         h_z_pt_mcreco->Scale(1./h_z_pt_mcreco->Integral());
@@ -133,104 +138,83 @@ void macro_print_jet_kinematics()
         h_z_phi_mc->Scale(1./h_z_phi_mc->Integral());
         h_z_phi_mcreco->Scale(1./h_z_phi_mcreco->Integral());
 
+        h_z_pt_data->Divide(h_z_pt_mcreco);
+        h_z_eta_data->Divide(h_z_eta_mcreco);
+        h_z_y_data->Divide(h_z_y_mcreco);
+        h_z_phi_data->Divide(h_z_phi_mcreco);
+        
         TCanvas* c = new TCanvas("c","",800,600);
         c->Draw();
 
         THStack* hjet_pt  = new THStack();
         hjet_pt->Add(h_jet_pt_data);
-        hjet_pt->Add(h_jet_pt_mc);
-        hjet_pt->Add(h_jet_pt_mcreco);
-        hjet_pt->SetTitle(";p_{T,jet}(GeV);Normalized Distributions");
+        hjet_pt->SetTitle(";p_{T,jet}(GeV);Data/MC(Reco)");
         
         THStack* hjeteta = new THStack();
         hjeteta->Add(h_jet_eta_data);
-        hjeteta->Add(h_jet_eta_mc);
-        hjeteta->Add(h_jet_eta_mcreco);
-        hjeteta->SetTitle(";#eta_{jet};Normalized Distributions");
+        hjeteta->SetTitle(";#eta_{jet};Data/MC(Reco)");
 
         THStack* hjety = new THStack();
         hjety->Add(h_jet_y_data);
-        hjety->Add(h_jet_y_mc);
-        hjety->Add(h_jet_y_mcreco);
-        hjety->SetTitle(";y_{jet};Normalized Distributions");
+        hjety->SetTitle(";y_{jet};Data/MC(Reco)");
 
         THStack* hjetphi = new THStack();
         hjetphi->Add(h_jet_phi_data);
-        hjetphi->Add(h_jet_phi_mc);
-        hjetphi->Add(h_jet_phi_mcreco);
-        hjetphi->SetTitle(";#phi_{jet};Normalized Distributions");
+        hjetphi->SetTitle(";#phi_{jet};Data/MC(Reco)");
 
         THStack* hzpt  = new THStack();
         hzpt->Add(h_z_pt_data);
-        hzpt->Add(h_z_pt_mc);
-        hzpt->Add(h_z_pt_mcreco);
-        hzpt->SetTitle(";p^{Z}_{T}(GeV);Normalized Distributions");
+        hzpt->SetTitle(";p^{Z}_{T}(GeV);Data/MC(Reco)");
         
         THStack* hzeta = new THStack();
         hzeta->Add(h_z_eta_data);
-        hzeta->Add(h_z_eta_mc);
-        hzeta->Add(h_z_eta_mcreco);
-        hzeta->SetTitle(";#eta_{Z};Normalized Distributions");
+        hzeta->SetTitle(";#eta_{Z};Data/MC(Reco)");
 
         THStack* hzy = new THStack();
         hzy->Add(h_z_y_data);
-        hzy->Add(h_z_y_mc);
-        hzy->Add(h_z_y_mcreco);
-        hzy->SetTitle(";y_{Z};Normalized Distributions");
+        hzy->SetTitle(";y_{Z};Data/MC(Reco)");
 
         THStack* hzphi = new THStack();
         hzphi->Add(h_z_phi_data);
-        hzphi->Add(h_z_phi_mc);
-        hzphi->Add(h_z_phi_mcreco);
-        hzphi->SetTitle(";#phi_{Z};Normalized Distributions");
-
-        TLegend* ljet_pt = new TLegend();
-        ljet_pt->AddEntry(h_jet_pt_data,"data","lpf");
-        ljet_pt->AddEntry(h_jet_pt_mc,"mc(truth)","lpf");
-        ljet_pt->AddEntry(h_jet_pt_mcreco,"mc(reco)","lpf");
-
-        TLegend* ljeteta = new TLegend();
-        ljeteta->AddEntry(h_jet_eta_data,"data","lpf");
-        ljeteta->AddEntry(h_jet_eta_mc,"mc(truth)","lpf");
-        ljeteta->AddEntry(h_jet_eta_mcreco,"mc(reco)","lpf");
+        hzphi->SetTitle(";#phi_{Z};Data/MC(Reco)");
 
         hjet_pt->Draw("NOSTACK");
-        gPad->SetLogy(1);
-        ljet_pt->Draw("SAME");
-        c->Print("./plots/jet_pt_kinematics.pdf");
+        hjet_pt->SetMaximum(1.3);
+        hjet_pt->SetMinimum(0.7);
+        c->Print("./plots/jet_pt_kinematics_data2mcreco_ratio.pdf");
 
         hzpt->Draw("NOSTACK");
-        gPad->SetLogy(1);
-        ljet_pt->Draw("SAME");
-        c->Print("./plots/z_pt_kinematics.pdf");
+        hzpt->SetMaximum(1.3);
+        hzpt->SetMinimum(0.7);
+        c->Print("./plots/z_pt_kinematics_data2mcreco_ratio.pdf");
 
         hjeteta->Draw("NOSTACK");
-        gPad->SetLogy(0);
-        ljeteta->Draw("SAME");
-        c->Print("./plots/jet_eta_kinematics.pdf");
+        hjeteta->SetMaximum(1.3);
+        hjeteta->SetMinimum(0.7);
+        c->Print("./plots/jet_eta_kinematics_data2mcreco_ratio.pdf");
 
         hzeta->Draw("NOSTACK");
-        gPad->SetLogy(1);
-        ljeteta->Draw("SAME");
-        c->Print("./plots/z_eta_kinematics.pdf");
+        hzeta->SetMaximum(1.3);
+        hzeta->SetMinimum(0.7);
+        c->Print("./plots/z_eta_kinematics_data2mcreco_ratio.pdf");
 
         hjety->Draw("NOSTACK");
-        gPad->SetLogy(0);
-        ljeteta->Draw("SAME");
-        c->Print("./plots/jet_y_kinematics.pdf");
+        hjety->SetMaximum(1.3);
+        hjety->SetMinimum(0.7);
+        c->Print("./plots/jet_y_kinematics_data2mcreco_ratio.pdf");
 
         hzy->Draw("NOSTACK");
-        gPad->SetLogy(1);
-        ljeteta->Draw("SAME");
-        c->Print("./plots/z_y_kinematics.pdf");
+        hzy->SetMaximum(1.3);
+        hzy->SetMinimum(0.7);
+        c->Print("./plots/z_y_kinematics_data2mcreco_ratio.pdf");
 
         hjetphi->Draw("NOSTACK");
-        gPad->SetLogy(0);
-        ljeteta->Draw("SAME");
-        c->Print("./plots/jet_phi_kinematics.pdf");
+        hjetphi->SetMaximum(1.3);
+        hjetphi->SetMinimum(0.7);
+        c->Print("./plots/jet_phi_kinematics_data2mcreco_ratio.pdf");
 
         hzphi->Draw("NOSTACK");
-        gPad->SetLogy(0);
-        ljeteta->Draw("SAME");
-        c->Print("./plots/z_phi_kinematics.pdf");
+        hzphi->SetMaximum(1.3);
+        hzphi->SetMinimum(0.7);
+        c->Print("./plots/z_phi_kinematics_data2mcreco_ratio.pdf");
 }

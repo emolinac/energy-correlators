@@ -9,7 +9,7 @@
 #include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
-void macro_print_hadronpair_kinematics()
+void macro_print_hadronpair_kinematics_data2mcreco()
 {
         TFile* fin = new TFile((output_folder + namef_ntuple_hadron_jet).c_str());
         
@@ -68,55 +68,45 @@ void macro_print_hadronpair_kinematics()
         h_eec_mc->Scale(1./h_eec_mc->Integral(),"width");
         h_eec_mcreco->Scale(1./h_eec_mcreco->Integral(),"width");
 
+        h_eec_data->Divide(h_eec_mcreco);
+
         h_rl_data->Scale(1./h_rl_data->Integral());
         h_rl_mc->Scale(1./h_rl_mc->Integral());
         h_rl_mcreco->Scale(1./h_rl_mcreco->Integral());
+
+        h_rl_data->Divide(h_rl_mcreco);
 
         h_weight_data->Scale(1./h_weight_data->Integral());
         h_weight_mc->Scale(1./h_weight_mc->Integral());
         h_weight_mcreco->Scale(1./h_weight_mcreco->Integral());
 
+        h_weight_data->Divide(h_weight_mcreco);
+
         s_eec->Add(h_eec_data);
-        s_eec->Add(h_eec_mc);
-        s_eec->Add(h_eec_mcreco);
         s_rl->Add(h_rl_data);
-        s_rl->Add(h_rl_mc);
-        s_rl->Add(h_rl_mcreco);
         s_weight->Add(h_weight_data);
-        s_weight->Add(h_weight_mc);
-        s_weight->Add(h_weight_mcreco);
-        
-        l_eec->AddEntry(h_eec_data,"data","lpf");
-        l_eec->AddEntry(h_eec_mc,"mc(truth)","lpf");
-        l_eec->AddEntry(h_eec_mcreco,"mc(reco)","lpf");
-        l_rl->AddEntry(h_rl_data,"data","lpf");
-        l_rl->AddEntry(h_rl_mc,"mc(truth)","lpf");
-        l_rl->AddEntry(h_rl_mcreco,"mc(reco)","lpf");
-        l_weight->AddEntry(h_weight_data,"data","lpf");
-        l_weight->AddEntry(h_weight_mc,"mc(truth)","lpf");
-        l_weight->AddEntry(h_weight_mcreco,"mc(reco)","lpf");
         
         s_eec->Draw("NOSTACK");
-        s_eec->SetTitle(";R_{L};Normalized EEC Distributions");
+        s_eec->SetTitle(";R_{L};Data/MC(Reco)");
+        s_eec->SetMaximum(1.3);
+        s_eec->SetMinimum(0.7);
         gPad->SetLogx(1);
-        gPad->SetLogy(0);
-        l_eec->Draw("SAME");
-
-        c->Print("./plots/kinematics_eec.pdf");
+        
+        c->Print("./plots/kinematics_eec_data2mcreco_ratio.pdf");
 
         s_rl->Draw("NOSTACK");
-        s_rl->SetTitle(";R_{L};Normalized Distributions");
+        s_rl->SetTitle(";R_{L};Data/MC(Reco)");
+        s_rl->SetMaximum(1.3);
+        s_rl->SetMinimum(0.7);
         gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        l_rl->Draw("SAME");
-
-        c->Print("./plots/kinematics_rl.pdf");
+        
+        c->Print("./plots/kinematics_rl_data2mcreco_ratio.pdf");
 
         s_weight->Draw("NOSTACK");
-        s_weight->SetTitle(";w;Normalized Distributions");
+        s_weight->SetTitle(";w;Data/MC(Reco)");
+        s_weight->SetMaximum(1.3);
+        s_weight->SetMinimum(0.7);
         gPad->SetLogx(1);
-        gPad->SetLogy(1);
-        l_weight->Draw("SAME"); 
-
-        c->Print("./plots/kinematics_weights.pdf");
+        
+        c->Print("./plots/kinematics_weights_data2mcreco_ratio.pdf");
 }

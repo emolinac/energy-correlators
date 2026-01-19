@@ -68,7 +68,7 @@ void macro_print_resolution_jetpt()
 
         gPad->SetLogy(0);
         hdirres->Draw();
-        hdirres->SetTitle(";#Delta R(Reco,Truth);");
+        hdirres->SetTitle(";#Delta R_{L_{jet}}(Reco,Truth);");
         
         c->Print("./plots/dirresolution_jet.pdf");
 

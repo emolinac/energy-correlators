@@ -297,7 +297,7 @@ void macro_print_histocorreec_rl_jetpt_weightpt(int niter = 4, int niter_jet = 4
                                 TH1F* h_nominal = new TH1F("h_nominal", "", nbin_rl_nominal, rl_nominal_binning);
 
                                 smooth_nominal_phase_space(hcorr_eec[bin],h_nominal);
-                                smooth_nominal_phase_space(hcorr_eqcheec[bin],h_nominal);
+                                // smooth_nominal_phase_space(hcorr_eqcheec[bin],h_nominal);
                                 smooth_nominal_phase_space(hcorr_neqcheec[bin],h_nominal);
 
                                 // hcorr_eec[bin]->Smooth();

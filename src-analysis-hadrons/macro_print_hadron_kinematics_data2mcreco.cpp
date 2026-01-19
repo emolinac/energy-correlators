@@ -9,7 +9,7 @@
 #include "../include/utils-visual.cpp"
 #include "../include/utils-visual.h"
 
-void macro_print_hadron_kinematics()
+void macro_print_hadron_kinematics_data2mcreco()
 {
         TFile* fin = new TFile((output_folder + namef_ntuple_hadron_jet).c_str());
         
@@ -17,13 +17,13 @@ void macro_print_hadron_kinematics()
         TNtuple* ntuple_mc     = (TNtuple*) fin->Get(name_ntuple_mc.c_str());
         TNtuple* ntuple_mcreco = (TNtuple*) fin->Get(name_ntuple_mcreco.c_str());
 
-        TH1F* h_pt_data   = new TH1F("h_pt_data"   ,"",50,0,100);
-        TH1F* h_pt_mc     = new TH1F("h_pt_mc"     ,"",50,0,100);
-        TH1F* h_pt_mcreco = new TH1F("h_pt_mcreco" ,"",50,0,100);
+        TH1F* h_pt_data   = new TH1F("h_pt_data"   ,"",10,0,50);
+        TH1F* h_pt_mc     = new TH1F("h_pt_mc"     ,"",10,0,50);
+        TH1F* h_pt_mcreco = new TH1F("h_pt_mcreco" ,"",10,0,50);
         
-        TH1F* h_p_data   = new TH1F("h_p_data"   ,"",50,track_p_min,track_p_max);
-        TH1F* h_p_mc     = new TH1F("h_p_mc"     ,"",50,track_p_min,track_p_max);
-        TH1F* h_p_mcreco = new TH1F("h_p_mcreco" ,"",50,track_p_min,track_p_max);
+        TH1F* h_p_data   = new TH1F("h_p_data"   ,"",10,track_p_min,600);
+        TH1F* h_p_mc     = new TH1F("h_p_mc"     ,"",10,track_p_min,600);
+        TH1F* h_p_mcreco = new TH1F("h_p_mcreco" ,"",10,track_p_min,600);
         
         TH1F* h_y_data   = new TH1F("h_y_data"  ,"",15,lhcb_eta_min,lhcb_eta_max);
         TH1F* h_y_mc     = new TH1F("h_y_mc"    ,"",15,lhcb_eta_min,lhcb_eta_max);
@@ -89,66 +89,64 @@ void macro_print_hadron_kinematics()
         h_phi_mc->Scale(1./h_phi_mc->Integral());
         h_phi_mcreco->Scale(1./h_phi_mcreco->Integral());
         
+        h_pt_data->Divide(h_pt_mcreco);
+        
+        h_p_data->Divide(h_p_mcreco);
+        
+        h_eta_data->Divide(h_eta_mcreco);
+        
+        h_y_data->Divide(h_y_mcreco);
+        
+        h_phi_data->Divide(h_phi_mcreco);
+        
         TCanvas* c = new TCanvas("c","",800,600);
         c->Draw();
 
         THStack* h_pt  = new THStack();
         h_pt->Add(h_pt_data);
-        h_pt->Add(h_pt_mc);
-        h_pt->Add(h_pt_mcreco);
-        h_pt->SetTitle(";p_{T}(GeV);Normalized Distributions");
+        h_pt->SetTitle(";p_{T}(GeV);Data/MC(Reco)");
         
         THStack* h_p  = new THStack();
         h_p->Add(h_p_data);
-        h_p->Add(h_p_mc);
-        h_p->Add(h_p_mcreco);
-        h_p->SetTitle(";p(GeV);Normalized Distributions");
+        h_p->SetTitle(";p(GeV);Data/MC(Reco)");
         
         THStack* heta = new THStack();
         heta->Add(h_eta_data);
-        heta->Add(h_eta_mc);
-        heta->Add(h_eta_mcreco);
-        heta->SetTitle(";#eta_{hadron};Normalized Distributions");
+        heta->SetTitle(";#eta_{hadron};Data/MC(Reco)");
 
         THStack* hy = new THStack();
         hy->Add(h_y_data);
-        hy->Add(h_y_mc);
-        hy->Add(h_y_mcreco);
-        hy->SetTitle(";y_{hadron};Normalized Distributions");
+        hy->SetTitle(";y_{hadron};Data/MC(Reco)");
 
         THStack* hphi = new THStack();
         hphi->Add(h_phi_data);
-        hphi->Add(h_phi_mc);
-        hphi->Add(h_phi_mcreco);
-        hphi->SetTitle(";#phi_{hadron};Normalized Distributions");
+        hphi->SetTitle(";#phi_{hadron};Data/MC(Reco)");
 
         TLegend* l = new TLegend();
         l->AddEntry(h_pt_data,"data","lpf");
-        l->AddEntry(h_pt_mc,"mc(truth)","lpf");
-        l->AddEntry(h_pt_mcreco,"mc(reco)","lpf");
-
+        
         h_pt->Draw("NOSTACK");
-        gPad->SetLogy(1);
-        l->Draw("SAME");
-        c->Print("./plots/hadron_pt_kinematics.pdf");
+        h_pt->SetMaximum(1.4);
+        h_pt->SetMinimum(0.6);
+        c->Print("./plots/hadron_pt_kinematics_data2mcreco_ratio.pdf");
 
         h_p->Draw("NOSTACK");
-        gPad->SetLogy(1);
-        l->Draw("SAME");
-        c->Print("./plots/hadron_p_kinematics.pdf");
+        h_p->SetMaximum(1.5);
+        h_p->SetMinimum(0.4);
+        c->Print("./plots/hadron_p_kinematics_data2mcreco_ratio.pdf");
 
         heta->Draw("NOSTACK");
-        gPad->SetLogy(0);
-        l->Draw("SAME");
-        c->Print("./plots/hadron_eta_kinematics.pdf");
+        heta->SetMaximum(1.3);
+        heta->SetMinimum(0.7);
+        c->Print("./plots/hadron_eta_kinematics_data2mcreco_ratio.pdf");
 
         hy->Draw("NOSTACK");
-        gPad->SetLogy(0);
-        l->Draw("SAME");
-        c->Print("./plots/hadron_y_kinematics.pdf");
+        hy->SetMaximum(1.3);
+        hy->SetMinimum(0.7);
+        c->Print("./plots/hadron_y_kinematics_data2mcreco_ratio.pdf");
 
         hphi->Draw("NOSTACK");
-        gPad->SetLogy(0);
-        l->Draw("SAME");
-        c->Print("./plots/hadron_phi_kinematics.pdf");
+        hphi->SetMaximum(1.3);
+        hphi->SetMinimum(0.7);
+        c->Print("./plots/hadron_phi_kinematics_data2mcreco_ratio.pdf");
 }
